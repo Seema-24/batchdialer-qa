@@ -303,8 +303,8 @@ export default class Contacts {
     cy.get(playerProgressBar).should('be.visible');
   }
 
-  uploadFileForContact() {
-    cy.get(dropBoxUpload).attachFile('contact-sample.csv');
+  uploadFileForContact(fileName) {
+    cy.get(dropBoxUpload).attachFile(fileName);
   }
 
   clickListMenuIcon() {

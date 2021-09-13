@@ -51,6 +51,21 @@ const assignAgentsDropdown = `//span[text()="Agents"]/parent::div[contains(@clas
 const queueDeleteButton = (queueName) =>
   `//tr[td[.="${queueName}"]]//td//img[contains(@src,"delete")]`;
 const recentContactsDisposition = '.disposition';
+const contactName = (firstName, lastName) =>
+  `//span[@class="contacts__name" and text()="${firstName}" and text()="${lastName}"]`;
+const contactPhoneNumber = '.phone__a-wrapper';
+const agentStatus = '.agent__presence-name';
+const softphoneTitle = '.stg-softphone-title';
+const callTime = '.stg-softphone-time';
+const softphoneButton = '.softphone-icon';
+const mappingFields = (fieldName) =>
+  `//div[input[@title="${fieldName}"]]/following-sibling::div/div[contains(@class,"ss-select")]`;
+const listThreeDotMenuBtn = (listName) =>
+  `//tr[td[text()="${listName}"]]//td//div[contains(@class,"dropdown")]`;
+const modalTitle = '.modal-content .modal-title';
+const modalDropdown = '.modal-content .ss-select';
+const listDeleteBtn = (listName) =>
+  `//tr[td[text()="${listName}"]]//td//span/*[name()="svg"][@data-icon="trash-alt"]`;
 
 export default class Dialer {
   selectStatus(statusName) {
@@ -353,5 +368,100 @@ export default class Dialer {
       .then((dispositionName) => {
         expect(dispositionName.text()).to.equal(disposition);
       });
+  }
+
+  clickContactName(firstName, lastName) {
+    cy.xpath(contactName(firstName, lastName)).click();
+  }
+
+  clickContactPhoneNumber() {
+    cy.get(contactPhoneNumber).first().click();
+  }
+
+  verifyAgentStatus(status) {
+    cy.get(agentStatus, { timeout: 30000 }).should('have.text', status);
+  }
+
+  verifySoftphoneTitle(name) {
+    let Names = '';
+    for (let i = 0; i < name.length; i++) {
+      Names = Names + ' ' + name[i];
+    }
+    cy.get(softphoneTitle).then((title) => {
+      expect(Names).to.contain(title.text());
+    });
+  }
+
+  endCallAtTime(time) {
+    cy.get(callTime, { timeout: 60000 }).should('have.text', time);
+    this.clickEndCallButton();
+  }
+
+  clickSoftphoneButton() {
+    cy.get(softphoneButton).click();
+  }
+
+  selectMappingFields(fieldNames) {
+    for (let i = 0; i < fieldNames.length; i++) {
+      cy.xpath(mappingFields(fieldNames[i])).click();
+      if (fieldNames[i] === 'Phone Number') {
+        cy.get(options).then((Opt) => {
+          for (let i = 0; i < Opt.length; i++) {
+            if (Opt[i].textContent.trim() === 'Phone Number 1*') {
+              Opt[i].click();
+              break;
+            }
+          }
+        });
+      } else if (fieldNames[i] === 'First Name') {
+        cy.get(options).then((Opt) => {
+          for (let i = 0; i < Opt.length; i++) {
+            if (Opt[i].textContent.trim() === 'First Name*') {
+              Opt[i].click();
+              break;
+            }
+          }
+        });
+      } else if (fieldNames[i] === 'Last Name') {
+        cy.get(options).then((Opt) => {
+          for (let i = 0; i < Opt.length; i++) {
+            if (Opt[i].textContent.trim() === 'Last Name*') {
+              Opt[i].click();
+              break;
+            }
+          }
+        });
+      } else if (fieldNames[i] === 'Zip') {
+        cy.get(options).then((Opt) => {
+          for (let i = 0; i < Opt.length; i++) {
+            if (Opt[i].textContent.trim() === 'Zip Code') {
+              Opt[i].click();
+              break;
+            }
+          }
+        });
+      } else {
+        this.selectOption(fieldNames[i]);
+      }
+    }
+  }
+
+  clickListAssignToCampaign(listName) {
+    cy.xpath(listThreeDotMenuBtn(listName)).click();
+    this.clickOnDropdownItem('Assign To Campaign');
+  }
+
+  verifyModalTitle(title) {
+    cy.get(modalTitle).should('have.text', title);
+  }
+
+  chooseCampaignToAssign(campaignName) {
+    cy.get(modalDropdown).click();
+    this.selectOption(campaignName);
+    cy.get(modalDropdown).click();
+  }
+
+  clickListDeleteButton(listName) {
+    cy.xpath(listDeleteBtn(listName)).click();
   }
 }

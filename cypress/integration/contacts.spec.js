@@ -102,7 +102,7 @@ describe('Add Contact flow', () => {
       'Options',
     ]);
     addCont.verifyImportContactDropboxUpload();
-    addCont.uploadFileForContact();
+    addCont.uploadFileForContact('contact-sample.csv');
     addCont.verifyImportContactFirstName();
     addCont.verifyImportContactLastName();
     addCont.verifyImportContactPhone();
@@ -173,7 +173,7 @@ describe('Add Contact flow', () => {
     addCont.clickingOnContactOption();
     addCont.clickAddNewContactButton();
     addCont.selectUploadFileOption();
-    addCont.uploadFileForContact();
+    addCont.uploadFileForContact('contact-sample.csv');
     cy.wait(2000);
     addCont.selectFirstNameDropdown();
     addCont.selectLastNameDropdown();
@@ -286,7 +286,7 @@ describe('Add Contact flow', () => {
 
   it('User is able to import contact from list section', () => {
     addCont.clickImportContacts();
-    addCont.uploadFileForContact();
+    addCont.uploadFileForContact('contact-sample.csv');
     cy.wait(2000);
     addCont.selectFirstNameDropdown();
     addCont.selectLastNameDropdown();
