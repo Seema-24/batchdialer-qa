@@ -548,7 +548,7 @@ describe('Outbound Calling Scenarios', () => {
     });
   });
 
-  describe.only('Predictive Campaign Dialing', () => {
+  describe('Predictive Campaign Dialing', () => {
     const campaignName = 'Predictive Campaign';
     const listName = 'twilio.csv';
     let callNumber = '+1';
