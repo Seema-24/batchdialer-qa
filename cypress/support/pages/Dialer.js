@@ -66,6 +66,7 @@ const modalTitle = '.modal-content .modal-title';
 const modalDropdown = '.modal-content .ss-select';
 const listDeleteBtn = (listName) =>
   `//tr[td[text()="${listName}"]]//td//span/*[name()="svg"][@data-icon="trash-alt"]`;
+const softphoneLines = '.stg-softphone-line';
 
 export default class Dialer {
   selectStatus(statusName) {
@@ -463,5 +464,9 @@ export default class Dialer {
 
   clickListDeleteButton(listName) {
     cy.xpath(listDeleteBtn(listName)).click();
+  }
+
+  verifySoftphoneLinesNumber(no) {
+    cy.get(softphoneLines).should('have.length', no);
   }
 }

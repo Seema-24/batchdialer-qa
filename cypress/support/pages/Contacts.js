@@ -329,6 +329,10 @@ export default class Contacts {
     });
   }
 
+  clickToCloseSoftphone() {
+    cy.get(softphoneIcon).click();
+  }
+
   selectFirstNameDropdown() {
     cy.xpath(firstNameDrpdown).click();
     cy.contains('First Name').click({ force: true });

@@ -1,12 +1,14 @@
 import Contacts from '../support/pages/Contacts';
 import { ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 import Dashboard from '../support/pages/Dashboard';
+import Dialer from '../support/pages/Dialer';
 
 let fixtureData;
 let testData;
 let randNum = Math.floor(Math.random() * 100);
 const addCont = new Contacts();
 const dashboard = new Dashboard();
+const Dial = new Dialer();
 
 describe('Add Contact flow', () => {
   before(() => {
@@ -349,6 +351,16 @@ describe('Add Contact flow', () => {
     addCont.verifyNotesWindowNotVisible();
   });
 
+  it('Change status to Available', () => {
+    Dial.selectStatus('Available');
+    Dial.verifySelectCampaignBoxHeading();
+    Dial.clickSelectCampaignDropdown();
+    Dial.selectCampaign(testData.campaign);
+    Dial.clickConfirmButton();
+    Dial.verifySoftPhoneOpen();
+    addCont.clickToCloseSoftphone();
+  });
+
   it('Verify Admin is able to add notes in Contacts', () => {
     addCont.clickingOnContactOption();
     addCont.enterSearch(testData.Contact);
@@ -383,7 +395,7 @@ describe('Add Contact flow', () => {
     addCont.clickDialerCallButton();
     cy.wait(10000);
     addCont.clickDialerCallButton();
-    addCont.selectCallResult('Call Back');
+    addCont.selectCallResult('No Answer');
     addCont.clickContinueBtn();
     addCont.clickContactsCamapign();
     addCont.clickRecordingIcon();
@@ -409,7 +421,7 @@ describe('Add Contact flow', () => {
     addCont.clickDialerCallButton();
     cy.wait(3000);
     addCont.clickDialerCallButton();
-    addCont.selectCallResult('Call Back');
+    addCont.selectCallResult('No Answer');
     addCont.clickContinueBtn();
   });
 

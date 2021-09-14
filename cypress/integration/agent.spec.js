@@ -391,14 +391,15 @@ describe('Agent Profile', function () {
 
   it('Open the Call Result Window when Agent disconnect the Call', () => {
     agent.clickingOnContactOption();
-    // agent.enterSearch('New User');
+    agent.enterSearch('random Contact');
+    cy.wait(1000);
     agent.clickContactName();
     agent.clickPhoneNumber();
     agent.clickCallBtn();
     cy.wait(2000);
     agent.clickEndCallBtn();
     agent.verifyCallResultWindow();
-    agent.selectCallResult('Call Back');
+    agent.selectCallResult('No Answer');
     agent.clickContinueBtn();
   });
 
@@ -422,7 +423,7 @@ describe('Agent Profile', function () {
     agent.clickContinueBtn();
     cy.wait(2000);
     agent.verifyCallResult('Busy');
-    agent.ChooseCallResult('Call Back');
+    agent.ChooseCallResult('No Answer');
   });
 
   it.skip('Verify When Admin Assign Campaign to user it should show in agent Profile', () => {
@@ -473,7 +474,7 @@ describe('Agent Profile', function () {
     cy.wait(1000);
     agent.clickEndCallBtn();
     agent.verifyCallResultWindow();
-    agent.selectCallResult('Call Back');
+    agent.selectCallResult('No Answer');
     agent.clickContinueBtn();
     agent.clickDashboardMenu();
     cy.reload();
@@ -490,7 +491,7 @@ describe('Agent Profile', function () {
   });
 
   it('Verifies the Call transfer Continue and Cancel Button', () => {
-    agent.ChooseCallResult('Call Back');
+    agent.ChooseCallResult('No Answer');
     agent.clickingOnContactOption();
     agent.enterSearch('random Contact');
     cy.wait(1000);
@@ -503,8 +504,8 @@ describe('Agent Profile', function () {
     agent.verifyCancelBtn();
     agent.clickCancelBtn();
     agent.clickEndCallBtn();
-    agent.selectCallResult('Call Back');
+    agent.selectCallResult('No Answer');
     agent.clickContinueBtn();
-    agent.ChooseCallResult('Call Back');
+    agent.ChooseCallResult('No Answer');
   });
 });
