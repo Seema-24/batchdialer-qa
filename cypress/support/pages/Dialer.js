@@ -67,6 +67,16 @@ const modalDropdown = '.modal-content .ss-select';
 const listDeleteBtn = (listName) =>
   `//tr[td[text()="${listName}"]]//td//span/*[name()="svg"][@data-icon="trash-alt"]`;
 const softphoneLines = '.stg-softphone-line';
+const retryTime =
+  '//label[text()="Retry Time"]/parent::div/following-sibling::div//input';
+const maxAttemptPerRecord =
+  '//label[text()="Max Attempts Per Record"]/following-sibling::div//input';
+const contactThreeDotMenu = (firstName, lastName) =>
+  `//td[span[span[@class="contacts__name" and text()="${firstName}" and text()="${lastName}"]]]/parent::tr//td//img[contains(@src,"edit")]`;
+const softphoneLineStatus = '.stg-softphone-line-status';
+const softphoneLineContactName = '.stg-softphone-line-contact';
+const ringTimeDuration = `//label[text()="Ring Time Duration"]/following-sibling::div//input`;
+const abandonmentTimeout = `//label[text()="Abandonment Timeout"]/following-sibling::div//input`;
 
 export default class Dialer {
   selectStatus(statusName) {
@@ -301,6 +311,7 @@ export default class Dialer {
   verifyInqueueCall(num) {
     cy.xpath(inqueuePhoneNumber, { timeout: 120000 }).then((phoneNumber) => {
       const number = covertNumberToNormal(phoneNumber.text());
+      cy.log(number);
       expect(number).to.equal(num);
     });
   }
@@ -380,7 +391,7 @@ export default class Dialer {
   }
 
   verifyAgentStatus(status) {
-    cy.get(agentStatus, { timeout: 30000 }).should('have.text', status);
+    cy.get(agentStatus, { timeout: 80000 }).should('have.text', status);
   }
 
   verifySoftphoneTitle(name) {
@@ -462,11 +473,46 @@ export default class Dialer {
     cy.get(modalDropdown).click();
   }
 
+  selectCampaignToAssign(campaignName) {
+    cy.get(modalDropdown).click();
+    this.selectOption(campaignName);
+  }
+
   clickListDeleteButton(listName) {
     cy.xpath(listDeleteBtn(listName)).click();
   }
 
   verifySoftphoneLinesNumber(no) {
     cy.get(softphoneLines).should('have.length', no);
+  }
+
+  enterRetryTime(time) {
+    cy.xpath(retryTime).clear().type(time);
+  }
+
+  enterMaxAttemptPerRecord(attemptNo) {
+    cy.xpath(maxAttemptPerRecord).clear().type(attemptNo);
+  }
+
+  clickContactThreeDotMenu(firstName, lastName) {
+    cy.xpath(contactThreeDotMenu(firstName, lastName)).click();
+  }
+
+  verifySoftphoneLineContactName(name) {
+    cy.get(softphoneLineContactName, { timeout: 20000 }).then((lineText) => {
+      expect(lineText.text()).to.contains(name);
+    });
+  }
+
+  verifySoftphoneLineStatus(status) {
+    cy.get(softphoneLineStatus).should('have.text', status);
+  }
+
+  enterRingTimeDuration(duration) {
+    cy.xpath(ringTimeDuration).clear().type(duration);
+  }
+
+  enterAbandonmentDuration(duration) {
+    cy.xpath(abandonmentTimeout).clear().type(duration);
   }
 }

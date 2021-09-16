@@ -367,11 +367,11 @@ export default class Contacts {
   }
 
   verifyImportStartedToast() {
-    cy.xpath(contactImportToast, { timeout: 5000 }).should('be.visible');
+    cy.xpath(contactImportToast, { timeout: 10000 }).should('be.visible');
   }
 
   verifyImportContactCompleteToast() {
-    cy.contains('Import complete', { timeout: 5000 }).should('be.visible');
+    cy.contains('Import complete', { timeout: 10000 }).should('be.visible');
   }
 
   deleteAddedContacts(fstaName, lstName) {
@@ -382,6 +382,7 @@ export default class Contacts {
         lstName +
         '")]]//img[contains(@src,"edit")]'
     )
+      .first()
       .scrollIntoView()
       .click();
     cy.xpath(deletOption).click();
