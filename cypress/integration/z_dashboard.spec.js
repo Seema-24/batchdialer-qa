@@ -697,7 +697,6 @@ describe('Dashboard Elements', function () {
     Dash.clickMessageIcon();
     Dash.verifyChatBox();
     Dash.clickStartChatButton();
-    // Dash.selectUserToSendMessage([testData.agent]);
     Dash.enterMessageMoreThan160Words('b');
     Dash.verifyMessageLimit();
   });

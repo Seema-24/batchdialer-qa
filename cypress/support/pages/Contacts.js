@@ -371,7 +371,18 @@ export default class Contacts {
   }
 
   verifyImportContactCompleteToast() {
-    cy.contains('Import complete', { timeout: 10000 }).should('be.visible');
+    cy.get('.modal-content .modal-header').should(
+      'contain.text',
+      'UPLOAD SUCCESSFUL'
+    );
+    cy.get('button').then((btn) => {
+      for (let i = 0; i < btn.length; i++) {
+        if (btn[i].textContent.trim() === 'OK') {
+          cy.get(btn[i]).click();
+          break;
+        }
+      }
+    });
   }
 
   deleteAddedContacts(fstaName, lstName) {

@@ -38,7 +38,7 @@ const contactName = (firstName, lastname) =>
   '//span[text()="' + firstName + '" and text()="' + lastname + '"]';
 const month = '.month-selector .title';
 const nextButton = '.fa-chevron-right';
-const day = (date) => `.day[data-day="${date}"]`;
+const day = `div.day .title`;
 const saveBtn = 'button svg[data-icon="save"]';
 const savedScheduledCall = '.day .item';
 const closeBtn = '//button[contains(text(),"Close")]';
@@ -661,7 +661,14 @@ export default class Agent {
         }
       });
     }
-    cy.get(day(date.toString())).click();
+    cy.get(day).then((AllDate) => {
+      for (let i = 0; i < AllDate.length; i++) {
+        if (AllDate[i].textContent.trim() === date.toString()) {
+          cy.get(AllDate[i]).click();
+          break;
+        }
+      }
+    });
   }
 
   clickSaveButton() {

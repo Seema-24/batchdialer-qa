@@ -11,7 +11,6 @@ const Dash = new Dashboard();
 
 describe('Login Successfully and Add User', () => {
   before(() => {
-    // To add random number in constants.json
     cy.readFile('cypress/fixtures/constants.json', (err, data) => {
       if (err) {
         return console.error(err);

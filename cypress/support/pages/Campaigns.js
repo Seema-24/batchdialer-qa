@@ -639,7 +639,7 @@ export default class Campaign {
   }
 
   enterNewCampaignName(name) {
-    cy.get(newCampaignName).type(name);
+    cy.get(newCampaignName).clear().type(name);
   }
 
   removeCheckBox() {

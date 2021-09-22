@@ -16,7 +16,7 @@ const searchToast =
 const closeBtn = '//button[contains(text(),"Close")]';
 const deleteToast =
   '//div[@class="Toastify__toast-body"]//div[contains(text(),"Number deleted")]';
-const assignToDrpdwn = '//div[span[contains(text(),"User extension")]]';
+const assignToDrpdwn = '//div[span[contains(text(),"Agent")]]';
 const ivrAttendent = 'a[title="IVR/Auto Attendant"]';
 const newIvr = '//button[text()=" NEW IVR"]';
 const Name = 'input[name="name"]';

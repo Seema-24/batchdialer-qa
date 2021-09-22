@@ -178,7 +178,7 @@ const leadSaveBtn = 'button[type="submit"]';
 const leadItemsNameField = '.lead-edit__list .lead-edit__custom-input input';
 const leadSheetDeleteBtn = (sheetName) =>
   `//tr[td[text()="${sheetName}"]]//img[contains(@src,"delete")]`;
-const messageIcon = '.position-relative';
+const messageIcon = '.position-relative .chat-wrapper__icon';
 const chatBox = '.chat__container';
 const chatCloseButton = '.chat__close';
 const receiverDropdown = '.chat__container .ss-select-control';
@@ -256,9 +256,11 @@ export default class Dashboard {
   }
 
   enterMessageMoreThan160Words(message) {
+    let text = '';
     for (let i = 0; i < 165; i++) {
-      cy.get(messageField).type(message);
+      text = text + message;
     }
+    cy.get(messageField).type(text);
   }
 
   verifyMessageLimit() {
