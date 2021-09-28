@@ -1247,7 +1247,7 @@ describe('Outbound Calling Scenarios', () => {
     });
   });
 
-  describe('Campaign - Call Recording Feature', () => {
+  describe.only('Campaign - Call Recording Feature', () => {
     const campaignWithRecording = 'Campaign with call recording';
     const campaignWithoutRecording = 'Campaign without Call Recording';
     const listName = 'twilio.csv';
@@ -1400,6 +1400,20 @@ describe('Outbound Calling Scenarios', () => {
       Dial.clickOnMenu('Reports');
       Dial.clickOnSubMenu('Recent Contacts');
       Dial.verifyCallRecordingIcon('Twilio', 'Test', 'be.visible');
+    });
+
+    it('Verify that costumer is able to play the recording', () => {
+      Dial.clickCallRecordingIcon('Twilio', 'Test');
+      Dial.verifyRecordingPlayerWindow();
+      Dial.verifyPlayerCampaignName(campaignWithRecording);
+      Dial.clickPlayPauseButton();
+      Dial.verifyPlayerCurrentTime('0:05');
+      Dial.clickPlayPauseButton();
+      Dial.clickForwardButton();
+      Dial.verifyPlayerCurrentTime('0:15');
+      Dial.clickBackwardButton();
+      Dial.verifyPlayerCurrentTime('0:05');
+      Dial.clickPlayerCloseButton();
     });
 
     it('Change status to Available', () => {

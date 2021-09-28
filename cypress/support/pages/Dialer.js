@@ -80,6 +80,12 @@ const abandonmentTimeout = `//label[text()="Abandonment Timeout"]/following-sibl
 const callRecordingCheckbox = 'input[name="callrecording"]';
 const callRecordingIcon = (firstName, lastName) =>
   `//tr[td[text()="${firstName}" and text()="${lastName}"]]//img[contains(@src,"icon-listen")]`;
+const playerCampaignName = '.contacts-player__top-campaign';
+const playerWindow = '.contacts-player .modal-content';
+const playerControlButton = (no) =>
+  `.contacts-player__controls svg:nth-of-type(${no})`;
+const playerCurrentTime = '.progress-bar__current-time';
+const playerCloseButton = '.modal-content .fa-times';
 
 export default class Dialer {
   selectStatus(statusName) {
@@ -539,5 +545,33 @@ export default class Dialer {
 
   clickCallRecordingIcon(firstName, lastName) {
     cy.xpath(callRecordingIcon(firstName, lastName)).first().click();
+  }
+
+  verifyPlayerCampaignName(campaignName) {
+    cy.get(playerCampaignName).should('contain.text', campaignName);
+  }
+
+  verifyRecordingPlayerWindow() {
+    cy.get(playerWindow).should('be.visible');
+  }
+
+  clickPlayPauseButton() {
+    cy.get(playerControlButton(2)).click();
+  }
+
+  clickForwardButton() {
+    cy.get(playerControlButton(3)).click();
+  }
+
+  clickBackwardButton() {
+    cy.get(playerControlButton(1)).click();
+  }
+
+  verifyPlayerCurrentTime(time) {
+    cy.get(playerCurrentTime, { timeout: 10000 }).should('have.text', time);
+  }
+
+  clickPlayerCloseButton() {
+    cy.get(playerCloseButton).click();
   }
 }
