@@ -77,6 +77,9 @@ const softphoneLineStatus = '.stg-softphone-line-status';
 const softphoneLineContactName = '.stg-softphone-line-contact';
 const ringTimeDuration = `//label[text()="Ring Time Duration"]/following-sibling::div//input`;
 const abandonmentTimeout = `//label[text()="Abandonment Timeout"]/following-sibling::div//input`;
+const callRecordingCheckbox = 'input[name="callrecording"]';
+const callRecordingIcon = (firstName, lastName) =>
+  `//tr[td[text()="${firstName}" and text()="${lastName}"]]//img[contains(@src,"icon-listen")]`;
 
 export default class Dialer {
   selectStatus(statusName) {
@@ -514,5 +517,27 @@ export default class Dialer {
 
   enterAbandonmentDuration(duration) {
     cy.xpath(abandonmentTimeout).clear().type(duration);
+  }
+
+  enableCallRecording() {
+    cy.get(callRecordingCheckbox).then((checkBox) => {
+      if (checkBox[0].hasAttribute('checked')) {
+        cy.log('Already checked');
+      } else {
+        cy.get(callRecordingCheckbox).check({ force: true });
+      }
+    });
+  }
+
+  disableCallRecording() {
+    cy.get(callRecordingCheckbox).uncheck({ force: true });
+  }
+
+  verifyCallRecordingIcon(firstName, lastName, status) {
+    cy.xpath(callRecordingIcon(firstName, lastName)).first().should(status);
+  }
+
+  clickCallRecordingIcon(firstName, lastName) {
+    cy.xpath(callRecordingIcon(firstName, lastName)).first().click();
   }
 }
