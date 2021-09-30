@@ -1,3 +1,4 @@
+import Campaign from '../support/pages/Campaigns';
 import Contacts from '../support/pages/Contacts';
 import Dialer from '../support/pages/Dialer';
 import Setup from '../support/pages/Setup';
@@ -13,6 +14,7 @@ let testData;
 const Dial = new Dialer();
 const setup = new Setup();
 const contact = new Contacts();
+const camp = new Campaign();
 
 describe('Inbound Call Scenarios', () => {
   describe('Inbound Calls with Call Connect type of Auto Answer mode', () => {
@@ -1080,7 +1082,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Verify the ringing Time duration of 15 sec and call should be marked as No Answer', () => {
-      Dial.verifySoftphoneLineContactName('Test Number');
+      Dial.verifySoftphoneLineContactName(['Test Number']);
       cy.wait(15000);
       Dial.verifySoftphoneLineStatus('OFF');
       contact.clickToCloseSoftphone();
@@ -1247,7 +1249,7 @@ describe('Outbound Calling Scenarios', () => {
     });
   });
 
-  describe.only('Campaign - Call Recording Feature', () => {
+  describe('Campaign - Call Recording Feature', () => {
     const campaignWithRecording = 'Campaign with call recording';
     const campaignWithoutRecording = 'Campaign without Call Recording';
     const listName = 'twilio.csv';
@@ -1399,7 +1401,7 @@ describe('Outbound Calling Scenarios', () => {
     it('verify that Call recording should be available in Recent Contacts', () => {
       Dial.clickOnMenu('Reports');
       Dial.clickOnSubMenu('Recent Contacts');
-      Dial.verifyCallRecordingIcon('Twilio', 'Test', 'be.visible');
+      Dial.verifyCallRecordingIcon(true);
     });
 
     it('Verify that costumer is able to play the recording', () => {
@@ -1447,11 +1449,12 @@ describe('Outbound Calling Scenarios', () => {
     it('verify that Call recording should not be available in Recent Contacts', () => {
       Dial.clickOnMenu('Reports');
       Dial.clickOnSubMenu('Recent Contacts');
-      Dial.verifyCallRecordingIcon('Twilio', 'Test', 'not.exist');
+      camp.clickTableRefreshBtn();
+      Dial.verifyCallRecordingIcon(false);
     });
 
     it('Delete the Created Campaign', () => {
-      contact.clickToCloseSoftphone();
+      // contact.clickToCloseSoftphone();
       Dial.clickOnMenu('Campaigns');
       Dial.clickThreeDotMenuBtn(campaignWithRecording);
       Dial.clickOnDropdownItem('Archive');
@@ -1468,6 +1471,170 @@ describe('Outbound Calling Scenarios', () => {
       contact.handleAlertForDelete();
       contact.verifyDeletedToast();
       Dial.clickSoftphoneButton();
+    });
+  });
+
+  describe('Predictive campaign with Daily Connects Limit of 1', () => {
+    const campaignName = 'Dialy Connect Campaign';
+    const listName = 'twilio.csv';
+    let callNumber = '+1';
+    before(() => {
+      cy.visit('/');
+      cy.readFile('cypress/fixtures/testData.json').then((data) => {
+        testData = data;
+        callNumber = callNumber + covertNumberToNormal(testData.Number);
+      });
+      cy.readFile('cypress/fixtures/testData.json').then((data) => {
+        data.flag = 'false';
+        cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
+      });
+      Cypress.Cookies.defaults({
+        preserve: (cookies) => {
+          return true;
+        },
+      });
+    });
+
+    after(() => {
+      selectAgentStatus('Offline');
+      cy.Logout();
+    });
+
+    it('Login To Application', () => {
+      cy.Login(Cypress.env('username'), Cypress.env('password'));
+      ignoreSpeedTestPopup();
+    });
+
+    it('Create a new Predictive Campaign', () => {
+      Dial.clickOnMenu('Campaigns');
+      Dial.clickOnButton('CREATE NEW CAMPAIGN');
+      Dial.clickAdvanceSwitch();
+      Dial.enterCampaignName(campaignName);
+      Dial.clickOnRadioButton('Predictive Dialer');
+      Dial.clickOnRadioButton('Individual Numbers');
+      Dial.clickNumbersDropdown();
+      Dial.selectPhoneNumber(testData.Number);
+      Dial.clickNextButton();
+      Dial.clickOnRadioButton('Auto Answer');
+      Dial.clickCallingHoursDropdown();
+      Dial.selectFromTime('12:00 am');
+      Dial.selectToTime('11:30 pm');
+      Dial.clickApplyToAllButton();
+      Dial.clickOnButton('APPLY');
+      Dial.enterSimultaneousDialsPerAgent('3');
+      Dial.selectRetryTimeDropdown('sec');
+      Dial.enterRetryTime('10');
+      Dial.enterMaxAttemptPerRecord('5');
+      Dial.enterDailyConnectsLimit('1');
+      Dial.clickCallResultsDropdown();
+      Dial.selectCallResults([
+        'Abandoned',
+        'Answering Machine',
+        'Busy',
+        'Call Back',
+        'Disconnected Number',
+        'Do Not Call',
+        'No Answer',
+        'Not Interested',
+        'Successful sale',
+        'Unknown',
+        'Voicemail',
+      ]);
+      Dial.clickNextButton();
+      Dial.clickOnRadioButton('Individual Agents');
+      Dial.selectAgentToAssign(testData.AdminName);
+      Dial.clickOnButton('SAVE');
+      Dial.verifySuccessToastMessage('Campaign Created');
+    });
+
+    it('Upload the List of Contacts', () => {
+      Dial.clickOnMenu('Contacts');
+      contact.clickAddNewContactButton();
+      contact.selectUploadFileOption();
+      contact.uploadFileForContact(listName);
+      cy.wait(2000);
+      Dial.selectMappingFields([
+        'Phone Number',
+        'First Name',
+        'Last Name',
+        'Email',
+        'Zip',
+        'Address',
+        'Country',
+        'State',
+        'City',
+      ]);
+      contact.clickNextButton();
+      contact.clickSubmitButton();
+      contact.verifyImportStartedToast();
+      contact.verifyImportContactCompleteToast();
+    });
+
+    it('Assign the Imported List to the Created Campaign', () => {
+      Dial.clickOnMenu('Contacts');
+      Dial.clickOnSubMenu('Contact Lists');
+      Dial.clickListAssignToCampaign(listName);
+      Dial.verifyModalTitle('Assign To Campaign');
+      Dial.chooseCampaignToAssign(campaignName);
+      Dial.clickOnButton('Continue');
+      Dial.verifySuccessToastMessage('List has been assigned to the campaigns');
+      cy.reload();
+      ignoreSpeedTestPopup();
+      cy.wait(10000);
+    });
+
+    it('Change status to Available', () => {
+      Dial.selectStatus('Available');
+      Dial.verifySelectCampaignBoxHeading();
+      Dial.clickSelectCampaignDropdown();
+      Dial.selectCampaign(campaignName);
+      Dial.clickConfirmButton();
+      Dial.verifySoftPhoneOpen();
+      Dial.verifySoftphoneLinesNumber(3);
+      cy.wait(5000);
+    });
+
+    it('Attempting to Call the imported numbers and marking it as Successful sale', () => {
+      let flag;
+      for (let i = 0; i < 5; i++) {
+        cy.readFile('cypress/fixtures/testData.json').then((data) => {
+          flag = data.flag;
+          if (data.flag === 'true') {
+            cy.log('Completed');
+          } else {
+            Dial.verifyCallConnectForCampaign(
+              ['Test Number1', 'Test Number2', 'Test Number3'],
+              '0:30',
+              'Successful Sale'
+            );
+          }
+        });
+      }
+      cy.log(flag);
+    });
+
+    it('Verifying that the campaign status should be Connects Limit Reached', () => {
+      Dial.clickOnMenu('Campaigns');
+      cy.reload();
+      ignoreSpeedTestPopup();
+      cy.wait(8000);
+      camp.clickTableRefreshBtn();
+      camp.verifyCampaignStatus(campaignName, 'Connects Limit Reached');
+    });
+
+    it('Delete the Created Campaign', () => {
+      Dial.clickOnMenu('Campaigns');
+      Dial.clickThreeDotMenuBtn(campaignName);
+      Dial.clickOnDropdownItem('Archive');
+      Dial.verifySuccessToastMessage('Campaign Archived');
+    });
+
+    it('Delete the Uploaded List', () => {
+      Dial.clickOnMenu('Contacts');
+      Dial.clickOnSubMenu('Contact Lists');
+      Dial.clickListDeleteButton(listName);
+      contact.handleAlertForDelete();
+      Dial.verifySuccessToastMessage('List deleted');
     });
   });
 });

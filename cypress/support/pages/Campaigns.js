@@ -110,7 +110,7 @@ const useListsFrom =
   '//label[text()="Use Lists From"]/following-sibling::div[contains(@class,"ss-select")]';
 const newCampaignName = 'input[name="newcampaignname"]';
 const saveCampaign = '.wizard-buttons button[type="submit"]';
-const successToast = '.Toastify__toast-body';
+const toast = '.Toastify__toast-body';
 const campaignTable = '.table tbody';
 const callresultValues = '.row-calldisposition  .ss-select-value';
 const delCallResult = (callResultName) =>
@@ -123,6 +123,8 @@ const leadSheetDropdown = `//div[label[@class="form-label" and text()="Lead Shee
 const tableRefreshBtn = 'span[title="Refresh"]';
 const campaignStatus = (campaignName) =>
   `//tr[td[span[text()="${campaignName}"]]]//td//div[@class="campaign__status"]`;
+const softphoneNextLead = '.stg-softphone-next-lead';
+const softphoneIcon = '.nav-item .softphone-icon';
 
 export default class Campaign {
   clickCampaignMenu() {
@@ -655,8 +657,8 @@ export default class Campaign {
     cy.get(saveCampaign, { timeout: 20000 }).should('be.enabled').click();
   }
 
-  verifySuccessToast(message) {
-    cy.get(successToast).should('contain.text', message);
+  verifyToast(message) {
+    cy.get(toast).should('contain.text', message);
   }
 
   verifyAddedRecycleCampaign(campaignName) {
@@ -689,9 +691,17 @@ export default class Campaign {
   }
 
   verifyCampaignStatus(campaignName, status) {
-    cy.xpath(campaignStatus(campaignName), { timeout: 20000 }).should(
+    cy.xpath(campaignStatus(campaignName), { timeout: 50000 }).should(
       'contain.text',
       status
     );
+  }
+
+  clickSoftphoneNextLead() {
+    cy.get(softphoneNextLead).click();
+  }
+
+  clickSoftphoneIcon() {
+    cy.get(softphoneIcon).click();
   }
 }

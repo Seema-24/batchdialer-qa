@@ -195,12 +195,26 @@ describe('Add Campaign flow', () => {
     cy.wait(2000);
     addCamp.enterName(fixtureData.campaignName + randNum.toString() + '1');
     addCamp.selectDialingModeOption('Preview Dialer');
+    cy.wait(1000);
+    addCamp.selectDialingModeOption('Preview Dialer');
     addCamp.selectCallerId('Individual Numbers', testData.Number);
     addCamp.clickNextCircleArrow();
     addCamp.selectCallResultsOption(['Busy']);
     addCamp.clickNextCircleArrow();
     addCamp.selectAgentsDrpdwn('Individual Agents', testData.AdminName);
     addCamp.clickCreateCampButton();
+  });
+
+  it('Verify that it should give error on clicking Next Contact if there is no new lead', () => {
+    Dial.selectStatus('Available');
+    Dial.verifySelectCampaignBoxHeading();
+    Dial.clickSelectCampaignDropdown();
+    Dial.selectCampaign(fixtureData.campaignName + randNum.toString() + '1');
+    Dial.clickConfirmButton();
+    Dial.verifySoftPhoneOpen();
+    addCamp.clickSoftphoneNextLead();
+    addCamp.verifyToast('No available contacts found, please try later');
+    addCamp.clickSoftphoneIcon();
   });
 
   it('Should show added Preview Dialer Campaign in table', () => {
@@ -431,7 +445,7 @@ describe('Add Campaign flow', () => {
     addCamp.enterNewCampaignName('RecycledCampaign');
     addCamp.removeCheckBox();
     addCamp.clickRecycleSaveCampaign();
-    addCamp.verifySuccessToast('Recycled campaign created');
+    addCamp.verifyToast('Recycled campaign created');
     addCamp.verifyAddedRecycleCampaign('RecycledCampaign');
   });
 

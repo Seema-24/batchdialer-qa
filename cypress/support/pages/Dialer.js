@@ -1,4 +1,4 @@
-import { covertNumberToNormal } from '../Utils';
+import { covertNumberToNormal, ignoreSpeedTestPopup } from '../Utils';
 
 const statusDropdown = '.nav-item.auth__agent-presence .ss-select';
 const statusNames = `.ss-select-group-items .ss-select-option .agent__presence-name`;
@@ -86,6 +86,11 @@ const playerControlButton = (no) =>
   `.contacts-player__controls svg:nth-of-type(${no})`;
 const playerCurrentTime = '.progress-bar__current-time';
 const playerCloseButton = '.modal-content .fa-times';
+const dailyConnectsLimit = `//label[text()="Daily Connects Limit"]/parent::div//input`;
+const retryTimeDropdown = `//div[label[text()="Retry Time"]]/parent::div//div[contains(@class,"ss-select-control")]`;
+const softphoneIcon = '.softphone-icon';
+const dialedNumberOptions = 'tbody tr:nth-of-type(1) td:nth-of-type(11) span';
+const tableRefreshBtn = 'span[title="Refresh"]';
 
 export default class Dialer {
   selectStatus(statusName) {
@@ -507,9 +512,15 @@ export default class Dialer {
     cy.xpath(contactThreeDotMenu(firstName, lastName)).click();
   }
 
-  verifySoftphoneLineContactName(name) {
-    cy.get(softphoneLineContactName, { timeout: 20000 }).then((lineText) => {
-      expect(lineText.text()).to.contains(name);
+  verifySoftphoneLineContactName(names) {
+    let contactName = '';
+    for (let i = 0; i < names.length; i++) {
+      contactName = contactName + names[i] + ' ';
+    }
+    cy.get(softphoneLineContactName, { timeout: 30000 }).then((lineText) => {
+      for (let i = 0; i < lineText.length; i++) {
+        expect(contactName).to.contains(lineText[i].textContent.trim());
+      }
     });
   }
 
@@ -539,8 +550,18 @@ export default class Dialer {
     cy.get(callRecordingCheckbox).uncheck({ force: true });
   }
 
-  verifyCallRecordingIcon(firstName, lastName, status) {
-    cy.xpath(callRecordingIcon(firstName, lastName)).first().should(status);
+  verifyCallRecordingIcon(status) {
+    cy.reload();
+    ignoreSpeedTestPopup();
+    cy.wait(5000);
+    this.clickTableRefreshButton();
+    cy.get('body').then(($body) => {
+      if (status === true) {
+        expect($body.find(dialedNumberOptions).length).to.equal(2);
+      } else if (status === false) {
+        expect($body.find(dialedNumberOptions).length).to.equal(1);
+      }
+    });
   }
 
   clickCallRecordingIcon(firstName, lastName) {
@@ -573,5 +594,44 @@ export default class Dialer {
 
   clickPlayerCloseButton() {
     cy.get(playerCloseButton).click();
+  }
+
+  enterDailyConnectsLimit(limit) {
+    cy.xpath(dailyConnectsLimit).clear().type(limit);
+  }
+
+  selectRetryTimeDropdown(unit) {
+    cy.xpath(retryTimeDropdown).click();
+    this.selectOption(unit);
+  }
+
+  verifyCallConnectForCampaign(names, time, disposition) {
+    this.verifySoftphoneLineContactName(names);
+    cy.wait(20000);
+    cy.get('body').then((body) => {
+      if (body.find(contactProfile).length) {
+        this.endCallAtTime(time);
+        this.verifyCallDispositionWindow();
+        this.selectCallDisposition(disposition);
+        this.clickOnButton('Done');
+        cy.readFile('cypress/fixtures/testData.json').then((data) => {
+          data.flag = 'true';
+          cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
+        });
+        this.selectStatus('Offline');
+      } else {
+        cy.reload();
+        ignoreSpeedTestPopup();
+        this.clickToOpenSoftphone();
+      }
+    });
+  }
+
+  clickToOpenSoftphone() {
+    cy.get(softphoneIcon).click();
+  }
+
+  clickTableRefreshButton() {
+    cy.get(tableRefreshBtn).click();
   }
 }
