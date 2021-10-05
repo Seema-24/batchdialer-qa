@@ -476,6 +476,7 @@ describe('Agent Profile', function () {
     agent.verifyCallResultWindow();
     agent.selectCallResult('No Answer');
     agent.clickContinueBtn();
+    cy.wait(1000);
     agent.clickDashboardMenu();
     cy.reload();
     ignoreSpeedTestPopup();

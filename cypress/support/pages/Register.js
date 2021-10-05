@@ -35,6 +35,7 @@ const clientsMenu = 'a[title="Clients"]';
 const searchBox = 'input[placeholder*="Search"]';
 const deleteUserButton = 'img[src*="delete"]';
 const accountReactivationPage = '.main_signuparia.reactivation';
+const hiddenFields = (fieldName) => `input[name="${fieldName}"]`;
 
 export default class Register {
   clickSignUpBtn() {
@@ -223,5 +224,25 @@ export default class Register {
 
   verifyAccountReactivationPage() {
     cy.get(accountReactivationPage).should('be.visible');
+  }
+
+  verifyAffiliatePartnerField() {
+    cy.get(hiddenFields('cf_affiliate_partner')).should('exist');
+  }
+
+  verifySignupPathField() {
+    cy.get(hiddenFields('cf_signup_path')).should('exist');
+  }
+
+  verifyUtmCampaignField() {
+    cy.get(hiddenFields('cf_utm_campaign')).should('exist');
+  }
+
+  verifyUtmSourceField() {
+    cy.get(hiddenFields('cf_utm_source')).should('exist');
+  }
+
+  verifyUtmMediumField() {
+    cy.get(hiddenFields('cf_utm_medium')).should('exist');
   }
 }

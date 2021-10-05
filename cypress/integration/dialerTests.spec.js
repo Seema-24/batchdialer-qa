@@ -884,7 +884,8 @@ describe('Outbound Calling Scenarios', () => {
       Dial.clickOnButton('APPLY');
       Dial.enterSimultaneousDialsPerAgent('1');
       Dial.enterMaxAttemptPerRecord('3');
-      Dial.enterRetryTime('1');
+      Dial.enterRetryTime('10');
+      Dial.selectRetryTimeDropdown('sec');
       Dial.clickCallResultsDropdown();
       Dial.selectCallResults([
         'Abandoned',
@@ -943,17 +944,17 @@ describe('Outbound Calling Scenarios', () => {
       Dial.clickConfirmButton();
       Dial.verifySoftPhoneOpen();
       Dial.verifySoftphoneLinesNumber(1);
-      cy.wait(10000);
     });
 
     it('Verify that Agent status should be On Call', () => {
       for (let i = 0; i < 3; i++) {
-        Dial.verifyAgentStatus('On Call');
-        Dial.verifySoftphoneTitle(['Twilio Test']);
-        Dial.endCallAtTime('0:30');
-        Dial.verifyCallDispositionWindow();
-        Dial.selectCallDisposition('No Answer');
-        Dial.clickOnButton('Done');
+        Dial.clickOnMenu('Dashboard');
+        Dial.verifySimultaneousDial(
+          ['Twilio Test'],
+          'On Call',
+          '0:30',
+          'No Answer'
+        );
       }
     });
 
@@ -1117,6 +1118,11 @@ describe('Outbound Calling Scenarios', () => {
       cy.readFile('cypress/fixtures/testData.json').then((data) => {
         testData = data;
         callNumber = callNumber + covertNumberToNormal(testData.Number);
+        testData.flag = false;
+        cy.writeFile(
+          'cypress/fixtures/testData.json',
+          JSON.stringify(testData)
+        );
       });
       Cypress.Cookies.defaults({
         preserve: (cookies) => {
@@ -1155,8 +1161,9 @@ describe('Outbound Calling Scenarios', () => {
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
       Dial.enterSimultaneousDialsPerAgent('1');
-      Dial.enterMaxAttemptPerRecord('1');
-      Dial.enterRetryTime('1');
+      Dial.enterMaxAttemptPerRecord('3');
+      Dial.enterRetryTime('10');
+      Dial.selectRetryTimeDropdown('sec');
       Dial.enterRingTimeDuration('15');
       Dial.enterAbandonmentDuration('15');
       Dial.clickCallResultsDropdown();
@@ -1206,7 +1213,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.verifySuccessToastMessage('Contacts added to campaign');
       cy.reload();
       ignoreSpeedTestPopup();
-      cy.wait(10000);
+      cy.wait(2000);
     });
 
     it('Change status to Available', () => {
@@ -1220,13 +1227,16 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Verify the Abandoned Time Out of 15 sec and call should be marked as Abandoned', () => {
-      // Dial.verifySoftphoneLineContactName('Twilio Number');
-      Dial.verifySoftphone();
-      Dial.verifyContactViewPage();
-      cy.wait(30000);
+      for (let i = 0; i < 3; i++) {
+        cy.readFile('cypress/fixtures/testData.json').then((data) => {
+          if (data.flag === true) {
+            cy.log('Call Already Abandoned');
+          } else {
+            Dial.verifyAbandonedCall();
+          }
+        });
+      }
       Dial.verifyAgentStatus('Auto Pause');
-      // Dial.verifySoftphoneLineStatus('OFF');
-      // contact.clickToCloseSoftphone();
       Dial.clickOnMenu('Reports');
       Dial.clickOnSubMenu('Recent Contacts');
       Dial.verifyRecentContactDisposition('Abandoned');
@@ -1392,7 +1402,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('End the Call and select the Disposition', () => {
-      Dial.endCallAtTime('0:40');
+      Dial.endCallAtTime('0:30');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
       Dial.clickOnButton('Done');
@@ -1440,7 +1450,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('End the Call and select the Disposition', () => {
-      Dial.endCallAtTime('0:40');
+      Dial.endCallAtTime('0:25');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
       Dial.clickOnButton('Done');
@@ -1610,7 +1620,6 @@ describe('Outbound Calling Scenarios', () => {
           }
         });
       }
-      cy.log(flag);
     });
 
     it('Verifying that the campaign status should be Connects Limit Reached', () => {

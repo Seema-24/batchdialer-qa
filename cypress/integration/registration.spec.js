@@ -72,6 +72,15 @@ describe('Registration', () => {
     register.verifyDuplicateEmail();
   });
 
+  it('Verify the Hidden Registration fields', () => {
+    register.clickSignUpBtn();
+    register.verifyAffiliatePartnerField();
+    register.verifySignupPathField();
+    register.verifyUtmCampaignField();
+    register.verifyUtmSourceField();
+    register.verifyUtmMediumField();
+  });
+
   it('Register User', () => {
     cy.url().then((url) => {
       if (url.includes('app.batchdialer.com')) {

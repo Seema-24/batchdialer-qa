@@ -104,7 +104,7 @@ const phone = '.phone-number';
 const contactList = (listName) =>
   "//tr[td[text()='" + listName + "']]//a[img[contains(@src,'csv')]]";
 const followUpCall = '.contact-view__calendar-btn';
-const errorMessage = '.custom-input__tooltip';
+const errorMessage = '.custom-input__error-contacts';
 const contact = (firstName, lastName) =>
   '//span[@class="contacts__name"][contains(.,"' +
   firstName +

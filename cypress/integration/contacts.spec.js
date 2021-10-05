@@ -374,19 +374,6 @@ describe('Add Contact flow', () => {
     addCont.verifyAddedNote();
   });
 
-  it('Verify the Elements of Recording Player', () => {
-    addCont.clickingOnContactOption();
-    addCont.enterSearch(testData.Contact);
-    addCont.clickContactName(testData.Contact);
-    addCont.clickContactsCamapign();
-    addCont.clickRecordingIcon();
-    addCont.verifyPlayerCampaignName(testData.campaign);
-    addCont.verifyPlayerControlBtns();
-    addCont.verifyPlayerVolumeBar();
-    addCont.verifyPlayerProgressBar();
-    addCont.verifyPlayerDownloadBtn();
-  });
-
   it('Verify that the authorized user is able to play/pause the recorded call', () => {
     addCont.clickingOnContactOption();
     addCont.enterSearch(testData.Contact);
@@ -410,6 +397,14 @@ describe('Add Contact flow', () => {
     addCont.clickPlayerRewindBtn();
   });
 
+  it('Verify the Elements of Recording Player', () => {
+    addCont.verifyPlayerCampaignName(testData.campaign);
+    addCont.verifyPlayerControlBtns();
+    addCont.verifyPlayerVolumeBar();
+    addCont.verifyPlayerProgressBar();
+    addCont.verifyPlayerDownloadBtn();
+  });
+
   it.skip('Verify that the authorized user is able to download the call recording', () => {
     addCont.downloadRecording();
   });
@@ -419,7 +414,7 @@ describe('Add Contact flow', () => {
     addCont.ClickToOpenSoftphone();
     addCont.dialPhoneNumber('7209834562');
     addCont.clickDialerCallButton();
-    cy.wait(3000);
+    cy.wait(2000);
     addCont.clickDialerCallButton();
     addCont.selectCallResult('No Answer');
     addCont.clickContinueBtn();

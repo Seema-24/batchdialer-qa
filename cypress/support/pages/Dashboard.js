@@ -887,7 +887,7 @@ export default class Dashboard {
   }
 
   clickClosePauseSubscriptionBox() {
-    cy.get(pauseSubscriptionBoxCloseBtn).click();
+    cy.get(pauseSubscriptionBoxCloseBtn).click({ force: true });
   }
 
   verifyAccountPauseMessage() {
@@ -950,23 +950,6 @@ export default class Dashboard {
       .should('not.be.undefined')
       .then(cy.wrap);
     iframe.find('input[name="lead[email]"]').type(email);
-    // const $iframe = cy
-    //   .get(iframe)
-    //   .its('0.contentDocument.body')
-    //   .should('be.visible')
-    //   .then(cy.wrap);
-    // // $iframe.get(leadEmail).should('be.visible');
-    // cy.log($iframe[1]);
-    // for (let i = 0; i < $iframe.length; i++) {
-    //   cy.log($iframe[i]);
-    // }
-
-    // $iframe.find('input', { timeout: 10000 }).should('be.visible').type(email);
-    // cy.get(iframe).then(($iframe) => {
-    //   const $body = $iframe.contents().find('body');
-    //   let Email = cy.wrap($body);
-    //   Email.find(leadEmail).type(email);
-    // });
   }
 
   clickLeadSubmitBtn() {

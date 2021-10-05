@@ -37,7 +37,7 @@ describe('Add Phone Number flow', () => {
 
   it('Should Login', () => {
     cy.Login(Cypress.env('username'), Cypress.env('password'));
-    ignoreSpeedTestPopup()
+    ignoreSpeedTestPopup();
   });
 
   it('Should Buy Phone number successfully ', () => {

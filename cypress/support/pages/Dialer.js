@@ -91,6 +91,7 @@ const retryTimeDropdown = `//div[label[text()="Retry Time"]]/parent::div//div[co
 const softphoneIcon = '.softphone-icon';
 const dialedNumberOptions = 'tbody tr:nth-of-type(1) td:nth-of-type(11) span';
 const tableRefreshBtn = 'span[title="Refresh"]';
+const phoneRingning = '.Phone.is-animating';
 
 export default class Dialer {
   selectStatus(statusName) {
@@ -242,6 +243,44 @@ export default class Dialer {
 
   verifyContactViewPage() {
     cy.get(contactProfile, { timeout: 60000 }).should('be.visible');
+  }
+
+  verifyAbandonedCall() {
+    // this.verifyPhoneRingingIcon();
+    cy.wait(30000);
+    cy.get('body').then(($body) => {
+      if ($body.find(contactProfile).length) {
+        this.verifySoftphone();
+        cy.readFile('cypress/fixtures/testData.json').then((data) => {
+          data.flag = true;
+          cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
+        });
+      } else {
+        cy.reload();
+        ignoreSpeedTestPopup();
+        this.clickToOpenSoftphone();
+      }
+    });
+  }
+
+  verifySimultaneousDial(names, status, time, disposition) {
+    this.verifySoftphoneLineContactName(names);
+    cy.wait(15000);
+    cy.get('body').then(($body) => {
+      if ($body.find(contactProfile).length) {
+        this.verifyAgentStatus(status);
+        this.verifySoftphoneTitle(names);
+        this.endCallAtTime(time);
+        this.verifyCallDispositionWindow();
+        this.selectCallDisposition(disposition);
+        this.clickOnButton('Done');
+        cy.wait(2000);
+      } else {
+        cy.reload();
+        ignoreSpeedTestPopup();
+        this.clickToOpenSoftphone();
+      }
+    });
   }
 
   verifySoftphone() {
@@ -517,7 +556,7 @@ export default class Dialer {
     for (let i = 0; i < names.length; i++) {
       contactName = contactName + names[i] + ' ';
     }
-    cy.get(softphoneLineContactName, { timeout: 30000 }).then((lineText) => {
+    cy.get(softphoneLineContactName, { timeout: 40000 }).then((lineText) => {
       for (let i = 0; i < lineText.length; i++) {
         expect(contactName).to.contains(lineText[i].textContent.trim());
       }
@@ -553,8 +592,9 @@ export default class Dialer {
   verifyCallRecordingIcon(status) {
     cy.reload();
     ignoreSpeedTestPopup();
-    cy.wait(5000);
+    cy.wait(8000);
     this.clickTableRefreshButton();
+    cy.wait(1000);
     cy.get('body').then(($body) => {
       if (status === true) {
         expect($body.find(dialedNumberOptions).length).to.equal(2);
@@ -633,5 +673,9 @@ export default class Dialer {
 
   clickTableRefreshButton() {
     cy.get(tableRefreshBtn).click();
+  }
+
+  verifyPhoneRingingIcon() {
+    cy.get(phoneRingning, { timeout: 30000 }).should('be.visible');
   }
 }
