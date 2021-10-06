@@ -1,8 +1,10 @@
+import Dashboard from '../support/pages/Dashboard';
 import Login from '../support/pages/Login';
 import Register from '../support/pages/Register';
 import { ignoreSpeedTestPopup } from '../support/Utils';
 
 const register = new Register();
+const dashboard = new Dashboard();
 const login = new Login();
 let fixtureData;
 let testData;
@@ -117,6 +119,42 @@ describe('Registration', () => {
     });
   });
 
+  it('Verify that card with same details can not be added again', () => {
+    cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
+    cy.reload();
+    ignoreSpeedTestPopup();
+    dashboard.clickUserProfile();
+    dashboard.clickBilling();
+    dashboard.clickAddNewCard();
+    dashboard.enterCardName(Cypress.env('CardName'));
+    dashboard.enterCardNumber(Cypress.env('CardNumber'));
+    dashboard.enterExpiryDate(Cypress.env('ExpiryDate'));
+    dashboard.enterCVC(Cypress.env('CVC'));
+    dashboard.chooseCountry('United States');
+    dashboard.enterBillingZip('43256');
+    dashboard.clickContinue();
+    register.verifyToastMessage('The card is already added');
+  });
+
+  it('Verify the user is able to change the password in Profile', () => {
+    cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
+    cy.reload();
+    ignoreSpeedTestPopup();
+    dashboard.clickUserProfile();
+    dashboard.clickProfile();
+    register.verifyFirstNameField();
+    register.clickOnChangePasswordBtn();
+    register.enterPassword('Test@123');
+    register.clickOnButton('Save');
+    register.verifyToastMessage('Profile Saved');
+  });
+
+  it('Verify that user is able to Login with the changed Password', () => {
+    cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
+    cy.reload();
+    ignoreSpeedTestPopup();
+  });
+
   it('Cancel the Account from the Super Admin Panel', () => {
     cy.url().then((url) => {
       if (url.includes('app.batchdialer.com')) {
@@ -160,7 +198,7 @@ describe('Registration', () => {
         );
         register.clickAgreeCheckbox();
         register.clickSubscribeBtn();
-        cy.waitFor(cy.get('.main_sec', { timeout: 30000 }));
+        cy.waitFor(cy.get('.main_sec', { timeout: 60000 }));
         ignoreSpeedTestPopup();
         login.verifySuccessfullLogin();
       }

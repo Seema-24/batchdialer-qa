@@ -5,7 +5,7 @@ const companyName = 'input[name="companyname"].form-control';
 const industry = 'select[name="industry"].form-control';
 const phoneNumber = 'input[name="phonenumber"].form-control';
 const email = 'input[name="email"].form-control';
-const password = 'input[name="password"].form-control';
+const password = 'input[name="password"]';
 const confirmPassword = 'input[name="password2"].form-control';
 const continueToPlan = 'button[type="submit"]';
 const dialerPlan = (x) =>
@@ -36,6 +36,7 @@ const searchBox = 'input[placeholder*="Search"]';
 const deleteUserButton = 'img[src*="delete"]';
 const accountReactivationPage = '.main_signuparia.reactivation';
 const hiddenFields = (fieldName) => `input[name="${fieldName}"]`;
+const toast = '.Toastify__toast-body';
 
 export default class Register {
   clickSignUpBtn() {
@@ -244,5 +245,28 @@ export default class Register {
 
   verifyUtmMediumField() {
     cy.get(hiddenFields('cf_utm_medium')).should('exist');
+  }
+
+  verifyToastMessage(message) {
+    cy.get(toast, { timeout: 20000 }).should('contain.text', message);
+  }
+
+  clickOnButton(buttonName) {
+    cy.get('button').then((Btn) => {
+      for (let i = 0; i < Btn.length; i++) {
+        if (Btn[i].textContent.trim() === buttonName) {
+          cy.get(Btn[i]).click();
+          break;
+        }
+      }
+    });
+  }
+
+  clickOnChangePasswordBtn() {
+    this.clickOnButton('Change');
+  }
+
+  verifyFirstNameField() {
+    cy.get(firstName).should('be.visible');
   }
 }
