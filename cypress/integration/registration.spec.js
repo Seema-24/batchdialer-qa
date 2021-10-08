@@ -149,10 +149,54 @@ describe('Registration', () => {
     register.verifyToastMessage('Profile Saved');
   });
 
-  it('Verify that user is able to Login with the changed Password', () => {
+  it('Verify that user is able to edit the profile', () => {
     cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
     cy.reload();
     ignoreSpeedTestPopup();
+    dashboard.clickUserProfile();
+    dashboard.clickProfile();
+    register.verifyFirstNameField();
+    register.enterFirstName('User');
+    register.enterLastName('Edited');
+    register.enterProfilePhoneNumber('8888888888');
+    register.clickOnButton('Save');
+    register.verifyToastMessage('Profile Saved');
+  });
+
+  it('Verify that the user is able login again after the edit profile info', () => {
+    cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
+    cy.reload();
+    ignoreSpeedTestPopup();
+  });
+
+  it('Verify that the user is able to add profile picture', () => {
+    const file = 'BatchLogo.png';
+    cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
+    cy.reload();
+    ignoreSpeedTestPopup();
+    dashboard.clickUserProfile();
+    dashboard.clickProfile();
+    register.verifyFirstNameField();
+    register.verifyBeforeProfileAvatar();
+    register.uploadFile(file);
+    register.clickOnButton('CROP');
+    register.clickOnButton('Save');
+    cy.reload();
+    ignoreSpeedTestPopup();
+    register.verifyAddedProfileAvatar();
+    register.verifyProfilePictureChange(file);
+  });
+
+  it('Verify that the user is able to change the existing profile picture', () => {
+    const file = 'logo.jpg';
+    cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
+    cy.reload();
+    ignoreSpeedTestPopup();
+    dashboard.clickUserProfile();
+    dashboard.clickProfile();
+    register.verifyFirstNameField();
+    register.verifyAddedProfileAvatar();
+    register.verifyProfilePictureChange(file);
   });
 
   it('Cancel the Account from the Super Admin Panel', () => {

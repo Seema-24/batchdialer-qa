@@ -1387,6 +1387,8 @@ export default class Dashboard {
   }
 
   clickEventThreeDotMenuBtn(name) {
+    cy.reload();
+    ignoreSpeedTestPopup();
     cy.xpath(eventThreeDotMenuBtn(name)).first().click();
   }
 

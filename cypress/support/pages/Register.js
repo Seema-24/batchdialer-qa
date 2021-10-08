@@ -1,9 +1,12 @@
+import { ignoreSpeedTestPopup } from '../Utils';
+
 const signUpBtn = 'a[href*="register"]';
 const firstName = 'input[name="firstname"].form-control';
 const lastName = 'input[name="lastname"].form-control';
 const companyName = 'input[name="companyname"].form-control';
 const industry = 'select[name="industry"].form-control';
 const phoneNumber = 'input[name="phonenumber"].form-control';
+const profilePhoneField = 'input[name="phone"].form-control';
 const email = 'input[name="email"].form-control';
 const password = 'input[name="password"]';
 const confirmPassword = 'input[name="password2"].form-control';
@@ -37,6 +40,9 @@ const deleteUserButton = 'img[src*="delete"]';
 const accountReactivationPage = '.main_signuparia.reactivation';
 const hiddenFields = (fieldName) => `input[name="${fieldName}"]`;
 const toast = '.Toastify__toast-body';
+const fileInput = 'input[type="file"]';
+const profileAvatar = '.profile-content div.avatar';
+const profilePictureAdded = '.profile-content img.avatar';
 
 export default class Register {
   clickSignUpBtn() {
@@ -44,11 +50,11 @@ export default class Register {
   }
 
   enterFirstName(name) {
-    cy.get(firstName).type(name);
+    cy.get(firstName).clear().type(name);
   }
 
   enterLastName(name) {
-    cy.get(lastName).type(name);
+    cy.get(lastName).clear().type(name);
   }
 
   enterCompanyName(name) {
@@ -56,7 +62,11 @@ export default class Register {
   }
 
   enterPhoneNumber(phone) {
-    cy.get(phoneNumber).type(phone);
+    cy.get(phoneNumber).clear().type(phone);
+  }
+
+  enterProfilePhoneNumber(phone) {
+    cy.get(profilePhoneField).clear().type(phone);
   }
 
   enterEmail(mail) {
@@ -268,5 +278,33 @@ export default class Register {
 
   verifyFirstNameField() {
     cy.get(firstName).should('be.visible');
+  }
+
+  uploadFile(fileName) {
+    cy.get(fileInput).attachFile(fileName);
+    cy.wait(2000);
+  }
+
+  verifyAddedProfileAvatar() {
+    cy.get(profilePictureAdded).should('have.attr', 'src');
+  }
+
+  verifyBeforeProfileAvatar() {
+    cy.get(profileAvatar).should('not.have.attr', 'src');
+  }
+
+  verifyProfilePictureChange(fileName) {
+    cy.get(profilePictureAdded).then((pic) => {
+      const firstPictureSrc = pic.attr('src');
+      this.uploadFile(fileName);
+      this.clickOnButton('CROP');
+      this.clickOnButton('Save');
+      cy.reload();
+      ignoreSpeedTestPopup();
+      cy.get(profilePictureAdded).then((pic) => {
+        const secondPictureSrc = pic.attr('src');
+        expect(firstPictureSrc).to.not.equal(secondPictureSrc);
+      });
+    });
   }
 }
