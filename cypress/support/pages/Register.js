@@ -198,6 +198,10 @@ export default class Register {
     cy.get(couponField).type(coupon);
   }
 
+  verifyCouponUppercase(coupon) {
+    cy.get(couponField).should('have.value', coupon);
+  }
+
   clickApplyCouponBtn() {
     cy.get(applyCouponBtn).click();
   }

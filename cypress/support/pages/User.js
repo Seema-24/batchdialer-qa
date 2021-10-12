@@ -46,6 +46,8 @@ const addSupervisor = 'a[data-key="supervisor"]';
 const agentCount = '.usage-stats-counter strong';
 const newUserWindow = '.modal-content';
 const addAdmin = 'a[data-key="admin"]';
+const changePresenceIcon = 'span[title="Change Presence"] svg';
+const userLogoutIcon = 'span[title="Log Out"] svg';
 
 export default class User {
   clickingOnUserOption() {
@@ -366,5 +368,21 @@ export default class User {
         });
       }
     });
+  }
+
+  clickChangePresenceIcon() {
+    cy.get(changePresenceIcon).click();
+  }
+
+  verifyChangePresenceIconVisible() {
+    cy.get(changePresenceIcon).should('be.visible');
+  }
+
+  clickUserLogoutIcon() {
+    cy.get(changePresenceIcon).click();
+  }
+
+  verifyUserLogoutIconVisible() {
+    cy.get(changePresenceIcon).should('be.visible');
   }
 }

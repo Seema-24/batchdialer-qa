@@ -83,6 +83,23 @@ describe('Registration', () => {
     register.verifyUtmMediumField();
   });
 
+  it('Verify that coupon code entered in subscription is automatically converted to UPPERCASE', () => {
+    register.clickSignUpBtn();
+    register.enterFirstName('Demo');
+    register.enterLastName('testing');
+    register.enterCompanyName('Fleek+' + randomNumber + '');
+    register.selectIndustry('Other');
+    register.enterPhoneNumber('9999999999');
+    register.enterEmail('testing+' + randomNumber + '@test.com');
+    register.enterPassword('Fleek@2016');
+    register.enterConfirmPassword('Fleek@2016');
+    register.clickContinueToPlanBtn();
+    register.choosePlan('Single Line Dialer'); //Multi-Line Dialer
+    register.verifyPlanPrice();
+    register.enterCoupon('qatest');
+    register.verifyCouponUppercase('QATEST');
+  });
+
   it('Register User', () => {
     cy.url().then((url) => {
       if (url.includes('app.batchdialer.com')) {

@@ -25,6 +25,7 @@ describe('Setup Account for Testing', () => {
 
   it('login successfully', () => {
     cy.Login(Cypress.env('username'), Cypress.env('password'));
+    cy.reload();
   });
 
   it('Setup Account', () => {

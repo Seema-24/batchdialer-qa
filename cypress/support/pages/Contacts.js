@@ -134,7 +134,7 @@ const fieldsSaveBtn = (fieldName) =>
 const contactsCampaign = '//button[text()="Campaigns"]';
 const recordingIcon = 'img[src*="listen"]';
 const listMenuIcon = 'img[src*="edit"]';
-const assignToCampaignBtn = '.table-responsive .show a.dropdown-item';
+const dropdownItem = '.table-responsive .show a.dropdown-item';
 const playerCampaignName = '.contacts-player__top-campaign';
 const playerControlBtn = '.contacts-player__controls svg';
 const playerVolumeBar = '.contacts-player__volume-bar';
@@ -151,6 +151,11 @@ const doneBtn = "//button[text()='Done']";
 const openSoftphone = '.stg-softphone-wide';
 const softphoneIcon = '.nav-item img[src*="softphone"]';
 const softphoneNumPad = '.stg-softphone-keyboard-button';
+const modalTitle = '.modal-content .modal-title';
+const modal = '.modal-content';
+const speedDropdown = '.modal-content .ss-select-control';
+const options = '.ss-select-option';
+const currentPlayTime = '.progress-bar__current-time';
 
 export default class Contacts {
   clickingOnContactOption() {
@@ -400,7 +405,7 @@ export default class Contacts {
   }
 
   verifyAssignToCampaignBtn() {
-    cy.get(assignToCampaignBtn).should('contain.text', 'Assign To Campaign');
+    cy.get(dropdownItem).should('contain.text', 'Assign To Campaign');
   }
 
   handleAlertForDelete() {
@@ -853,5 +858,59 @@ export default class Contacts {
 
   clickNotesBullets() {
     cy.get(notesBullets).click();
+  }
+
+  clickOnDropdownItem(itemName) {
+    cy.get(dropdownItem).then((items) => {
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].textContent.trim() === itemName) {
+          cy.get(items[i]).click();
+          break;
+        }
+      }
+    });
+  }
+
+  verifyModalTitle(title) {
+    cy.get(modalTitle).should('have.text', title);
+  }
+
+  verifyModalOpen() {
+    cy.get(modal).should('be.visible');
+  }
+
+  verifyModalClose() {
+    cy.get(modal).should('not.exist');
+  }
+
+  clickOnButton(btnName) {
+    cy.get('button').then((Btn) => {
+      for (let i = 0; i < Btn.length; i++) {
+        if (Btn[i].textContent.trim() === btnName) {
+          cy.get(Btn[i]).click();
+          break;
+        }
+      }
+    });
+  }
+
+  selectPlaySpeed(speed) {
+    cy.get(speedDropdown).click();
+    this.selectOption(speed);
+  }
+
+  selectOption(option) {
+    cy.get(options).then((Opt) => {
+      for (let i = 0; i < Opt.length; i++) {
+        if (Opt[i].textContent.trim() === option) {
+          cy.get(Opt[i]).click();
+          break;
+        }
+      }
+    });
+  }
+
+  verifyCurrentPlayTime(time) {
+    cy.get(currentPlayTime).should('have.text', time);
   }
 }

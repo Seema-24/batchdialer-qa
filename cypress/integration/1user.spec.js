@@ -78,6 +78,11 @@ describe('Login Successfully and Add User', () => {
     );
   });
 
+  it('Verify that Logout and Change presence icons are visible in USERS page', () => {
+    addUser.verifyChangePresenceIconVisible();
+    addUser.verifyUserLogoutIconVisible();
+  });
+
   it('Should delete the added user', () => {
     addUser.clickingOnUserOption();
     addUser.searchUser(

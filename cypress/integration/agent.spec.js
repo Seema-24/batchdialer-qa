@@ -1,11 +1,13 @@
 import Agent from '../support/pages/Agent';
 import Campaign from '../support/pages/Campaigns';
+import Dialer from '../support/pages/Dialer';
 import { ignoreSpeedTestPopup } from '../support/Utils';
 
 let testData;
 let randNum = Math.floor(Math.random() * 100000);
 const agent = new Agent();
 const addCamp = new Campaign();
+const dialer = new Dialer();
 let fixtureData;
 describe('Agent Profile', function () {
   before(() => {
@@ -29,6 +31,7 @@ describe('Agent Profile', function () {
 
   it('Agent Should Login Successfully', () => {
     cy.Login(testData.AgentEmail, testData.password);
+    cy.reload();
     ignoreSpeedTestPopup();
   });
 
@@ -506,7 +509,24 @@ describe('Agent Profile', function () {
     agent.clickCancelBtn();
     agent.clickEndCallBtn();
     agent.selectCallResult('No Answer');
+    agent.enterNote('testing note');
+    agent.selectMood('neutral'); // good and bad
     agent.clickContinueBtn();
     agent.ChooseCallResult('No Answer');
+  });
+
+  it('Verify that note added in the Call Results window is reflected in the CONTACTS-->Notes Section', () => {
+    agent.ChooseCallResult('No Answer');
+    agent.clickingOnContactOption();
+    agent.enterSearch('random Contact');
+    cy.wait(1000);
+    agent.clickContactName();
+    agent.clickNotesBtn();
+    agent.verifyNotesContent('testing note');
+  });
+
+  it('Verify that Call mood added is reflected in Reports-->Recent Contacts', () => {
+    dialer.clickOnMenu('Recent Contacts');
+    agent.verifySelectedMood('neutral');
   });
 });

@@ -405,6 +405,20 @@ describe('Add Contact flow', () => {
     addCont.verifyPlayerDownloadBtn();
   });
 
+  it('Verify that the authorized user is able to play back the call recordings at lower and faster speeds', () => {
+    addCont.selectPlaySpeed('0.5x');
+    addCont.clickPlayerPlayBtn();
+    cy.wait(2000);
+    addCont.clickPlayerPauseBtn();
+    addCont.verifyCurrentPlayTime('0:01');
+    addCont.clickPlayerRewindBtn();
+    addCont.selectPlaySpeed('2x');
+    addCont.clickPlayerPlayBtn();
+    cy.wait(2000);
+    addCont.clickPlayerPauseBtn();
+    addCont.verifyCurrentPlayTime('0:05');
+  });
+
   it.skip('Verify that the authorized user is able to download the call recording', () => {
     addCont.downloadRecording();
   });
@@ -425,5 +439,13 @@ describe('Add Contact flow', () => {
     addCont.clickLists();
     addCont.clickListMenuIcon();
     addCont.verifyAssignToCampaignBtn();
+    addCont.clickOnDropdownItem('Assign To Campaign');
+    addCont.verifyModalOpen();
+    addCont.verifyModalTitle('Assign To Campaign');
+  });
+
+  it('Verify the Cancel button when Assign to Campaign Window', () => {
+    addCont.clickOnButton('Cancel');
+    addCont.verifyModalClose();
   });
 });

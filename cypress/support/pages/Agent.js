@@ -144,6 +144,11 @@ const addNewNotePage = '.modal-content';
 const addNoteCloseBtn = "//button[contains(text(),' Close')]";
 const activitiesPage = '.userSedit';
 const filterButton = 'button.modal-filter-btn';
+const notesField = '.dispo__modal-note textarea';
+const notesContent = '.comment-item .comment-item-body span';
+const moods = (value) => `.mood__modal span:nth-of-type(${value})`;
+const selectedMood = '.mood';
+const visibleMood = (mood) => `img[src*="mood-${mood}"]`;
 
 export default class Agent {
   clickCampaignMenu() {
@@ -708,5 +713,42 @@ export default class Agent {
 
   clickFilterButton() {
     cy.get(filterButton).click();
+  }
+
+  enterNote(note) {
+    cy.get(notesField).type(note);
+  }
+
+  clickOnButton(btnName) {
+    cy.get('button').then((Btn) => {
+      for (let i = 0; i < Btn.length; i++) {
+        if (Btn[i].textContent.trim() === btnName) {
+          cy.get(Btn[i]).click();
+          break;
+        }
+      }
+    });
+  }
+
+  verifyNotesContent(note) {
+    cy.get(notesContent).first().should('have.text', note);
+  }
+
+  selectMood(mood) {
+    if (mood === 'good') {
+      cy.get(moods(1)).click();
+    } else if (mood === 'bad') {
+      cy.get(moods(3)).click();
+    } else if (mood === 'neutral') {
+      cy.get(moods(2)).click();
+    }
+  }
+
+  verifySelectedMood(mood) {
+    cy.get(selectedMood)
+      .first()
+      .within(() => {
+        cy.get(visibleMood(mood)).should('be.visible');
+      });
   }
 }
