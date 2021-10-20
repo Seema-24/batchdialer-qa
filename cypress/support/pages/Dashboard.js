@@ -1503,6 +1503,6 @@ export default class Dashboard {
   }
 
   verifyStatusTimerVisible() {
-    cy.get(statusTimer).should('contain.text', '0:00');
+    cy.get(statusTimer).should('contain.text', '0:');
   }
 }

@@ -149,6 +149,7 @@ const notesContent = '.comment-item .comment-item-body span';
 const moods = (value) => `.mood__modal span:nth-of-type(${value})`;
 const selectedMood = '.mood';
 const visibleMood = (mood) => `img[src*="mood-${mood}"]`;
+const dispositionWindow = '.call-disposition-modal .modal-content';
 
 export default class Agent {
   clickCampaignMenu() {
@@ -216,7 +217,7 @@ export default class Agent {
   }
 
   selectCallResult(result) {
-    cy.get(callResults).then(($el) => {
+    cy.get(callResults, { timeout: 40000 }).then(($el) => {
       for (let i = 0; i < $el.length; i++) {
         if ($el[i].textContent === result) {
           $el[i].click();
@@ -277,7 +278,7 @@ export default class Agent {
   }
 
   verifyCallResultWindow() {
-    cy.get(callResultWindow).should('be.visible');
+    cy.get(callResultWindow, { timeout: 10000 }).should('be.visible');
   }
 
   verifyCancelBtn() {
@@ -715,8 +716,8 @@ export default class Agent {
     cy.get(filterButton).click();
   }
 
-  enterNote(note) {
-    cy.get(notesField).type(note);
+  enterDispositionNote(note) {
+    cy.get(notesField).clear().type(note);
   }
 
   clickOnButton(btnName) {
@@ -750,5 +751,13 @@ export default class Agent {
       .within(() => {
         cy.get(visibleMood(mood)).should('be.visible');
       });
+  }
+
+  verifyDispositionNoteText(text) {
+    cy.get(notesField).should('have.text', text);
+  }
+
+  verifyDispositionWindowVisible() {
+    cy.get(dispositionWindow, { timeout: 40000 }).should('be.visible');
   }
 }

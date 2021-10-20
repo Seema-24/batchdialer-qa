@@ -48,6 +48,15 @@ const newUserWindow = '.modal-content';
 const addAdmin = 'a[data-key="admin"]';
 const changePresenceIcon = 'span[title="Change Presence"] svg';
 const userLogoutIcon = 'span[title="Log Out"] svg';
+const modalTitle = '.modal-content .modal-title';
+const modal = '.modal-content';
+const statusDropdown = '.modal-content .ss-select-control';
+const statusOptions = '.ss-select-option span';
+const toast = '.Toastify__toast-body';
+const contactEditAccess = (accessState) =>
+  `//label[text()="${accessState}"]//input[@name="contacteditaccess"]`;
+const userEditBtn = (firstName, lastName) =>
+  `//table//tr[td[text()="${firstName}" and text()="${lastName}"]]//span/*[name()="svg"][@data-icon="pencil-alt"]`;
 
 export default class User {
   clickingOnUserOption() {
@@ -135,9 +144,9 @@ export default class User {
       .click();
   }
 
-  handleAlertForDelete() {
-    cy.on('	window:alert', (str) => {
-      expect(str).to.equal('Delete?');
+  handleWindowAlert(text) {
+    cy.on('window:alert', (str) => {
+      expect(str).to.equal(text);
     });
     cy.on('window:confirm', () => true);
   }
@@ -379,10 +388,56 @@ export default class User {
   }
 
   clickUserLogoutIcon() {
-    cy.get(changePresenceIcon).click();
+    cy.get(userLogoutIcon).click();
   }
 
   verifyUserLogoutIconVisible() {
-    cy.get(changePresenceIcon).should('be.visible');
+    cy.get(userLogoutIcon).should('be.visible');
+  }
+
+  verifyDialogOpen() {
+    cy.get(modal).should('be.visible');
+  }
+
+  verifyModalTitle(title) {
+    cy.get(modalTitle).should('have.text', title);
+  }
+
+  clickStatusDropdown() {
+    cy.get(statusDropdown).click();
+  }
+
+  selectStatusOption(option) {
+    cy.get(statusOptions).then((Opt) => {
+      for (let i = 0; i < Opt.length; i++) {
+        if (Opt[i].textContent.trim() === option) {
+          cy.get(Opt[i]).click();
+          break;
+        }
+      }
+    });
+  }
+
+  verifyToastMessage(message) {
+    cy.get(toast).should('contain.text', message);
+  }
+
+  clickOnButton(btnName) {
+    cy.get('button').then((button) => {
+      for (let i = 0; i < button.length; i++) {
+        if (button[i].textContent.trim() === btnName) {
+          cy.get(button[i]).click();
+          break;
+        }
+      }
+    });
+  }
+
+  agentContactEditAccess(accessState) {
+    cy.xpath(contactEditAccess(accessState)).check({ force: true });
+  }
+
+  clickUserEditButton(userFirstName, userLastName) {
+    cy.xpath(userEditBtn(userFirstName, userLastName)).click();
   }
 }

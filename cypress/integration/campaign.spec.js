@@ -32,6 +32,7 @@ describe('Add Campaign flow', () => {
 
   it('Should Login', () => {
     cy.Login(Cypress.env('username'), Cypress.env('password'));
+    cy.reload();
     ignoreSpeedTestPopup();
   });
 
@@ -109,6 +110,21 @@ describe('Add Campaign flow', () => {
     );
   });
 
+  it('Verify that authorized user is able to view the Change log for each campaign', () => {
+    addCamp.clickEditCampaign(fixtureData.campaignName + randNum.toString());
+    addCamp.clickDropdownItem('Change Log');
+    addCamp.verifyDialogOpen();
+    addCamp.verifyModalTitle(
+      `Change Log ${fixtureData.campaignName + randNum.toString()}`
+    );
+    addCamp.verifyChangeLogItemsText(
+      `${fixtureData.campaignName + randNum.toString()} Created by ${
+        testData.AdminName
+      }`
+    );
+    addCamp.clickModalCloseBtn();
+  });
+
   it('Verify Campaign Status is applied correctly', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickTableRefreshBtn();
@@ -130,12 +146,43 @@ describe('Add Campaign flow', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Edit the Added Campaign', () => {
+  it('Edit the Campaign in Normal Mode', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickEditCampaign(fixtureData.campaignName + randNum.toString());
     addCamp.clickEditBtn();
-    addCamp.enableAdvancedSwitchBar();
     addCamp.enterName('-edited');
+    addCamp.clickSaveCampaign();
+    addCamp.verifyToast('Campaign Saved');
+  });
+
+  it('Verify that edit values of the campaign page in normal mode reflects in the Change log', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickEditCampaign(
+      fixtureData.campaignName + randNum.toString() + '-edited'
+    );
+    addCamp.clickDropdownItem('Change Log');
+    addCamp.verifyDialogOpen();
+    addCamp.verifyModalTitle(
+      `Change Log ${fixtureData.campaignName + randNum.toString()}-edited`
+    );
+    cy.wait(1000);
+    addCamp.verifyChangeLogItemsText(
+      `Campaign Name Been Changed from ${
+        fixtureData.campaignName + randNum.toString()
+      } to ${fixtureData.campaignName + randNum.toString()}-edited by ${
+        testData.AdminName
+      }`
+    );
+    addCamp.clickModalCloseBtn();
+  });
+
+  it('Edit the Added Campaign in Advance Mode', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickEditCampaign(
+      fixtureData.campaignName + randNum.toString() + '-edited'
+    );
+    addCamp.clickEditBtn();
+    addCamp.enableAdvancedSwitchBar();
     addCamp.verifyCallResultValues(5);
     addCamp.deleteCallResults([
       'Answering Machine',
@@ -149,14 +196,33 @@ describe('Add Campaign flow', () => {
       'No Answer',
       'Successful Sale',
     ]);
+    addCamp.clickRingTimeDurationDropdown();
+    addCamp.selectOptions('15 seconds');
     addCamp.clickSaveCampaign();
-    addCamp.verifyAddedCampaign(fixtureData.campaignName + randNum.toString());
+    addCamp.verifyToast('Campaign Saved');
     addCamp.clickEditCampaign(
       fixtureData.campaignName + randNum.toString() + '-edited'
     );
     addCamp.clickEditBtn();
     addCamp.enableAdvancedSwitchBar();
     addCamp.verifyCallResultValues(5);
+  });
+
+  it('Verify that edit values of the campaign page in advanced mode reflects in the Change log', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickEditCampaign(
+      fixtureData.campaignName + randNum.toString() + '-edited'
+    );
+    addCamp.clickDropdownItem('Change Log');
+    addCamp.verifyDialogOpen();
+    addCamp.verifyModalTitle(
+      `Change Log ${fixtureData.campaignName + randNum.toString()}-edited`
+    );
+    cy.wait(1000);
+    addCamp.verifyChangeLogItemsText(
+      `Ring Time Duration Been Changed from 30 seconds to 15 seconds by ${testData.AdminName}`
+    );
+    addCamp.clickModalCloseBtn();
   });
 
   it('Archive Created Campaign', function () {

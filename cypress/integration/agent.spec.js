@@ -1,5 +1,6 @@
 import Agent from '../support/pages/Agent';
 import Campaign from '../support/pages/Campaigns';
+import Contacts from '../support/pages/Contacts';
 import Dialer from '../support/pages/Dialer';
 import { ignoreSpeedTestPopup } from '../support/Utils';
 
@@ -8,6 +9,7 @@ let randNum = Math.floor(Math.random() * 100000);
 const agent = new Agent();
 const addCamp = new Campaign();
 const dialer = new Dialer();
+const contact = new Contacts();
 let fixtureData;
 describe('Agent Profile', function () {
   before(() => {
@@ -507,9 +509,16 @@ describe('Agent Profile', function () {
     agent.verifyContinueBtn();
     agent.verifyCancelBtn();
     agent.clickCancelBtn();
-    agent.clickEndCallBtn();
+  });
+
+  it('Verify that notes entered in the NOTES Tab is syncing with the Notes section in the Call Result window', () => {
+    contact.clickNotes();
+    contact.clickAddNewNotes();
+    contact.enterNotes('Testing');
+    agent.verifyDispositionWindowVisible();
+    agent.verifyDispositionNoteText('Testing');
     agent.selectCallResult('No Answer');
-    agent.enterNote('testing note');
+    agent.enterDispositionNote('testing note');
     agent.selectMood('neutral'); // good and bad
     agent.clickContinueBtn();
     agent.ChooseCallResult('No Answer');

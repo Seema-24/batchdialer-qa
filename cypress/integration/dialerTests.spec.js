@@ -340,7 +340,7 @@ describe('Inbound Call Scenarios', () => {
           callWithHangup(callNumber, +15202010331);
           Dial.clickOnMenu('Reports');
           Dial.verifyInqueueCall('5202010331');
-          cy.wait(8000);
+          cy.wait(10000);
         } else {
           cy.log('Inbound calls are not working in QA');
         }
@@ -356,6 +356,8 @@ describe('Inbound Call Scenarios', () => {
           Dial.selectCampaign(campaignName);
           Dial.clickConfirmButton();
           Dial.verifySoftPhoneOpen();
+          cy.reload();
+          ignoreSpeedTestPopup();
           cy.wait(5000);
           call(callNumber, +15202010331);
           Dial.verifySoftphone();
@@ -532,7 +534,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('End the Call and select the Disposition', () => {
-      Dial.endCallAtTime('0:50');
+      Dial.endCallAtTime('0:30');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
       Dial.clickOnButton('Done');
@@ -663,16 +665,13 @@ describe('Outbound Calling Scenarios', () => {
       Dial.verifySoftphoneLinesNumber(3);
     });
 
-    it('Verify that Agent status should be On Call', () => {
+    it('Verify that Agent status should be On Call and End the Call and select the Disposition', () => {
       Dial.verifyAgentStatus('On Call');
       Dial.verifySoftphoneTitle([
         'Test Number1',
         'Test Number2',
         'Test Number3',
       ]);
-    });
-
-    it('End the Call and select the Disposition', () => {
       Dial.endCallAtTime('0:30');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
@@ -807,16 +806,13 @@ describe('Outbound Calling Scenarios', () => {
       cy.wait(10000);
     });
 
-    it('Verify that Agent status should be On Call', () => {
+    it('Verify that Agent status should be On Call and End the Call and select the Disposition', () => {
       Dial.verifyAgentStatus('On Call');
       Dial.verifySoftphoneTitle([
         'Test Number1',
         'Test Number2',
         'Test Number3',
       ]);
-    });
-
-    it('End the Call and select the Disposition', () => {
       Dial.endCallAtTime('0:30');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
@@ -1495,7 +1491,7 @@ describe('Outbound Calling Scenarios', () => {
         callNumber = callNumber + covertNumberToNormal(testData.Number);
       });
       cy.readFile('cypress/fixtures/testData.json').then((data) => {
-        data.flag = 'false';
+        data.flag = false;
         cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
       });
       Cypress.Cookies.defaults({
@@ -1512,6 +1508,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Login To Application', () => {
       cy.Login(Cypress.env('username'), Cypress.env('password'));
+      cy.reload();
       ignoreSpeedTestPopup();
     });
 
@@ -1605,21 +1602,12 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Attempting to Call the imported numbers and marking it as Successful sale', () => {
-      let flag;
-      for (let i = 0; i < 5; i++) {
-        cy.readFile('cypress/fixtures/testData.json').then((data) => {
-          flag = data.flag;
-          if (data.flag === 'true') {
-            cy.log('Completed');
-          } else {
-            Dial.verifyCallConnectForCampaign(
-              ['Test Number1', 'Test Number2', 'Test Number3'],
-              '0:30',
-              'Successful Sale'
-            );
-          }
-        });
-      }
+      Dial.verifyCallConnectForCampaign(
+        ['Test Number1', 'Test Number2', 'Test Number3'],
+        '0:30',
+        'Successful Sale',
+        5
+      );
     });
 
     it('Verifying that the campaign status should be Connects Limit Reached', () => {

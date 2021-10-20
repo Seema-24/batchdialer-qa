@@ -188,8 +188,12 @@ export default class Dialer {
     cy.get(options).then((results) => {
       for (let i = 0; i < callResults.length; i++) {
         for (let j = 0; j < results.length; j++) {
-          if (results[j].textContent.trim() === callResults[i]) {
+          if (
+            results[j].textContent.trim().toLowerCase() ===
+            callResults[i].toLowerCase()
+          ) {
             results[j].click();
+            break;
           }
         }
       }
@@ -645,26 +649,37 @@ export default class Dialer {
     this.selectOption(unit);
   }
 
-  verifyCallConnectForCampaign(names, time, disposition) {
-    this.verifySoftphoneLineContactName(names);
-    cy.wait(20000);
-    cy.get('body').then((body) => {
-      if (body.find(contactProfile).length) {
-        this.endCallAtTime(time);
-        this.verifyCallDispositionWindow();
-        this.selectCallDisposition(disposition);
-        this.clickOnButton('Done');
-        cy.readFile('cypress/fixtures/testData.json').then((data) => {
-          data.flag = 'true';
-          cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
-        });
-        this.selectStatus('Offline');
-      } else {
-        cy.reload();
-        ignoreSpeedTestPopup();
-        this.clickToOpenSoftphone();
-      }
-    });
+  verifyCallConnectForCampaign(names, time, disposition, loopCount) {
+    for (let i = 0; i < loopCount; i++) {
+      cy.readFile('cypress/fixtures/testData.json').then((data) => {
+        if (data.flag === true) {
+          cy.log('Completed');
+        } else {
+          this.verifySoftphoneLineContactName(names);
+          cy.wait(20000);
+          cy.get('body').then((body) => {
+            if (body.find(contactProfile).length) {
+              this.endCallAtTime(time);
+              this.verifyCallDispositionWindow();
+              this.selectCallDisposition(disposition);
+              this.clickOnButton('Done');
+              cy.readFile('cypress/fixtures/testData.json').then((data) => {
+                data.flag = true;
+                cy.writeFile(
+                  'cypress/fixtures/testData.json',
+                  JSON.stringify(data)
+                );
+              });
+              this.selectStatus('Offline');
+            } else {
+              cy.reload();
+              ignoreSpeedTestPopup();
+              this.clickToOpenSoftphone();
+            }
+          });
+        }
+      });
+    }
   }
 
   clickToOpenSoftphone() {

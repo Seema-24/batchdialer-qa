@@ -122,9 +122,15 @@ const recycleCampaignMenuBtn = (campaignName) =>
 const leadSheetDropdown = `//div[label[@class="form-label" and text()="Lead Sheet"]]/following-sibling::div[div[contains(.,"Select Lead Sheet")]]`;
 const tableRefreshBtn = 'span[title="Refresh"]';
 const campaignStatus = (campaignName) =>
-  `//tr[td[span[text()="${campaignName}"]]]//td//div[@class="campaign__status"]`;
+  `//tr[td[span[text()="${campaignName}"]]]//td//div[@class="campaign__status-circle"]`;
 const softphoneNextLead = '.stg-softphone-next-lead';
 const softphoneIcon = '.nav-item .softphone-icon';
+const dropdownItem = '.show.dropdown-menu .dropdown-item';
+const modalTitle = '.modal-content .modal-title';
+const modal = '.modal-content';
+const modalCloseBtn = '.modal-content .close_icon';
+const changeLogItems = '.change-log__campaign-item .change-log__campaign-title';
+const ringTimeDurationDropdown = `//label[text()="Ring Time Duration"]/following-sibling::div//div[contains(@class,"ss-select-control")]`;
 
 export default class Campaign {
   clickCampaignMenu() {
@@ -703,5 +709,38 @@ export default class Campaign {
 
   clickSoftphoneIcon() {
     cy.get(softphoneIcon).click();
+  }
+
+  clickDropdownItem(itemName) {
+    cy.get(dropdownItem).then((items) => {
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].textContent.trim() === itemName) {
+          cy.get(items[i]).click();
+          break;
+        }
+      }
+    });
+  }
+
+  verifyDialogOpen() {
+    cy.get(modal).should('be.visible');
+  }
+
+  verifyModalTitle(title) {
+    cy.get(modalTitle).should('have.text', title);
+  }
+
+  clickModalCloseBtn() {
+    cy.get(modalCloseBtn).click();
+  }
+
+  verifyChangeLogItemsText(changeLog) {
+    cy.get(changeLogItems).then((itemText) => {
+      expect(itemText.text().trim().replace(/\s+/g, ' ')).to.contain(changeLog);
+    });
+  }
+
+  clickRingTimeDurationDropdown() {
+    cy.xpath(ringTimeDurationDropdown).click();
   }
 }

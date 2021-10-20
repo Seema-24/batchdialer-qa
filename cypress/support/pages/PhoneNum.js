@@ -14,6 +14,7 @@ const dropdownOptions = '.ss-select-group-items';
 const searchToast =
   '//div[@class="Toastify__toast-body"]//div[contains(text(),"Search started")]';
 const closeBtn = '//button[contains(text(),"Close")]';
+const toast = '.Toastify__toast-body';
 const deleteToast =
   '//div[@class="Toastify__toast-body"]//div[contains(text(),"Number deleted")]';
 const assignToDrpdwn = '//div[span[contains(text(),"Agent")]]';
@@ -154,6 +155,7 @@ const deleteCallResultGroupIcon = (groupName) =>
 const editCallResultGroupIcon = (groupName) =>
   `//td[@class="group-title" and text()="${groupName}"]/parent::tr[@class="group-row"]//span/*[name()="svg"][contains(@class,"fa-pencil")]`;
 const showOnCampaignPage = `//label[@class="radio_cstm"][text()="Display on New Campaign Page"]//span[@class="checkmark"]`;
+const ungroupedCallResults = '.group-row.noedit + .group-inner .disposition';
 
 export default class PhoneNum {
   clickCallResultDeleteBtn() {
@@ -872,5 +874,13 @@ export default class PhoneNum {
 
   clickSaveQueueBtn() {
     cy.get(saveQueueBtn).scrollIntoView().click();
+  }
+
+  verifyCallResultAvailableInUngrouped(callResultName) {
+    cy.get(ungroupedCallResults).should('contain.text', callResultName);
+  }
+
+  verifyToastMessage(message) {
+    cy.get(toast).should('contain.text', message);
   }
 }

@@ -34,6 +34,7 @@ describe('Add Contact flow', () => {
 
   it('Should Login', () => {
     cy.Login(Cypress.env('username'), Cypress.env('password'));
+    cy.reload();
     ignoreSpeedTestPopup();
   });
 
@@ -109,7 +110,6 @@ describe('Add Contact flow', () => {
     addCont.verifyImportContactLastName();
     addCont.verifyImportContactPhone();
     addCont.verifyImportContactEmail();
-    // addCont.verifyImportContactDestinationFields();
     addCont.verifyImportContactBackBtn();
     addCont.verifyImportContactNextBtn();
     addCont.selectFirstNameDropdown();
@@ -171,6 +171,19 @@ describe('Add Contact flow', () => {
     addCont.verifyDeletedToast();
   });
 
+  it('Verify functionality of a. Activities b. Campaigns c. Notes button', () => {
+    addCont.clickingOnContactOption();
+    addCont.enterSearch(testData.Contact);
+    addCont.clickContactName(testData.Contact);
+    addCont.verifyContactViewPageVisible();
+    addCont.clickOnButton('Activities');
+    addCont.verifyActivityTabOpen();
+    addCont.clickOnButton('Campaigns');
+    addCont.verifyCampaignTabOpen();
+    addCont.clickOnButton('Notes');
+    addCont.verifyNotesTabOpen();
+  });
+
   it('Should add contact using upload file', () => {
     addCont.clickingOnContactOption();
     addCont.clickAddNewContactButton();
@@ -198,17 +211,6 @@ describe('Add Contact flow', () => {
     addCont.deleteAddedContacts('Automation', 'CSV1');
     addCont.handleAlertForDelete();
     addCont.verifyDeletedToast();
-  });
-
-  it.skip('Dial a Contact Number', () => {
-    addCont.clickingOnContactOption();
-    addCont.clickOnContactName('random', 'Contact');
-    addCont.clickPhoneNumber();
-    addCont.clickCallBtn();
-    addCont.verifyCallStarted();
-    addCont.clickEndCallBtn();
-    // addCont.selectCallResult('Busy');
-    // addCont.clickContinueBtn();
   });
 
   it.skip('Verify Dialed/Undialed Radio Button Functionality', () => {
@@ -367,7 +369,7 @@ describe('Add Contact flow', () => {
     addCont.clickContactName('random Contact');
     addCont.clickNotes();
     addCont.clickAddNewNotes();
-    addCont.enterNotes();
+    addCont.enterNotes('Testing note for Contact');
     addCont.clickNotesBullets();
     cy.wait(3000);
     addCont.clickSavebtn();

@@ -37,6 +37,7 @@ describe('Dashboard Elements', function () {
 
   it('Should Login', () => {
     cy.Login(Cypress.env('username'), Cypress.env('password'));
+    cy.reload();
     ignoreSpeedTestPopup();
   });
 

@@ -41,6 +41,7 @@ describe('Login Successfully and Add User', () => {
 
   it('Should Login', () => {
     cy.Login(Cypress.env('username'), Cypress.env('password'));
+    cy.reload();
     ignoreSpeedTestPopup();
     addUser.getPhoneNumber();
   });
@@ -83,6 +84,46 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyUserLogoutIconVisible();
   });
 
+  it('Verify that admin user is able to change the Agent status from USERS page', () => {
+    addUser.clickChangePresenceIcon();
+    addUser.verifyDialogOpen();
+    addUser.verifyModalTitle("Change User's Presence");
+    addUser.clickStatusDropdown();
+    addUser.selectStatusOption('Offline');
+    addUser.clickOnButton('Continue');
+    addUser.verifyToastMessage('Presence has been changed');
+  });
+
+  it('Verify that admin user is able to Logout the Agent user from USERS page', () => {
+    addUser.clickUserLogoutIcon();
+    addUser.handleWindowAlert('Do you want to log the user out?');
+  });
+
+  it('Verify that admin user is able to enable/disble Edit contact info feature for the agent user', () => {
+    addUser.clickingOnUserOption();
+    addUser.searchUser(
+      fixtureData.userFirstname +
+        ' ' +
+        fixtureData.userLastname +
+        randNum.toString()
+    );
+    cy.wait(1000);
+    addUser.clickUserEditButton(
+      fixtureData.userFirstname,
+      fixtureData.userLastname + randNum.toString()
+    );
+    addUser.agentContactEditAccess('Enable');
+    addUser.clickOnButton('SAVE');
+    addUser.verifyToastMessage('Saved');
+    addUser.clickUserEditButton(
+      fixtureData.userFirstname,
+      fixtureData.userLastname + randNum.toString()
+    );
+    addUser.agentContactEditAccess('Disable');
+    addUser.clickOnButton('SAVE');
+    addUser.verifyToastMessage('Saved');
+  });
+
   it('Should delete the added user', () => {
     addUser.clickingOnUserOption();
     addUser.searchUser(
@@ -96,7 +137,7 @@ describe('Login Successfully and Add User', () => {
       fixtureData.userFirstname,
       fixtureData.userLastname + randNum.toString()
     );
-    addUser.handleAlertForDelete();
+    addUser.handleWindowAlert('Delete user?');
     addUser.verifyDeletedToast();
   });
 

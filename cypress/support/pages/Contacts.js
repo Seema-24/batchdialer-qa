@@ -156,6 +156,10 @@ const modal = '.modal-content';
 const speedDropdown = '.modal-content .ss-select-control';
 const options = '.ss-select-option';
 const currentPlayTime = '.progress-bar__current-time';
+const contactViewPage = '.userSedit.contact-edit-form-wrapper';
+const activityTab = '.userSedit.contact-edit-form-wrapper .activities';
+const campaignTab = '.userSedit.contact-edit-form-wrapper .contact-calls';
+const notesTab = '.userSedit.contact-edit-form-wrapper .block.card';
 
 export default class Contacts {
   clickingOnContactOption() {
@@ -209,7 +213,7 @@ export default class Contacts {
   }
 
   clickDialerCallButton() {
-    cy.get(callButton).click();
+    cy.get(callButton, { timeout: 20000 }).click();
   }
 
   clickFilterButton() {
@@ -335,7 +339,11 @@ export default class Contacts {
   }
 
   clickToCloseSoftphone() {
-    cy.get(softphoneIcon).click();
+    cy.get('body').then((body) => {
+      if (body.find('.stg-softphone-wrapper .stg-softphone-wide').length) {
+        cy.get(softphoneIcon).click();
+      }
+    });
   }
 
   selectFirstNameDropdown() {
@@ -844,8 +852,8 @@ export default class Contacts {
     cy.xpath(addNewNotes).click();
   }
 
-  enterNotes() {
-    cy.get(notesTextBox).type('Testing note for Contact');
+  enterNotes(note) {
+    cy.get(notesTextBox).type(note);
   }
 
   verifyAddedNote() {
@@ -912,5 +920,21 @@ export default class Contacts {
 
   verifyCurrentPlayTime(time) {
     cy.get(currentPlayTime).should('have.text', time);
+  }
+
+  verifyContactViewPageVisible() {
+    cy.get(contactViewPage).should('be.visible');
+  }
+
+  verifyActivityTabOpen() {
+    cy.get(activityTab).should('be.visible');
+  }
+
+  verifyCampaignTabOpen() {
+    cy.get(campaignTab).should('be.visible');
+  }
+
+  verifyNotesTabOpen() {
+    cy.get(notesTab).should('be.visible');
   }
 }

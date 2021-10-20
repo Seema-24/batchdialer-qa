@@ -24,6 +24,7 @@ describe('SuperVisor Flow', () => {
 
   it('Supervisor Should Login Successfully', () => {
     cy.Login(testData.SupervisorEmail, testData.password);
+    cy.reload();
   });
 
   it('Verify the Dashboard Elements', () => {

@@ -37,6 +37,7 @@ describe('Add Phone Number flow', () => {
 
   it('Should Login', () => {
     cy.Login(Cypress.env('username'), Cypress.env('password'));
+    cy.reload();
     ignoreSpeedTestPopup();
   });
 
@@ -388,11 +389,17 @@ describe('Add Phone Number flow', () => {
     addNum.clickCallResultMenu();
     addNum.clickAddNewCallResultBtn();
     addNum.enterName('DemoTesting');
-    // addNum.chooseShowOnNewCampaignPage('Yes');
     addNum.chooseActiveInactive('Active');
     addNum.selectCallResultCampaignDropdown(testData.campaign);
     addNum.clickCallResultSaveBtn();
-    cy.wait(3000);
+    addNum.verifyToastMessage('Saved');
+  });
+
+  it('Verify that create a call result without selecting Call Result Group is moved to Ungrouped group', () => {
+    addNum.clickPhoneNumberMenu();
+    addNum.clickCallResultMenu();
+    addNum.clickOpenCallResultGroup('UNGROUPED');
+    addNum.verifyCallResultAvailableInUngrouped('DemoTesting');
   });
 
   it('Verify that the created call results is reflected in the create new campaign page Call Result', () => {
