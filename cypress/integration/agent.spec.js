@@ -502,6 +502,7 @@ describe('Agent Profile', function () {
     agent.enterSearch('random Contact');
     cy.wait(1000);
     agent.clickContactName();
+    agent.getContactPhoneNumber();
     agent.clickPhoneNumber();
     agent.clickCallBtn();
     cy.wait(2000);
@@ -532,6 +533,21 @@ describe('Agent Profile', function () {
     agent.clickContactName();
     agent.clickNotesBtn();
     agent.verifyNotesContent('testing note');
+  });
+
+  it('Verify that Outbound call details are updated in View Contacts ACTIVITIES Tab', () => {
+    agent.clickOnButton('Activities');
+    cy.readFile('cypress/fixtures/testData.json').then((data) => {
+      agent.verifyActivityText(
+        `Outbound Call to ${data.contactNumber} - No Answer`
+      );
+    });
+  });
+
+  it('Verify that Outbound call details are updated in View Contacts CAMPAIGN Tab', () => {
+    agent.clickOnButton('Campaigns');
+    cy.wait(1000);
+    agent.verifyContactCallData(testData.campaign, testData.agent, 'No Answer');
   });
 
   it('Verify that Call mood added is reflected in Reports-->Recent Contacts', () => {

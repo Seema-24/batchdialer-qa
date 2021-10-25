@@ -209,7 +209,6 @@ export default class Dialer {
         }
       }
     });
-    // cy.xpath(agentsDropdown).click();
   }
 
   verifySuccessToastMessage(message) {

@@ -8,6 +8,8 @@
     "ExpiryDate": "12/25",
     "CVC": "656",
     "Country": "United States",
-    "BillingZip": "85326"
+    "BillingZip": "85326",
+    "resellerUsername": "god",
+    "resellerPassword": "god"
   }
 }

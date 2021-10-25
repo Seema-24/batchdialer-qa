@@ -150,6 +150,8 @@ const moods = (value) => `.mood__modal span:nth-of-type(${value})`;
 const selectedMood = '.mood';
 const visibleMood = (mood) => `img[src*="mood-${mood}"]`;
 const dispositionWindow = '.call-disposition-modal .modal-content';
+const activityText = '.activity-title';
+const tableFirstRow = 'tbody tr:nth-child(1)';
 
 export default class Agent {
   clickCampaignMenu() {
@@ -759,5 +761,32 @@ export default class Agent {
 
   verifyDispositionWindowVisible() {
     cy.get(dispositionWindow, { timeout: 40000 }).should('be.visible');
+  }
+
+  verifyActivityText(text) {
+    cy.get(activityText).then((Activities) => {
+      expect(Activities.text().replace(/\s+/g, ' ')).to.contains(text);
+    });
+  }
+
+  getContactPhoneNumber() {
+    cy.get(phoneNumber).then((no) => {
+      cy.readFile('cypress/fixtures/testData.json').then((data) => {
+        data.contactNumber = no.text();
+        cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
+      });
+    });
+  }
+
+  verifyContactCallData(campaignName, agent, disposition) {
+    cy.get(tableFirstRow).within((rowData) => {
+      expect(rowData.find('td:nth-child(1)').text().trim()).to.equal(
+        campaignName
+      );
+      expect(rowData.find('td:nth-child(3)').text().trim()).to.equal(agent);
+      expect(rowData.find('td:nth-child(4)').text().trim()).to.equal(
+        disposition
+      );
+    });
   }
 }
