@@ -15,8 +15,18 @@ const subMenu = (menuName) => `.subitem a[title="${menuName}"]`;
 const searchInputField = 'input[placeholder*="Search"]';
 const searchResult = (searchQuery) =>
   `//tbody/tr[contains(.,"${searchQuery}")]`;
-const accountStatus = (status) =>
-  `//tbody/tr[contains(.,"anil.kumar+1@fleekitsolutions.com")][contains(.,"${status}")]`;
+const accountStatus = (searchQuery, status) =>
+  `//tbody/tr[contains(.,"${searchQuery}")][contains(.,"${status}")]`;
+const clientDeleteBtn = (searchQuery) =>
+  `//tr[td[div[text()="${searchQuery}"]]]//img[contains(@src,"delete")]`;
+const accountEditBtn = 'img[src*="edit"]';
+const generalTabLabel = '#tabs-reseller-edit-tabpane-general label';
+const generalTabInputFields = (inputField) =>
+  `#tabs-reseller-edit-tabpane-general input[name="${inputField}"]`;
+const editClientTabs = (tabName) => `#tabs-reseller-edit-tab-${tabName}`;
+const editClientTabContent = (tabName) =>
+  `.tab-content #tabs-reseller-edit-tabpane-${tabName}.active`;
+const labels = `.active label`;
 
 export default class Reseller {
   clickUserTreeDropdown() {
@@ -112,7 +122,39 @@ export default class Reseller {
     cy.get(searchInputField).clear();
   }
 
-  verifyAccountStatus(status) {
-    cy.xpath(accountStatus(status)).should('be.visible');
+  verifyAccountStatus(searchQuery, status) {
+    cy.xpath(accountStatus(searchQuery, status)).should('be.visible');
+  }
+
+  clickClientDeleteButton(searchQuery) {
+    cy.xpath(clientDeleteBtn(searchQuery)).click();
+  }
+
+  clickAccountEditButton() {
+    cy.get(accountEditBtn).first().click();
+  }
+
+  verifyGeneralTabLabels(labels) {
+    for (let i = 0; i < labels.length; i++) {
+      cy.get(generalTabLabel).should('contain.text', labels[i]);
+    }
+  }
+
+  verifyGeneralTabInputFields(inputField) {
+    for (let i = 0; i < inputField.length; i++) {
+      cy.get(generalTabInputFields(inputField[i])).should('be.visible');
+    }
+  }
+
+  clickOnTab(tabName) {
+    cy.get(editClientTabs(tabName)).click();
+  }
+
+  verifyEditClientTabContent(tabName) {
+    cy.get(editClientTabContent(tabName)).should('be.visible');
+  }
+
+  verifyLabels(label) {
+    cy.get(labels).should('contain.text', label);
   }
 }
