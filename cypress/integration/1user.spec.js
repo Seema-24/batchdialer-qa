@@ -80,7 +80,10 @@ describe('Login Successfully and Add User', () => {
   });
 
   it('Verify that Logout and Change presence icons are visible in USERS page', () => {
-    addUser.verifyChangePresenceIconVisible();
+    addUser.verifyChangePresenceVisible(
+      fixtureData.userFirstname,
+      fixtureData.userLastname + randNum.toString()
+    );
     addUser.verifyUserLogoutIconVisible();
   });
 
@@ -95,7 +98,10 @@ describe('Login Successfully and Add User', () => {
   });
 
   it('Verify that admin user is able to Logout the Agent user from USERS page', () => {
-    addUser.clickUserLogoutIcon();
+    addUser.clickUserLogoutIcon(
+      fixtureData.userFirstname,
+      fixtureData.userLastname + randNum.toString()
+    );
     addUser.handleWindowAlert('Do you want to log the user out?');
   });
 
@@ -115,6 +121,7 @@ describe('Login Successfully and Add User', () => {
     addUser.agentContactEditAccess('Enable');
     addUser.clickOnButton('SAVE');
     addUser.verifyToastMessage('Saved');
+    cy.wait(1000);
     addUser.clickUserEditButton(
       fixtureData.userFirstname,
       fixtureData.userLastname + randNum.toString()
@@ -217,6 +224,7 @@ describe('Login Successfully and Add User', () => {
       'Group',
       'Campaigns',
       'Added',
+      'Connection',
     ]);
   });
 

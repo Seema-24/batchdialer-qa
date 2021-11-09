@@ -21,12 +21,12 @@ const clientDeleteBtn = (searchQuery) =>
   `//tr[td[div[text()="${searchQuery}"]]]//img[contains(@src,"delete")]`;
 const accountEditBtn = 'img[src*="edit"]';
 const generalTabLabel = '#tabs-reseller-edit-tabpane-general label';
-const generalTabInputFields = (inputField) =>
-  `#tabs-reseller-edit-tabpane-general input[name="${inputField}"]`;
+const inputFields = (inputField) => `.active input[name="${inputField}"]`;
 const editClientTabs = (tabName) => `#tabs-reseller-edit-tab-${tabName}`;
 const editClientTabContent = (tabName) =>
   `.tab-content #tabs-reseller-edit-tabpane-${tabName}.active`;
 const labels = `.active label`;
+const stateDropdown = '.active select[name="state"]';
 
 export default class Reseller {
   clickUserTreeDropdown() {
@@ -142,7 +142,7 @@ export default class Reseller {
 
   verifyGeneralTabInputFields(inputField) {
     for (let i = 0; i < inputField.length; i++) {
-      cy.get(generalTabInputFields(inputField[i])).should('be.visible');
+      cy.get(inputFields(inputField[i])).should('be.visible');
     }
   }
 
@@ -156,5 +156,29 @@ export default class Reseller {
 
   verifyLabels(label) {
     cy.get(labels).should('contain.text', label);
+  }
+
+  enterBillToName(name) {
+    cy.get(inputFields('billto')).type(name);
+  }
+
+  enterAddress(address) {
+    cy.get(inputFields('address')).type(address);
+  }
+
+  enterZip(zip) {
+    cy.get(inputFields('zip')).type(zip);
+  }
+
+  enterCity(city) {
+    cy.get(inputFields('city')).type(city);
+  }
+
+  enterPhone(phone) {
+    cy.get(inputFields('phone')).type(phone);
+  }
+
+  selectState(state) {
+    cy.get(stateDropdown).select(state);
   }
 }

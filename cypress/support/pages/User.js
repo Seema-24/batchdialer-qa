@@ -20,16 +20,16 @@ const searchBox = '.search_bg';
 const rolesDropdown = "span[title='All Roles']";
 const groupsDropdown = "span[title='All Groups']";
 const AdminstratorRole = "//span[div[text()='Administrators']]";
-const Adminstrator = "//td[text()='Administrator']";
-const Agent = "//td[text()='Agent']";
+const Adminstrator = '//div[@class="td"][text()="Administrator"]';
+const Agent = '//div[@class="td"][text()="Agent"]';
 const AgentStatuses = "//span[text()='Agent Statuses']";
 const AssignToGroup = "//div[label[text()='Assign to a Group ']]/div";
 const CancelButton = "//button[text()=' CANCEL']";
 const cancelBtn = "//button[contains(text(),'CANCEL')]";
 const SecondPhone = 'input[name=phone2]';
-const userTableHeading = '.users thead';
-const userEditButton = ".users svg[data-icon='pencil-alt']";
-const userDeleteButton = '.users svg[data-icon="trash"]';
+const userTableHeading = '.resizable-table-thead .tr .th';
+const userEditButton = '//a[@class="dropdown-item"][text()="Edit"]';
+const userDeleteButton = '//a[@class="dropdown-item"][text()="Delete"]';
 const addAgentStatus =
   "//div[contains(@class,'card-title')][.='Agent Statuses']//img[contains(@src,'add')]";
 const agentStatusName = "tbody input[type='text']";
@@ -46,8 +46,9 @@ const addSupervisor = 'a[data-key="supervisor"]';
 const agentCount = '.usage-stats-counter strong';
 const newUserWindow = '.modal-content';
 const addAdmin = 'a[data-key="admin"]';
-const changePresenceIcon = 'span[title="Change Presence"] svg';
-const userLogoutIcon = 'span[title="Log Out"] svg';
+const changePresenceIcon =
+  '//a[@class="dropdown-item"][text()="Change Status"]';
+const userLogoutIcon = '//a[@class="dropdown-item"][text()="Force Logout"]';
 const modalTitle = '.modal-content .modal-title';
 const modal = '.modal-content';
 const statusDropdown = '.modal-content .ss-select-control';
@@ -55,8 +56,11 @@ const statusOptions = '.ss-select-option span';
 const toast = '.Toastify__toast-body';
 const contactEditAccess = (accessState) =>
   `//label[text()="${accessState}"]//input[@name="contacteditaccess"]`;
-const userEditBtn = (firstName, lastName) =>
-  `//table//tr[td[text()="${firstName}" and text()="${lastName}"]]//span/*[name()="svg"][@data-icon="pencil-alt"]`;
+const userThreeDotMenu = (firstName, lastName) =>
+  `//div[@class="tr"][div[@class="td"][text()="${firstName} ${lastName}"]]//div[@class="dropdown"]`;
+const dropdownItems = '.dropdown-item';
+const searchedUser = (fstName, lstName) =>
+  `//div[@class="resizable-table-tbody"]//div[@class="tr"]//div[@class="td"][text()="${fstName} ${lstName}"]`;
 
 export default class User {
   clickingOnUserOption() {
@@ -120,28 +124,25 @@ export default class User {
   }
 
   verifyAddedUser(fstaName, lstName) {
-    cy.xpath(
-      '//table[contains(@class,"users")]//td[contains(.,"' +
-        fstaName +
-        '") and contains(.,"' +
-        lstName +
-        '")]',
-      { timeout: 15000 }
-    )
+    cy.xpath(searchedUser(fstaName, lstName), { timeout: 15000 })
       .scrollIntoView()
       .should('be.visible');
   }
 
   deleteAddedContact(fstaName, lstName) {
-    cy.xpath(
-      '//table[contains(@class,"users")]//tr[td[contains(.,"' +
-        fstaName +
-        '") and contains(.,"' +
-        lstName +
-        '")]]//span/*[name()="svg"][@data-icon="trash"]'
-    )
-      .first()
-      .click();
+    cy.xpath(userThreeDotMenu(fstaName, lstName)).first().click();
+    this.clickOnDropdownItem('Delete');
+  }
+
+  clickOnDropdownItem(itemName) {
+    cy.get(dropdownItems).then((items) => {
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].textContent.trim() === itemName) {
+          cy.get(items[i]).click();
+          break;
+        }
+      }
+    });
   }
 
   handleWindowAlert(text) {
@@ -193,16 +194,9 @@ export default class User {
 
   verifySearchedUser(user) {
     const [firstName, lastName] = user.split(' ');
-    cy.xpath(
-      '//table[contains(@class,"users")]//td[contains(text(),"' +
-        firstName +
-        '") and contains(.,"' +
-        lastName +
-        '")]',
-      {
-        timeout: 15000,
-      }
-    ).should('be.visible');
+    cy.xpath(searchedUser(firstName, lastName), {
+      timeout: 15000,
+    }).should('be.visible');
   }
 
   verifyAgentStatusesHeading() {
@@ -276,11 +270,12 @@ export default class User {
   verifyUserEditButton() {
     cy.reload();
     ignoreSpeedTestPopup();
-    cy.get(userEditButton).should('be.visible');
+    cy.get('.resizable-table-tbody .dropdown').first().click();
+    cy.xpath(userEditButton).should('be.visible');
   }
 
   verifyUserDeleteButton() {
-    cy.get(userDeleteButton).should('be.visible');
+    cy.xpath(userDeleteButton).should('be.visible');
   }
 
   clickAddAgentStatus() {
@@ -380,19 +375,21 @@ export default class User {
   }
 
   clickChangePresenceIcon() {
-    cy.get(changePresenceIcon).click();
+    cy.xpath(changePresenceIcon).click();
   }
 
-  verifyChangePresenceIconVisible() {
-    cy.get(changePresenceIcon).should('be.visible');
+  verifyChangePresenceVisible(firstName, lastName) {
+    cy.xpath(userThreeDotMenu(firstName, lastName)).first().click();
+    cy.xpath(changePresenceIcon).should('be.visible');
   }
 
-  clickUserLogoutIcon() {
-    cy.get(userLogoutIcon).click();
+  clickUserLogoutIcon(firstName, lastName) {
+    cy.xpath(userThreeDotMenu(firstName, lastName)).first().click();
+    cy.xpath(userLogoutIcon).click();
   }
 
   verifyUserLogoutIconVisible() {
-    cy.get(userLogoutIcon).should('be.visible');
+    cy.xpath(userLogoutIcon).should('be.visible');
   }
 
   verifyDialogOpen() {
@@ -438,6 +435,7 @@ export default class User {
   }
 
   clickUserEditButton(userFirstName, userLastName) {
-    cy.xpath(userEditBtn(userFirstName, userLastName)).click();
+    cy.xpath(userThreeDotMenu(userFirstName, userLastName)).click();
+    this.clickOnDropdownItem('Edit');
   }
 }

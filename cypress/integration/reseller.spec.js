@@ -150,6 +150,23 @@ describe('Reseller Admin', () => {
     reseller.clearSearchField();
   });
 
+  it('Verify that Reseller admin is able to update the Billing address of a client', () => {
+    reseller.clickOnMenu('Clients');
+    reseller.enterSearchQuery(email);
+    cy.wait(1000);
+    reseller.clickAccountEditButton();
+    reseller.clickOnTab('address');
+    reseller.verifyEditClientTabContent('address');
+    reseller.enterBillToName('Test User');
+    reseller.enterAddress('57 E June St');
+    reseller.enterCity('Mesa');
+    reseller.selectState('Arizona');
+    reseller.enterZip('85201');
+    reseller.enterPhone('9999999999');
+    reseller.clickOnButton('SAVE');
+    reseller.verifyToastMessage('Client saved');
+  });
+
   it('Vefiy that Reseller admin is able to add an IP address in which a client is registered to BLACKLIST through Edit Client General Tab', () => {
     reseller.clickOnMenu('Clients');
     reseller.enterSearchQuery(email);
