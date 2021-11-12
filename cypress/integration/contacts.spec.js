@@ -430,7 +430,7 @@ describe('Add Contact flow', () => {
     addCont.ClickToOpenSoftphone();
     addCont.dialPhoneNumber('7209834562');
     addCont.clickDialerCallButton();
-    cy.wait(2000);
+    cy.wait(5000);
     addCont.clickDialerCallButton();
     addCont.selectCallResult('No Answer');
     addCont.clickContinueBtn();

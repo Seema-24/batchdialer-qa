@@ -172,7 +172,7 @@ describe('Agent Profile', function () {
       'Created',
     ]);
   });
-  it('Verify Refersh Button On Contact Page Table Header', () => {
+  it.skip('Verify Refersh Button On Contact Page Table Header', () => {
     agent.verifyRefreshBtn();
   });
   it('Verify All List Button On Contact Page Table', () => {
@@ -401,7 +401,7 @@ describe('Agent Profile', function () {
     agent.clickContactName();
     agent.clickPhoneNumber();
     agent.clickCallBtn();
-    cy.wait(2000);
+    cy.wait(5000);
     agent.clickEndCallBtn();
     agent.verifyCallResultWindow();
     agent.selectCallResult('No Answer');
@@ -476,7 +476,7 @@ describe('Agent Profile', function () {
     agent.clickContactName();
     agent.clickPhoneNumber();
     agent.clickCallBtn();
-    cy.wait(1000);
+    cy.wait(3000);
     agent.clickEndCallBtn();
     agent.verifyCallResultWindow();
     agent.selectCallResult('No Answer');

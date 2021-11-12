@@ -1,6 +1,6 @@
 const campaignsMenu = 'a[title="Campaigns"]';
 const campaign = (camp) =>
-  '//table[contains(@class,"table")]//td[contains(.,"' + camp + '")]/span';
+  `//div[@class="td"]//div[@class="position-relative"]//span[text()="${camp}"]`;
 const accessDenied =
   "//div[contains(@class,'card-title') and (text()='Access Denied')]";
 const statusDropdown = '.nav-item .ss-select';
@@ -35,7 +35,7 @@ const totalCallsCount =
   '//span[text()="Total Calls"]/preceding-sibling::span[not(@class="icon")]';
 const followUpCall = '.contact-view__calendar-btn';
 const contactName = (firstName, lastname) =>
-  '//span[text()="' + firstName + '" and text()="' + lastname + '"]';
+  `//span[@class="contacts__name"][text()="${firstName}"][text()="${lastname}"]`;
 const month = '.month-selector .title';
 const nextButton = '.fa-chevron-right';
 const day = `div.day .title`;
@@ -54,7 +54,7 @@ const selectAgent =
   "//label[text()='Assign Agents']/ancestor::div[@class='card-body']//span[text()='Agents']";
 const clickAgent = "//div[text()='automation testing']";
 const RecentContactInboundOutbound = "span[title='Inbound+Outbound']";
-const RecentContactTableHeader = '.table thead';
+const RecentContactTableHeader = '.resizable-table-thead .tr .th';
 const timeInStatus = "//div[text()='Time In Status']";
 const TISCalender = '.date-picker';
 const TISExport = "//button[text()='Export']";
@@ -73,13 +73,13 @@ const dialedBtn =
   "//*[@id='root']/section/div/div[1]/form/div[1]/div[2]/label[2]/span";
 const undialedBtn =
   "//*[@id='root']/section/div/div[1]/form/div[1]/div[2]/label[3]/span";
-const contactTable = '.table thead';
+const contactTable = '.resizable-table-thead .tr .th';
 const refreshBtn = "[title='Refresh']";
 const allListBtn = `//span[text()="All Lists"]/ancestor::div[contains(@class,"ss-select-control")]`;
 const equityBox = '.equity_box';
 const statusBtn = "[title='Status']";
 const agentBtn = "[title='Agent']";
-const campaignTableHeader = '.table thead';
+const campaignTableHeader = '.resizable-table-thead .tr .th';
 const viewContactHeader = '.contact-view-address-bar';
 const contactNameImg = "[src='/img/contact-details.svg']";
 const scoreImg = '.score-small-value';
@@ -147,7 +147,7 @@ const filterButton = 'button.modal-filter-btn';
 const notesField = '.dispo__modal-note textarea';
 const notesContent = '.comment-item .comment-item-body span';
 const moods = (value) => `.mood__modal span:nth-of-type(${value})`;
-const selectedMood = '.mood';
+const selectedMood = '//div[@class="tr"]//div[@class="td"][7]';
 const visibleMood = (mood) => `img[src*="mood-${mood}"]`;
 const dispositionWindow = '.call-disposition-modal .modal-content';
 const activityText = '.activity-title';
@@ -748,7 +748,7 @@ export default class Agent {
   }
 
   verifySelectedMood(mood) {
-    cy.get(selectedMood)
+    cy.xpath(selectedMood)
       .first()
       .within(() => {
         cy.get(visibleMood(mood)).should('be.visible');

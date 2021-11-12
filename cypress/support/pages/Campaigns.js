@@ -20,10 +20,10 @@ const statusDrpdwn = (status) => '.campaignForm span[title="' + status + '"]';
 const dropdownOptions = '.ss-select-group-items';
 const pausedDrpdwn = '.campaignForm span[title="Paused"]';
 const campaignHeader = '.campaignsTop';
-const searchBox = '.search-box-wrapper';
+const searchBox = '.search-box';
 const Agent = 'span[title="Agent"]';
 const contactsCountSlider = '.slider-control';
-const campaignHeadings = '.table thead';
+const campaignHeadings = '.resizable-table-thead .tr .th';
 const archiveCampaignButton =
   "//div[contains(@class,'show')]//a[text()='Archive']";
 const statusArchived = "//div[text()='Archived']";
@@ -65,9 +65,9 @@ const companyDNCYES =
 const companyDNCNO =
   "//label[text()='Scrub Company DNC']/parent::div/following-sibling::div/label[text()='No']/input";
 const CancelButton = "//button[text()=' CANCEL']";
-const RecStartDate = "//label[text()='Start Date']/parent::div/div";
+const RecStartEndDate = `//label[text()="Start and End Date"]/following-sibling::div[@class="date-picker"]`;
 const RecEndDate = "//label[text()='End Date']/parent::div/div";
-const RecCallResult = "span[class='ss-select-placeholder']";
+const RecCallResult = `//label[text()="Call Results"]/following-sibling::div[contains(@class,"ss-select")]`;
 const RecUseList = "//label[text()='Use Lists From']/parent::div/div";
 const RecCampaignName = "input[name='newcampaignname']";
 const RecSkipLeadsCheckbox = "input[name='skip_leads']";
@@ -93,11 +93,11 @@ const checkApply = "//strong[text()='Sun']";
 const applyButton = "//button[text()=' APPLY']";
 const newScriptPopUp = '.modal-body';
 const contactListDropdown = '.ss-select-dropdown';
-const campaignSetting = '.custom_drop ';
-const campaignSettingOptions = '.dropdown-menu-right';
+const campaignSetting = '.tr .dropdown';
+const campaignSettingOptions = '.show .dropdown-item';
 const FirstCampaignMenuButton =
   "//span[text()='FirstCampaign']/ancestor::tr//div[contains(@class,'custom_drop ')]/span";
-const campaignEditButton = "//a[text()='Edit']";
+const campaignEditButton = "//a[text()='Edit Campaign']";
 const campaignChange =
   "//span[text()='FirstCampaign']/ancestor::tr//td[text()='Predictive Dialer']";
 const callerIdError = '.ss-select.error';
@@ -111,18 +111,19 @@ const useListsFrom =
 const newCampaignName = 'input[name="newcampaignname"]';
 const saveCampaign = '.wizard-buttons button[type="submit"]';
 const toast = '.Toastify__toast-body';
-const campaignTable = '.table tbody';
+const campaignTable = '.resizable-table-tbody';
 const callresultValues = '.row-calldisposition  .ss-select-value';
 const delCallResult = (callResultName) =>
   `//span[span[text()="${callResultName}"]]/following-sibling::span[@class="ss-select-value-delete"]`;
-const status = "//div[text()='Status']";
+const status =
+  '//div[contains(@class,"expanded")]/following-sibling::div//div[text()="Status"]';
 const recycleOption = '//a[@class="dropdown-item" and text()="Recycle"]';
 const recycleCampaignMenuBtn = (campaignName) =>
-  '//tr[td[text()="' + campaignName + '"]]//img[contains(@src,"edit")]';
+  `//div[@class="position-relative"][text()="${campaignName}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]`;
 const leadSheetDropdown = `//div[label[@class="form-label" and text()="Lead Sheet"]]/following-sibling::div[div[contains(.,"Select Lead Sheet")]]`;
 const tableRefreshBtn = 'span[title="Refresh"]';
 const campaignStatus = (campaignName) =>
-  `//tr[td[span[text()="${campaignName}"]]]//td//div[@class="campaign__status-circle"]`;
+  `//div[@class="tr"][div[@class="td"][div[@class="position-relative"]//span[text()="${campaignName}"]]]//div[@class="campaign__status-circle"]`;
 const softphoneNextLead = '.stg-softphone-next-lead';
 const softphoneIcon = '.nav-item .softphone-icon';
 const dropdownItem = '.show.dropdown-menu .dropdown-item';
@@ -200,7 +201,7 @@ export default class Campaign {
 
   verifyAddedCampaign(camp) {
     cy.xpath(
-      '//table[contains(@class,"table")]//td[contains(.,"' + camp + '")]',
+      `//div[@class="tr"][div[@class="td"][div[@class="position-relative"]//span[text()="${camp}"]]]`,
       { timeout: 10000 }
     )
       .scrollIntoView()
@@ -211,7 +212,7 @@ export default class Campaign {
     cy.reload();
     ignoreSpeedTestPopup();
     cy.xpath(
-      '//table[contains(@class,"table")]//td[contains(.,"' + camp + '")]',
+      `//div[@class="tr"][div[@class="td"][div[@class="position-relative"]//span[text()="${camp}"]]]`,
       { timeout: 10000 }
     ).should('be.visible');
   }
@@ -242,11 +243,7 @@ export default class Campaign {
 
   changesCampaignStatus(campName, status) {
     cy.xpath(
-      '//tr[td[span[contains(text(),"' +
-        campName +
-        '")]]]//td//div[contains(@class,"progress-status") and contains(@class,"' +
-        status +
-        '")]',
+      `//span[text()="${campName}"]/ancestor::div[@class="tr"]//div[contains(@class,"${status}")]`,
       { timeout: 30000 }
     )
       .scrollIntoView()
@@ -298,9 +295,7 @@ export default class Campaign {
 
   clickEditCampaign(campaignName) {
     cy.xpath(
-      '//span[text()="' +
-        campaignName +
-        '"]/ancestor::tr//img[contains(@src,"edite1.svg")]'
+      `//span[text()="${campaignName}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]`
     ).click();
   }
 
@@ -473,16 +468,12 @@ export default class Campaign {
     cy.xpath(CancelButton).should('exist');
   }
 
-  verifyRecStartDate() {
-    cy.xpath(RecStartDate).should('be.visible');
-  }
-
-  verifyRecEndDate() {
-    cy.xpath(RecEndDate).should('be.visible');
+  verifyRecStartEndDate() {
+    cy.xpath(RecStartEndDate).should('be.visible');
   }
 
   verifyRecCallResult() {
-    cy.get(RecCallResult).should('be.visible');
+    cy.xpath(RecCallResult).should('be.visible');
   }
 
   verifyRecUseList() {
@@ -510,9 +501,7 @@ export default class Campaign {
   }
 
   clickCampaignName(camp) {
-    cy.xpath(
-      '//table[contains(@class,"table")]//td[contains(.,"' + camp + '")]/span'
-    ).click();
+    cy.xpath(`//span[text()="${camp}"]`).click();
   }
 
   clickPauseStatus() {
@@ -683,9 +672,7 @@ export default class Campaign {
 
   clickUnarchiveCampaign(arc) {
     cy.xpath(
-      "//td[text()='" +
-        arc +
-        "']/parent::tr//td//*[name()='svg' and @data-icon='undo']"
+      `//div[text()="${arc}"]/ancestor::div[@class="tr"]//*[name()="svg"][@data-icon="undo"]`
     )
       .first()
       .scrollIntoView()

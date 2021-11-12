@@ -289,7 +289,7 @@ describe('Add Phone Number flow', () => {
     addNum.clickCallResultMenu();
     addNum.verifyAddNewCallResultBtn();
     addNum.verifyAddNewGroupBtn();
-    addNum.verifyTableHeaderName([
+    addNum.verifyCallResultTableHeader([
       'Call Results',
       'Group Name',
       'Campaign',
@@ -300,12 +300,10 @@ describe('Add Phone Number flow', () => {
       'Abandoned',
       'Answering Machine',
       'Busy',
-      'Call Back',
       'Disconnected Number',
       'No Answer',
       'Not Interested',
       'Successful Sale',
-      'Unknown',
       'Voicemail',
     ]);
   });
@@ -515,6 +513,7 @@ describe('Add Phone Number flow', () => {
     cy.wait(1000);
     phone = await promisify(addCont.getPhoneNumber());
   });
+
   it('Check for Added contact in DNC Page', () => {
     addNum.clickContactMenu('random', 'Contact');
     addNum.clickAddToDNC();

@@ -59,7 +59,7 @@ const dialedCountSlider =
   '//div[text()="Dialed Count"]/ancestor::div[@class="slider-control"]';
 const leadScoreSlider =
   '//div[text()="Lead Score"]/ancestor::div[@class="slider-control"]';
-const contactsListHeader = '.table thead';
+const contactsListHeader = '.resizable-table-thead .th';
 const filterButton = '.modal-filter-btn';
 const phoneNumberFields =
   "input[placeholder='Phone Number'][name='phonenumber1']";
@@ -80,11 +80,9 @@ const importContactListName = 'input[name="name"]';
 const importContactSelectCompaignDropdown =
   '//div[span[text()="Select Campaign"]]';
 const importContactOptionsCheckbox = '.radio_cstm';
-const tableBody = '.table tbody';
+const searchedContact = '.contacts__name';
 const contactCheckbox = (number) =>
-  '(//table[contains(@class,"table")]//span[@class="checkmark"])[' +
-  number +
-  ']';
+  `(//div[@class="resizable-table-tbody"]//span[@class="checkmark"])[${number}]`;
 
 const lists = 'a[title="Contact Lists"]';
 const actionCampaign = '//a[text()="Add to Campaign"]';
@@ -94,7 +92,7 @@ const ContinueButton = '//button[text()="Continue"]';
 const toast = '.Toastify__toast-body';
 const contactCountSlider = '.slider-container';
 const listImportContactButton = '//button[text()="IMPORT CONTACTS"]';
-const listsTable = '.table tbody';
+const listsTable = '.resizable-table-tbody';
 const listPauseButton = 'svg[data-icon="pause"]';
 const listDeleteButton = 'svg[data-icon="trash-alt"]';
 const listStatus = 'svg[data-icon="play"]';
@@ -102,7 +100,7 @@ const testingPauseButton =
   '//tr[td[text()="testing"]]//span//*[name()="svg" and @data-icon="pause"]';
 const phone = '.phone-number';
 const contactList = (listName) =>
-  "//tr[td[text()='" + listName + "']]//a[img[contains(@src,'csv')]]";
+  `//div[@class="tr"][div[text()="${listName}"]]//a[img[contains(@src,"csv")]]`;
 const followUpCall = '.contact-view__calendar-btn';
 const errorMessage = '.custom-input__error-contacts';
 const contact = (firstName, lastName) =>
@@ -134,7 +132,7 @@ const fieldsSaveBtn = (fieldName) =>
 const contactsCampaign = '//button[text()="Campaigns"]';
 const recordingIcon = 'img[src*="listen"]';
 const listMenuIcon = 'img[src*="edit"]';
-const dropdownItem = '.table-responsive .show a.dropdown-item';
+const dropdownItem = '.show a.dropdown-item';
 const playerCampaignName = '.contacts-player__top-campaign';
 const playerControlBtn = '.contacts-player__controls svg';
 const playerVolumeBar = '.contacts-player__volume-bar';
@@ -299,11 +297,7 @@ export default class Contacts {
 
   verifyAddedContacts(fstName, lstName) {
     cy.xpath(
-      '//table[contains(@class,"table")]//td[contains(.,"' +
-        fstName +
-        '") and contains(.,"' +
-        lstName +
-        '")]',
+      `//span[@class="contacts__name"][text()="${fstName}"][text()="${lstName}"]`,
       { timeout: 15000 }
     ).should('be.visible');
   }
@@ -400,11 +394,7 @@ export default class Contacts {
 
   deleteAddedContacts(fstaName, lstName) {
     cy.xpath(
-      '//table[contains(@class,"table")]//tr[td[contains(.,"' +
-        fstaName +
-        '") and contains(.,"' +
-        lstName +
-        '")]]//img[contains(@src,"edit")]'
+      `//span[@class="contacts__name" and text()="${fstaName}" and text()="${lstName}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]`
     )
       .first()
       .scrollIntoView()
@@ -625,12 +615,12 @@ export default class Contacts {
     cy.xpath(submitButton).should('be.visible');
   }
 
-  async enterKeywordToSearch(search) {
-    await promisify(cy.get(searchBox).type(search));
+  enterKeywordToSearch(search) {
+    cy.get(searchBox).type(search);
   }
 
   verifySearchResult(result) {
-    cy.get(tableBody).should('contain.text', result);
+    cy.get(searchedContact).should('contain.text', result);
   }
 
   clickDialedUndialedButton(button) {

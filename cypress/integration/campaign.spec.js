@@ -112,7 +112,7 @@ describe('Add Campaign flow', () => {
 
   it('Verify that authorized user is able to view the Change log for each campaign', () => {
     addCamp.clickEditCampaign(fixtureData.campaignName + randNum.toString());
-    addCamp.clickDropdownItem('Change Log');
+    addCamp.clickDropdownItem('Changelog');
     addCamp.verifyDialogOpen();
     addCamp.verifyModalTitle(
       `Change Log ${fixtureData.campaignName + randNum.toString()}`
@@ -127,7 +127,6 @@ describe('Add Campaign flow', () => {
 
   it('Verify Campaign Status is applied correctly', () => {
     addCamp.clickCampaignMenu();
-    addCamp.clickTableRefreshBtn();
     addCamp.changesCampaignStatus(
       fixtureData.campaignName + randNum.toString(),
       'active'
@@ -160,7 +159,7 @@ describe('Add Campaign flow', () => {
     addCamp.clickEditCampaign(
       fixtureData.campaignName + randNum.toString() + '-edited'
     );
-    addCamp.clickDropdownItem('Change Log');
+    addCamp.clickDropdownItem('Changelog');
     addCamp.verifyDialogOpen();
     addCamp.verifyModalTitle(
       `Change Log ${fixtureData.campaignName + randNum.toString()}-edited`
@@ -213,7 +212,7 @@ describe('Add Campaign flow', () => {
     addCamp.clickEditCampaign(
       fixtureData.campaignName + randNum.toString() + '-edited'
     );
-    addCamp.clickDropdownItem('Change Log');
+    addCamp.clickDropdownItem('Changelog');
     addCamp.verifyDialogOpen();
     addCamp.verifyModalTitle(
       `Change Log ${fixtureData.campaignName + randNum.toString()}-edited`
@@ -271,18 +270,6 @@ describe('Add Campaign flow', () => {
     addCamp.clickCreateCampButton();
   });
 
-  it('Verify that it should give error on clicking Next Contact if there is no new lead', () => {
-    Dial.selectStatus('Available');
-    Dial.verifySelectCampaignBoxHeading();
-    Dial.clickSelectCampaignDropdown();
-    Dial.selectCampaign(fixtureData.campaignName + randNum.toString() + '1');
-    Dial.clickConfirmButton();
-    Dial.verifySoftPhoneOpen();
-    addCamp.clickSoftphoneNextLead();
-    addCamp.verifyToast('No available contacts found, please try later');
-    addCamp.clickSoftphoneIcon();
-  });
-
   it('Should show added Preview Dialer Campaign in table', () => {
     addCamp.clickCampaignMenu();
     addCamp.verifyAddedCampaign(
@@ -295,6 +282,18 @@ describe('Add Campaign flow', () => {
       fixtureData.campaignName + randNum.toString() + '1',
       'Manual Mode'
     );
+  });
+
+  it('Verify that it should give error on clicking Next Contact if there is no new lead', () => {
+    Dial.selectStatus('Available');
+    Dial.verifySelectCampaignBoxHeading();
+    Dial.clickSelectCampaignDropdown();
+    Dial.selectCampaign(fixtureData.campaignName + randNum.toString() + '1');
+    Dial.clickConfirmButton();
+    Dial.verifySoftPhoneOpen();
+    addCamp.clickSoftphoneNextLead();
+    addCamp.verifyToast('No available contacts found, please try later');
+    addCamp.clickSoftphoneIcon();
   });
 
   it('Archive Created Preview Dialer Campaign', function () {
@@ -382,8 +381,7 @@ describe('Add Campaign flow', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickEditCampaign(testData.campaign);
     addCamp.clickRecycleOption();
-    addCamp.verifyRecStartDate();
-    addCamp.verifyRecEndDate();
+    addCamp.verifyRecStartEndDate();
     addCamp.verifyRecCallResult();
     addCamp.verifyRecUseList();
     addCamp.verifyRecCampaignName();
@@ -482,11 +480,13 @@ describe('Add Campaign flow', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickCampaignSetting();
     addCamp.verifyCampaignSettingOptions([
-      'Edit',
+      'Edit Campaign',
       'Recycle',
       'Call Again',
-      'Call Again',
+      'Import Contacts',
       'Archive',
+      'Reports',
+      'Changelog',
     ]);
   });
 

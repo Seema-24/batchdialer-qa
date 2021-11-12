@@ -38,12 +38,12 @@ const recordingSaveButton =
 const ivrSaveButton = ".modal_btn button[class*='save']";
 const saved = "//div[text()='Saved']";
 const deleteIvr = (x) =>
-  "//tr[contains(.,'" + x + "')]//td//img[contains(@src,'delete')]";
+  `//div[@class="tr"][div[@class="td"][text()="${x}"]]//img[contains(@src,"delete")]`;
 const DeletedIVR = "//div[text()='IVR deleted']";
 const inboundCallMenu = 'a[title="Inbound Calls"]';
 const searchBox = '.search-box';
 const newQueueBtn = '//button[contains(text(),"NEW QUEUE")]';
-const tableHeader = '.table thead';
+const tableHeader = '.resizable-table-thead .th';
 const selectDropdown = (dropdownName) =>
   "//div[contains(@class,ss-select-control)]//span[text()='" +
   dropdownName +
@@ -61,7 +61,7 @@ const afterHourDestination =
 const createQueueBtn = '//button[text()="CREATE QUEUE"]';
 const cancelBtn = '//button[contains(text(),"CANCEL")]';
 const deleteBtn = (user) =>
-  "//tr[contains(.,'" + user + "')]//td//img[contains(@src,'delete')]";
+  `//div[@class="tr"][div[@class="td"][text()="${user}"]]//img[contains(@src,"delete")]`;
 const dncMenu = 'a[title="DNC"]';
 const dncCards = '.dnc.card';
 const uploadFileBtn = '//button[contains(text(),"Upload File")]';
@@ -113,9 +113,9 @@ const uploadFile = 'input[type="file"]';
 const uploadBtn =
   "//div[contains(@class,'dropbox')]//button[contains(text(),'Upload')]";
 const uploadedFile = (fileName) =>
-  "//tr[contains(.,'" + fileName + "')]//img[contains(@src,'delete')]";
+  `//div[@class="tr"][div[@class="td"][contains(text(),"${fileName}")]]//img[contains(@src,"delete")]`;
 const dncFileDownloadbtn = (fileName) =>
-  "//tr[contains(.,'" + fileName + "')]//img[contains(@src,'download')]";
+  `//div[@class="tr"][div[@class="td"][contains(text(),"${fileName}")]]//img[contains(@src,"download")]`;
 const dncUploadSearchBox =
   "//div[text()='DNC File Upload']/following-sibling::div//input[contains(@class,'search-box')]";
 const callresultDropdown =
@@ -135,13 +135,14 @@ const nextPage = 'img[title="Next Page"]';
 const contactMenu = 'img[src*="edit"]';
 const addToDNC = "//a[@class='dropdown-item' and (text()='Add to DNC')]";
 const cardText = '.card-text';
-const searchedNumber = (number) => "//td[text()='" + number + "']";
+const searchedNumber = (number) =>
+  `//div[@class="tr"][div[@class="td"][text()="${number}"]]`;
 const searchedNumber1 = "//td[text()='9283662816']";
 const areaCode = 'input[name="areacode"]';
 const options = '.ss-select-option';
 const editForm = '.edit-form';
 const edit = (editName) =>
-  '//tr[td[text()="' + editName + '"]]//img[contains(@src,"edit")]';
+  `//div[@class="tr"][div[@class="td"][text()="${editName}"]]//img[contains(@src,"edit")]`;
 const saveQueueBtn = '.save_btn';
 const groupNameText = '.group-title';
 const callResultsName = '.dropdown-item';
@@ -424,7 +425,7 @@ export default class PhoneNum {
 
   verifyAddedPhoneNum(num) {
     cy.xpath(
-      '//table[contains(@class,"table")]//td[contains(.,"' + num + '")]',
+      `//div[@class="resizable-table-tbody"]//div[@class="td"][text()="${num}"]`,
       { timeout: 10000 }
     ).should('be.visible');
   }
@@ -437,11 +438,10 @@ export default class PhoneNum {
 
   deleteAddedPhoneNumber(num) {
     cy.xpath(
-      '(//tr[td[contains(.,"' +
-        num +
-        '")]]//*[name()="svg"][@data-icon="trash-alt"])[1]',
+      `//div[@class="tr"][div[@class="td"][text()="${num}"]]//*[name()="svg"][@data-icon="trash-alt"]`,
       { timeout: 5000 }
     )
+      .first()
       .scrollIntoView()
       .click();
   }
@@ -562,6 +562,12 @@ export default class PhoneNum {
   verifyTableHeaderName(header) {
     for (let i = 0; i < header.length; i++) {
       cy.get(tableHeader).should('contain.text', header[i]);
+    }
+  }
+
+  verifyCallResultTableHeader(header) {
+    for (let i = 0; i < header.length; i++) {
+      cy.get('.table-responsive thead th').should('contain.text', header[i]);
     }
   }
 
