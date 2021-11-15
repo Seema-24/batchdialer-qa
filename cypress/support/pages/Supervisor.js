@@ -32,12 +32,12 @@ const allCampaignsDropdown =
   '//div[contains(@class,"ss-select-control")][span[text()="All Campaigns"]]';
 const datePicker = '.date-picker';
 const exportBtn = '.reportCdrs__button';
-const tableHeader = '.table thead';
+const tableHeader = '.resizable-table-thead .th';
 const ReportContactsDropdowns = '.search_bar';
 const departmentsDropdown =
   '//span[text()="Departments"]/parent::div[contains(@class,"ss-select-control")]';
-const agentsName = '.reports-agents__agent-name';
-const agentsDetailsPlusBtn = '.reports-agents__agent-row .fa-plus';
+const agentsName = '.resizable-table-tbody .tr .td';
+const agentsDetailsPlusBtn = '.resizable-table-tbody .tr .td:nth-of-type(1)';
 const agentsDetailsName = '.reports-agents__grid .reports-agents__grid-item';
 const allStatusDropdown =
   '//div[contains(@class,"ss-select-control")][span[text()="All Statuses"]]';
@@ -224,7 +224,7 @@ export default class Suprevisor {
   }
 
   clickAgentsDetailsPlusBtn() {
-    cy.get(agentsDetailsPlusBtn).first().click({ force: true });
+    cy.get(agentsDetailsPlusBtn).first().click();
   }
 
   verifyAgentsDetails(data) {

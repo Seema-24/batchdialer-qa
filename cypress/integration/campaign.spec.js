@@ -60,8 +60,8 @@ describe('Add Campaign flow', () => {
       'Mode',
       'Status',
       'Total Leads',
-      'New Leads Left',
-      'Redials Left',
+      'Pending Dials',
+      'Pending Redials',
       'Deals',
       'Answered',
       'Voicemail',
@@ -243,6 +243,7 @@ describe('Add Campaign flow', () => {
     addCamp.searchCampaign(
       fixtureData.campaignName + randNum.toString() + '-edited'
     );
+    cy.wait(1000);
     addCamp.clickUnarchiveCampaign(
       fixtureData.campaignName + randNum.toString() + '-edited'
     );
@@ -303,6 +304,7 @@ describe('Add Campaign flow', () => {
     );
     addCamp.clickArchiveCampaignButton();
     addCamp.handleAlertForDelete();
+    cy.wait(1000);
     addCamp.clickEditCampaign(
       fixtureData.campaignName + randNum.toString() + '-edited'
     );

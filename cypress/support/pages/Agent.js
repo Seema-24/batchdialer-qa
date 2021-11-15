@@ -1,6 +1,6 @@
 const campaignsMenu = 'a[title="Campaigns"]';
 const campaign = (camp) =>
-  `//div[@class="td"]//div[@class="position-relative"]//span[text()="${camp}"]`;
+  `//span[@class="campaign-name-table"][text()="${camp}"]`;
 const accessDenied =
   "//div[contains(@class,'card-title') and (text()='Access Denied')]";
 const statusDropdown = '.nav-item .ss-select';

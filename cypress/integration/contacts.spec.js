@@ -334,6 +334,7 @@ describe('Add Contact flow', () => {
   it('Schedule a Follow Up Call', () => {
     addCont.clickingOnContactOption();
     addCont.enterSearch(testData.Contact);
+    cy.wait(1000);
     addCont.clickContactName(testData.Contact);
     addCont.clickFollowUpCall();
     addCont.selectDateForFollowUpCall();
@@ -346,6 +347,7 @@ describe('Add Contact flow', () => {
   it('Verify Cancel button should close the notes window', () => {
     addCont.clickingOnContactOption();
     addCont.enterSearch(testData.Contact);
+    cy.wait(1000);
     addCont.clickContactName('random Contact');
     addCont.clickNotes();
     addCont.clickAddNewNotes();
@@ -366,6 +368,7 @@ describe('Add Contact flow', () => {
   it('Verify Admin is able to add notes in Contacts', () => {
     addCont.clickingOnContactOption();
     addCont.enterSearch(testData.Contact);
+    cy.wait(1000);
     addCont.clickContactName('random Contact');
     addCont.clickNotes();
     addCont.clickAddNewNotes();

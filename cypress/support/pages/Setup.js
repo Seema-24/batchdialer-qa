@@ -109,7 +109,7 @@ export default class Setup {
         this.createNewCampaign(name, callResults, phone, agentName);
       } else {
         cy.xpath(
-          '//div[@class="resizable-table-tbody"]//div[@class="td"]//div[contains(@class,"campaign-name-table")]'
+          '//div[@class="resizable-table-tbody"]//div[@class="td"]//span[contains(@class,"campaign-name-table")]'
         ).then((el) => {
           if (el.text().trim().includes(name)) {
             cy.log('Campaign already exist');

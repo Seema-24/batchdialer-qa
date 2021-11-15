@@ -13,7 +13,7 @@ const StatusDropDown = 'div#navbarSupportedContent div.ss-select';
 const Dialer = 'img[src*="softphone.svg"]';
 const Task = 'a[href="/tasks/"]';
 const UserProfile = '.profile_name';
-const LoginSearchBox = 'form[class="search"] input';
+const LoginSearchBox = '.dropdown-usertree.show .search-box';
 const SearchedUser = 'AUTOMATION';
 const SelectStatus = '.ss-select-group-items';
 const ContinueButton = '//button[text()="Continue"]';
@@ -73,7 +73,7 @@ const NewAgentScriptButton = '.addnew';
 const AgentScriptTableHeading = '.table thead';
 const AudioLibraryNewRecording =
   "//button[contains(text(),'Add New Recording')]";
-const AudioLibrarySearchBox = '.search-box-wrapper .search-box';
+const AudioLibrarySearchBox = '.search-box__wrapper .search-box';
 const searchBox = '.search-box';
 const AudioLibraryTableHeading = '.recordings  thead';
 const AudioLibraryRecordings = '.recordings  tbody';
@@ -105,7 +105,7 @@ const enterName = '.modal-body input[name="name"]';
 const recordingText = 'textarea[name="text"]';
 const generateButton = '//button[text()="Generate"]';
 const speech = '.progress';
-const searchClearBtn = '.search-box-wrapper button.x-close-icon';
+const searchClearBtn = '.search-box__wrapper button.x-close-icon';
 const softphoneCloseBtn = '.stg-softphone-right-close';
 const putSubscriptionOnHold = "//button[text()='Put Subscription On Hold']";
 const keepPhoneCheckbox = '.radio_cstm';
@@ -194,7 +194,7 @@ const searchedEmojiList = (emojiName) =>
   'div[data-name="Search"] + .emoji-mart-category-list li button[aria-label*="' +
   emojiName +
   '"]';
-const completedCheckbox = `//label[@class="radio_cstm" and text()="Completed"]//span[@class="checkmark"]`;
+const completedCheckbox = `//label[contains(@class,"radio_cstm")][text()="Completed"]//span[@class="checkmark"]`;
 const taskAddNewBtn = '//button[span[text()="ADD NEW"]]';
 const calendarEventTypesBox = '.calendar-event-types';
 const calendarMonthPicker = '.calendar-month-selector';

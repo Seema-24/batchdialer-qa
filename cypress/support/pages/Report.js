@@ -1,7 +1,7 @@
 const reportHeader = '.reports-top-bar';
 const reportMenu = "a[title='Reports']";
 const reportLive = '.report-live-buttons-left';
-const tableHeader = '.table thead';
+const tableHeader = '.resizable-table-thead .th';
 const ReportContactsDropdowns = '.modal-filter-body .ss-select';
 const reportsHeader = (header) => '.subitem a[title="' + header + '"]';
 const ReportContactButton = "//div[text()='Recent Contacts']";
@@ -11,8 +11,8 @@ const agentsDropdown = '.reportAgentsForm';
 const AgentButton = "//div[text()='Agents']";
 const NumberButton = "//div[text()='Numbers']";
 const numberDropdown = '.reportNumbersForm';
-const searchBox = '.search-box-wrapper';
-const table = '.table';
+const searchBox = '.search-box';
+const table = '.resizable-table';
 const campaignStatusDropdown =
   "//span[text()='All Statuses']/ancestor::div[contains(@class,'inverted')]";
 const campaignCalander = '.dropdown-menu';
@@ -21,7 +21,7 @@ const campCalanderTimeline = '.links';
 const calenderMonthDropdown = '.DayPicker-Caption';
 const calenderDays = '.DayPicker-Weekdays';
 const calenderDate = '.DayPicker-Body';
-const tableBody = '.table tbody ';
+const tableBody = '.resizable-table-tbody';
 const dialerNumber = '.table-responsive tbody tr td:nth-child(4)';
 const exportbtn = "//button[text()='Export']";
 const agentHeatMap = "//div[text()='Agents Heat Map']";

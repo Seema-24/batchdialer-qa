@@ -90,7 +90,7 @@ const newGroupBtn = '//button[contains(text(),"New Group")]';
 const tableBody = '.group-inner .disposition';
 const callResultMenu = 'a[title="Call Results"]';
 const customRadioBtn = (x) =>
-  "//label[@class='radio_cstm'][contains(.,'" + x + "')]";
+  "//label[contains(@class,'radio_cstm')][contains(.,'" + x + "')]";
 const buttonColorBox = '.disposition-color';
 const groupNameField = '.group-row input';
 const addNewRuleBtn = '//button[contains(text(),"ADD NEW RULE")]';
@@ -155,7 +155,7 @@ const deleteCallResultGroupIcon = (groupName) =>
   `//td[@class="group-title" and text()="${groupName}"]/parent::tr[@class="group-row"]//span/*[name()="svg"][contains(@class,"fa-trash")]`;
 const editCallResultGroupIcon = (groupName) =>
   `//td[@class="group-title" and text()="${groupName}"]/parent::tr[@class="group-row"]//span/*[name()="svg"][contains(@class,"fa-pencil")]`;
-const showOnCampaignPage = `//label[@class="radio_cstm"][text()="Display on New Campaign Page"]//span[@class="checkmark"]`;
+const showOnCampaignPage = `//label[contains(@class,"radio_cstm")][text()="Display on New Campaign Page"]//span[@class="checkmark"]`;
 const ungroupedCallResults = '.group-row.noedit + .group-inner .disposition';
 
 export default class PhoneNum {

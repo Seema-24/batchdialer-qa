@@ -2,7 +2,7 @@ import promisify from 'cypress-promise';
 import { ignoreSpeedTestPopup } from '../Utils';
 
 const userMenu = 'a[title="Users"]';
-const addNewUser = '//button[contains(text(),"ADD NEW USER")]';
+const addNewUser = '//button[contains(text(),"ADD NEW")]';
 const firstName = 'input[name="firstname"]';
 const lastName = 'input[name="lastname"]';
 const roleDropdown =

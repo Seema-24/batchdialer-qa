@@ -65,7 +65,7 @@ const companyDNCYES =
 const companyDNCNO =
   "//label[text()='Scrub Company DNC']/parent::div/following-sibling::div/label[text()='No']/input";
 const CancelButton = "//button[text()=' CANCEL']";
-const RecStartEndDate = `//label[text()="Start and End Date"]/following-sibling::div[@class="date-picker"]`;
+const RecStartEndDate = `//label[text()="Start and End Date"]/following-sibling::div//div[@class="date-picker"]`;
 const RecEndDate = "//label[text()='End Date']/parent::div/div";
 const RecCallResult = `//label[text()="Call Results"]/following-sibling::div[contains(@class,"ss-select")]`;
 const RecUseList = "//label[text()='Use Lists From']/parent::div/div";
@@ -119,11 +119,11 @@ const status =
   '//div[contains(@class,"expanded")]/following-sibling::div//div[text()="Status"]';
 const recycleOption = '//a[@class="dropdown-item" and text()="Recycle"]';
 const recycleCampaignMenuBtn = (campaignName) =>
-  `//div[@class="position-relative"][text()="${campaignName}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]`;
+  `//span[text()="${campaignName}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]`;
 const leadSheetDropdown = `//div[label[@class="form-label" and text()="Lead Sheet"]]/following-sibling::div[div[contains(.,"Select Lead Sheet")]]`;
 const tableRefreshBtn = 'span[title="Refresh"]';
 const campaignStatus = (campaignName) =>
-  `//div[@class="tr"][div[@class="td"][div[@class="position-relative"]//span[text()="${campaignName}"]]]//div[@class="campaign__status-circle"]`;
+  `//span[text()="${campaignName}"]//ancestor::div[@class="tr"]//div[@class="campaign__status-circle"]`;
 const softphoneNextLead = '.stg-softphone-next-lead';
 const softphoneIcon = '.nav-item .softphone-icon';
 const dropdownItem = '.show.dropdown-menu .dropdown-item';
@@ -200,10 +200,9 @@ export default class Campaign {
   }
 
   verifyAddedCampaign(camp) {
-    cy.xpath(
-      `//div[@class="tr"][div[@class="td"][div[@class="position-relative"]//span[text()="${camp}"]]]`,
-      { timeout: 10000 }
-    )
+    cy.xpath(`//span[text()="${camp}"]//ancestor::div[@class="tr"]`, {
+      timeout: 10000,
+    })
       .scrollIntoView()
       .should('be.visible');
   }
@@ -211,10 +210,9 @@ export default class Campaign {
   verifyUnarchievedCampaign(camp) {
     cy.reload();
     ignoreSpeedTestPopup();
-    cy.xpath(
-      `//div[@class="tr"][div[@class="td"][div[@class="position-relative"]//span[text()="${camp}"]]]`,
-      { timeout: 10000 }
-    ).should('be.visible');
+    cy.xpath(`//span[text()="${camp}"]//ancestor::div[@class="tr"]`, {
+      timeout: 10000,
+    }).should('be.visible');
   }
 
   clickToSelectPasused(val) {
@@ -672,11 +670,11 @@ export default class Campaign {
 
   clickUnarchiveCampaign(arc) {
     cy.xpath(
-      `//div[text()="${arc}"]/ancestor::div[@class="tr"]//*[name()="svg"][@data-icon="undo"]`
+      `//span[text()="${arc}"]/ancestor::div[@class="tr"]//*[name()="svg"][@data-icon="undo"]`
     )
       .first()
       .scrollIntoView()
-      .click();
+      .click({ force: true });
   }
 
   clickStatus() {

@@ -60,6 +60,7 @@ describe('Report Page', function () {
       'Contact',
       'Campaign',
       'Duration',
+      'Status',
     ]);
   });
 
@@ -110,7 +111,7 @@ describe('Report Page', function () {
       'NA',
       'Agents',
       'Contacts',
-      'Completed ',
+      'Completed',
     ]);
   });
 
@@ -180,13 +181,13 @@ describe('Report Page', function () {
   it('verify Calender Elements', () => {
     report.verifyCalenderTimeline([
       'Today',
-      'Last 7 days',
-      'Last 4 weeks',
-      'Last 3 months',
-      'Last 12 months',
-      'Month to date',
-      'Quarter to date',
-      'Year to date',
+      'Last 7 Days',
+      'Last 4 Weeks',
+      'Last 3 Months',
+      'Last 12 Months',
+      'Month to Date',
+      'Quarter to Date',
+      'Year to Date',
     ]);
     report.verifyCalenderMonthDropdown();
     report.verifyCalenderDates();
