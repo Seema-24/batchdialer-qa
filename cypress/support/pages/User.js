@@ -22,7 +22,7 @@ const groupsDropdown = "span[title='All Groups']";
 const AdminstratorRole = "//span[div[text()='Administrators']]";
 const Adminstrator = '//div[@class="td"][text()="Administrator"]';
 const Agent = '//div[@class="td"][text()="Agent"]';
-const AgentStatuses = "//span[text()='Agent Statuses']";
+const AgentStatuses = `//div[@class="users-narrow-header"]//span[text()='Agent Statuses']`;
 const AssignToGroup = "//div[label[text()='Assign to a Group ']]/div";
 const CancelButton = "//button[text()=' CANCEL']";
 const cancelBtn = "//button[contains(text(),'CANCEL')]";
@@ -30,17 +30,19 @@ const SecondPhone = 'input[name=phone2]';
 const userTableHeading = '.resizable-table-thead .tr .th';
 const userEditButton = '//a[@class="dropdown-item"][text()="Edit"]';
 const userDeleteButton = '//a[@class="dropdown-item"][text()="Delete"]';
-const addAgentStatus =
-  "//div[contains(@class,'card-title')][.='Agent Statuses']//img[contains(@src,'add')]";
-const agentStatusName = "tbody input[type='text']";
-const agentStatusSaveBtn = 'button svg[data-icon="save"]';
+const addAgentStatus = `//div[@class="users-narrow-header"][span[text()='Agent Statuses']]//img[contains(@src,"add")]`;
+const agentStatusName = 'input.inline-input';
+const agentStatusSaveBtn =
+  '.align-items-baseline .align-items-center svg:nth-of-type(1)'; //'div[class*="inline-buttons"] svg:nth-of-type(1)'
+const agentStatusCrossBtn =
+  '.align-items-baseline .align-items-center svg:nth-of-type(2)';
 const agentStatusRemoveBtn = (status) =>
   "//tr[td[input[@value='" + status + "']]]//img[contains(@src,'remove')]";
-const agentGroupName = '.modal-body input';
-const agentGroupRemoveBtn = (group) =>
-  "//tr[td[text()='" + group + "']]//img[contains(@src,'remove')]";
+const agentGroupName = 'input.inline-input';
+const agentGroupMenuBtn = (group) =>
+  `//div[div[contains(@class,"user-editing")]//div[contains(@class,"inline-input-label")][text()="${group}"]]//div[@class="dropdown"]`;
 const addAgentGroup =
-  "//div[contains(@class,'card-title')][.='Agent Groups']//img[contains(@src,'add')]";
+  "//div[@class='users-narrow-header'][span[text()='User Groups']]//img[contains(@src,'add')]";
 const addAgent = 'div.show a.dropdown-item';
 const addSupervisor = 'a[data-key="supervisor"]';
 const agentCount = '.usage-stats-counter strong';
@@ -58,9 +60,15 @@ const contactEditAccess = (accessState) =>
   `//label[text()="${accessState}"]//input[@name="contacteditaccess"]`;
 const userThreeDotMenu = (firstName, lastName) =>
   `//div[@class="tr"][div[@class="td"][text()="${firstName} ${lastName}"]]//div[@class="dropdown"]`;
-const dropdownItems = '.dropdown-item';
+const dropdownItems = '.show .dropdown-item';
 const searchedUser = (fstName, lstName) =>
   `//div[@class="resizable-table-tbody"]//div[@class="tr"]//div[@class="td"][text()="${fstName} ${lstName}"]`;
+const defaultAgentStatuses = (statusName) =>
+  `//div[@class="users-narrow-body"]//div[contains(@class,"agent-editing")]//span[text()="${statusName}"]`;
+const customAgentStatuses = (statusName) =>
+  `//div[@class="users-narrow-body"]//div[contains(@class,"agent-editing")]//div[contains(@class,"inline-input-label")][text()="${statusName}"]`;
+const agentStatusMenu = (statusName) =>
+  `//div[div[contains(@class,"agent-editing")]//div[contains(@class,"inline-input-label")][text()="${statusName}"]]//div[@class="dropdown"]`;
 
 export default class User {
   clickingOnUserOption() {
@@ -205,7 +213,9 @@ export default class User {
 
   verifyAgentStatusesType(statuses) {
     for (let i = 0; i < statuses.length; i++) {
-      cy.xpath("//td[text()='" + statuses[i] + "']").should('be.visible');
+      cy.xpath(defaultAgentStatuses(statuses[i]))
+        .scrollIntoView()
+        .should('be.visible');
     }
   }
 
@@ -291,17 +301,39 @@ export default class User {
   }
 
   verifyAddedAgentStatus(name) {
-    cy.get(agentStatusName).should('have.value', name);
+    cy.xpath(customAgentStatuses(name)).scrollIntoView().should('be.visible');
+  }
+
+  clickOnAgentStatusMenu(name) {
+    cy.xpath(agentStatusMenu(name), { timeout: 5000 }).scrollIntoView().click();
   }
 
   removeAddedAgentStatus(name) {
-    cy.xpath(agentStatusRemoveBtn(name), { timeout: 5000 }).click({
-      force: true,
+    this.clickOnAgentStatusMenu(name);
+    this.clickOnDropdownItem('Delete');
+    this.clickOnButton('Delete');
+  }
+
+  enterStatusNameMoreThan15Char(char) {
+    let nameChar = '';
+    for (let i = 0; i < 16; i++) {
+      nameChar = char + nameChar;
+    }
+    cy.get(agentStatusName).type(nameChar);
+  }
+
+  verifyAgentStatusMaxChar() {
+    cy.get(agentStatusName).then((statusName) => {
+      expect(statusName.attr('value').length).to.equal(15);
     });
   }
 
-  verifyRemovedAgentStatus() {
-    cy.get(agentStatusName).should('not.exist');
+  clickAgentStatusCrossBtn() {
+    cy.get(agentStatusCrossBtn).click();
+  }
+
+  verifyRemovedAgentStatus(name) {
+    cy.xpath(customAgentStatuses(name)).should('not.exist');
   }
 
   enterAgentGroupName(name) {
@@ -313,15 +345,17 @@ export default class User {
   }
 
   verifyAddedAgentGroup(group) {
-    cy.xpath(agentGroupRemoveBtn(group)).should('be.visible');
+    cy.xpath(agentGroupMenuBtn(group)).should('be.visible');
   }
 
   removeAddedAgentGroup(group) {
-    cy.xpath(agentGroupRemoveBtn(group)).click();
+    cy.xpath(agentGroupMenuBtn(group)).click();
+    this.clickOnDropdownItem('Delete');
+    this.clickOnButton('Delete');
   }
 
   verifyRemovedAgentGroup(group) {
-    cy.xpath(agentGroupRemoveBtn(group)).should('not.exist');
+    cy.xpath(agentGroupMenuBtn(group)).should('not.exist');
   }
 
   clickAddAgentGroup() {

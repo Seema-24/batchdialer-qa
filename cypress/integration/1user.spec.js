@@ -233,6 +233,14 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyUserDeleteButton();
   });
 
+  it('Verify that Agent Status name has character limit of 15', () => {
+    addUser.clickingOnUserOption();
+    addUser.clickAddAgentStatus();
+    addUser.enterStatusNameMoreThan15Char('t');
+    addUser.verifyAgentStatusMaxChar();
+    addUser.clickAgentStatusCrossBtn();
+  });
+
   it('Should add a new Agent Status', () => {
     addUser.clickingOnUserOption();
     addUser.clickAddAgentStatus();
@@ -241,11 +249,21 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyAddedAgentStatus('Working');
   });
 
+  it('Verify that user should be able to edit the agent status', () => {
+    addUser.clickingOnUserOption();
+    addUser.clickOnAgentStatusMenu('Working');
+    addUser.clickOnDropdownItem('Rename');
+    addUser.enterAgentStatusName('-edited');
+    addUser.clickOnAgentStatusSaveBtn();
+    addUser.verifyAddedAgentStatus('Working-edited');
+  });
+
   it('Remove the Added Agent Status', () => {
     cy.wait(1000);
     addUser.clickingOnUserOption();
-    addUser.removeAddedAgentStatus('Working');
-    addUser.verifyRemovedAgentStatus();
+    addUser.removeAddedAgentStatus('Working-edited');
+    addUser.verifyToastMessage('Status was successfully deleted');
+    addUser.verifyRemovedAgentStatus('Working-edited');
   });
 
   it('Should add a new Agent Group', () => {
@@ -259,6 +277,7 @@ describe('Login Successfully and Add User', () => {
   it('Remove the Added Agent Group', () => {
     addUser.clickingOnUserOption();
     addUser.removeAddedAgentGroup('Working');
+    addUser.verifyToastMessage('User Group was successfully deleted');
     addUser.verifyRemovedAgentGroup('Working');
   });
 
