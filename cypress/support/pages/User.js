@@ -69,6 +69,10 @@ const customAgentStatuses = (statusName) =>
   `//div[@class="users-narrow-body"]//div[contains(@class,"agent-editing")]//div[contains(@class,"inline-input-label")][text()="${statusName}"]`;
 const agentStatusMenu = (statusName) =>
   `//div[div[contains(@class,"agent-editing")]//div[contains(@class,"inline-input-label")][text()="${statusName}"]]//div[@class="dropdown"]`;
+const modalHeader = '.usergroup-delete-modal .modal-content .modal-header';
+const agentStatusColorIcon = (statusName) =>
+  `//div[contains(@class,"inline-input-label")][text()="${statusName}"]/preceding-sibling::span[@class="agent-status-circle"]`;
+const colorPicker = '.users-narrow-color-wheel #colour-picker';
 
 export default class User {
   clickingOnUserOption() {
@@ -211,6 +215,10 @@ export default class User {
     cy.xpath(AgentStatuses).should('be.visible');
   }
 
+  clickAgentStatusHeading() {
+    cy.xpath(AgentStatuses).scrollIntoView().click();
+  }
+
   verifyAgentStatusesType(statuses) {
     for (let i = 0; i < statuses.length; i++) {
       cy.xpath(defaultAgentStatuses(statuses[i]))
@@ -308,10 +316,35 @@ export default class User {
     cy.xpath(agentStatusMenu(name), { timeout: 5000 }).scrollIntoView().click();
   }
 
-  removeAddedAgentStatus(name) {
+  verifyAgentStatusActionMenuNotExist(statusName) {
+    for (let i = 0; i < statusName.length; i++) {
+      cy.xpath(agentStatusMenu(statusName[i])).should('not.exist');
+    }
+  }
+
+  verifyAgentStatusNameField() {
+    cy.get(agentStatusName).should('be.visible');
+  }
+
+  clickModalHeader() {
+    cy.get(modalHeader).scrollIntoView().click();
+  }
+
+  verifyColorPickerNotVisible() {
+    cy.get(colorPicker).should('not.exist');
+  }
+
+  verifyAgentStatusSaveBtn() {
+    cy.get(agentStatusSaveBtn).should('be.visible');
+  }
+
+  verifyAgentStatusCrossBtn() {
+    cy.get(agentStatusCrossBtn).should('be.visible');
+  }
+
+  clickAgentStatusDeleteMenu(name) {
     this.clickOnAgentStatusMenu(name);
     this.clickOnDropdownItem('Delete');
-    this.clickOnButton('Delete');
   }
 
   enterStatusNameMoreThan15Char(char) {
@@ -326,6 +359,14 @@ export default class User {
     cy.get(agentStatusName).then((statusName) => {
       expect(statusName.attr('value').length).to.equal(15);
     });
+  }
+
+  verifyAgentStatusActionMenu(actionName) {
+    for (let i = 0; i < actionName.length; i++) {
+      cy.get(dropdownItems).then((actions) => {
+        expect(actions.text()).to.contains(actionName[i]);
+      });
+    }
   }
 
   clickAgentStatusCrossBtn() {
@@ -434,6 +475,10 @@ export default class User {
     cy.get(modalTitle).should('have.text', title);
   }
 
+  verifyModalHeader(title) {
+    cy.get(modalHeader).should('have.text', title);
+  }
+
   clickStatusDropdown() {
     cy.get(statusDropdown).click();
   }
@@ -471,5 +516,13 @@ export default class User {
   clickUserEditButton(userFirstName, userLastName) {
     cy.xpath(userThreeDotMenu(userFirstName, userLastName)).click();
     this.clickOnDropdownItem('Edit');
+  }
+
+  clickAgentStatusColorIcon(statusName) {
+    cy.xpath(agentStatusColorIcon(statusName)).click();
+  }
+
+  verifyColorPickerVisible() {
+    cy.get(colorPicker).should('be.visible');
   }
 }

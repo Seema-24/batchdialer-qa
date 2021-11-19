@@ -39,7 +39,7 @@ describe('Login Successfully and Add User', () => {
     cy.Logout();
   });
 
-  it('Should Login', () => {
+  it.only('Should Login', () => {
     cy.Login(Cypress.env('username'), Cypress.env('password'));
     cy.reload();
     ignoreSpeedTestPopup();
@@ -169,7 +169,7 @@ describe('Login Successfully and Add User', () => {
     addUser.clickAdminstratorRole('Administrators');
   });
 
-  it('verify Agent Statuses Heading and All Statuses', function () {
+  it.only('verify Agent Statuses Heading and All Statuses', function () {
     addUser.clickingOnUserOption();
     addUser.verifyAgentStatusesHeading();
     addUser.verifyAgentStatusesType([
@@ -233,15 +233,37 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyUserDeleteButton();
   });
 
-  it('Verify that Agent Status name has character limit of 15', () => {
+  it.only('Verify that all statuses can be deleted, edit and colour changed except pre-defined statuses', () => {
+    addUser.clickingOnUserOption();
+    addUser.verifyAgentStatusActionMenuNotExist([
+      'Available',
+      'Break',
+      'Lunch',
+      'In training',
+      'Out of desk',
+      'Offline',
+      'In Meeting',
+      'PrepWork',
+      'After Call',
+    ]);
+  });
+
+  it.only('verify that clicking on the add status button then an inline input field should be visible along with the save and cancel button', () => {
     addUser.clickingOnUserOption();
     addUser.clickAddAgentStatus();
+    addUser.verifyAgentStatusNameField();
+    addUser.verifyAgentStatusSaveBtn();
+    addUser.verifyAgentStatusCrossBtn();
+    addUser.verifyColorPickerVisible();
+  });
+
+  it.only('Verify that Agent Status name has character limit of 15', () => {
     addUser.enterStatusNameMoreThan15Char('t');
     addUser.verifyAgentStatusMaxChar();
     addUser.clickAgentStatusCrossBtn();
   });
 
-  it('Should add a new Agent Status', () => {
+  it.only('Should add a new Agent Status', () => {
     addUser.clickingOnUserOption();
     addUser.clickAddAgentStatus();
     addUser.enterAgentStatusName('Working');
@@ -249,7 +271,30 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyAddedAgentStatus('Working');
   });
 
-  it('Verify that user should be able to edit the agent status', () => {
+  it.only('Verify that Agent Status actions are combined in the menu : Edit, Change colour, delete', () => {
+    addUser.clickingOnUserOption();
+    addUser.clickOnAgentStatusMenu('Working');
+    addUser.verifyAgentStatusActionMenu(['Rename', 'Change Color', 'Delete']);
+  });
+
+  it.only('Verify that while colour picker is active then user click outside of it, will close and apply color to status', () => {
+    addUser.clickingOnUserOption();
+    addUser.clickAgentStatusColorIcon('Working');
+    addUser.verifyColorPickerVisible();
+    addUser.clickAgentStatusHeading();
+    addUser.verifyColorPickerNotVisible();
+  });
+
+  it.only('verify that user should change the status colour by clicking the left side of status and 3 dot submenu icon change colour', () => {
+    addUser.clickingOnUserOption();
+    addUser.clickAgentStatusColorIcon('Working');
+    addUser.verifyColorPickerVisible();
+    addUser.clickOnAgentStatusMenu('Working');
+    addUser.clickOnDropdownItem('Change Color');
+    addUser.verifyColorPickerVisible();
+  });
+
+  it.only('Verify that user should be able to edit the agent status', () => {
     addUser.clickingOnUserOption();
     addUser.clickOnAgentStatusMenu('Working');
     addUser.clickOnDropdownItem('Rename');
@@ -258,10 +303,16 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyAddedAgentStatus('Working-edited');
   });
 
-  it('Remove the Added Agent Status', () => {
+  it.only('verify that user clicks on Delete it should open a confirmation popup', () => {
     cy.wait(1000);
     addUser.clickingOnUserOption();
-    addUser.removeAddedAgentStatus('Working-edited');
+    addUser.clickAgentStatusDeleteMenu('Working-edited');
+    addUser.verifyDialogOpen();
+    addUser.verifyModalHeader('DELETE AGENT STATUS');
+  });
+
+  it.only('Remove the Added Agent Status', () => {
+    addUser.clickOnButton('Delete');
     addUser.verifyToastMessage('Status was successfully deleted');
     addUser.verifyRemovedAgentStatus('Working-edited');
   });
