@@ -69,10 +69,16 @@ const customAgentStatuses = (statusName) =>
   `//div[@class="users-narrow-body"]//div[contains(@class,"agent-editing")]//div[contains(@class,"inline-input-label")][text()="${statusName}"]`;
 const agentStatusMenu = (statusName) =>
   `//div[div[contains(@class,"agent-editing")]//div[contains(@class,"inline-input-label")][text()="${statusName}"]]//div[@class="dropdown"]`;
+const userGroupMenuBtn = (groupName) =>
+  `//div[div[contains(@class,"user-editing")]//div[contains(@class,"inline-input-label")][text()="${groupName}"]]//div[@class="dropdown"]`;
 const modalHeader = '.usergroup-delete-modal .modal-content .modal-header';
 const agentStatusColorIcon = (statusName) =>
   `//div[contains(@class,"inline-input-label")][text()="${statusName}"]/preceding-sibling::span[@class="agent-status-circle"]`;
 const colorPicker = '.users-narrow-color-wheel #colour-picker';
+const agentNumberInGroup = (groupName, no) =>
+  `//div[contains(@class,"user-editing")]//div[contains(@class,"inline-input-label")][text()="${groupName}"][strong[text()="${no}"]]`;
+const userGroupDropdown = `//label[@class="form-label"][text()="User Group"]/following-sibling::div//div[contains(@class,"ss-select-control")]`;
+const options = '.ss-select-option';
 
 export default class User {
   clickingOnUserOption() {
@@ -144,6 +150,10 @@ export default class User {
   deleteAddedContact(fstaName, lstName) {
     cy.xpath(userThreeDotMenu(fstaName, lstName)).first().click();
     this.clickOnDropdownItem('Delete');
+  }
+
+  clickUserThreeDotMenu(firstName, lastName) {
+    cy.xpath(userThreeDotMenu(firstName, lastName)).first().click();
   }
 
   clickOnDropdownItem(itemName) {
@@ -347,7 +357,7 @@ export default class User {
     this.clickOnDropdownItem('Delete');
   }
 
-  enterStatusNameMoreThan15Char(char) {
+  enterNameMoreThan15Char(char) {
     let nameChar = '';
     for (let i = 0; i < 16; i++) {
       nameChar = char + nameChar;
@@ -355,7 +365,7 @@ export default class User {
     cy.get(agentStatusName).type(nameChar);
   }
 
-  verifyAgentStatusMaxChar() {
+  verifyMaxChar() {
     cy.get(agentStatusName).then((statusName) => {
       expect(statusName.attr('value').length).to.equal(15);
     });
@@ -371,6 +381,14 @@ export default class User {
 
   clickAgentStatusCrossBtn() {
     cy.get(agentStatusCrossBtn).click();
+  }
+
+  clickUserGroupCrossBtn() {
+    cy.get(agentStatusCrossBtn).click();
+  }
+
+  clickUserGroupMenuBtn(groupName) {
+    cy.xpath(userGroupMenuBtn(groupName)).click();
   }
 
   verifyRemovedAgentStatus(name) {
@@ -524,5 +542,26 @@ export default class User {
 
   verifyColorPickerVisible() {
     cy.get(colorPicker).should('be.visible');
+  }
+
+  verifyGroupWithAgentNumber(groupName, num) {
+    cy.xpath(agentNumberInGroup(groupName, num))
+      .scrollIntoView()
+      .should('be.visible');
+  }
+
+  clickUserGroupDropdown() {
+    cy.xpath(userGroupDropdown).click();
+  }
+
+  selectOption(optionName) {
+    cy.get(options).then((Opts) => {
+      for (let i = 0; i < Opts.length; i++) {
+        if (Opts[i].textContent.trim() === optionName) {
+          cy.get(Opts[i]).click();
+          break;
+        }
+      }
+    });
   }
 }

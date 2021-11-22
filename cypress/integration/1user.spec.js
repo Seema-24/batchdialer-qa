@@ -169,7 +169,7 @@ describe('Login Successfully and Add User', () => {
     addUser.clickAdminstratorRole('Administrators');
   });
 
-  it.only('verify Agent Statuses Heading and All Statuses', function () {
+  it('verify Agent Statuses Heading and All Statuses', function () {
     addUser.clickingOnUserOption();
     addUser.verifyAgentStatusesHeading();
     addUser.verifyAgentStatusesType([
@@ -233,7 +233,7 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyUserDeleteButton();
   });
 
-  it.only('Verify that all statuses can be deleted, edit and colour changed except pre-defined statuses', () => {
+  it('Verify that all statuses can be deleted, edit and colour changed except pre-defined statuses', () => {
     addUser.clickingOnUserOption();
     addUser.verifyAgentStatusActionMenuNotExist([
       'Available',
@@ -248,7 +248,7 @@ describe('Login Successfully and Add User', () => {
     ]);
   });
 
-  it.only('verify that clicking on the add status button then an inline input field should be visible along with the save and cancel button', () => {
+  it('verify that clicking on the add status button then an inline input field should be visible along with the save and cancel button', () => {
     addUser.clickingOnUserOption();
     addUser.clickAddAgentStatus();
     addUser.verifyAgentStatusNameField();
@@ -257,13 +257,13 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyColorPickerVisible();
   });
 
-  it.only('Verify that Agent Status name has character limit of 15', () => {
-    addUser.enterStatusNameMoreThan15Char('t');
-    addUser.verifyAgentStatusMaxChar();
+  it('Verify that Agent Status name has character limit of 15', () => {
+    addUser.enterNameMoreThan15Char('t');
+    addUser.verifyMaxChar();
     addUser.clickAgentStatusCrossBtn();
   });
 
-  it.only('Should add a new Agent Status', () => {
+  it('Should add a new Agent Status', () => {
     addUser.clickingOnUserOption();
     addUser.clickAddAgentStatus();
     addUser.enterAgentStatusName('Working');
@@ -271,13 +271,13 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyAddedAgentStatus('Working');
   });
 
-  it.only('Verify that Agent Status actions are combined in the menu : Edit, Change colour, delete', () => {
+  it('Verify that Agent Status actions are combined in the menu : Edit, Change colour, delete', () => {
     addUser.clickingOnUserOption();
     addUser.clickOnAgentStatusMenu('Working');
     addUser.verifyAgentStatusActionMenu(['Rename', 'Change Color', 'Delete']);
   });
 
-  it.only('Verify that while colour picker is active then user click outside of it, will close and apply color to status', () => {
+  it('Verify that while colour picker is active then user click outside of it, will close and apply color to status', () => {
     addUser.clickingOnUserOption();
     addUser.clickAgentStatusColorIcon('Working');
     addUser.verifyColorPickerVisible();
@@ -285,7 +285,7 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyColorPickerNotVisible();
   });
 
-  it.only('verify that user should change the status colour by clicking the left side of status and 3 dot submenu icon change colour', () => {
+  it('verify that user should change the status colour by clicking the left side of status and 3 dot submenu icon change colour', () => {
     addUser.clickingOnUserOption();
     addUser.clickAgentStatusColorIcon('Working');
     addUser.verifyColorPickerVisible();
@@ -294,7 +294,7 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyColorPickerVisible();
   });
 
-  it.only('Verify that user should be able to edit the agent status', () => {
+  it('Verify that user should be able to edit the agent status', () => {
     addUser.clickingOnUserOption();
     addUser.clickOnAgentStatusMenu('Working');
     addUser.clickOnDropdownItem('Rename');
@@ -303,7 +303,7 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyAddedAgentStatus('Working-edited');
   });
 
-  it.only('verify that user clicks on Delete it should open a confirmation popup', () => {
+  it('verify that user clicks on Delete it should open a confirmation popup', () => {
     cy.wait(1000);
     addUser.clickingOnUserOption();
     addUser.clickAgentStatusDeleteMenu('Working-edited');
@@ -311,13 +311,36 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyModalHeader('DELETE AGENT STATUS');
   });
 
-  it.only('Remove the Added Agent Status', () => {
+  it('Remove the Added Agent Status', () => {
     addUser.clickOnButton('Delete');
     addUser.verifyToastMessage('Status was successfully deleted');
     addUser.verifyRemovedAgentStatus('Working-edited');
   });
 
-  it('Should add a new Agent Group', () => {
+  it.only('Verify that error message is displayed when try to save a Group keeping Name left blank', () => {
+    addUser.clickingOnUserOption();
+    addUser.clickAddAgentGroup();
+    addUser.clickOnAgentGroupSaveBtn();
+    addUser.verifyToastMessage('Minimum 3 characters long');
+  });
+
+  it.only('Verify the maximum number of characters for the Group Name', () => {
+    addUser.clickingOnUserOption();
+    addUser.clickAddAgentGroup();
+    addUser.enterNameMoreThan15Char('t');
+    addUser.verifyMaxChar();
+    addUser.clickUserGroupCrossBtn();
+  });
+
+  it.only('Verify the minimum number of characters for the Group Name', () => {
+    addUser.clickingOnUserOption();
+    addUser.clickAddAgentGroup();
+    addUser.enterAgentGroupName('to');
+    addUser.clickOnAgentGroupSaveBtn();
+    addUser.verifyToastMessage('Minimum 3 characters long');
+  });
+
+  it.only('Should add a new Agent Group', () => {
     addUser.clickingOnUserOption();
     addUser.clickAddAgentGroup();
     addUser.enterAgentGroupName('Working');
@@ -325,11 +348,32 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyAddedAgentGroup('Working');
   });
 
-  it('Remove the Added Agent Group', () => {
+  it.only('Verify that the number of agents is displayed along with group name', () => {
+    const [agentFirstName, agentLastName] = testData.agent.split(' ');
     addUser.clickingOnUserOption();
-    addUser.removeAddedAgentGroup('Working');
+    addUser.clickUserThreeDotMenu(agentFirstName, agentLastName);
+    addUser.clickOnDropdownItem('Edit');
+    addUser.clickUserGroupDropdown();
+    addUser.selectOption('Working');
+    addUser.clickOnButton('SAVE');
+    addUser.verifyToastMessage('Saved');
+    addUser.verifyGroupWithAgentNumber('Working', '1');
+  });
+
+  it.only('Verify that authorized user is able to Rename the existing Group', () => {
+    addUser.clickingOnUserOption();
+    addUser.clickUserGroupMenuBtn('Working');
+    addUser.clickOnDropdownItem('Rename');
+    addUser.enterAgentGroupName('-edited');
+    addUser.clickOnAgentGroupSaveBtn();
+    addUser.verifyAddedAgentGroup('Working-edited');
+  });
+
+  it.only('Remove the Added Agent Group', () => {
+    addUser.clickingOnUserOption();
+    addUser.removeAddedAgentGroup('Working-edited');
     addUser.verifyToastMessage('User Group was successfully deleted');
-    addUser.verifyRemovedAgentGroup('Working');
+    addUser.verifyRemovedAgentGroup('Working-edited');
   });
 
   it('Agent count should increase when admin add agent', async () => {
