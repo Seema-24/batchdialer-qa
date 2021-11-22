@@ -39,7 +39,7 @@ describe('Login Successfully and Add User', () => {
     cy.Logout();
   });
 
-  it.only('Should Login', () => {
+  it('Should Login', () => {
     cy.Login(Cypress.env('username'), Cypress.env('password'));
     cy.reload();
     ignoreSpeedTestPopup();
@@ -317,14 +317,14 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyRemovedAgentStatus('Working-edited');
   });
 
-  it.only('Verify that error message is displayed when try to save a Group keeping Name left blank', () => {
+  it('Verify that error message is displayed when try to save a Group keeping Name left blank', () => {
     addUser.clickingOnUserOption();
     addUser.clickAddAgentGroup();
     addUser.clickOnAgentGroupSaveBtn();
     addUser.verifyToastMessage('Minimum 3 characters long');
   });
 
-  it.only('Verify the maximum number of characters for the Group Name', () => {
+  it('Verify the maximum number of characters for the Group Name', () => {
     addUser.clickingOnUserOption();
     addUser.clickAddAgentGroup();
     addUser.enterNameMoreThan15Char('t');
@@ -332,7 +332,7 @@ describe('Login Successfully and Add User', () => {
     addUser.clickUserGroupCrossBtn();
   });
 
-  it.only('Verify the minimum number of characters for the Group Name', () => {
+  it('Verify the minimum number of characters for the Group Name', () => {
     addUser.clickingOnUserOption();
     addUser.clickAddAgentGroup();
     addUser.enterAgentGroupName('to');
@@ -340,7 +340,7 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyToastMessage('Minimum 3 characters long');
   });
 
-  it.only('Should add a new Agent Group', () => {
+  it('Should add a new Agent Group', () => {
     addUser.clickingOnUserOption();
     addUser.clickAddAgentGroup();
     addUser.enterAgentGroupName('Working');
@@ -348,7 +348,7 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyAddedAgentGroup('Working');
   });
 
-  it.only('Verify that the number of agents is displayed along with group name', () => {
+  it('Verify that the number of agents is displayed along with group name', () => {
     const [agentFirstName, agentLastName] = testData.agent.split(' ');
     addUser.clickingOnUserOption();
     addUser.clickUserThreeDotMenu(agentFirstName, agentLastName);
@@ -360,7 +360,7 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyGroupWithAgentNumber('Working', '1');
   });
 
-  it.only('Verify that authorized user is able to Rename the existing Group', () => {
+  it('Verify that authorized user is able to Rename the existing Group', () => {
     addUser.clickingOnUserOption();
     addUser.clickUserGroupMenuBtn('Working');
     addUser.clickOnDropdownItem('Rename');
@@ -369,7 +369,7 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyAddedAgentGroup('Working-edited');
   });
 
-  it.only('Remove the Added Agent Group', () => {
+  it('Remove the Added Agent Group', () => {
     addUser.clickingOnUserOption();
     addUser.removeAddedAgentGroup('Working-edited');
     addUser.verifyToastMessage('User Group was successfully deleted');
