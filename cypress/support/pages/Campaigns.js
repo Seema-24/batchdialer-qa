@@ -282,9 +282,11 @@ export default class Campaign {
   }
 
   verifyCampaignHeaderHedings(element) {
-    for (let i = 0; i < element.length; i++) {
-      cy.get(campaignHeadings).should('contain.text', element[i]);
-    }
+    cy.get(campaignHeadings).then((headings) => {
+      for (let i = 0; i < element.length; i++) {
+        expect(headings.text().replace(/\s+/g, ' ')).to.contains(element[i]);
+      }
+    });
   }
 
   clickTableRefreshBtn() {

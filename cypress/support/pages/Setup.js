@@ -23,7 +23,7 @@ const listSaveBtn =
 const addNewbTN = '//button[contains(text(),"ADD NEW")]';
 const nameField = 'input[name="name"]';
 const phoneEditButton = (number) =>
-  `//div[@class="tr"][div[@class="td"][text()="${number}"]]//*[name()="svg"][@data-icon="pencil-alt"]`;
+  `//div[@class="tr"][div[@class="td"][text()="${number}"]]//div[@class="dropdown"]`;
 const numberGroupDropdown = `//div[label[text()="Number Group"]]/following-sibling::div//div[contains(@class,"ss-select-control")]`;
 const options = '.ss-select-option';
 const destinationDropdown = `//div[label[text()="Destination"]]/following-sibling::div[1]//div[contains(@class,"ss-select-control")]`;
@@ -377,6 +377,7 @@ export default class Setup {
 
   clickPhoneEditButton(number) {
     cy.xpath(phoneEditButton(number)).click();
+    this.clickDropdownItem('Edit Number');
   }
 
   selectNumberGroup(numberGroup) {

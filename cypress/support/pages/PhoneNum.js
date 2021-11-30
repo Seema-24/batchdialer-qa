@@ -1,7 +1,7 @@
 import promisify from 'cypress-promise';
 
 const phoneNumMenu = 'a[title="Phone System"]';
-const buyDidbtn = '//button[contains(text(),"BUY DID")]';
+const buyDidbtn = '//button[div[text()="BUY NUMBER"]]';
 const stateDrpdwn =
   '//div[@class="modal-body"]//div[contains(@class,"ss-select")]//span[contains(text(),"Select state")]';
 const searchBtn = '.modal-body button svg[data-icon="search"]';
@@ -16,7 +16,7 @@ const searchToast =
 const closeBtn = '//button[contains(text(),"Close")]';
 const toast = '.Toastify__toast-body';
 const deleteToast =
-  '//div[@class="Toastify__toast-body"]//div[contains(text(),"Number deleted")]';
+  '//div[@class="Toastify__toast-body"]//div[contains(text(),"The number has been deleted")]';
 const assignToDrpdwn = '//div[span[contains(text(),"Agent")]]';
 const ivrAttendent = 'a[title="IVR/Auto Attendant"]';
 const newIvr = '//button[text()=" NEW IVR"]';
@@ -106,9 +106,7 @@ const destinationDropdown = '.modal-content .ss-select';
 const destinationOptions = (option) =>
   "//div[contains(@class,'ss-select-option')][text()='" + option + "']";
 const addedPhoneGroup = (group) =>
-  "//div[@class='card-body']//div[contains(@class,'card-item')][contains(.,'" +
-  group +
-  "')]//img[contains(@src,'delete')]";
+  `//div[div[text()="${group}"]]//div[@class="dropdown"]`;
 const uploadFile = 'input[type="file"]';
 const uploadBtn =
   "//div[contains(@class,'dropbox')]//button[contains(text(),'Upload')]";
@@ -157,6 +155,7 @@ const editCallResultGroupIcon = (groupName) =>
   `//td[@class="group-title" and text()="${groupName}"]/parent::tr[@class="group-row"]//span/*[name()="svg"][contains(@class,"fa-pencil")]`;
 const showOnCampaignPage = `//label[contains(@class,"radio_cstm")][text()="Display on New Campaign Page"]//span[@class="checkmark"]`;
 const ungroupedCallResults = '.group-row.noedit + .group-inner .disposition';
+const dropdownItems = '.show .dropdown-item';
 
 export default class PhoneNum {
   clickCallResultDeleteBtn() {
@@ -252,6 +251,7 @@ export default class PhoneNum {
 
   clickDeletePhoneGroup(group) {
     cy.xpath(addedPhoneGroup(group)).click();
+    this.clickDropdownItem('Delete');
   }
 
   clickEditCallResultGroupIcon(groupName) {
@@ -438,13 +438,26 @@ export default class PhoneNum {
 
   deleteAddedPhoneNumber(num) {
     cy.xpath(
-      `//div[@class="tr"][div[@class="td"][text()="${num}"]]//*[name()="svg"][@data-icon="trash-alt"]`,
+      `//div[@class="tr"][div[@class="td"][text()="${num}"]]//div[@class="dropdown"]`,
       { timeout: 5000 }
     )
       .first()
       .scrollIntoView()
       .click();
+    this.clickDropdownItem('Delete Number');
   }
+
+  clickDropdownItem(itemName) {
+    cy.get(dropdownItems).then((items) => {
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].textContent.trim() === itemName) {
+          cy.get(items[i]).click();
+          break;
+        }
+      }
+    });
+  }
+
   handleAlertForDelete() {
     cy.on('	window:alert', (str) => {
       expect(str).to.equal('Delete Number?');
