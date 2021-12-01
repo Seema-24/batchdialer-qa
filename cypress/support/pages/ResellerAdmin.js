@@ -27,6 +27,11 @@ const editClientTabContent = (tabName) =>
   `.tab-content #tabs-reseller-edit-tabpane-${tabName}.active`;
 const labels = `.active label`;
 const stateDropdown = '.active select[name="state"]';
+const addIcon = (cardTitle) =>
+  `//div[contains(@class,"card-title")][span[strong[text()="${cardTitle}"]]]//img[contains(@src,"add")]`;
+const ipAddressInputField = 'input[placeholder="IP address"]';
+const IPDeleteButton = (IPAddress) =>
+  `//div[@class="item"][span[text()="${IPAddress}"]]//img[contains(@src,"delete")]`;
 
 export default class Reseller {
   clickUserTreeDropdown() {
@@ -42,9 +47,7 @@ export default class Reseller {
   }
 
   handleAlertWindow() {
-    cy.on('	window:alert', (str) => {
-      expect(str).to.equal('Login?');
-    });
+    cy.on('	window:alert', (str) => {});
     cy.on('window:confirm', () => true);
   }
 
@@ -180,5 +183,17 @@ export default class Reseller {
 
   selectState(state) {
     cy.get(stateDropdown).select(state);
+  }
+
+  clickIPAddIcon() {
+    cy.xpath(addIcon('IP')).click();
+  }
+
+  enterIPAddress(IPAddress) {
+    cy.get(ipAddressInputField).type(IPAddress);
+  }
+
+  clickIPDeleteButton(IPAddress) {
+    cy.xpath(IPDeleteButton(IPAddress)).click();
   }
 }
