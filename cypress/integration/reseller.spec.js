@@ -23,40 +23,40 @@ describe('Reseller Admin', () => {
         return true;
       },
     });
-    //   register.clickSignUpBtn();
-    //   register.enterFirstName('Demo');
-    //   register.enterLastName('testing');
-    //   register.enterCompanyName('Fleek+' + randomNumber + '');
-    //   register.selectIndustry('Other');
-    //   register.enterPhoneNumber('9999999999');
-    //   register.enterEmail(email);
-    //   register.enterPassword('Fleek@2016');
-    //   register.enterConfirmPassword('Fleek@2016');
-    //   register.clickContinueToPlanBtn();
-    //   register.choosePlan('Single Line Dialer'); //Multi-Line Dialer
-    //   register.verifyPlanPrice();
-    //   register.enterCardDetailsForSignUp(
-    //     Cypress.env('CardName'),
-    //     Cypress.env('CardNumber'),
-    //     Cypress.env('ExpiryDate'),
-    //     Cypress.env('CVC'),
-    //     Cypress.env('Country'),
-    //     Cypress.env('BillingZip'),
-    //     Cypress.env('Coupon')
-    //   );
-    //   register.clickAgreeCheckbox();
-    //   register.clickSubscribeBtn();
-    //   cy.waitFor(cy.get('.main_sec', { timeout: 30000 }));
-    //   ignoreSpeedTestPopup();
-    //   login.verifySuccessfullLogin();
-    //   cy.Logout();
+    register.clickSignUpBtn();
+    register.enterFirstName('Demo');
+    register.enterLastName('testing');
+    register.enterCompanyName('Fleek+' + randomNumber + '');
+    register.selectIndustry('Other');
+    register.enterPhoneNumber('9999999999');
+    register.enterEmail(email);
+    register.enterPassword('Fleek@2016');
+    register.enterConfirmPassword('Fleek@2016');
+    register.clickContinueToPlanBtn();
+    register.choosePlan('Single Line Dialer'); //Multi-Line Dialer
+    register.verifyPlanPrice();
+    register.enterCardDetailsForSignUp(
+      Cypress.env('CardName'),
+      Cypress.env('CardNumber'),
+      Cypress.env('ExpiryDate'),
+      Cypress.env('CVC'),
+      Cypress.env('Country'),
+      Cypress.env('BillingZip'),
+      Cypress.env('Coupon')
+    );
+    register.clickAgreeCheckbox();
+    register.clickSubscribeBtn();
+    cy.waitFor(cy.get('.main_sec', { timeout: 30000 }));
+    ignoreSpeedTestPopup();
+    login.verifySuccessfullLogin();
+    cy.Logout();
   });
 
   after(() => {
     cy.Logout();
   });
 
-  it.only('Verify that Reseller admin user is able to login', () => {
+  it('Verify that Reseller admin user is able to login', () => {
     cy.Login(Cypress.env('resellerUsername'), Cypress.env('resellerPassword'));
     reseller.clickUserTreeDropdown();
     reseller.clickOnUser('First Tenant');
@@ -191,7 +191,7 @@ describe('Reseller Admin', () => {
     reseller.verifyToastMessage('Client deleted');
   });
 
-  it.only('Verify that Reseller admin is able to add an IP address to black list directly', () => {
+  it('Verify that Reseller admin is able to add an IP address to black list directly', () => {
     reseller.clickOnMenu('Clients');
     reseller.clickOnSubMenu('Trial Blacklist');
     reseller.clickIPAddIcon();
@@ -200,10 +200,27 @@ describe('Reseller Admin', () => {
     reseller.verifyToastMessage('Added');
   });
 
-  it.only('Verify Delete IP address from black list', () => {
+  it('Verify Delete IP address from black list', () => {
     reseller.clickOnMenu('Clients');
     reseller.clickOnSubMenu('Trial Blacklist');
     reseller.clickIPDeleteButton('111.111.1.1');
+    reseller.handleAlertWindow();
+    reseller.verifyToastMessage('Removed');
+  });
+
+  it('Verify that Reseller admin is able to add Referer domain name directly to black list', () => {
+    reseller.clickOnMenu('Clients');
+    reseller.clickOnSubMenu('Trial Blacklist');
+    reseller.clickRefererAddIcon();
+    reseller.enterDomainName('test.com');
+    reseller.clickOnButton('SAVE');
+    reseller.verifyToastMessage('Added');
+  });
+
+  it('Verify Delete Referer from black list', () => {
+    reseller.clickOnMenu('Clients');
+    reseller.clickOnSubMenu('Trial Blacklist');
+    reseller.clickRefererDeleteBtn('test.com');
     reseller.handleAlertWindow();
     reseller.verifyToastMessage('Removed');
   });

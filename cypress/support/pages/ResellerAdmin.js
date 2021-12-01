@@ -32,6 +32,9 @@ const addIcon = (cardTitle) =>
 const ipAddressInputField = 'input[placeholder="IP address"]';
 const IPDeleteButton = (IPAddress) =>
   `//div[@class="item"][span[text()="${IPAddress}"]]//img[contains(@src,"delete")]`;
+const domainNameField = 'input[placeholder="Domain Name"]';
+const refererDeleteBtn = (domainName) =>
+  `//div[@class="item"][span[text()="test.com"]]//img[contains(@src,"delete")]`;
 
 export default class Reseller {
   clickUserTreeDropdown() {
@@ -195,5 +198,17 @@ export default class Reseller {
 
   clickIPDeleteButton(IPAddress) {
     cy.xpath(IPDeleteButton(IPAddress)).click();
+  }
+
+  clickRefererAddIcon() {
+    cy.xpath(addIcon('Referer')).click();
+  }
+
+  enterDomainName(domainName) {
+    cy.get(domainNameField).type(domainName);
+  }
+
+  clickRefererDeleteBtn(domainName) {
+    cy.xpath(refererDeleteBtn(domainName)).click();
   }
 }
