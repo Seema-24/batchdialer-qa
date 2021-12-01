@@ -35,6 +35,20 @@ const IPDeleteButton = (IPAddress) =>
 const domainNameField = 'input[placeholder="Domain Name"]';
 const refererDeleteBtn = (domainName) =>
   `//div[@class="item"][span[text()="test.com"]]//img[contains(@src,"delete")]`;
+const cancelAccountNowRadioBtn =
+  '//label[text()="Cancel the account now (fraud etc.)"]//span[@class="checkmark"]';
+const cancelAccountAtEndRadioBtn =
+  '//label[text()="Cancel the account in the end of current billing cycle"]//span[@class="checkmark"]';
+const trialButton = 'span[title="Click to edit trial"]';
+const modalDialog = '.modal-dialog .modal-content';
+const disableTrialReadioBtn =
+  '//label[text()="Disable Trial"]//span[@class="checkmark"]';
+const changeTrialRadioBtn =
+  '//label[text()="Change Trial Period to"]//span[@class="checkmark"]';
+const trialDays = 'input[name="days"]';
+const noOfTrialDays = 'span[title="Click to edit trial"] .badge-warning';
+const tableHeader = '.resizable-table-thead .th';
+const clientNameData = '.tr .td:nth-of-type(1)';
 
 export default class Reseller {
   clickUserTreeDropdown() {
@@ -165,23 +179,23 @@ export default class Reseller {
   }
 
   enterBillToName(name) {
-    cy.get(inputFields('billto')).type(name);
+    cy.get(inputFields('billto')).clear().type(name);
   }
 
   enterAddress(address) {
-    cy.get(inputFields('address')).type(address);
+    cy.get(inputFields('address')).clear().type(address);
   }
 
   enterZip(zip) {
-    cy.get(inputFields('zip')).type(zip);
+    cy.get(inputFields('zip')).clear().type(zip);
   }
 
   enterCity(city) {
-    cy.get(inputFields('city')).type(city);
+    cy.get(inputFields('city')).clear().type(city);
   }
 
   enterPhone(phone) {
-    cy.get(inputFields('phone')).type(phone);
+    cy.get(inputFields('phone')).clear().type(phone);
   }
 
   selectState(state) {
@@ -210,5 +224,55 @@ export default class Reseller {
 
   clickRefererDeleteBtn(domainName) {
     cy.xpath(refererDeleteBtn(domainName)).click();
+  }
+
+  clickCancelAccountNowRadioBtn() {
+    cy.xpath(cancelAccountNowRadioBtn).click();
+  }
+
+  clickCancelAccountAtEndRadioBtn() {
+    cy.xpath(cancelAccountAtEndRadioBtn).click();
+  }
+
+  clickTrialButton() {
+    cy.get(trialButton).click();
+  }
+
+  verifyModalDialogOpen() {
+    cy.get(modalDialog).should('be.visible');
+  }
+
+  clickDisableTrialRadioBtn() {
+    cy.xpath(disableTrialReadioBtn).click();
+  }
+
+  clickChangeTrialRadioBtn() {
+    cy.xpath(changeTrialRadioBtn).click();
+  }
+
+  verifyDefualtTrialPeriodValue(value) {
+    cy.get(trialDays).should('have.value', value);
+  }
+
+  enterTrialDays(days) {
+    cy.get(trialDays).clear().type(days);
+  }
+
+  verifyNoOfTrialDays(days) {
+    cy.get(noOfTrialDays).should('have.text', `${days} days`);
+  }
+
+  verifySearchFieldVisible() {
+    cy.get(searchInputField).should('be.visible');
+  }
+
+  verifyTableHeaderNames(headerName) {
+    for (let i = 0; i < headerName.length; i++) {
+      cy.get(tableHeader).should('contain.text', headerName[i]);
+    }
+  }
+
+  verifyClientName(name) {
+    cy.get(clientNameData).should('contain.text', name);
   }
 }

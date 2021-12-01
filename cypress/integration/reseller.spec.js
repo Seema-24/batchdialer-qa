@@ -1,7 +1,7 @@
 import Login from '../support/pages/Login';
 import Register from '../support/pages/Register';
 import Reseller from '../support/pages/ResellerAdmin';
-import { ignoreSpeedTestPopup } from '../support/Utils';
+import { covertNumberToNormal, ignoreSpeedTestPopup } from '../support/Utils';
 
 const reseller = new Reseller();
 const login = new Login();
@@ -23,7 +23,7 @@ describe('Reseller Admin', () => {
         return true;
       },
     });
-    register.clickSignUpBtn();
+    cy.visit('/register_trial');
     register.enterFirstName('Demo');
     register.enterLastName('testing');
     register.enterCompanyName('Fleek+' + randomNumber + '');
@@ -34,7 +34,7 @@ describe('Reseller Admin', () => {
     register.enterConfirmPassword('Fleek@2016');
     register.clickContinueToPlanBtn();
     register.choosePlan('Single Line Dialer'); //Multi-Line Dialer
-    register.verifyPlanPrice();
+    // register.verifyPlanPrice();
     register.enterCardDetailsForSignUp(
       Cypress.env('CardName'),
       Cypress.env('CardNumber'),
@@ -127,7 +127,7 @@ describe('Reseller Admin', () => {
     reseller.clearSearchField();
   });
 
-  it('Verify that all the available users details are displayed in Edit Client Users tab', () => {
+  it.skip('Verify that all the available users details are displayed in Edit Client Users tab', () => {
     reseller.clickOnMenu('Clients');
     reseller.enterSearchQuery(email);
     cy.wait(1000);
@@ -183,12 +183,67 @@ describe('Reseller Admin', () => {
     reseller.clearSearchField();
   });
 
+  it('Verify that Reseller admin is able to disable the trial period of a client account', () => {
+    reseller.clickOnMenu('Clients');
+    reseller.enterSearchQuery(email);
+    cy.wait(1000);
+    reseller.clickTrialButton();
+    reseller.verifyModalDialogOpen();
+    reseller.clickDisableTrialRadioBtn();
+    reseller.clickOnButton('SAVE');
+    reseller.verifyToastMessage('Trial period updated');
+  });
+
+  it('Verify the default value that trial period can be extended', () => {
+    reseller.clickOnMenu('Clients');
+    reseller.enterSearchQuery(email);
+    cy.wait(1000);
+    reseller.clickTrialButton();
+    reseller.verifyModalDialogOpen();
+    reseller.clickChangeTrialRadioBtn();
+    reseller.verifyDefualtTrialPeriodValue('7');
+    reseller.clickOnButton('CANCEL');
+  });
+
+  it('Verify that Reseller admin is able to extend the trial period of a client account', () => {
+    reseller.clickOnMenu('Clients');
+    reseller.enterSearchQuery(email);
+    cy.wait(1000);
+    reseller.clickTrialButton();
+    reseller.verifyModalDialogOpen();
+    reseller.clickChangeTrialRadioBtn();
+    reseller.enterTrialDays('5');
+    reseller.clickOnButton('SAVE');
+    reseller.verifyToastMessage('Trial period updated');
+    reseller.verifyNoOfTrialDays('5');
+  });
+
   it('Verify that Reseller admin is able to delete an existing client account', () => {
     reseller.clickOnMenu('Clients');
     reseller.enterSearchQuery(email);
     cy.wait(1000);
     reseller.clickClientDeleteButton(email);
+    reseller.clickCancelAccountNowRadioBtn();
+    reseller.clickOnButton('Continue');
     reseller.verifyToastMessage('Client deleted');
+  });
+
+  it('Verify the elements in the Reseller admin Phone Numbers page', () => {
+    reseller.clickOnMenu('Phone Numbers');
+    reseller.verifySearchFieldVisible();
+    reseller.verifyTableHeaderNames([
+      'Client',
+      'Number',
+      'Reputation',
+      'Location',
+      'Destination',
+    ]);
+  });
+
+  it('Verify Search functionality in Reseller admin Phone Numbers page', () => {
+    reseller.clickOnMenu('Phone Numbers');
+    reseller.enterSearchQuery(covertNumberToNormal(testData.Number));
+    reseller.verifyClientName(testData.AdminName);
   });
 
   it('Verify that Reseller admin is able to add an IP address to black list directly', () => {
