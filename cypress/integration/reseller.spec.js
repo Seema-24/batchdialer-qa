@@ -10,6 +10,14 @@ let fixtureData;
 let testData;
 const randomNumber = Math.floor(Math.random() * 100000);
 const email = 'testing+' + randomNumber + '@test.com';
+const [billto, address, city, state, zip, phone] = [
+  'Test User',
+  'test address',
+  'Mesa',
+  'Arizona',
+  '86743',
+  '9999999999',
+];
 
 describe('Reseller Admin', () => {
   before(() => {
@@ -49,6 +57,17 @@ describe('Reseller Admin', () => {
     cy.waitFor(cy.get('.main_sec', { timeout: 30000 }));
     ignoreSpeedTestPopup();
     login.verifySuccessfullLogin();
+    reseller.clickProfileDropdown();
+    reseller.clickOnDropdownItem('Billing');
+    reseller.clickBillingDetailsEditIcon();
+    reseller.enterBillToName(billto);
+    reseller.enterAddress(address);
+    reseller.enterCity(city);
+    reseller.selectState(state);
+    reseller.enterZip(zip);
+    reseller.enterPhone(phone);
+    reseller.clickOnButton('SAVE');
+    reseller.verifyToastMessage('Updated');
     cy.Logout();
   });
 
@@ -148,6 +167,21 @@ describe('Reseller Admin', () => {
     reseller.verifyLabels('Next Billing Cycle');
     reseller.clickOnButton('CANCEL');
     reseller.clearSearchField();
+  });
+
+  it('Verify that the Billing Details updated by Client Account are reflecting in Reseller account in Billing Address', () => {
+    reseller.clickOnMenu('Clients');
+    reseller.enterSearchQuery(email);
+    cy.wait(1000);
+    reseller.clickAccountEditButton();
+    reseller.clickOnTab('address');
+    reseller.verifyEditClientTabContent('address');
+    reseller.verifyBillToName(billto);
+    reseller.verifyAddress(address);
+    reseller.verifyCity(city);
+    reseller.verifyZip(zip);
+    reseller.verifyPhone(phone);
+    reseller.clickOnButton('CANCEL');
   });
 
   it('Verify that Reseller admin is able to update the Billing address of a client', () => {

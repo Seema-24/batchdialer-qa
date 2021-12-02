@@ -21,12 +21,12 @@ const clientDeleteBtn = (searchQuery) =>
   `//tr[td[div[text()="${searchQuery}"]]]//img[contains(@src,"delete")]`;
 const accountEditBtn = 'img[src*="edit"]';
 const generalTabLabel = '#tabs-reseller-edit-tabpane-general label';
-const inputFields = (inputField) => `.active input[name="${inputField}"]`;
+const inputFields = (inputField) => `input[name="${inputField}"]`;
 const editClientTabs = (tabName) => `#tabs-reseller-edit-tab-${tabName}`;
 const editClientTabContent = (tabName) =>
   `.tab-content #tabs-reseller-edit-tabpane-${tabName}.active`;
 const labels = `.active label`;
-const stateDropdown = '.active select[name="state"]';
+const stateDropdown = 'select[name="state"]';
 const addIcon = (cardTitle) =>
   `//div[contains(@class,"card-title")][span[strong[text()="${cardTitle}"]]]//img[contains(@src,"add")]`;
 const ipAddressInputField = 'input[placeholder="IP address"]';
@@ -49,6 +49,7 @@ const trialDays = 'input[name="days"]';
 const noOfTrialDays = 'span[title="Click to edit trial"] .badge-warning';
 const tableHeader = '.resizable-table-thead .th';
 const clientNameData = '.tr .td:nth-of-type(1)';
+const billingEditIcon = '.billing-card-title button';
 
 export default class Reseller {
   clickUserTreeDropdown() {
@@ -182,20 +183,40 @@ export default class Reseller {
     cy.get(inputFields('billto')).clear().type(name);
   }
 
+  verifyBillToName(name) {
+    cy.get(inputFields('billto')).should('have.value', name);
+  }
+
   enterAddress(address) {
     cy.get(inputFields('address')).clear().type(address);
+  }
+
+  verifyAddress(address) {
+    cy.get(inputFields('address')).should('have.value', address);
   }
 
   enterZip(zip) {
     cy.get(inputFields('zip')).clear().type(zip);
   }
 
+  verifyZip(zip) {
+    cy.get(inputFields('zip')).should('have.value', zip);
+  }
+
   enterCity(city) {
     cy.get(inputFields('city')).clear().type(city);
   }
 
+  verifyCity(city) {
+    cy.get(inputFields('city')).should('have.value', city);
+  }
+
   enterPhone(phone) {
     cy.get(inputFields('phone')).clear().type(phone);
+  }
+
+  verifyPhone(phone) {
+    cy.get(inputFields('phone')).should('have.value', phone);
   }
 
   selectState(state) {
@@ -274,5 +295,9 @@ export default class Reseller {
 
   verifyClientName(name) {
     cy.get(clientNameData).should('contain.text', name);
+  }
+
+  clickBillingDetailsEditIcon() {
+    cy.get(billingEditIcon).click();
   }
 }
