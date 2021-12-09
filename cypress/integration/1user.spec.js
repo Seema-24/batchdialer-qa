@@ -50,7 +50,7 @@ describe('Login Successfully and Add User', () => {
     addUser.clickingOnUserOption();
     cy.wait(3000);
     addUser.clickAddNewUserButton();
-    addUser.clickAddAgent();
+    addUser.chooseUserRole('Agent');
     addUser.enterFirstName(fixtureData.userFirstname);
     addUser.enterLastName(fixtureData.userLastname + randNum.toString());
     addUser.enterEmail(
@@ -73,6 +73,7 @@ describe('Login Successfully and Add User', () => {
         fixtureData.userLastname +
         randNum.toString()
     );
+    cy.wait(2000);
     addUser.verifyAddedUser(
       fixtureData.userFirstname,
       fixtureData.userLastname + randNum.toString()
@@ -113,12 +114,12 @@ describe('Login Successfully and Add User', () => {
         fixtureData.userLastname +
         randNum.toString()
     );
-    cy.wait(1000);
+    cy.wait(2000);
     addUser.clickUserEditButton(
       fixtureData.userFirstname,
       fixtureData.userLastname + randNum.toString()
     );
-    addUser.agentContactEditAccess('Enable');
+    addUser.clickAgentContactEditAccess();
     addUser.clickOnButton('SAVE');
     addUser.verifyToastMessage('Saved');
     cy.wait(1000);
@@ -126,7 +127,7 @@ describe('Login Successfully and Add User', () => {
       fixtureData.userFirstname,
       fixtureData.userLastname + randNum.toString()
     );
-    addUser.agentContactEditAccess('Disable');
+    addUser.clickAgentContactEditAccess();
     addUser.clickOnButton('SAVE');
     addUser.verifyToastMessage('Saved');
   });
@@ -187,7 +188,7 @@ describe('Login Successfully and Add User', () => {
 
   it('verify Add New Agent Page Element', function () {
     addUser.clickAddNewUserButton();
-    addUser.clickAddAgent();
+    addUser.chooseUserRole('Agent');
     addUser.verifyFirstName();
     addUser.verifyLastName();
     addUser.verifyRoleDropdownNewUser();
@@ -203,10 +204,10 @@ describe('Login Successfully and Add User', () => {
 
   it('verify Add New Supervisor Page Element', function () {
     addUser.clickAddNewUserButton();
-    addUser.clickAddSupervisor();
+    addUser.chooseUserRole('Supervisor');
     addUser.verifyFirstName();
     addUser.verifyLastName();
-    addUser.verifyRoleDropdownNewUser();
+    // addUser.verifyRoleDropdownNewUser();
     addUser.verifyEmailField();
     addUser.verifyPasswordField();
     addUser.verifyPhoneNumber();
@@ -387,7 +388,7 @@ describe('Login Successfully and Add User', () => {
     addUser.clickingOnUserOption();
     cy.wait(3000);
     addUser.clickAddNewUserButton();
-    addUser.clickAddAgent();
+    addUser.chooseUserRole('Agent');
     addUser.enterFirstName(fixtureData.userFirstname);
     addUser.enterLastName(fixtureData.userLastname + randNum.toString());
     addUser.enterEmail(
@@ -420,7 +421,7 @@ describe('Login Successfully and Add User', () => {
       fixtureData.userLastname + randNum.toString()
     );
     addUser.clickAddNewUserButton();
-    addUser.clickAddAgent();
+    addUser.chooseUserRole('Agent');
     addUser.clickSaveButton();
     addUser.verifyFieldValidation([
       'Enter First Name',

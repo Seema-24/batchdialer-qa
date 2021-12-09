@@ -10,7 +10,7 @@ let randNum = Math.floor(Math.random() * 100000);
 const addCont = new Contacts();
 const message = (user) => `This is a testing message from ${user}`;
 
-describe('Dashboard Elements', function () {
+describe('Dashboard Elements', () => {
   before(() => {
     cy.readFile('cypress/fixtures/testData.json').then(
       (data) => (testData = data)
@@ -69,28 +69,28 @@ describe('Dashboard Elements', function () {
     Dash.clickCallGraphCloseBtn();
   });
 
-  it('verify elements in Dashboard', function () {
+  it('verify elements in Dashboard', () => {
     Dash.clickDashboard();
     Dash.verifyDashboardElements();
   });
 
-  it('Login As Button Functionality', function () {
+  it('Login As Button Functionality', () => {
     Dash.clickLoginAs();
     Dash.searchUser('automation');
     Dash.verifySearchedUser();
   });
 
-  it('Change Admin Status', function () {
+  it('Change Admin Status', () => {
     Dash.clickStatusButton();
     Dash.selectAvailable('Available', testData.campaign);
     Dash.clickConfirmButton();
   });
 
-  it('verify elements in Dashboard Header', function () {
+  it('verify elements in Dashboard Header', () => {
     Dash.verifyDashboardHeaderElement();
   });
 
-  it('Verify functionality of Dialer button', function () {
+  it('Verify functionality of Dialer button', () => {
     Dash.clickDialer();
     Dash.verifyDialPad();
   });

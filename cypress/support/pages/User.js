@@ -23,7 +23,7 @@ const AdminstratorRole = "//span[div[text()='Administrators']]";
 const Adminstrator = '//div[@class="td"][text()="Administrator"]';
 const Agent = '//div[@class="td"][text()="Agent"]';
 const AgentStatuses = `//div[@class="users-narrow-header"]//span[text()='Agent Statuses']`;
-const AssignToGroup = "//div[label[text()='Assign to a Group ']]/div";
+const AssignToGroup = `//label[text()="User Group"]//following-sibling::div`;
 const CancelButton = "//button[text()=' CANCEL']";
 const cancelBtn = "//button[contains(text(),'CANCEL')]";
 const SecondPhone = 'input[name=phone2]';
@@ -56,8 +56,7 @@ const modal = '.modal-content';
 const statusDropdown = '.modal-content .ss-select-control';
 const statusOptions = '.ss-select-option span';
 const toast = '.Toastify__toast-body';
-const contactEditAccess = (accessState) =>
-  `//label[text()="${accessState}"]//input[@name="contacteditaccess"]`;
+const contactEditAccess = `input[name="contacteditaccess"] + span.checkmark`;
 const userThreeDotMenu = (firstName, lastName) =>
   `//div[@class="tr"][div[@class="td"][text()="${firstName} ${lastName}"]]//div[@class="dropdown"]`;
 const dropdownItems = '.show .dropdown-item';
@@ -79,6 +78,7 @@ const agentNumberInGroup = (groupName, no) =>
   `//div[contains(@class,"user-editing")]//div[contains(@class,"inline-input-label")][text()="${groupName}"][strong[text()="${no}"]]`;
 const userGroupDropdown = `//label[@class="form-label"][text()="User Group"]/following-sibling::div//div[contains(@class,"ss-select-control")]`;
 const options = '.ss-select-option';
+const userRoleDropdown = `//label[text()="User Role"]/following-sibling::div`;
 
 export default class User {
   clickingOnUserOption() {
@@ -89,15 +89,9 @@ export default class User {
     cy.xpath(addNewUser).click();
   }
 
-  clickAddAgent() {
-    cy.get(addAgent).then((user) => {
-      for (let i = 0; i < user.length; i++) {
-        if (user[i].textContent.trim() === 'Agent') {
-          user[i].click();
-          break;
-        }
-      }
-    });
+  chooseUserRole(role) {
+    cy.xpath(userRoleDropdown).click();
+    this.selectOption(role);
   }
 
   clickAddSupervisor() {
@@ -148,7 +142,10 @@ export default class User {
   }
 
   deleteAddedContact(fstaName, lstName) {
-    cy.xpath(userThreeDotMenu(fstaName, lstName)).first().click();
+    cy.xpath(userThreeDotMenu(fstaName, lstName))
+      .first()
+      .scrollIntoView()
+      .click();
     this.clickOnDropdownItem('Delete');
   }
 
@@ -527,12 +524,14 @@ export default class User {
     });
   }
 
-  agentContactEditAccess(accessState) {
-    cy.xpath(contactEditAccess(accessState)).check({ force: true });
+  clickAgentContactEditAccess() {
+    cy.get(contactEditAccess).click();
   }
 
   clickUserEditButton(userFirstName, userLastName) {
-    cy.xpath(userThreeDotMenu(userFirstName, userLastName)).click();
+    cy.xpath(userThreeDotMenu(userFirstName, userLastName))
+      .scrollIntoView()
+      .click();
     this.clickOnDropdownItem('Edit');
   }
 
