@@ -35,20 +35,20 @@ describe('Add Phone Number flow', () => {
     cy.Logout();
   });
 
-  it.only('Should Login', () => {
+  it('Should Login', () => {
     cy.Login(Cypress.env('username'), Cypress.env('password'));
     cy.reload();
     ignoreSpeedTestPopup();
   });
 
-  it.only('Verify that user is able to make bulk and single-row selection by using checkbox', () => {
+  it('Verify that user is able to make bulk and single-row selection by using checkbox', () => {
     addNum.clickPhoneNumberMenu();
     addNum.selectPhoneNumberCheckbox(1);
     addNum.verifyActionsDropdownVisible();
     addNum.verifySelectedCount('1/');
   });
 
-  it.only('Verfiy that user is able to select all phone numbers in the list by selecting check box in the table header', () => {
+  it('Verfiy that user is able to select all phone numbers in the list by selecting check box in the table header', () => {
     addNum.clickPhoneNumberMenu();
     addNum.getTotalNumbersAvailable();
     addNum.clickSelectAllCheckbox();
