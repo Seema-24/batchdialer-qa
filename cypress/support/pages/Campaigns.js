@@ -1,7 +1,7 @@
 import { ignoreSpeedTestPopup } from '../Utils';
 
 const campaignsMenu = 'a[title="Campaigns"]';
-const addCampaign = '//button[contains(text(),"CREATE NEW CAMPAIGN")]';
+const addCampaign = '//button[text()="NEW CAMPAIGN"]';
 const inputName = 'input[name="name"]';
 const switchBar = 'span.switch';
 const radioBtn = (mode) =>
@@ -87,7 +87,7 @@ const schedule =
 const checkSelectAll =
   "//div[@class='schedule-table']//div[contains(@class,'ss-select') and not(contains(@class,'fakeinput'))]";
 const selectAllCheckbox =
-  "//div[text()='Select all']/parent::div//span[@class='checkmark']";
+  "//label[text()='Select All']/parent::div//span[@class='checkmark']";
 const applyToAll = "//span[text()='Apply to all']";
 const checkApply = "//strong[text()='Sun']";
 const applyButton = "//button[text()=' APPLY']";
@@ -143,7 +143,7 @@ export default class Campaign {
   }
 
   enterName(name) {
-    cy.get(inputName).wait(500).type(name, { delay: 200 });
+    cy.get(inputName).wait(500).scrollIntoView().type(name, { delay: 200 });
   }
   enableAdvancedSwitchBar() {
     cy.get(switchBar).click();
@@ -193,6 +193,7 @@ export default class Campaign {
         }
       }
     });
+    cy.get('.row-calldisposition .ss-select').click();
   }
 
   clickCreateCampButton() {
@@ -346,7 +347,7 @@ export default class Campaign {
   }
 
   verifyCampaignNameField() {
-    cy.get(inputName).should('be.visible');
+    cy.get(inputName).scrollIntoView().should('be.visible');
   }
 
   verifyDialModeDropdown() {
@@ -363,7 +364,7 @@ export default class Campaign {
   }
 
   verifyCallTypeAutoAnswer() {
-    cy.xpath(callTypeAutoAnswer).should('be.visible');
+    cy.xpath(callTypeAutoAnswer).scrollIntoView().should('be.visible');
   }
 
   verifyCallTypeBeepOnce() {
@@ -371,7 +372,7 @@ export default class Campaign {
   }
 
   verifyCallTypeRingingSound() {
-    cy.xpath(callTypeRingingSound).should('be.visible');
+    cy.xpath(callTypeRingingSound).scrollIntoView().should('be.visible');
   }
 
   verifyCallerIdError() {

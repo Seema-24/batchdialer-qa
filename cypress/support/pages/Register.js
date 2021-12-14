@@ -43,6 +43,8 @@ const toast = '.Toastify__toast-body';
 const fileInput = 'input[type="file"]';
 const profileAvatar = '.profile-content div.avatar';
 const profilePictureAdded = '.profile-content img.avatar';
+const cancelNowRadioBtn =
+  '//label[text()="Cancel the account now (fraud etc.)"]//span[@class="checkmark"]';
 
 export default class Register {
   clickSignUpBtn() {
@@ -310,5 +312,9 @@ export default class Register {
         expect(firstPictureSrc).to.not.equal(secondPictureSrc);
       });
     });
+  }
+
+  clickCancelNowRadioBtn() {
+    cy.xpath(cancelNowRadioBtn).click();
   }
 }

@@ -44,7 +44,7 @@ const inqueuePhoneNumber = `//div[@class="table-responsive"]//tr[td[text()="INQU
 const callingHoursDropdown = `//label[text()="Calling Hours"]/following-sibling::div//div`;
 const timeFromDropdown = `(//div[text()="Sunday"]/following-sibling::div//div[contains(@class,"ss-select-control")])[1]`;
 const timeToDropdown = `(//div[text()="Sunday"]/following-sibling::div//div[contains(@class,"ss-select-control")])[2]`;
-const applyToAllButton = `//span[text()="Apply to all"]`;
+const applyToAllButton = `//span[text()="Apply to All"]`;
 const assignCampaignDropdown = `//span[text()="Select Campaign"]/parent::div[contains(@class,"ss-select-control")]`;
 const extensionsDropdown = `//span[text()="Select Extension"]/parent::div[contains(@class,"ss-select-control")]`;
 const assignAgentsDropdown = `//span[text()="Agents"]/parent::div[contains(@class,"ss-select-control")]`;

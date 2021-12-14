@@ -1,5 +1,3 @@
-import promisify from 'cypress-promise';
-
 const phoneNumMenu = 'a[title="Phone System"]';
 const buyDidbtn = '//button[div[text()="BUY NUMBER"]]';
 const stateDrpdwn =
@@ -17,7 +15,8 @@ const closeBtn = '//button[contains(text(),"Close")]';
 const toast = '.Toastify__toast-body';
 const deleteToast =
   '//div[@class="Toastify__toast-body"]//div[contains(text(),"The number has been deleted")]';
-const assignToDrpdwn = '//div[span[contains(text(),"Agent")]]';
+const assignToDrpdwn =
+  '//div[@class="modal-content"]//div[span[contains(text(),"Agent")]]';
 const ivrAttendent = 'a[title="IVR/Auto Attendant"]';
 const newIvr = '//button[text()=" NEW IVR"]';
 const Name = 'input[name="name"]';
@@ -156,6 +155,13 @@ const editCallResultGroupIcon = (groupName) =>
 const showOnCampaignPage = `//label[contains(@class,"radio_cstm")][text()="Display on New Campaign Page"]//span[@class="checkmark"]`;
 const ungroupedCallResults = '.group-row.noedit + .group-inner .disposition';
 const dropdownItems = '.show .dropdown-item';
+const phoneNumberCheckbox = (checkboxCount) =>
+  `(//div[@class="tr"]//div[@class="td"]//span[@class="checkmark"])[${checkboxCount}]`;
+const actionsDropdown = '.dids-selected .dropdown button';
+const selectedCount = '.dids-selected .dids-selected-text span';
+const selectAllCheckbox =
+  '//div[@class="resizable-table-thead"]//span[@class="checkmark"]';
+const totalNumbers = '.resizable-table-tbody .tr';
 
 export default class PhoneNum {
   clickCallResultDeleteBtn() {
@@ -469,7 +475,7 @@ export default class PhoneNum {
   }
 
   assignAgentUser(usrName) {
-    cy.xpath(assignToDrpdwn).click();
+    cy.xpath(assignToDrpdwn).first().click();
     cy.get(dropdownOptions)
       .contains(usrName)
       .then((option) => {
@@ -901,5 +907,32 @@ export default class PhoneNum {
 
   verifyToastMessage(message) {
     cy.get(toast).should('contain.text', message);
+  }
+
+  selectPhoneNumberCheckbox(count) {
+    for (let i = 1; i <= count; i++) {
+      cy.xpath(phoneNumberCheckbox(i)).click();
+    }
+  }
+
+  verifyActionsDropdownVisible() {
+    cy.get(actionsDropdown).should('be.visible');
+  }
+
+  verifySelectedCount(count) {
+    cy.get(selectedCount).should('contain.text', count);
+  }
+
+  clickSelectAllCheckbox() {
+    cy.xpath(selectAllCheckbox).click();
+  }
+
+  getTotalNumbersAvailable() {
+    cy.get(totalNumbers).then((count) => {
+      cy.readFile('cypress/fixtures/testData.json').then((data) => {
+        data.numbersCount = count.length;
+        cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
+      });
+    });
   }
 }

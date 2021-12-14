@@ -230,6 +230,8 @@ describe('Registration', () => {
         register.clickClientsMenu();
         register.enterUserToSearch('testing@test.com');
         register.clickDeleteUserButton();
+        register.clickCancelNowRadioBtn();
+        register.clickOnButton('Continue');
         cy.Logout();
         cy.Logout();
       }
