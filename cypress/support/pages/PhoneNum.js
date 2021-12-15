@@ -105,7 +105,7 @@ const destinationDropdown = '.modal-content .ss-select';
 const destinationOptions = (option) =>
   "//div[contains(@class,'ss-select-option')][text()='" + option + "']";
 const addedPhoneGroup = (group) =>
-  `//div[div[text()="${group}"]]//div[@class="dropdown"]`;
+  `//div[@class="card-body"]//div[div[text()="${group}"]]//div[@class="dropdown"]`;
 const uploadFile = 'input[type="file"]';
 const uploadBtn =
   "//div[contains(@class,'dropbox')]//button[contains(text(),'Upload')]";
@@ -162,6 +162,8 @@ const selectedCount = '.dids-selected .dids-selected-text span';
 const selectAllCheckbox =
   '//div[@class="resizable-table-thead"]//span[@class="checkmark"]';
 const totalNumbers = '.resizable-table-tbody .tr';
+const modalWindow = '.modal-content';
+const modalContentDropdown = '.modal-content .ss-select-control';
 
 export default class PhoneNum {
   clickCallResultDeleteBtn() {
@@ -173,8 +175,6 @@ export default class PhoneNum {
   }
 
   verifyCreatedCallResult(callResult) {
-    // cy.get(callresultDropdown).click();
-    // cy.get(dropdownOptions).contains(callResult).should('be.visible');
     cy.get('.ss-select-value-label').contains(callResult).should('be.visible');
   }
 
@@ -196,7 +196,6 @@ export default class PhoneNum {
   }
 
   enterPhoneToSearchKeyword(search) {
-    cy.log(search);
     const num = search.split('');
     for (let i = 0; i < num.length; i++) {
       if (num[i] != '(' && num[i] != ')' && num[i] != ' ' && num[i] != '-') {
@@ -630,10 +629,25 @@ export default class PhoneNum {
     cy.wait(1000);
     cy.xpath(selectDropdown(name)).click();
     cy.wait(1000);
+    this.selectDropdownOption(campaign);
+  }
+
+  selectDropdownOption(optionName) {
     cy.get(options).then((opt) => {
       for (let i = 0; i < opt.length; i++) {
-        if (opt[i].textContent.trim() === campaign) {
+        if (opt[i].textContent.trim() === optionName) {
           cy.get(opt[i]).click({ force: true });
+          break;
+        }
+      }
+    });
+  }
+
+  clickOnButton(buttonName) {
+    cy.get('button').then((Btn) => {
+      for (let i = 0; i < Btn.length; i++) {
+        if (Btn[i].textContent.trim() === buttonName) {
+          cy.get(Btn[i]).click();
           break;
         }
       }
@@ -934,5 +948,17 @@ export default class PhoneNum {
         cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
       });
     });
+  }
+
+  clickActionsButton() {
+    cy.get(actionsDropdown).click();
+  }
+
+  verifyModalWindowOpen() {
+    cy.get(modalWindow).should('be.visible');
+  }
+
+  clickSelectGroupDropdown() {
+    cy.get(modalContentDropdown).click();
   }
 }

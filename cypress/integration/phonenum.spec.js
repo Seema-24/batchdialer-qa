@@ -483,10 +483,28 @@ describe('Add Phone Number flow', () => {
     addNum.verifyAddedPhoneGroup('DemoTesting');
   });
 
+  it('Verify that authorized user is able to perform bulk action Add to Group', () => {
+    addNum.clickPhoneNumberMenu();
+    addNum.getTotalNumbersAvailable();
+    cy.readFile('cypress/fixtures/testData.json').then((data) => {
+      addNum.selectPhoneNumberCheckbox(parseInt(data.numbersCount));
+    });
+    addNum.clickActionsButton();
+    addNum.clickDropdownItem('Add To Group');
+    addNum.verifyModalWindowOpen();
+    addNum.clickSelectGroupDropdown();
+    addNum.selectDropdownOption('DemoTesting');
+    addNum.clickOnButton('Save');
+    cy.readFile('cypress/fixtures/testData.json').then((data) => {
+      addNum.verifyToastMessage(`Number Group Changed: ${data.numbersCount}`);
+    });
+  });
+
   it('Delete Added Phone Group', () => {
     addNum.clickPhoneNumberMenu();
     addNum.clickDeletePhoneGroup('DemoTesting');
     addNum.handleDeleteAlert('Delete?');
+    addNum.verifyToastMessage('Phone group deleted');
   });
 
   it('Upload DNC File', () => {

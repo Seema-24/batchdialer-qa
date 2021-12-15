@@ -100,9 +100,9 @@ describe('Add Contact flow', () => {
     addCont.clickAddNewContactButton();
     addCont.selectUploadFileOption();
     addCont.verifyImportContactsHeader([
-      'Upload your file',
-      'Mapping data',
-      'Options',
+      'Upload Your File',
+      'Map Destination Fields',
+      'Skip Unwanted Contacts',
     ]);
     addCont.verifyImportContactDropboxUpload();
     addCont.uploadFileForContact('contact-sample.csv');

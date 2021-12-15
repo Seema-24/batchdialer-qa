@@ -264,6 +264,21 @@ describe('Login Successfully and Add User', () => {
     addUser.clickAgentStatusCrossBtn();
   });
 
+  it('Verify that error message should displayed when user try to save a agent status name blank', () => {
+    addUser.clickAddAgentStatus();
+    addUser.clickOnAgentStatusSaveBtn();
+    addUser.verifyToastMessage('Enter presence name');
+  });
+
+  it('Verify the minimum number of characters for the status name should be 3 char', () => {
+    addUser.clickAddAgentStatus();
+    addUser.enterAgentStatusName('to');
+    addUser.clickOnAgentStatusSaveBtn();
+    addUser.verifyToastMessage(
+      'Presence name must be at least 3 characters long'
+    );
+  });
+
   it('Should add a new Agent Status', () => {
     addUser.clickingOnUserOption();
     addUser.clickAddAgentStatus();
