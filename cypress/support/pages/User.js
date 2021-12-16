@@ -19,6 +19,7 @@ const dropdownOptions = '.ss-select-group-items';
 const searchBox = '.search_bg';
 const rolesDropdown = "span[title='All Roles']";
 const groupsDropdown = "span[title='All Groups']";
+const statusFilterDropdown = "span[title='All Statuses']";
 const AdminstratorRole = "//span[div[text()='Administrators']]";
 const Adminstrator = '//div[@class="td"][text()="Administrator"]';
 const Agent = '//div[@class="td"][text()="Agent"]';
@@ -79,6 +80,8 @@ const agentNumberInGroup = (groupName, no) =>
 const userGroupDropdown = `//label[@class="form-label"][text()="User Group"]/following-sibling::div//div[contains(@class,"ss-select-control")]`;
 const options = '.ss-select-option';
 const userRoleDropdown = `//label[text()="User Role"]/following-sibling::div`;
+const micIcon = 'div.user-quality-icon.mic svg';
+const qualityIcon = 'div.user-quality-icon.mos svg';
 
 export default class User {
   clickingOnUserOption() {
@@ -175,6 +178,14 @@ export default class User {
     cy.xpath(deleteToast).should('be.visible');
   }
 
+  verifyMicIconVisible() {
+    cy.get(micIcon).should('be.visible');
+  }
+
+  verifyQualityIconVisible() {
+    cy.get(qualityIcon).first().should('be.visible');
+  }
+
   verifySearchBox() {
     cy.get(searchBox).scrollIntoView().should('be.visible');
   }
@@ -209,6 +220,10 @@ export default class User {
 
     cy.xpath(Adminstrator).should('be.visible');
     cy.xpath(Agent).should('not.exist');
+  }
+
+  verifyStatusFilterDropdown() {
+    cy.get(statusFilterDropdown).should('be.visible');
   }
 
   verifySearchedUser(user) {

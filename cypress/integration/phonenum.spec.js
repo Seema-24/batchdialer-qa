@@ -366,7 +366,6 @@ describe('Add Phone Number flow', () => {
     cy.wait(1000);
     addNum.clickOpenCallResultGroup('Testing');
     addNum.selectCallResultsFromDropdown('Busy');
-    cy.wait(10000);
   });
 
   it('Verify that Created call result group is reflecting while creating new Campaign', () => {

@@ -1,10 +1,12 @@
 import Dashboard from '../support/pages/Dashboard';
 import Login from '../support/pages/Login';
+import PhoneNum from '../support/pages/PhoneNum';
 import Register from '../support/pages/Register';
 import { ignoreSpeedTestPopup } from '../support/Utils';
 
 const register = new Register();
 const dashboard = new Dashboard();
+const phone = new PhoneNum();
 const login = new Login();
 let fixtureData;
 let testData;
@@ -134,6 +136,22 @@ describe('Registration', () => {
         cy.Logout();
       }
     });
+  });
+
+  it('Verify the Default call results present on New account registration', () => {
+    cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
+    ignoreSpeedTestPopup();
+    phone.clickPhoneNumberMenu();
+    phone.clickCallResultMenu();
+    phone.clickOpenCallResultGroup('UNGROUPED');
+    phone.verifyCallResultAvailable([
+      'Busy',
+      'Abandoned',
+      'Do Not Call',
+      'Voicemail',
+      'Successful Sale',
+      'No Answer',
+    ]);
   });
 
   it('Verify that card with same details can not be added again', () => {

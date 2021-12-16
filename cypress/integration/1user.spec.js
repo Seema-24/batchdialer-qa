@@ -46,6 +46,12 @@ describe('Login Successfully and Add User', () => {
     addUser.getPhoneNumber();
   });
 
+  it('Verify that authorized user is able to view he microphone status and Agents connection quality in users page', () => {
+    addUser.clickingOnUserOption();
+    addUser.verifyMicIconVisible();
+    addUser.verifyQualityIconVisible();
+  });
+
   it('Should Add User for Agent role', () => {
     addUser.clickingOnUserOption();
     cy.wait(3000);
@@ -162,6 +168,7 @@ describe('Login Successfully and Add User', () => {
   it('verify Dropdowns present on user page', function () {
     addUser.verifyRoleDropdown();
     addUser.verifyGroupsDropdown();
+    addUser.verifyStatusFilterDropdown();
     addUser.verifyAddNewUserButton();
   });
 

@@ -158,6 +158,7 @@ const contactViewPage = '.userSedit.contact-edit-form-wrapper';
 const activityTab = '.userSedit.contact-edit-form-wrapper .activities';
 const campaignTab = '.userSedit.contact-edit-form-wrapper .contact-calls';
 const notesTab = '.userSedit.contact-edit-form-wrapper .block.card';
+const sampleUploadFile = '.down_doc';
 
 export default class Contacts {
   clickingOnContactOption() {
@@ -926,5 +927,20 @@ export default class Contacts {
 
   verifyNotesTabOpen() {
     cy.get(notesTab).should('be.visible');
+  }
+
+  downloadSampleUploadFile() {
+    cy.get(sampleUploadFile).then((sampleFile) => {
+      const href = sampleFile.attr('href');
+      cy.downloadFile(
+        `https://qa.int.batchdialer.com${href}`,
+        'cypress/fixtures/Download',
+        'sample.csv'
+      );
+    });
+  }
+
+  verifyDownloadedFile(fielName) {
+    cy.readFile(`cypress/fixtures/Download/${fielName}`).should('exist');
   }
 }

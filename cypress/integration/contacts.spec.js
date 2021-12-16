@@ -184,6 +184,14 @@ describe('Add Contact flow', () => {
     addCont.verifyNotesTabOpen();
   });
 
+  it('Verify that sample upload file can be downloaded from Import contacts page', () => {
+    addCont.clickingOnContactOption();
+    addCont.clickAddNewContactButton();
+    addCont.selectUploadFileOption();
+    addCont.downloadSampleUploadFile();
+    addCont.verifyDownloadedFile('sample.csv');
+  });
+
   it('Should add contact using upload file', () => {
     addCont.clickingOnContactOption();
     addCont.clickAddNewContactButton();

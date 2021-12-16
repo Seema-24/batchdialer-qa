@@ -164,6 +164,7 @@ const selectAllCheckbox =
 const totalNumbers = '.resizable-table-tbody .tr';
 const modalWindow = '.modal-content';
 const modalContentDropdown = '.modal-content .ss-select-control';
+const callResultName = '.disposition';
 
 export default class PhoneNum {
   clickCallResultDeleteBtn() {
@@ -960,5 +961,15 @@ export default class PhoneNum {
 
   clickSelectGroupDropdown() {
     cy.get(modalContentDropdown).click();
+  }
+
+  verifyCallResultAvailable(callResult) {
+    cy.get(callResultName).then((dispositions) => {
+      for (let i = 0; i < callResult.length; i++) {
+        expect(dispositions.text().toLowerCase()).to.contain(
+          callResult[i].toLowerCase()
+        );
+      }
+    });
   }
 }
