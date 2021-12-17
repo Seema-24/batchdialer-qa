@@ -45,26 +45,51 @@ const profileAvatar = '.profile-content div.avatar';
 const profilePictureAdded = '.profile-content img.avatar';
 const cancelNowRadioBtn =
   '//label[text()="Cancel the account now (fraud etc.)"]//span[@class="checkmark"]';
+const decryptedPassword = 'input[name="password"][type="text"]';
+const eyeButton = '.view_password';
+const planSelectionWindow = '.plan-selection';
+const agentCountSlider = '.rc-slider-handle';
+const agentCount = '.agents .title';
 
 export default class Register {
   clickSignUpBtn() {
     cy.get(signUpBtn).click();
   }
 
+  verifyRegistrationUrl() {
+    cy.url().should('eq', `${Cypress.config().baseUrl}/register/`);
+  }
+
   enterFirstName(name) {
     cy.get(firstName).clear().type(name);
+  }
+
+  verifyFirstNameField() {
+    cy.get(firstName).should('be.visible');
   }
 
   enterLastName(name) {
     cy.get(lastName).clear().type(name);
   }
 
+  verifyLastNameField() {
+    cy.get(lastName).should('be.visible');
+  }
+
   enterCompanyName(name) {
     cy.get(companyName).type(name);
   }
 
+  verifyCompanyNameField() {
+    cy.get(companyName).should('be.visible');
+  }
+
   enterPhoneNumber(phone) {
     cy.get(phoneNumber).clear().type(phone);
+  }
+
+  verifyPhoneNumberField() {
+    cy.get(phoneNumber).should('be.visible');
   }
 
   enterProfilePhoneNumber(phone) {
@@ -75,20 +100,40 @@ export default class Register {
     cy.get(email).type(mail);
   }
 
+  verifyEmailAddressField() {
+    cy.get(email).should('be.visible');
+  }
+
   enterPassword(pswd) {
     cy.get(password).type(pswd);
+  }
+
+  verifyPasswordField() {
+    cy.get(password).should('be.visible');
   }
 
   enterConfirmPassword(pswd) {
     cy.get(confirmPassword).type(pswd);
   }
 
+  verifyConfirmPasswordField() {
+    cy.get(confirmPassword).should('be.visible');
+  }
+
   selectIndustry(Industry) {
     cy.get(industry).select('Other');
   }
 
+  verifyIndustryDropdown() {
+    cy.get(industry).should('be.visible');
+  }
+
   clickContinueToPlanBtn() {
     cy.get(continueToPlan).click();
+  }
+
+  verifyContinueToPlanButton() {
+    cy.get(continueToPlan).should('be.visible');
   }
 
   choosePlan(plan) {
@@ -99,11 +144,34 @@ export default class Register {
     cy.xpath(requiredFields(validate)).should('be.visible');
   }
 
+  verifyDecryptedPassword() {
+    cy.get(decryptedPassword).should('be.visible');
+  }
+
+  clickEyeButton() {
+    cy.get(eyeButton).first().click();
+  }
+
+  verifyPlanSelectionWindow() {
+    cy.get(planSelectionWindow).should('be.visible');
+  }
+
   verifyDuplicateEmail() {
     // cy.xpath(duplicateEmail).should('be.visible');
     cy.get('.Toastify__toast-body').then((toast) => {
       expect(toast.text().toLowerCase()).to.contain('email is already used');
     });
+  }
+
+  verifyAgentCount(count) {
+    cy.get(agentCount).first().should('have.text', `${count} Agents`);
+  }
+
+  increaseAgentCount(count) {
+    cy.get(agentCountSlider).first().click();
+    for (let i = 1; i < count; i++) {
+      cy.get(agentCountSlider).first().type('{rightarrow}');
+    }
   }
 
   verifyPlanPrice() {

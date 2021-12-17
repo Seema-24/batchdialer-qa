@@ -24,6 +24,57 @@ describe('Registration', () => {
     cy.Logout();
   });
 
+  it('Verify that when user click on "sign up now " button its should open the registration page', () => {
+    register.clickSignUpBtn();
+    register.verifyRegistrationUrl();
+  });
+
+  it('Verify that all the fields are visible on registration page', () => {
+    register.clickSignUpBtn();
+    register.verifyFirstNameField();
+    register.verifyLastNameField();
+    register.verifyCompanyNameField();
+    register.verifyIndustryDropdown();
+    register.verifyPhoneNumberField();
+    register.verifyEmailAddressField();
+    register.verifyPasswordField();
+    register.verifyConfirmPasswordField();
+    register.verifyContinueToPlanButton();
+  });
+
+  it('Verify that when user click on "Eye icon" then password should show in the password field', () => {
+    register.clickSignUpBtn();
+    register.enterPassword('Test');
+    register.clickEyeButton();
+    register.verifyDecryptedPassword();
+  });
+
+  it('Verify that when all the required fields are fiiled then user is able to go next step "plan Selection"', () => {
+    register.clickSignUpBtn();
+    register.enterFirstName('Demo');
+    register.enterLastName('testing');
+    register.enterPhoneNumber('9999999999');
+    register.enterEmail('test+' + randomNumber + '@email.com');
+    register.enterPassword('Fleek@2016');
+    register.enterConfirmPassword('Fleek@2016');
+    register.clickContinueToPlanBtn();
+    register.verifyPlanSelectionWindow();
+  });
+
+  it('Verify that User can increase te number of agent by using slider on the plan selection page', () => {
+    register.clickSignUpBtn();
+    register.enterFirstName('Demo');
+    register.enterLastName('testing');
+    register.enterPhoneNumber('9999999999');
+    register.enterEmail('test+' + randomNumber + '@email.com');
+    register.enterPassword('Fleek@2016');
+    register.enterConfirmPassword('Fleek@2016');
+    register.clickContinueToPlanBtn();
+    register.verifyPlanSelectionWindow();
+    register.increaseAgentCount(10);
+    register.verifyAgentCount(10);
+  });
+
   it('Verifies Required Fields', () => {
     register.clickSignUpBtn();
     register.clickContinueToPlanBtn();
