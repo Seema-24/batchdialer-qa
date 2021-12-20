@@ -50,6 +50,8 @@ const eyeButton = '.view_password';
 const planSelectionWindow = '.plan-selection';
 const agentCountSlider = '.rc-slider-handle';
 const agentCount = '.agents .title';
+const errorMsg = '.error-msg';
+const paymentsPage = '.payment-details';
 
 export default class Register {
   clickSignUpBtn() {
@@ -105,7 +107,7 @@ export default class Register {
   }
 
   enterPassword(pswd) {
-    cy.get(password).type(pswd);
+    cy.get(password).clear().type(pswd);
   }
 
   verifyPasswordField() {
@@ -113,7 +115,7 @@ export default class Register {
   }
 
   enterConfirmPassword(pswd) {
-    cy.get(confirmPassword).type(pswd);
+    cy.get(confirmPassword).clear().type(pswd);
   }
 
   verifyConfirmPasswordField() {
@@ -384,5 +386,13 @@ export default class Register {
 
   clickCancelNowRadioBtn() {
     cy.xpath(cancelNowRadioBtn).click();
+  }
+
+  verifyErrorMessage(msg) {
+    cy.get(errorMsg).should('have.text', msg);
+  }
+
+  verifyPaymentsPage() {
+    cy.get(paymentsPage).should('be.visible');
   }
 }

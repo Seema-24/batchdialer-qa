@@ -61,6 +61,20 @@ describe('Registration', () => {
     register.verifyPlanSelectionWindow();
   });
 
+  it('Verify that when user select a plan ,then user go to the payment page', () => {
+    register.clickSignUpBtn();
+    register.enterFirstName('Demo');
+    register.enterLastName('testing');
+    register.enterPhoneNumber('9999999999');
+    register.enterEmail('test+' + randomNumber + '@email.com');
+    register.enterPassword('Fleek@2016');
+    register.enterConfirmPassword('Fleek@2016');
+    register.clickContinueToPlanBtn();
+    register.verifyPlanSelectionWindow();
+    register.choosePlan('Single Line Dialer');
+    register.verifyPaymentsPage();
+  });
+
   it('Verify that User can increase te number of agent by using slider on the plan selection page', () => {
     register.clickSignUpBtn();
     register.enterFirstName('Demo');
@@ -83,6 +97,44 @@ describe('Registration', () => {
     register.verifyRequiredFields('Enter Phone Number');
     register.verifyRequiredFields('Enter Email');
     register.verifyRequiredFields('Enter Password');
+  });
+
+  it('Verify that when password does not have upper case letter and a number its shows validation', () => {
+    register.clickSignUpBtn();
+    register.enterFirstName('Demo');
+    register.enterLastName('testing');
+    register.enterCompanyName('Fleek+5');
+    register.selectIndustry('Other');
+    register.enterPhoneNumber('9999999999');
+    register.enterEmail('test+' + randomNumber + '@email.com');
+    register.enterPassword('test12');
+    register.enterConfirmPassword('test12');
+    register.clickContinueToPlanBtn();
+    register.verifyToastMessage(
+      'Password must contain at least one uppercase character'
+    );
+  });
+
+  it('Verify that Password should be 6 characters long and contain upper case letter and a number', () => {
+    register.clickSignUpBtn();
+    register.enterFirstName('Demo');
+    register.enterLastName('testing');
+    register.enterCompanyName('Fleek+5');
+    register.selectIndustry('Other');
+    register.enterPhoneNumber('9999999999');
+    register.enterEmail('test+' + randomNumber + '@email.com');
+    register.enterPassword('Test1');
+    register.enterConfirmPassword('Test1');
+    register.clickContinueToPlanBtn();
+    register.verifyErrorMessage('Password is too short');
+    register.enterPassword('Testto');
+    register.enterConfirmPassword('Testto');
+    register.clickContinueToPlanBtn();
+    register.verifyToastMessage('Password must contain at least one number');
+    register.enterPassword('Test12');
+    register.enterConfirmPassword('Test12');
+    register.clickContinueToPlanBtn();
+    register.verifyPlanSelectionWindow();
   });
 
   it('Verifies Valid Phone Number', () => {
