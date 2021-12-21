@@ -41,6 +41,12 @@ describe('Login Flow', () => {
     login.verifySignUpPage();
   });
 
+  it('Verify that when user check the " i agree the Terms of Service & Privacy Policy" checkbox then "Login " button should enable', () => {
+    login.verifySignInButtonDisabled();
+    login.clickTermsCheckBox();
+    login.verifySignInButtonEnabled();
+  });
+
   it('Verify that Locked account should give error when trying to Login', () => {
     cy.url().then((url) => {
       let lockedAccount;

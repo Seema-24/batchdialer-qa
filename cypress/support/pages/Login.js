@@ -25,6 +25,14 @@ export default class Login {
     cy.get(signinButton).click();
   }
 
+  verifySignInButtonEnabled() {
+    cy.get(signinButton).should('be.enabled');
+  }
+
+  verifySignInButtonDisabled() {
+    cy.get(signinButton).should('be.disabled');
+  }
+
   verifySuccessfullLogin() {
     cy.get(dashboardProfilePic, { timeout: 20000 }).should('be.visible');
   }

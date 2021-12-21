@@ -266,6 +266,14 @@ export default class Register {
     cy.get(subscribeBtn).click();
   }
 
+  verifySubscribedNowBtnEnabled() {
+    cy.get(subscribeBtn).should('be.enabled');
+  }
+
+  verifySubscribedNowBtnDisabled() {
+    cy.get(subscribeBtn).should('be.disabled');
+  }
+
   enterCoupon(coupon) {
     cy.get(couponField).type(coupon);
   }

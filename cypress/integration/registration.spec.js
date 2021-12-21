@@ -205,6 +205,34 @@ describe('Registration', () => {
     register.verifyCouponUppercase('QATEST');
   });
 
+  it('Verify that when user fill the valid card details and Check the Terms of Service & Privacy Policy checkbox then "Subscribe Now " button should enable', () => {
+    register.clickSignUpBtn();
+    register.enterFirstName('Demo');
+    register.enterLastName('testing');
+    register.enterCompanyName('Fleek+' + randomNumber + '');
+    register.selectIndustry('Other');
+    register.enterPhoneNumber('9999999999');
+    register.enterEmail('testing+' + randomNumber + '@test.com');
+    register.enterPassword('Fleek@2016');
+    register.enterConfirmPassword('Fleek@2016');
+    register.clickContinueToPlanBtn();
+    register.choosePlan('Single Line Dialer'); //Multi-Line Dialer
+    register.verifyPlanPrice();
+    register.verifyPaymentsPage();
+    register.verifySubscribedNowBtnDisabled();
+    register.enterCardDetailsForSignUp(
+      Cypress.env('CardName'),
+      Cypress.env('CardNumber'),
+      Cypress.env('ExpiryDate'),
+      Cypress.env('CVC'),
+      Cypress.env('Country'),
+      Cypress.env('BillingZip'),
+      Cypress.env('Coupon')
+    );
+    register.clickAgreeCheckbox();
+    register.verifySubscribedNowBtnEnabled();
+  });
+
   it('Register User', () => {
     cy.url().then((url) => {
       if (url.includes('app.batchdialer.com')) {
