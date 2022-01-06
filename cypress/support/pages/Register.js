@@ -249,10 +249,10 @@ export default class Register {
     Coupon
   ) {
     cy.url().then((url) => {
-      if (url.includes('app')) {
-        this.enterCoupon(Coupon);
-        this.clickApplyCouponBtn();
-      }
+      // if (url.includes('app')) {
+      //   this.enterCoupon(Coupon);
+      //   this.clickApplyCouponBtn();
+      // }
       this.enterNameOnCard(CardName);
       this.enterCardNumber(CardNumber);
       this.enterExpiryDate(CardExpiry);

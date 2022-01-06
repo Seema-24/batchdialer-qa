@@ -73,7 +73,34 @@ describe('Add Campaign flow', () => {
     ]);
   });
 
-  it('Should Add Predictive Dialer New Campaign ', () => {
+  it('Verify that user should be able to create campaign', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickAddNewCampaign();
+    addCamp.selectDialingMode('Predictive');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.selectPhoneNumberToAssign(testData.Number);
+    // addCamp.selectContactLists();
+    addCamp.enterCampaignName(fixtureData.campaignName + randNum.toString());
+    addCamp.selectCallResults([
+      'Answering Machine',
+      'No Answer',
+      'Successful Sale',
+      'Voicemail',
+    ]);
+    addCamp.clickAdvancedConfiguration();
+    addCamp.selectCallsOrder('adaptive'); //highestfirst //lowestfirst
+    addCamp.selectCallConnectType('Automatic Answer'); //Manual Answer
+    addCamp.enterSimultaneousDials(3);
+    addCamp.enterRingTimeDuration(15);
+    addCamp.enterAbandonedTimeout(15);
+    addCamp.enterRetryTime(10);
+    addCamp.selectRetryTimeUnit('sec');
+    addCamp.enterMaxAttempts(5);
+    addCamp.clickOnButton('Save');
+    addCamp.verifyToast('Campaign Created');
+  });
+
+  it.skip('Should Add Predictive Dialer New Campaign ', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickAddNewCampaign();
     addCamp.enableAdvancedSwitchBar();
@@ -150,7 +177,7 @@ describe('Add Campaign flow', () => {
     addCamp.clickEditCampaign(fixtureData.campaignName + randNum.toString());
     addCamp.clickEditBtn();
     addCamp.enterName('-edited');
-    addCamp.clickSaveCampaign();
+    addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Saved');
   });
 
@@ -181,30 +208,29 @@ describe('Add Campaign flow', () => {
       fixtureData.campaignName + randNum.toString() + '-edited'
     );
     addCamp.clickEditBtn();
-    addCamp.enableAdvancedSwitchBar();
-    addCamp.verifyCallResultValues(5);
+    // addCamp.enableAdvancedSwitchBar();
+    addCamp.verifyCallResultValues(8);
     addCamp.deleteCallResults([
       'Answering Machine',
       'No Answer',
       'Successful Sale',
       'Voicemail',
     ]);
-    addCamp.selectCallResultsOption([
+    addCamp.selectCallResults([
       'Voicemail',
       'Unknown',
       'No Answer',
       'Successful Sale',
     ]);
-    addCamp.clickRingTimeDurationDropdown();
-    addCamp.selectOptions('15 seconds');
-    addCamp.clickSaveCampaign();
+    addCamp.clickAdvancedConfiguration();
+    addCamp.enterRingTimeDuration(10);
+    addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Saved');
     addCamp.clickEditCampaign(
       fixtureData.campaignName + randNum.toString() + '-edited'
     );
     addCamp.clickEditBtn();
-    addCamp.enableAdvancedSwitchBar();
-    addCamp.verifyCallResultValues(5);
+    addCamp.verifyCallResultValues(8);
   });
 
   it('Verify that edit values of the campaign page in advanced mode reflects in the Change log', () => {
@@ -219,7 +245,7 @@ describe('Add Campaign flow', () => {
     );
     cy.wait(1000);
     addCamp.verifyChangeLogItemsText(
-      `Ring Time Duration Been Changed from 30 seconds to 15 seconds by ${testData.AdminName}`
+      `Ring Time Duration Been Changed from 15 seconds to 10 seconds by ${testData.AdminName}`
     );
     addCamp.clickModalCloseBtn();
   });
@@ -257,18 +283,27 @@ describe('Add Campaign flow', () => {
   it('Should Add Preview Dialer New Campaign ', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickAddNewCampaign();
-    addCamp.enableAdvancedSwitchBar();
-    cy.wait(2000);
-    addCamp.enterName(fixtureData.campaignName + randNum.toString() + '1');
-    addCamp.selectDialingModeOption('Preview Dialer');
-    cy.wait(1000);
-    addCamp.selectDialingModeOption('Preview Dialer');
-    addCamp.selectCallerId('Individual Numbers', testData.Number);
-    addCamp.clickNextCircleArrow();
-    addCamp.selectCallResultsOption(['Busy']);
-    addCamp.clickNextCircleArrow();
-    addCamp.selectAgentsDrpdwn('Individual Agents', testData.AdminName);
-    addCamp.clickCreateCampButton();
+    addCamp.selectDialingMode('Preview');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.selectPhoneNumberToAssign(testData.Number);
+    // addCamp.selectContactLists();
+    addCamp.enterCampaignName(
+      fixtureData.campaignName + randNum.toString() + '1'
+    );
+    addCamp.selectCallResults([
+      'Answering Machine',
+      'No Answer',
+      'Successful Sale',
+      'Voicemail',
+    ]);
+    addCamp.clickAdvancedConfiguration();
+    addCamp.selectCallsOrder('adaptive'); //highestfirst //lowestfirst
+    addCamp.enterRingTimeDuration(15);
+    addCamp.enterRetryTime(10);
+    addCamp.selectRetryTimeUnit('sec');
+    addCamp.enterMaxAttempts(5);
+    addCamp.clickOnButton('Save');
+    addCamp.verifyToast('Campaign Created');
   });
 
   it('Should show added Preview Dialer Campaign in table', () => {

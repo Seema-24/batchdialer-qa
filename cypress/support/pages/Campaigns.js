@@ -112,7 +112,8 @@ const newCampaignName = 'input[name="newcampaignname"]';
 const saveCampaign = '.wizard-buttons button[type="submit"]';
 const toast = '.Toastify__toast-body';
 const campaignTable = '.resizable-table-tbody';
-const callresultValues = '.row-calldisposition  .ss-select-value';
+const callresultValues =
+  '//div[label[text()="Call Results"]]//following-sibling::div//span[@class="ss-select-value"]';
 const delCallResult = (callResultName) =>
   `//span[span[text()="${callResultName}"]]/following-sibling::span[@class="ss-select-value-delete"]`;
 const status =
@@ -123,7 +124,7 @@ const recycleCampaignMenuBtn = (campaignName) =>
 const leadSheetDropdown = `//div[label[@class="form-label" and text()="Lead Sheet"]]/following-sibling::div[div[contains(.,"Select Lead Sheet")]]`;
 const tableRefreshBtn = 'span[title="Refresh"]';
 const campaignStatus = (campaignName) =>
-  `//span[text()="${campaignName}"]//ancestor::div[@class="tr"]//div[@class="campaign__status-circle"]`;
+  `//span[text()="${campaignName}"]//ancestor::div[@class="tr"]//div[contains(@class,"progress-status")]/following-sibling::span`;
 const softphoneNextLead = '.stg-softphone-next-lead';
 const softphoneIcon = '.nav-item .softphone-icon';
 const dropdownItem = '.show.dropdown-menu .dropdown-item';
@@ -132,6 +133,24 @@ const modal = '.modal-content';
 const modalCloseBtn = '.modal-content .close_icon';
 const changeLogItems = '.change-log__campaign-item .change-log__campaign-title';
 const ringTimeDurationDropdown = `//label[text()="Ring Time Duration"]/following-sibling::div//div[contains(@class,"ss-select-control")]`;
+
+const dialingMode = (modeName) =>
+  `//h2[@class="campaign-card__radio-block__title"][text()="${modeName} Dialer"]/ancestor::label//span[@class="checkmark"]`;
+const cardDropdowns = (cardName) =>
+  `//h2[@class="campaign-card__title"][text()="${cardName}"]/ancestor::div[contains(@class,"campaign-card")]//div[contains(@class,"ss-select-control")]`;
+const callResultsDropdown = `//label[text()="Call Results"]/ancestor::div[@class="row"]//div[contains(@class,"ss-select-control")]`;
+const advanceConfiguration = '.campaign-expander';
+const callOrder = (order) =>
+  `//h2[@class="campaign-card__title"][text()="Calls Order"]/following-sibling::div//input[@value="${order}"]`;
+const callConnectType = (type) =>
+  `//h2[@class="campaign-card__title"][text()="Call Connect Type"]/following-sibling::div//h2[contains(.,"${type}")]`;
+const dialingBehaviour = (fieldName) =>
+  `//label[text()="${fieldName}"]//following-sibling::div[contains(@class,"number-editor")]//input`;
+const retryTimeInput =
+  '//label[text()="Retry Time"]//following-sibling::div//div[contains(@class,"number-editor")]//input';
+const retryTimeDropdown =
+  '//label[text()="Retry Time"]//following-sibling::div//div[contains(@class,"ss-select-control")]';
+const tooltip = '.question-tooltip';
 
 export default class Campaign {
   clickCampaignMenu() {
@@ -145,6 +164,15 @@ export default class Campaign {
   enterName(name) {
     cy.get(inputName).wait(500).scrollIntoView().type(name, { delay: 200 });
   }
+
+  enterCampaignName(name) {
+    cy.get(inputName)
+      .wait(500)
+      .clear()
+      .scrollIntoView()
+      .type(name, { delay: 200 });
+  }
+
   enableAdvancedSwitchBar() {
     cy.get(switchBar).click();
   }
@@ -662,7 +690,7 @@ export default class Campaign {
   }
 
   verifyCallResultValues(value) {
-    cy.get(callresultValues).should('have.length', value);
+    cy.xpath(callresultValues).should('have.length', value);
   }
 
   deleteCallResults(callRslt) {
@@ -730,5 +758,99 @@ export default class Campaign {
 
   clickRingTimeDurationDropdown() {
     cy.xpath(ringTimeDurationDropdown).click();
+  }
+
+  selectDialingMode(modeName) {
+    cy.xpath(dialingMode(modeName)).click();
+  }
+
+  selectAgentToAssign(agentName) {
+    cy.xpath(cardDropdowns('Agents')).click();
+    this.selectOptions(agentName);
+  }
+
+  selectPhoneNumberToAssign(phoneNumber) {
+    cy.xpath(cardDropdowns('Phone Numbers')).click();
+    this.selectOptions(phoneNumber);
+  }
+
+  selectContactLists(listName) {
+    cy.xpath(cardDropdowns('Contact Lists')).click();
+    cy.get('body').type('{enter}');
+    cy.xpath(cardDropdowns('Contact Lists')).click();
+    // this.selectOptions(listName);
+  }
+
+  selectCallResults(callResults) {
+    cy.xpath(callResultsDropdown).click();
+    cy.get(options).then((option) => {
+      for (let i = 0; i < callResults.length; i++) {
+        for (let j = 0; j < option.length; j++) {
+          if (option[j].textContent.trim() === callResults[i]) {
+            cy.log(option[j].textContent.trim());
+            option[j].click();
+            break;
+          }
+        }
+      }
+    });
+    // cy.xpath(callResultsDropdown).click();
+    this.clickQuestionTooltip();
+  }
+
+  clickAdvancedConfiguration() {
+    cy.get(advanceConfiguration).click();
+  }
+
+  selectCallsOrder(order) {
+    cy.xpath(callOrder(order)).click({ force: true });
+  }
+
+  selectCallConnectType(type) {
+    cy.xpath(callConnectType(type)).click();
+  }
+
+  enterSimultaneousDials(no) {
+    cy.xpath(dialingBehaviour('Simultaneous Dials p/Agent')).clear().type(no);
+  }
+
+  enterRingTimeDuration(time) {
+    cy.xpath(dialingBehaviour('Ring Time Duration, sec')).clear().type(time);
+  }
+
+  enterAbandonedTimeout(time) {
+    cy.xpath(dialingBehaviour('Abandonment Timeout, sec')).clear().type(time);
+  }
+
+  enterMaxCallsPerDay(no) {
+    cy.xpath(dialingBehaviour('Max Calls per Day')).clear().type(no);
+  }
+
+  enterMaxAttempts(no) {
+    cy.xpath(dialingBehaviour('Max Attempts Per Record')).clear().type(no);
+  }
+
+  enterRetryTime(duration) {
+    cy.xpath(retryTimeInput).clear().type(duration);
+  }
+
+  selectRetryTimeUnit(unit) {
+    cy.xpath(retryTimeDropdown).click();
+    this.selectOptions(unit);
+  }
+
+  clickOnButton(btnName) {
+    cy.get('button').then((btns) => {
+      for (let i = 0; i < btns.length; i++) {
+        if (btns[i].textContent.trim() === btnName) {
+          cy.get(btns[i]).click();
+          break;
+        }
+      }
+    });
+  }
+
+  clickQuestionTooltip() {
+    cy.get(tooltip).last().click({ force: true });
   }
 }
