@@ -17,10 +17,13 @@
     "report:generate:prod": "marge --inline cypress/results/mochawesome-bundle.json -o cypress/ProdReports/html",
     "report:copyScreenshots:prod": "cp -r cypress/screenshots cypress/ProdReports/html/screenshots",
     "login": "npx cypress run --browser chrome --headless --config video=false --spec cypress/integration/login.spec.js",
-    "login:prod": "npx cypress run --browser chrome --headless --config video=false --spec cypress/integration/login.spec.js --env configFile=prod"
+    "login:prod": "npx cypress run --browser chrome --headless --config video=false --spec cypress/integration/login.spec.js --env configFile=prod",
+    "precy:firstPromoter": "rm -r -f cypress/screenshots/* cypress/results/* cypress/ProdReports/*",
+    "cy:firstPromoter": "npx cypress run --env configFile=prod --spec cypress/integration/firstPromoter.spec.js --headless --config video=false",
+    "report:firstPromoter": "npm run cy:firstPromoter ; npm run report:merge ; npm run report:generate:prod ; npm run report:copyScreenshots:prod"
   },
   "keywords": [],
-  "author": "",
+  "author": "Anil",
   "license": "ISC",
   "devDependencies": {
     "cypress": "^7.0.0",
