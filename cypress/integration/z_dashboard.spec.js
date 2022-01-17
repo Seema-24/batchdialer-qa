@@ -74,6 +74,61 @@ describe('Dashboard Elements', () => {
     Dash.verifyDashboardElements();
   });
 
+  it('Verify that when user click on (+/-) icon its should expand the roles', () => {
+    Dash.clickLoginAs();
+    Dash.clickClientPlusIcon();
+    Dash.verifyGroupExpended();
+  });
+
+  it('Verify that when user click on the user id it should copy the user id and shows success mesaage "Copied"', () => {
+    Dash.clickClientUserId();
+    Dash.verifyToastMessage('Copied!');
+  });
+
+  it.skip('Verify that username is capitalized only', () => {
+    Dash.verifyUserNameCapitalized();
+  });
+
+  it('Verify that live status of the agent should appear', () => {
+    Dash.verifyAgentRoleLiveStatusVisible();
+  });
+
+  it('Verify that status should not show for supervisor role', () => {
+    Dash.verifySupervisorStatusNotVisible();
+  });
+
+  it('Verify that Search can be done by First Name/Last Name/ID/Email', () => {
+    const [agentFirstName, agentLastName] = testData.agent.split(' ');
+    const [supervisorFirstName, supervisorLastName] =
+      testData.supervisor.split(' ');
+    Dash.enterUserToSearch(agentFirstName);
+    Dash.verifySearchedUserName(testData.agent);
+    Dash.enterUserToSearch(agentLastName);
+    Dash.verifySearchedUserName(testData.agent);
+    Dash.enterUserToSearch(supervisorFirstName);
+    Dash.verifySearchedUserName(testData.supervisor);
+    Dash.enterUserToSearch(supervisorLastName);
+    Dash.verifySearchedUserName(testData.supervisor);
+    Dash.enterUserToSearch(testData.AgentEmail);
+    Dash.verifySearchedUserName(testData.agent);
+    Dash.enterUserToSearch(testData.SupervisorEmail);
+    Dash.verifySearchedUserName(testData.supervisor);
+  });
+
+  it('Verify that user can sort by role by using ALL Roles dropdown', () => {
+    Dash.verifyRolesDropdownVisible();
+  });
+
+  it('Verify that when user select any role from ALL Roles dropdown then result should appear as per selected role', () => {
+    Dash.selectRoleToFilter('Agent');
+    Dash.verifyUserRoleName('Agent');
+  });
+
+  it('Verify that clicking anywhere outside of the dropdown box will close it and act as "cancel"', () => {
+    Dash.clickOnBody();
+    Dash.verifyUserTreeNotVisible();
+  });
+
   it('Login As Button Functionality', () => {
     Dash.clickLoginAs();
     Dash.searchUser('automation');

@@ -44,7 +44,7 @@ const callRecordingDisable =
   "//label[text()='Call Recording']/parent::div/following-sibling::div/label[text()='Disable']/span";
 const callerIDGroup = '.row-callerid .ss-select:not(.multiple)';
 const callerIDNumber = '.row-callerid .multiple';
-const callingHours = "//label[text()='Calling Hours']/parent::div/div/div";
+const callingHours = `//label[text()="Calling Hours"]/following-sibling::div`;
 const callResult = "div[class='collapse show'] .row-calldisposition .ss-select";
 const MaxAttempts = "//label[text()='Max Attempts Per Record']/parent::div/div";
 const simultaneousDials =
@@ -80,15 +80,13 @@ const ErrorMessage = '.error-msg';
 const scheduleTable = '.schedule-table';
 const scheduleCancelButton =
   "//div[@class='modal-footer']//button[text()=' CANCEL']";
-const scheduleCheckmark =
-  "//div[text()='Sunday']/parent::div//span[@class='checkmark']";
-const schedule =
-  "//div[text()='Sunday']/parent::div//div[contains(@class,'ss-select') and not(contains(@class,'fakeinput'))]";
+const scheduleCheckmark = `//label[text()="Sunday"]//span[@class="checkmark"]`;
+const schedule = `//label[text()='Sunday']/ancestor::div[contains(@class,"form-group")]//div[contains(@class,'ss-select') and not(contains(@class,'fakeinput'))]`;
 const checkSelectAll =
   "//div[@class='schedule-table']//div[contains(@class,'ss-select') and not(contains(@class,'fakeinput'))]";
 const selectAllCheckbox =
   "//label[text()='Select All']/parent::div//span[@class='checkmark']";
-const applyToAll = "//span[text()='Apply to all']";
+const applyToAll = "//span[text()='Apply to All']";
 const checkApply = "//strong[text()='Sun']";
 const applyButton = "//button[text()=' APPLY']";
 const newScriptPopUp = '.modal-body';
@@ -171,6 +169,10 @@ export default class Campaign {
       .clear()
       .scrollIntoView()
       .type(name, { delay: 200 });
+  }
+
+  verifyCampaignNameField() {
+    cy.get(inputName).should('be.visible');
   }
 
   enableAdvancedSwitchBar() {
@@ -562,7 +564,7 @@ export default class Campaign {
   }
 
   verifyScheduleCheckbox(attr) {
-    cy.xpath(schedule).should(attr, 'readonly');
+    cy.xpath(schedule).first().should(attr, 'readonly');
   }
 
   clickSelectAllCheckbox() {
@@ -570,7 +572,7 @@ export default class Campaign {
   }
 
   verifySelectAll(attr) {
-    cy.wait(4000);
+    cy.wait(1000);
     cy.xpath(checkSelectAll).should(attr, 'readonly');
   }
 
@@ -603,7 +605,7 @@ export default class Campaign {
   }
 
   clickContactListDropdown() {
-    cy.xpath(contactLists).click();
+    cy.xpath(cardDropdowns('Contact Lists')).click();
   }
 
   clickCampaignSetting() {
@@ -764,9 +766,18 @@ export default class Campaign {
     cy.xpath(dialingMode(modeName)).click();
   }
 
+  verifyDialingMode() {
+    cy.xpath(dialingMode('Predictive')).should('be.visible');
+    cy.xpath(dialingMode('Preview')).should('be.visible');
+  }
+
   selectAgentToAssign(agentName) {
     cy.xpath(cardDropdowns('Agents')).click();
     this.selectOptions(agentName);
+  }
+
+  verifyAgentToAssignDropdown() {
+    cy.xpath(cardDropdowns('Agents')).should('be.visible');
   }
 
   selectPhoneNumberToAssign(phoneNumber) {
@@ -774,11 +785,19 @@ export default class Campaign {
     this.selectOptions(phoneNumber);
   }
 
+  verifyPhoneNumberToAssignDropdown() {
+    cy.xpath(cardDropdowns('Phone Numbers')).should('be.visible');
+  }
+
   selectContactLists(listName) {
     cy.xpath(cardDropdowns('Contact Lists')).click();
     cy.get('body').type('{enter}');
     cy.xpath(cardDropdowns('Contact Lists')).click();
     // this.selectOptions(listName);
+  }
+
+  verifyContactListDropdown() {
+    cy.xpath(cardDropdowns('Contact Lists')).should('be.visible');
   }
 
   selectCallResults(callResults) {
@@ -798,6 +817,10 @@ export default class Campaign {
     this.clickQuestionTooltip();
   }
 
+  verifyCallResultsDropdown() {
+    cy.xpath(callResultsDropdown).should('be.visible');
+  }
+
   clickAdvancedConfiguration() {
     cy.get(advanceConfiguration).click();
   }
@@ -806,37 +829,78 @@ export default class Campaign {
     cy.xpath(callOrder(order)).click({ force: true });
   }
 
+  verifyCallsOrder() {
+    cy.xpath(callOrder('adaptive')).should('exist');
+    cy.xpath(callOrder('highestfirst')).should('exist');
+    cy.xpath(callOrder('lowestfirst')).should('exist');
+  }
+
   selectCallConnectType(type) {
     cy.xpath(callConnectType(type)).click();
+  }
+
+  verifyCallConnectType() {
+    cy.xpath(callConnectType('Automatic Answer')).should('be.visible');
+    cy.xpath(callConnectType('Manual Answer')).should('be.visible');
   }
 
   enterSimultaneousDials(no) {
     cy.xpath(dialingBehaviour('Simultaneous Dials p/Agent')).clear().type(no);
   }
 
+  verifySimultaneousDialsField() {
+    cy.xpath(dialingBehaviour('Simultaneous Dials p/Agent')).should(
+      'be.visible'
+    );
+  }
+
   enterRingTimeDuration(time) {
     cy.xpath(dialingBehaviour('Ring Time Duration, sec')).clear().type(time);
+  }
+
+  verifyRingTimeDuration() {
+    cy.xpath(dialingBehaviour('Ring Time Duration, sec')).should('be.visible');
   }
 
   enterAbandonedTimeout(time) {
     cy.xpath(dialingBehaviour('Abandonment Timeout, sec')).clear().type(time);
   }
 
+  verifyAbandonedTimeout() {
+    cy.xpath(dialingBehaviour('Abandonment Timeout, sec')).should('be.visible');
+  }
+
   enterMaxCallsPerDay(no) {
     cy.xpath(dialingBehaviour('Max Calls per Day')).clear().type(no);
+  }
+
+  verifyMaxCallsPerDay() {
+    cy.xpath(dialingBehaviour('Max Calls per Day')).should('be.visible');
   }
 
   enterMaxAttempts(no) {
     cy.xpath(dialingBehaviour('Max Attempts Per Record')).clear().type(no);
   }
 
+  verifyMaxAttempts() {
+    cy.xpath(dialingBehaviour('Max Attempts Per Record')).should('be.visible');
+  }
+
   enterRetryTime(duration) {
     cy.xpath(retryTimeInput).clear().type(duration);
+  }
+
+  verifyRetryTime() {
+    cy.xpath(retryTimeInput).should('be.visible');
   }
 
   selectRetryTimeUnit(unit) {
     cy.xpath(retryTimeDropdown).click();
     this.selectOptions(unit);
+  }
+
+  verifyRetryTimeUnitDropdown() {
+    cy.xpath(retryTimeDropdown).should('be.visible');
   }
 
   clickOnButton(btnName) {

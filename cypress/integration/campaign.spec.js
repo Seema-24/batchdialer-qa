@@ -79,7 +79,6 @@ describe('Add Campaign flow', () => {
     addCamp.selectDialingMode('Predictive');
     addCamp.selectAgentToAssign(testData.AdminName);
     addCamp.selectPhoneNumberToAssign(testData.Number);
-    // addCamp.selectContactLists();
     addCamp.enterCampaignName(fixtureData.campaignName + randNum.toString());
     addCamp.selectCallResults([
       'Answering Machine',
@@ -98,31 +97,6 @@ describe('Add Campaign flow', () => {
     addCamp.enterMaxAttempts(5);
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Created');
-  });
-
-  it.skip('Should Add Predictive Dialer New Campaign ', () => {
-    addCamp.clickCampaignMenu();
-    addCamp.clickAddNewCampaign();
-    addCamp.enableAdvancedSwitchBar();
-    cy.wait(2000);
-    addCamp.enterName(fixtureData.campaignName + randNum.toString());
-    addCamp.selectDialingModeOption('Predictive Dialer');
-    addCamp.selectCallerId('Individual Numbers', testData.Number);
-    addCamp.clickNextCircleArrow();
-    Dial.clickCallingHoursDropdown();
-    Dial.selectFromTime('12:00 am');
-    Dial.selectToTime('11:30 pm');
-    Dial.clickApplyToAllButton();
-    Dial.clickOnButton('APPLY');
-    addCamp.selectCallResultsOption([
-      'Answering Machine',
-      'No Answer',
-      'Successful Sale',
-      'Voicemail',
-    ]);
-    addCamp.clickNextCircleArrow();
-    addCamp.selectAgentsDrpdwn('Individual Agents', testData.AdminName);
-    addCamp.clickCreateCampButton();
   });
 
   it('Should show added Campaign in table', () => {
@@ -208,7 +182,6 @@ describe('Add Campaign flow', () => {
       fixtureData.campaignName + randNum.toString() + '-edited'
     );
     addCamp.clickEditBtn();
-    // addCamp.enableAdvancedSwitchBar();
     addCamp.verifyCallResultValues(8);
     addCamp.deleteCallResults([
       'Answering Machine',
@@ -352,8 +325,6 @@ describe('Add Campaign flow', () => {
   });
 
   it('Verify status dropdown is showing Archived Campaign', function () {
-    // addCamp.clickRecycleMenu();
-    // addCamp.clickCampaignMenu();
     addCamp.clickToSelectStatus('Status');
     addCamp.clickStatusArchived();
     addCamp.verifyArchivedCampaign(
@@ -374,44 +345,26 @@ describe('Add Campaign flow', () => {
     addCamp.clickCampaignMenu();
     cy.wait(3000);
     addCamp.clickAddNewCampaign();
-    addCamp.enableAdvancedSwitchBar();
-    addCamp.enterName(fixtureData.campaignName + randNum.toString() + '1');
-    addCamp.selectDialingModeOption('Predictive Dialer');
+    addCamp.verifyDialingMode();
+    addCamp.selectDialingMode('Predictive');
+    addCamp.verifyAgentToAssignDropdown();
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.verifyPhoneNumberToAssignDropdown();
+    addCamp.selectPhoneNumberToAssign(testData.Number);
+    addCamp.verifyContactListDropdown();
     addCamp.verifyCampaignNameField();
-    addCamp.verifyDialModeDropdown();
-    addCamp.newCampaignDropdown(['Time Zone']);
-
-    addCamp.verifyCallOptions([
-      'Call Recording',
-      'Scrub Federal DNC',
-      'Answering Machine Detection',
-      'Scrub Company DNC',
-    ]);
-    addCamp.verifyCallOrder([
-      'Adaptive',
-      'Highest Score Leads first',
-      'Lowest Score Leads first',
-    ]);
-
-    addCamp.verifyCallerID(['Number Group', 'Individual Numbers']);
-    addCamp.selectCallerId('Individual Numbers', testData.Number);
-    addCamp.clickNextCircleArrow();
-    addCamp.verifyCallTypeAutoAnswer();
-    addCamp.verifyCallTypeBeepOnce();
-    addCamp.verifyCallTypeRingingSound();
-    addCamp.verifyCallingHours();
-    addCamp.selectCallResultsOption(['Busy']);
-    addCamp.verifyCallResult();
-    addCamp.verifyMaxAttempts();
+    addCamp.verifyCallResultsDropdown();
+    addCamp.clickAdvancedConfiguration();
+    addCamp.verifyCallsOrder();
+    addCamp.verifyCallConnectType();
+    addCamp.verifySimultaneousDialsField();
+    addCamp.verifyRingTimeDuration();
+    addCamp.verifyAbandonedTimeout();
     addCamp.verifyRetryTime();
-    addCamp.verifySimulataneousDials();
-    addCamp.clickNextCircleArrow();
-    addCamp.verifyContactList();
-    addCamp.verifyAgentScript();
-    addCamp.verifyAgentScriptCreateNewButton();
-    addCamp.verifyAssignAgent();
-    addCamp.verifyLeadSheetDropdown();
-    addCamp.verifyCancelButton();
+    addCamp.verifyRetryTimeUnitDropdown();
+    addCamp.verifyMaxAttempts();
+    addCamp.verifyMaxCallsPerDay();
+    addCamp.clickOnButton('Cancel');
   });
 
   it('Verify Elements present in Recycle page', function () {
@@ -428,11 +381,6 @@ describe('Add Campaign flow', () => {
     addCamp.verifyCancelButton();
   });
 
-  it.skip('It show show Alert when No Phone Number is Purchases', () => {
-    addCamp.clickCampaignMenu();
-    addCamp.verifyAlert();
-  });
-
   it('On click on campaign name it should open edit campaign page', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickCampaignName(testData.campaign);
@@ -447,7 +395,7 @@ describe('Add Campaign flow', () => {
     addCamp.verifyAddedCampaign(testData.campaign);
   });
 
-  it('Verify Validation on required field of new campaign page', () => {
+  it.skip('Verify Validation on required field of new campaign page', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickAddNewCampaign();
     addCamp.enableAdvancedSwitchBar();
@@ -462,18 +410,23 @@ describe('Add Campaign flow', () => {
   it('It should open schedule window when user click on calling hours', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickAddNewCampaign();
-    addCamp.enableAdvancedSwitchBar();
-    addCamp.enterName(fixtureData.campaignName + randNum.toString());
-    addCamp.selectCallerId('Individual Numbers', testData.Number);
-    addCamp.clickNextCircleArrow();
+    addCamp.selectDialingMode('Predictive');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.selectPhoneNumberToAssign(testData.Number);
+    addCamp.enterCampaignName(fixtureData.campaignName + randNum.toString());
+    addCamp.selectCallResults([
+      'Answering Machine',
+      'No Answer',
+      'Successful Sale',
+      'Voicemail',
+    ]);
+    addCamp.clickAdvancedConfiguration();
     addCamp.clickCallingHours();
-    addCamp.verifyScheduleTable();
   });
 
   it('Verify From and To field get disable whenever user unselect check box', () => {
     addCamp.clickScheduleCheckmark();
     addCamp.verifyScheduleCheckbox('have.attr');
-    // addCamp.clickScheduleCancelButton();
   });
 
   it('Verify From and To field get enable whenever user select check box', () => {
@@ -484,7 +437,6 @@ describe('Add Campaign flow', () => {
 
   it('Verify Select All, Apply All, Apply, Cancel Button Functionality on schedule window', () => {
     addCamp.clickCallingHours();
-    addCamp.clickSelectAllCheckbox();
     addCamp.clickSelectAllCheckbox();
     addCamp.verifySelectAll('have.attr');
     addCamp.clickSelectAllCheckbox();
@@ -499,16 +451,7 @@ describe('Add Campaign flow', () => {
     addCamp.verifyScheduleTableNotVisible();
   });
 
-  // it.skip('Verify functionality of create new button on New campaign page', () => {
-  //   addCamp.enableAdvancedSwitchBar();
-  //   addCamp.clickAgentScriptCreateNewButton();
-  //   addCamp.verifyAgentScriptPopUp();
-  //   addCamp.clickScheduleCancelButton();
-  // });
-
   it('Verify contact list dropdown should show lists dropdown', () => {
-    addCamp.selectCallResultsOption(['Busy']);
-    addCamp.clickNextCircleArrow();
     addCamp.clickContactListDropdown();
     addCamp.verifyContactListDropdown();
   });

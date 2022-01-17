@@ -9,6 +9,8 @@ const CallResults = 'Call Results';
 const CallLocations = 'Calls Locations';
 const AverageCallDuration = 'Average Call Duration';
 const ButtonLoginAs = '//button[text()="Login As"]';
+const clientPlusIcon = '.group-client img';
+const groupExpended = 'div.group-client+div';
 const StatusDropDown = 'div#navbarSupportedContent div.ss-select';
 const Dialer = 'img[src*="softphone.svg"]';
 const Task = 'a[href="/tasks/"]';
@@ -222,6 +224,16 @@ const callGraphCloseBtn = 'button img[src*="close"]';
 const modalTitle = '.modal-title';
 const micTestStartBtn = '.recorder-buttons svg';
 const statusTimer = '.agent__presence-time';
+const clientUserId = '.group-row__center__id';
+const toastMessage = '.Toastify__toast-body';
+const userRoleStatus = (role) =>
+  `//div[contains(@class,"sign-role")][text()="${role}"]/ancestor::div[contains(@class,"group-user")]//span[@class="group-row-role__left__title__presence"]`;
+const clientUserName = '.group-row__center__title';
+const userTreeRoleDropdown = '.dropdown-usertree-search__dropdown';
+const userRoleName = '.sign-user.sign-role';
+const userTreeSearchBox = '.dropdown-usertree-search__input';
+const searchedUserName = '.group-row-role__left__title';
+const userTreeDropdown = 'div.dropdown-usertree.show';
 
 export default class Dashboard {
   clickDashboard() {
@@ -270,7 +282,7 @@ export default class Dashboard {
   }
 
   enterUserToSearch(name) {
-    cy.get(chatSearchBox).type(name);
+    cy.get(chatSearchBox).clear().type(name);
   }
 
   verifySearchedEmoji(name) {
@@ -1504,5 +1516,83 @@ export default class Dashboard {
 
   verifyStatusTimerVisible() {
     cy.get(statusTimer).should('contain.text', '0:');
+  }
+
+  clickClientPlusIcon() {
+    cy.get(clientPlusIcon).click();
+  }
+
+  verifyGroupExpended() {
+    cy.get(groupExpended).should('be.visible');
+  }
+
+  clickClientUserId() {
+    cy.get(clientUserId).click();
+  }
+
+  verifyToastMessage(message) {
+    cy.get(toastMessage).should('contain.text', message);
+  }
+
+  verifyAgentRoleLiveStatusVisible() {
+    cy.xpath(userRoleStatus('Agent')).should('be.visible');
+  }
+
+  verifySupervisorStatusNotVisible() {
+    cy.xpath(userRoleStatus('Supervisor')).should('not.exist');
+  }
+
+  verifyUserNameCapitalized() {
+    cy.get(clientUserName).then((userName) => {
+      let flag = false;
+      cy.log(userName.text());
+      const [firstName, lastName] = userName.text().split(' ');
+      cy.log(firstName.split('')[0]);
+      if (firstName.split('')[0] >= 'A' && firstName.split('')[0] <= 'Z') {
+        flag = true;
+      } else {
+        flag = false;
+      }
+      if (lastName.split('')[0] >= 'A' && lastName.split('')[0] <= 'Z') {
+        flag = true;
+      } else {
+        flag = false;
+      }
+      // expect(flag).to.be.true;
+    });
+  }
+
+  selectRoleToFilter(role) {
+    cy.get(userTreeRoleDropdown).click();
+    this.selectDropdownItemToClick(role);
+  }
+
+  verifyUserRoleName(role) {
+    cy.get(userRoleName).then((roles) => {
+      for (let i = 0; i < roles.length; i++) {
+        expect(roles[i]).to.have.text(role);
+      }
+    });
+  }
+
+  verifyRolesDropdownVisible() {
+    cy.get(userTreeRoleDropdown).should('be.visible');
+  }
+
+  enterUserToSearch(user) {
+    cy.get(userTreeSearchBox).type(user);
+  }
+
+  verifySearchedUserName(user) {
+    cy.get(searchedUserName).should('contain.text', user);
+    cy.get(userTreeSearchBox).clear();
+  }
+
+  verifyUserTreeNotVisible() {
+    cy.get(userTreeDropdown).should('not.exist');
+  }
+
+  clickOnBody() {
+    cy.get('body').click();
   }
 }

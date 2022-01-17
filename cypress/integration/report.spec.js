@@ -92,6 +92,13 @@ describe('Report Page', function () {
     ]);
   });
 
+  it('Verify that authorized user is able to search in Recent contacts by using customer phone number', () => {
+    report.clickReportMenu();
+    report.clickReportsHeader('Recent Contacts');
+    report.searchNumber(testData.contactNumber);
+    report.verifyRowsData(testData.Contact);
+  });
+
   it('verify Dropdowns on Report Campaign', function () {
     report.clickReportMenu();
     report.clickReportsHeader('Campaigns');

@@ -35,6 +35,7 @@ const FloorMap = "//div[text()='Floormap']";
 const FloorViewDropdown = "//label[text()='Floor View']/parent::div//button";
 const addNewFloor = "//button[contains(text(),' Add New Floor')]";
 const filtersButton = '.modal-filter-btn';
+const rowsData = '.resizable-table .resizable-table-tbody .tr';
 
 export default class Report {
   clickReportMenu() {
@@ -220,5 +221,9 @@ export default class Report {
 
   clickFilterButton() {
     cy.get(filtersButton).click();
+  }
+
+  verifyRowsData(data) {
+    cy.get(rowsData).should('contain.text', data);
   }
 }
