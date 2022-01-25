@@ -6,8 +6,6 @@ import { ignoreSpeedTestPopup } from '../support/Utils';
 const firstPromoter = new FirstPromoter();
 const register = new Register();
 const login = new Login();
-const randomNumber = Math.floor(Math.random() * 10000);
-const email = 'testing+' + randomNumber + '@test.com';
 
 describe('First Promoter Flow', () => {
   after(() => {
@@ -18,6 +16,87 @@ describe('First Promoter Flow', () => {
   });
 
   describe('Register User and Verify in First Promoter', () => {
+    it('Verify Trial Registration redirection from Product Overview page', () => {
+      cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
+      firstPromoter.clickProductOverviewItem();
+      firstPromoter.clickFreeTrialBtn();
+      firstPromoter.verifyRedirectedUrl(
+        'https://app.batchdialer.com/register_trial/?fpr=6vu4l&_fp_ref_id=6vu4l'
+      );
+    });
+
+    it('Verify Trial Registration redirection from Industries -> Real Estate page', () => {
+      cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
+      firstPromoter.clickIndustiresSubMenuItem('real-estate');
+      firstPromoter.clickFreeTrialBtn();
+      firstPromoter.verifyRedirectedUrl(
+        'https://app.batchdialer.com/register_trial/?fpr=6vu4l&_fp_ref_id=6vu4l'
+      );
+    });
+
+    it('Verify Trial Registration redirection from Industries -> Collections page', () => {
+      cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
+      firstPromoter.clickIndustiresSubMenuItem('collections');
+      firstPromoter.clickFreeTrialBtn();
+      firstPromoter.verifyRedirectedUrl(
+        'https://app.batchdialer.com/register_trial/?fpr=6vu4l&_fp_ref_id=6vu4l'
+      );
+    });
+
+    it('Verify Trial Registration redirection from Industries -> Solar Sales page', () => {
+      cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
+      firstPromoter.clickIndustiresSubMenuItem('solar-sales');
+      firstPromoter.clickFreeTrialBtn();
+      firstPromoter.verifyRedirectedUrl(
+        'https://app.batchdialer.com/register_trial/?fpr=6vu4l&_fp_ref_id=6vu4l'
+      );
+    });
+
+    it('Verify Trial Registration redirection from Industries -> Roofing Sales page', () => {
+      cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
+      firstPromoter.clickIndustiresSubMenuItem('roofing-sales');
+      firstPromoter.clickFreeTrialBtn();
+      firstPromoter.verifyRedirectedUrl(
+        'https://app.batchdialer.com/register_trial/?fpr=6vu4l&_fp_ref_id=6vu4l'
+      );
+    });
+
+    it('Verify Trial Registration redirection from Pricing page', () => {
+      cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
+      firstPromoter.clickPricingMenuItem();
+      firstPromoter.clickPricingTrialButton();
+      firstPromoter.verifyRedirectedUrl(
+        'https://app.batchdialer.com/register_trial/?fpr=6vu4l&_fp_ref_id=6vu4l'
+      );
+    });
+
+    it('Verify Trial Registration redirection from FAQ page', () => {
+      cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
+      firstPromoter.clickFaqMenuItem();
+      firstPromoter.clickFreeTrialBtn();
+      firstPromoter.verifyRedirectedUrl(
+        'https://app.batchdialer.com/register_trial/?fpr=6vu4l&_fp_ref_id=6vu4l'
+      );
+    });
+
+    it('Verify Trial Registration redirection from Resources -> Demo Request page', () => {
+      cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
+      firstPromoter.clickResourcesSubMenuItem('demo-request');
+      firstPromoter.clickFreeTrialBtn();
+      firstPromoter.verifyRedirectedUrl(
+        'https://app.batchdialer.com/register_trial/?fpr=6vu4l&_fp_ref_id=6vu4l'
+      );
+    });
+
+    it('Verify Trial Registration redirection from Resources -> Blog page', () => {
+      cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
+      firstPromoter.clickResourcesSubMenuItem('blog');
+      firstPromoter.clickFreeTrialBtn();
+      firstPromoter.verifyRedirectedUrl(
+        'https://app.batchdialer.com/register_trial/?fpr=6vu4l&_fp_ref_id=6vu4l'
+      );
+    });
+
     it('Register New Account', () => {
       cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
       firstPromoter.clickFreeTrialBtn();
