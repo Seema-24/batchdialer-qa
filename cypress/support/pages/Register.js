@@ -52,6 +52,8 @@ const agentCountSlider = '.rc-slider-handle';
 const agentCount = '.agents .title';
 const errorMsg = '.error-msg';
 const paymentsPage = '.payment-details';
+const billingAddressInput = '.google-autocomplete-wrapper input';
+const billingAddressOption = '.google-autocomplete-option';
 
 export default class Register {
   clickSignUpBtn() {
@@ -258,7 +260,7 @@ export default class Register {
       this.enterExpiryDate(CardExpiry);
       this.enterCVC(CardCVC);
       this.selectCountry(Country);
-      this.enterBillingZip(BillingZip);
+      // this.enterBillingZip(BillingZip);
     });
   }
 
@@ -402,5 +404,20 @@ export default class Register {
 
   verifyPaymentsPage() {
     cy.get(paymentsPage).should('be.visible');
+  }
+
+  enterBillingAddress(address) {
+    cy.get(billingAddressInput).type(address);
+  }
+
+  selectBillingAddressFromSuggestion(address) {
+    cy.get(billingAddressOption).then((addresses) => {
+      for (let i = 0; i < addresses.length; i++) {
+        if (addresses[i].textContent.trim() === address) {
+          cy.get(addresses[i]).click();
+          break;
+        }
+      }
+    });
   }
 }

@@ -44,6 +44,11 @@ describe('First Promoter Flow', () => {
         Cypress.env('BillingZip')
       );
       register.clickAgreeCheckbox();
+      register.enterBillingAddress('63 East June Street, Mesa, AZ, USA');
+      cy.wait(1000);
+      register.selectBillingAddressFromSuggestion(
+        '63 East June Street, Mesa, AZ, USA'
+      );
       register.clickSubscribeBtn();
       cy.waitFor(cy.get('.main_sec', { timeout: 30000 }));
       ignoreSpeedTestPopup();
