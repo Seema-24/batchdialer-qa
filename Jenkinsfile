@@ -8,6 +8,7 @@ pipeline {
     stage('Build') {
       steps {
         sh 'npm install'
+        sh 'npx cypress open'
          sh 'npm run report'
       }
     }  
