@@ -11,6 +11,11 @@ pipeline {
         sh 'npm run report:firstPromoter'
       }
     }  
+    stage ('Upload report') {
+        steps {
+            slackUploadFile channel: '#test-devops' filePath: 'cypress/ProdReports/html/mochawesome-bundle.html', initialComment: 'first promoter report'
+        }
+  }
   }
   post
   {
