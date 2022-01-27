@@ -120,7 +120,7 @@ const addNewNotes = "//span[contains(text(),'Add New Note')]/ancestor::button";
 const notesTextBox = '.ProseMirror';
 const AddedNote = '.comment-item-body';
 const notesWindow = '.modal-content';
-const notesBullets = 'svg[data-icon="list-ul"]';
+const notesBullets = 'svg[data-icon="bat-ul"]';
 const fieldsEditBtn = (fieldName) =>
   `//tr[td[contains(@class,"contact-field") and text()="${fieldName}"]]//*[name()="svg"]`;
 const phoneEditBtn = `//tr[td[div[contains(@class,"td__phone")]]]//td[contains(@class,"contact__custom-input__edit")]//*[name()="svg"][1]`;

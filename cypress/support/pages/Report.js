@@ -115,8 +115,11 @@ export default class Report {
         number += num[i];
       }
     }
-    cy.log(number);
     cy.get(searchBox).type(number);
+  }
+
+  searchContactName(contact) {
+    cy.get(searchBox).type(contact);
   }
 
   verifySearchedNumber(number) {

@@ -260,6 +260,10 @@ describe('Registration', () => {
           Cypress.env('Coupon')
         );
         register.clickAgreeCheckbox();
+        register.enterBillingAddress('63 East June Street, Mesa, AZ, USA');
+        register.selectBillingAddressFromSuggestion(
+          '63 East June Street, Mesa, AZ, USA'
+        );
         register.clickSubscribeBtn();
         cy.waitFor(cy.get('.main_sec', { timeout: 30000 }));
         ignoreSpeedTestPopup();

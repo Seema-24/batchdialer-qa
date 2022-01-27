@@ -4,15 +4,15 @@ const createNewOption =
   '//div[contains(@class,"show")]/a[contains(text(),"Create New")]';
 const uploadFileOption =
   '//div[contains(@class,"show")]/a[contains(text(),"Upload File")]';
-const viewBtn = 'img[src*="view"]';
+const viewBtn = '.contacts__name';
 const editForm = '.userSedit';
 const uploadForm = '.import_step';
 const UserProfile = '.profile_name';
 const profileButton = 'div[href*="profile"]';
 const profilePage = '.profile-page';
 const loginAsBtn = '.dropdown-usertree';
-const openUserPlusBtn = '.role-title + span';
-const userList = '.roletitle';
+const openUserPlusBtn = '.group-client img[src*="tree-open"]';
+const userList = '.group-row-role__left__title';
 const profileName = '.name';
 const backToSupervisor = '.nav-item a[href*="logout"]';
 const dashboard = 'a[title="Dashboard"]';

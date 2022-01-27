@@ -536,10 +536,15 @@ describe('Agent Profile', function () {
   });
 
   it('Verify that Outbound call details are updated in View Contacts ACTIVITIES Tab', () => {
+    agent.clickingOnContactOption();
+    agent.enterSearch('random Contact');
+    cy.wait(1000);
+    agent.clickContactName();
+    cy.wait(2000);
     agent.clickOnButton('Activities');
     cy.readFile('cypress/fixtures/testData.json').then((data) => {
       agent.verifyActivityText(
-        `Outbound Call to ${data.contactNumber} - No Answer`
+        `Outbound Call from ${data.campaign} campaign to ${data.contactNumber} No Answer`
       );
     });
   });

@@ -56,7 +56,7 @@ describe('SuperVisor Flow', () => {
   it('Verify View Button Functionality for Contacts', () => {
     suprevisor.clickingOnContactOption();
     cy.wait(3000);
-    suprevisor.clickViewBtn('New', 'User');
+    suprevisor.clickViewBtn();
     suprevisor.verifyViewForm();
   });
 
@@ -68,7 +68,7 @@ describe('SuperVisor Flow', () => {
     suprevisor.verifyEditForm();
   });
 
-  it('Verify Add Contact using Upload File option', () => {
+  it.skip('Verify Add Contact using Upload File option', () => {
     suprevisor.clickingOnContactOption();
     cy.wait(3000);
     suprevisor.clickAddNewContactButton();
@@ -134,7 +134,6 @@ describe('SuperVisor Flow', () => {
     suprevisor.verifyRecentContactsDropdown([
       'All Calls',
       'Call Results',
-      'Agents',
       'Campaigns',
       'All Durations',
       'Mood',
@@ -254,7 +253,7 @@ describe('SuperVisor Flow', () => {
     suprevisor.verifyDatePicker();
   });
 
-  it('Verify the Table headings og Number section in Reports Page', () => {
+  it('Verify the Table headings of Number section in Reports Page', () => {
     suprevisor.clickReportsMenu();
     suprevisor.clickReportsHeader('Numbers');
     suprevisor.verifyNumberSectionTableHeadings([

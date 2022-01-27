@@ -662,18 +662,18 @@ describe('Dashboard Elements', () => {
     Dash.verifyChaticon();
   });
 
-  it('Verify Chat icon should open chat window', () => {
+  it.skip('Verify Chat icon should open chat window', () => {
     Dash.clickChatIcon();
     Dash.verifyChatPopUp();
   });
 
-  it('Verify user is able to enter chat in chat box', () => {
+  it.skip('Verify user is able to enter chat in chat box', () => {
     Dash.enterEmailInBox(testData.email, 'Hello');
     Dash.enterChatInBox('Hello');
     Dash.verifyMessageSent('Hello');
   });
 
-  it('Verify chat pop up Elements', () => {
+  it.skip('Verify chat pop up Elements', () => {
     Dash.verifyChatTitle();
     Dash.verifyAttachmentIcon();
     Dash.verifyEmojiIcon();
@@ -846,7 +846,7 @@ describe('Dashboard Elements', () => {
   it('Verify that one can search other user chat using search box', () => {
     Dash.clickMessageIcon();
     Dash.verifyChatBox();
-    Dash.enterUserToSearch(testData.agent);
+    Dash.enterChatToSearch(testData.agent);
     Dash.verifySearchedChatName(testData.agent);
     Dash.clickChatCloseButton();
   });
@@ -864,6 +864,7 @@ describe('Dashboard Elements', () => {
   it('Verify that user can create group and send message', () => {
     Dash.clickMessageIcon();
     Dash.verifyChatBox();
+    cy.wait(1000);
     Dash.clickStartChatButton();
     Dash.selectUserToSendMessage([testData.agent, testData.supervisor]);
     Dash.enterMessage(message('Admin'));

@@ -120,7 +120,7 @@ describe('Login Successfully and Add User', () => {
         fixtureData.userLastname +
         randNum.toString()
     );
-    cy.wait(2000);
+    cy.wait(4000);
     addUser.clickUserEditButton(
       fixtureData.userFirstname,
       fixtureData.userLastname + randNum.toString()
@@ -374,6 +374,7 @@ describe('Login Successfully and Add User', () => {
   it('Verify that the number of agents is displayed along with group name', () => {
     const [agentFirstName, agentLastName] = testData.agent.split(' ');
     addUser.clickingOnUserOption();
+    cy.wait(2000);
     addUser.clickUserThreeDotMenu(agentFirstName, agentLastName);
     addUser.clickOnDropdownItem('Edit');
     addUser.clickUserGroupDropdown();

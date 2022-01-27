@@ -161,8 +161,9 @@ const filterStartDate = "(//div[@class='date-input-field'])[1]";
 const filterEndDate = "(//div[@class='date-input-field'])[2]";
 const filterSelectDate = (date) =>
   "//div[@class='DayPicker-Body']//div[text()='" + date + "']";
-const loginAsPlusIcon = ".dropdown-menu svg[data-icon='plus']";
-const Agent = (user) => "//span[text()='" + user + "']";
+const loginAsPlusIcon = '.group-client img[src*="tree-open"]';
+const Agent = (user) =>
+  `//div[@class="group-row-role__left__title"][text()="${user}"]`;
 const dashboardName = '.name';
 const backToAdmin = '.nav-item a[href*="logout"]';
 const homeButton = '.breadcrumb-item .active';
@@ -281,7 +282,7 @@ export default class Dashboard {
     });
   }
 
-  enterUserToSearch(name) {
+  enterChatToSearch(name) {
     cy.get(chatSearchBox).clear().type(name);
   }
 

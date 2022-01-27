@@ -5,7 +5,7 @@ const report = new Report();
 let fixtureData;
 let testData;
 
-describe('Report Page', function () {
+describe('Report Page', () => {
   before(() => {
     cy.readFile('cypress/fixtures/testData.json').then(
       (data) => (testData = data)
@@ -33,7 +33,7 @@ describe('Report Page', function () {
     ignoreSpeedTestPopup();
   });
 
-  it('verify report live elements', function () {
+  it('verify report live elements', () => {
     report.clickReportMenu();
     report.clickReportsHeader('Live');
     report.verifyReportLiveElements([
@@ -52,7 +52,7 @@ describe('Report Page', function () {
     ]);
   });
 
-  it('verify report table header element', function () {
+  it('verify report table header element', () => {
     report.verifyReportTableHeaderElements([
       'Agent',
       'Phone Number',
@@ -64,7 +64,7 @@ describe('Report Page', function () {
     ]);
   });
 
-  it('Verify dropdowns of Report contacts', function () {
+  it('Verify dropdowns of Report contacts', () => {
     report.clickReportMenu();
     report.clickReportsHeader('Recent Contacts');
     report.clickFilterButton();
@@ -78,7 +78,7 @@ describe('Report Page', function () {
     ]);
   });
 
-  it('verify report table header element for Recent Contact', function () {
+  it('verify report table header element for Recent Contact', () => {
     report.verifyReportTableHeaderElements([
       'Call Type',
       'Date/Time',
@@ -99,7 +99,15 @@ describe('Report Page', function () {
     report.verifyRowsData(testData.Contact);
   });
 
-  it('verify Dropdowns on Report Campaign', function () {
+  it('Verify that authorized user is able to search in Recent contacts by using customer name', () => {
+    report.clickReportMenu();
+    report.clickReportsHeader('Recent Contacts');
+    report.searchContactName(testData.Contact);
+    report.verifyRowsData(testData.Contact);
+    report.verifyRowsData(testData.contactNumber);
+  });
+
+  it('verify Dropdowns on Report Campaign', () => {
     report.clickReportMenu();
     report.clickReportsHeader('Campaigns');
     report.VerifyDropdownsReportCampaign([
@@ -109,7 +117,7 @@ describe('Report Page', function () {
     ]);
   });
 
-  it('verify report table header element for Report Campaign', function () {
+  it('verify report table header element for Report Campaign', () => {
     report.verifyReportTableHeaderElements([
       'Campaign',
       'Status',
@@ -122,13 +130,13 @@ describe('Report Page', function () {
     ]);
   });
 
-  it('Verify dropdowns of Report Agent', function () {
+  it('Verify dropdowns of Report Agent', () => {
     report.clickReportMenu();
     report.clickReportsHeader('Agents');
     report.verifyAgentsDropdowns(['Departments', 'All Campaigns', 'Export']);
   });
 
-  it('verify report table header element for Report Agent', function () {
+  it('verify report table header element for Report Agent', () => {
     report.verifyReportTableHeaderElements([
       'Agent',
       'Available',
@@ -150,7 +158,7 @@ describe('Report Page', function () {
     ]);
   });
 
-  it('verify report table header element for Report Agent', function () {
+  it('verify report table header element for Report Agent', () => {
     report.clickReportMenu();
     report.clickReportsHeader('Numbers');
     report.verifyReportTableHeaderElements([
@@ -162,7 +170,7 @@ describe('Report Page', function () {
     ]);
   });
 
-  it('Verify Functionality of search Button and Designation Dropdown', function () {
+  it('Verify Functionality of search Button and Designation Dropdown', () => {
     report.searchNumber(testData.Number);
     report.verifySearchedNumber(testData.Number);
   });
@@ -221,27 +229,11 @@ describe('Report Page', function () {
     report.verifyAgentHeatMapDropdown();
     report.verifyHeatMapRadioButtons(['Day', 'Week', 'Month']);
     report.verifyHeatMapDatePicker();
-    // report.verifyHeatMapStatus([
-    //   'Available',
-    //   'Break',
-    //   'Lunch',
-    //   'In training',
-    //   'Out of desk',
-    //   'On Call',
-    //   'Wrap Up Time',
-    //   'Disconnected',
-    //   'Offline',
-    //   'In Meeting',
-    //   'Auto Pause',
-    //   'PrepWork',
-    //   'After Call',
-    // ]);
   });
 
   it('Verify Floor Map Elements', () => {
     report.clickReportMenu();
     report.clickReportsHeader('Floor Map');
-    // report.verifyFloorMapViewDropdown();
     report.verifyAddNewFloorButton();
   });
 });

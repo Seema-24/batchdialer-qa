@@ -62,8 +62,8 @@ describe('Add Phone Number flow', () => {
     addNum.clickPhoneNumberMenu();
     addNum.clickBuyDidButton();
     addNum.selectStateModeOption('Colorado');
-    addNum.clickSearchButton();
-    addNum.verifysearchStartedToast();
+    // addNum.clickSearchButton();
+    // addNum.verifysearchStartedToast();
     addNum.selectPhoneNumber();
     addNum.assignAgentUser(testData.AdminName);
     addNum.getFirstPhoneNumber();
@@ -93,7 +93,7 @@ describe('Add Phone Number flow', () => {
     addNum.clickPhoneNumberMenu();
     addNum.clickBuyDidButton();
     addNum.enterAreaCode('520');
-    addNum.clickSearchButton();
+    // addNum.clickSearchButton();
     addNum.verifySearchNumber('520');
     addNum.closingDialog();
   });

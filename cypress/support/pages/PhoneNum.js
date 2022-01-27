@@ -4,8 +4,7 @@ const stateDrpdwn =
   '//div[@class="modal-body"]//div[contains(@class,"ss-select")]//span[contains(text(),"Select state")]';
 const searchBtn = '.modal-body button svg[data-icon="search"]';
 const firstNum = '.number';
-const firstNumberChkBx =
-  '//div[@class="modal-body"]//div[@class="numbers"]/div[1]//input';
+const firstNumberChkBx = '.resizable-table-tbody .tr-dids .td span';
 const orderNow = '.btn svg[data-icon="shopping-cart"]';
 // const orderNow = '//button[contains(text(),"Order Now")]';
 const dropdownOptions = '.ss-select-group-items';
@@ -15,6 +14,7 @@ const closeBtn = '//button[contains(text(),"Close")]';
 const toast = '.Toastify__toast-body';
 const deleteToast =
   '//div[@class="Toastify__toast-body"]//div[contains(text(),"The number has been deleted")]';
+const agentRadioBtn = 'input[value="agent"]';
 const assignToDrpdwn =
   '//div[@class="modal-content"]//div[span[contains(text(),"Agent")]]';
 const ivrAttendent = 'a[title="IVR/Auto Attendant"]';
@@ -398,7 +398,7 @@ export default class PhoneNum {
   }
 
   selectPhoneNumber(number) {
-    cy.xpath(firstNumberChkBx, { timeout: 30000 }).click();
+    cy.get(firstNumberChkBx, { timeout: 30000 }).first().click();
   }
 
   clickOrderNowButton() {
@@ -406,7 +406,7 @@ export default class PhoneNum {
   }
 
   closingDialog() {
-    cy.xpath(closeBtn, { timeout: 60000 }).should('be.enabled');
+    cy.xpath(closeBtn, { timeout: 120000 }).should('be.enabled');
     cy.xpath(closeBtn).click();
   }
 
@@ -471,10 +471,11 @@ export default class PhoneNum {
     cy.on('window:confirm', () => true);
   }
   verifyDeletedToast() {
-    cy.xpath(deleteToast).should('be.visible');
+    cy.xpath(deleteToast, { timeout: 20000 }).should('be.visible');
   }
 
   assignAgentUser(usrName) {
+    cy.get(agentRadioBtn).check({ force: true });
     cy.xpath(assignToDrpdwn).first().click();
     cy.get(dropdownOptions)
       .contains(usrName)
@@ -893,7 +894,7 @@ export default class PhoneNum {
   }
 
   verifySearchNumber(code) {
-    cy.get('.number label', { timeout: 30000 }).should('contain.text', code);
+    cy.get('.number', { timeout: 60000 }).should('contain.text', code);
   }
 
   clickeditIVR(name) {

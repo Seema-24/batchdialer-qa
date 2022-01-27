@@ -8,14 +8,15 @@ const register = new Register();
 const login = new Login();
 
 describe('First Promoter Flow', () => {
-  after(() => {
-    cy.readFile('cypress/fixtures/testData.json').then((data) => {
-      data.firstPromoterEmail = parseInt(data.firstPromoterEmail) + 1;
-      cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
+  describe('Verify Link Redirections and Register User', () => {
+    before(() => {
+      const randomNumber = Math.floor(Math.random() * 10000);
+      cy.readFile('cypress/fixtures/testData.json').then((data) => {
+        data.randomEmailCount = randomNumber;
+        cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
+      });
     });
-  });
 
-  describe('Register User and Verify in First Promoter', () => {
     it('Verify Trial Registration redirection from Product Overview page', () => {
       cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
       firstPromoter.clickProductOverviewItem();
@@ -97,7 +98,7 @@ describe('First Promoter Flow', () => {
       );
     });
 
-    it('Register New Account', () => {
+    it('Register New Trial Account', () => {
       cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
       firstPromoter.clickFreeTrialBtn();
       register.enterFirstName('Demo');
@@ -106,8 +107,7 @@ describe('First Promoter Flow', () => {
       register.selectIndustry('Other');
       register.enterPhoneNumber('9999999999');
       cy.readFile('cypress/fixtures/testData.json').then((data) => {
-        let count = parseInt(data.firstPromoterEmail) + 1;
-        const email = `test+${count}@test.com`;
+        const email = `test+${data.randomEmailCount}@test.com`;
         register.enterEmail(email);
       });
       register.enterPassword('Fleek@2016');
@@ -124,7 +124,7 @@ describe('First Promoter Flow', () => {
       );
       register.clickAgreeCheckbox();
       register.enterBillingAddress('63 East June Street, Mesa, AZ, USA');
-      cy.wait(1000);
+      cy.wait(2000);
       register.selectBillingAddressFromSuggestion(
         '63 East June Street, Mesa, AZ, USA'
       );
@@ -133,7 +133,9 @@ describe('First Promoter Flow', () => {
       ignoreSpeedTestPopup();
       login.verifySuccessfullLogin();
     });
+  });
 
+  describe('First Promoter', () => {
     it('Login to FirstPromoter and verify Register Account is reflecting', () => {
       cy.visit('https://batchdialer.firstpromoter.com/users/sign_in');
       firstPromoter.enterEmail('sandeepk@batchservice.com');
@@ -142,8 +144,7 @@ describe('First Promoter Flow', () => {
       firstPromoter.verifySuccessFulLogin();
       firstPromoter.clickLeadsMenu();
       cy.readFile('cypress/fixtures/testData.json').then((data) => {
-        let count = parseInt(data.firstPromoterEmail) + 1;
-        const email = `test+${count}@test.com`;
+        const email = `test+${data.randomEmailCount}@test.com`;
         firstPromoter.verifyReisteredAccount(email);
       });
     });
