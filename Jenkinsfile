@@ -7,8 +7,12 @@ pipeline {
      
     stage('Build') {
       steps {
+      sh 'npm install'
         sh 'npm run report:firstPromoter'
       }
     }  
   }
+  always {
+            cleanWs()
+        }
 }
