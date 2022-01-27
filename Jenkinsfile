@@ -13,7 +13,7 @@ pipeline {
     }  
     stage ('Upload report') {
         steps {
-            slackUploadFile channel: '#test-devops', filePath: 'cypress/ProdReports/html/mochawesome-bundle.html', initialComment: 'first promoter report'
+            slackUploadFile credentialId: 'slack-test-devops-channel-notification-token' , channel: '#test-devops', filePath: 'cypress/ProdReports/html/mochawesome-bundle.html', initialComment: 'first promoter report'
         }
   }
   }
