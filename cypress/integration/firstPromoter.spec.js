@@ -7,8 +7,8 @@ const firstPromoter = new FirstPromoter();
 const register = new Register();
 const login = new Login();
 
-describe('First Promoter Flow', () => {
-  describe('Verify Link Redirections and Register User', () => {
+describe('First Promoter Flow For BatchDialer', () => {
+  describe('Verify Link Redirections and Register Trial User in BatchDialer', () => {
     before(() => {
       const randomNumber = Math.floor(Math.random() * 10000);
       cy.readFile('cypress/fixtures/testData.json').then((data) => {
@@ -94,7 +94,7 @@ describe('First Promoter Flow', () => {
       firstPromoter.clickResourcesSubMenuItem('blog');
       firstPromoter.clickFreeTrialBtn();
       firstPromoter.verifyRedirectedUrl(
-        'https://app.batchdialer.com/register_trial/?fpr=6vu4l&_fp_ref_id=6vu4lt'
+        'https://app.batchdialer.com/register_trial/?fpr=6vu4l&_fp_ref_id=6vu4l'
       );
     });
 
@@ -135,7 +135,7 @@ describe('First Promoter Flow', () => {
     });
   });
 
-  describe('First Promoter', () => {
+  describe('First Promoter for BatchDialer', () => {
     it('Login to FirstPromoter and verify Register Account is reflecting', () => {
       cy.visit('https://batchdialer.firstpromoter.com/users/sign_in');
       firstPromoter.enterEmail(Cypress.env('firstPromoterUsername'));
