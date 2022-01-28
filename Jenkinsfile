@@ -18,11 +18,4 @@ pipeline {
         }
   }
   }
-  post
-  {
-    #always 
-    #{
-    #    cleanWs()
-    #}
- }
 }
