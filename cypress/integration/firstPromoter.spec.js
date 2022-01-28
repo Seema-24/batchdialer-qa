@@ -94,7 +94,7 @@ describe('First Promoter Flow', () => {
       firstPromoter.clickResourcesSubMenuItem('blog');
       firstPromoter.clickFreeTrialBtn();
       firstPromoter.verifyRedirectedUrl(
-        'https://app.batchdialer.com/register_trial/?fpr=6vu4l&_fp_ref_id=6vu4l'
+        'https://app.batchdialer.com/register_trial/?fpr=6vu4l&_fp_ref_id=6vu4lt'
       );
     });
 
@@ -138,8 +138,8 @@ describe('First Promoter Flow', () => {
   describe('First Promoter', () => {
     it('Login to FirstPromoter and verify Register Account is reflecting', () => {
       cy.visit('https://batchdialer.firstpromoter.com/users/sign_in');
-      firstPromoter.enterEmail('sandeepk@batchservice.com');
-      firstPromoter.enterPassword('Kumar@12345');
+      firstPromoter.enterEmail(Cypress.env('firstPromoterUsername'));
+      firstPromoter.enterPassword(Cypress.env('firstPromoterPassword'));
       firstPromoter.clickSignInBtn();
       firstPromoter.verifySuccessFulLogin();
       firstPromoter.clickLeadsMenu();
