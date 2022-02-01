@@ -26,7 +26,7 @@ describe('First Promoter Flow For BatchDialer', () => {
       );
     });
 
-    it('Verify Trial Registration redirection from Industries -> Real Estate page', () => {
+    it('Verify Trial Registration redirection from Industries - Real Estate page', () => {
       cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
       firstPromoter.clickIndustiresSubMenuItem('real-estate');
       firstPromoter.clickFreeTrialBtn();
@@ -35,7 +35,7 @@ describe('First Promoter Flow For BatchDialer', () => {
       );
     });
 
-    it('Verify Trial Registration redirection from Industries -> Collections page', () => {
+    it('Verify Trial Registration redirection from Industries - Collections page', () => {
       cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
       firstPromoter.clickIndustiresSubMenuItem('collections');
       firstPromoter.clickFreeTrialBtn();
@@ -44,7 +44,7 @@ describe('First Promoter Flow For BatchDialer', () => {
       );
     });
 
-    it('Verify Trial Registration redirection from Industries -> Solar Sales page', () => {
+    it('Verify Trial Registration redirection from Industries - Solar Sales page', () => {
       cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
       firstPromoter.clickIndustiresSubMenuItem('solar-sales');
       firstPromoter.clickFreeTrialBtn();
@@ -53,7 +53,7 @@ describe('First Promoter Flow For BatchDialer', () => {
       );
     });
 
-    it('Verify Trial Registration redirection from Industries -> Roofing Sales page', () => {
+    it('Verify Trial Registration redirection from Industries - Roofing Sales page', () => {
       cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
       firstPromoter.clickIndustiresSubMenuItem('roofing-sales');
       firstPromoter.clickFreeTrialBtn();
@@ -80,7 +80,7 @@ describe('First Promoter Flow For BatchDialer', () => {
       );
     });
 
-    it('Verify Trial Registration redirection from Resources -> Demo Request page', () => {
+    it('Verify Trial Registration redirection from Resources - Demo Request page', () => {
       cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
       firstPromoter.clickResourcesSubMenuItem('demo-request');
       firstPromoter.clickFreeTrialBtn();
@@ -89,16 +89,16 @@ describe('First Promoter Flow For BatchDialer', () => {
       );
     });
 
-    it('Verify Trial Registration redirection from Resources -> Blog page', () => {
+    it('Verify Trial Registration redirection from Resources - Blog page', () => {
       cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
       firstPromoter.clickResourcesSubMenuItem('blog');
       firstPromoter.clickFreeTrialBtn();
       firstPromoter.verifyRedirectedUrl(
-        'https://app.batchdialer.com/register_trial/?fpr=6vu4l&_fp_ref_id=6vu4l'
+        'https://app.batchdialer.com/register_trial/?fpr=6vu4l&_fp_ref_id=6vu4lt'
       );
     });
 
-    it('Register New Trial Account', () => {
+    it('Register New Trial Account in BatchDialer', () => {
       cy.visit('https://www.batchdialer.com/?fpr=6vu4l');
       firstPromoter.clickFreeTrialBtn();
       register.enterFirstName('Demo');
