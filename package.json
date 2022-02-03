@@ -7,7 +7,7 @@
     "precy:run": "rm -r -f cypress/screenshots/* cypress/results/* cypress/QAreports/*",
     "precypress:run": "rm -r -f cypress/screenshots/* cypress/results/* cypress/ProdReports/*",
     "report-t": "npm run report:merge & npm run report:generate",
-    "cy:run": "npx cypress run --browser chrome --headless --config video=false",
+    "cy:run": "npx cypress run --browser chrome --headless --config video=false --env configFile=qa",
     "cypress:run": "npx cypress run --browser chrome --headless --config video=false --env configFile=prod",
     "report": "npm run cy:run ; npm run report:merge ; npm run report:generate ; npm run report:copyScreenshots",
     "report:prod": "npm run cypress:run ; npm run report:merge ; npm run report:generate:prod ; npm run report:copyScreenshots:prod",
@@ -19,19 +19,19 @@
     "login": "npx cypress run --browser chrome --headless --config video=false --spec cypress/integration/login.spec.js",
     "login:prod": "npx cypress run --browser chrome --headless --config video=false --spec cypress/integration/login.spec.js --env configFile=prod",
     "precy:firstPromoter": "rm -r -f cypress/screenshots/* cypress/results/* cypress/ProdReports/*",
-    "cy:firstPromoter": "npx cypress run --env configFile=prod --spec cypress/integration/firstPromoter.spec.js --headless --config video=false",
+    "cy:firstPromoter": "node cypress/integration/cy_runner.js",
     "report:firstPromoter": "npm run cy:firstPromoter ; npm run report:merge ; npm run report:generate:prod ; npm run report:copyScreenshots:prod"
   },
   "keywords": [],
   "author": "Anil",
   "license": "ISC",
   "devDependencies": {
-    "cypress": "^7.0.0",
-    "cypress-mochawesome-reporter": "^1.3.0",
+    "cypress": "^9.2.1",
+    "cypress-mochawesome-reporter": "^2.3.0",
     "cypress-multi-reporters": "^1.4.0",
-    "mochawesome": "^6.2.2",
-    "mochawesome-merge": "^4.2.0",
-    "mochawesome-report-generator": "^5.2.0"
+    "mochawesome": "^7.0.1",
+    "mochawesome-merge": "^4.2.1",
+    "mochawesome-report-generator": "^6.0.1"
   },
   "dependencies": {
     "cypress-downloadfile": "^1.2.0",

@@ -58,7 +58,7 @@ module.exports = (on, config) => {
 
     return fs1.readJson(pathToConfigFile);
   }
-  const file = config.env.configFile || 'qa';
+  const file = config.env.configFile || 'prod';
 
   return getConfigurationByFile(file);
 };
