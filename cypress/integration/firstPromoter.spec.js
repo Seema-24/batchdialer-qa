@@ -94,7 +94,7 @@ describe('First Promoter Flow For BatchDialer', () => {
       firstPromoter.clickResourcesSubMenuItem('blog');
       firstPromoter.clickFreeTrialBtn();
       firstPromoter.verifyRedirectedUrl(
-        'https://app.batchdialer.com/register_trial/?fpr=6vu4l&_fp_ref_id=6vu4lt'
+        'https://app.batchdialer.com/register_trial/?fpr=6vu4l&_fp_ref_id=6vu4l'
       );
     });
 
@@ -111,8 +111,7 @@ describe('First Promoter Flow For BatchDialer', () => {
         register.enterEmail(email);
       });
       register.enterPassword('Fleek@2016');
-      register.enterConfirmPassword('Fleek@2016');
-      register.clickContinueToPlanBtn();
+      firstPromoter.clickOnButton('CONTINUE');
       register.choosePlan('Single Line Dialer'); //Multi-Line Dialer
       register.enterCardDetailsForSignUp(
         Cypress.env('CardName'),
@@ -129,6 +128,9 @@ describe('First Promoter Flow For BatchDialer', () => {
         '63 East June Street, Mesa, AZ, USA'
       );
       register.clickSubscribeBtn();
+      firstPromoter.verifyPaymentSummaryVisible();
+      cy.wait(1000);
+      firstPromoter.clickOnButton('Continue to dashboard');
       cy.waitFor(cy.get('.main_sec', { timeout: 30000 }));
       ignoreSpeedTestPopup();
       login.verifySuccessfullLogin();

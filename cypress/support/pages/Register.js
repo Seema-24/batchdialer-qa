@@ -407,7 +407,7 @@ export default class Register {
   }
 
   enterBillingAddress(address) {
-    cy.get(billingAddressInput).type(address);
+    cy.get(billingAddressInput).type(address, { delay: 10 });
   }
 
   selectBillingAddressFromSuggestion(address) {

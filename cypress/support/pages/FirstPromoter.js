@@ -16,6 +16,7 @@ const pricingMenuItem = 'a[href="/pricing"]';
 const faqMenuItem = 'a[href="/faq"]';
 const resourcesMenu =
   '//ul[@class="elementor-nav-menu"]//a[@class="elementor-item has-submenu"][text()="Resources"]';
+const paymentSummary = '.main_signuparia .payment_modal_register';
 
 export default class FirstPromoter {
   enterEmail(email) {
@@ -76,5 +77,20 @@ export default class FirstPromoter {
   clickResourcesSubMenuItem(subMenu) {
     cy.xpath(resourcesMenu).first().click();
     cy.get(subMenuItems(subMenu)).first().click({ force: true });
+  }
+
+  clickOnButton(btnName) {
+    cy.get('button').then((Btn) => {
+      for (let i = 0; i < Btn.length; i++) {
+        if (Btn[i].textContent.trim() === btnName) {
+          cy.get(Btn[i]).click();
+          break;
+        }
+      }
+    });
+  }
+
+  verifyPaymentSummaryVisible() {
+    cy.get(paymentSummary, { timeout: 60000 }).should('be.visible');
   }
 }
