@@ -7,7 +7,17 @@ const firstPromoter = new FirstPromoter();
 const register = new Register();
 const login = new Login();
 
-describe('First Promoter Flow For BatchDialer', () => {
+var today = new Date();
+var time = today.getHours() + ':' + String(today.getMinutes()).padStart(2, '0');
+var today =
+  String(today.getMonth() + 1).padStart(2, '0') +
+  '/' +
+  String(today.getDate()).padStart(2, '0') +
+  '/' +
+  today.getFullYear();
+today = today + ' ' + time;
+
+describe(`First Promoter Flow For BatchDialer on ${today}`, () => {
   describe('Verify Link Redirections and Register Trial User in BatchDialer', () => {
     before(() => {
       const randomNumber = Math.floor(Math.random() * 10000);
@@ -124,9 +134,7 @@ describe('First Promoter Flow For BatchDialer', () => {
       register.clickAgreeCheckbox();
       register.enterBillingAddress('63 East June Street, Mesa, AZ, USA');
       cy.wait(2000);
-      register.selectBillingAddressFromSuggestion(
-        '63 East June Street, Mesa, AZ, USA'
-      );
+      register.selectBillingAddressFromSuggestion();
       register.clickSubscribeBtn();
       firstPromoter.verifyPaymentSummaryVisible();
       cy.wait(1000);

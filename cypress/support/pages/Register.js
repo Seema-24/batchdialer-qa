@@ -410,14 +410,7 @@ export default class Register {
     cy.get(billingAddressInput).type(address, { delay: 10 });
   }
 
-  selectBillingAddressFromSuggestion(address) {
-    cy.get(billingAddressOption).then((addresses) => {
-      for (let i = 0; i < addresses.length; i++) {
-        if (addresses[i].textContent.trim() === address) {
-          cy.get(addresses[i]).click();
-          break;
-        }
-      }
-    });
+  selectBillingAddressFromSuggestion() {
+    cy.get(billingAddressOption).first().click();
   }
 }
