@@ -200,7 +200,7 @@ export default class Setup {
         cy.xpath(saveBtn).click();
       } else {
         user.clickAddNewUserButton();
-        user.clickAddAgent();
+        // user.clickAddAgent();
         user.enterFirstName(firstName);
         user.enterLastName(lastName);
         user.enterEmail(email);
@@ -253,7 +253,7 @@ export default class Setup {
         cy.xpath(saveBtn).click();
       } else {
         user.clickAddNewUserButton();
-        user.clickAddSupervisor();
+        user.chooseUserRole('Supervisor');
         user.enterFirstName(firstName);
         user.enterLastName(lastName);
         user.enterEmail(email);

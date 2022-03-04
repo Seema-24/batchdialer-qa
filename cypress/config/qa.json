@@ -10,7 +10,9 @@
     "Country": "United States",
     "BillingZip": "85326",
     "resellerUsername": "god",
-    "resellerPassword": "god"
+    "resellerPassword": "god",
+    "firstPromoterUsername": "sandeepk@batchservice.com",
+    "firstPromoterPassword": "Kumar@12345"
   },
   "testFiles": [
     "0_setup.spec.js",
@@ -24,6 +26,7 @@
     "report.spec.js",
     "reseller.spec.js",
     "supervisor.spec.js",
+    "userPermission.spec.js",
     "z_dashboard.spec.js"
   ]
 }
