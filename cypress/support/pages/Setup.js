@@ -29,6 +29,10 @@ const options = '.ss-select-option';
 const destinationDropdown = `//div[label[text()="Destination"]]/following-sibling::div[1]//div[contains(@class,"ss-select-control")]`;
 const assignDropdown = `//div[label[text()="Destination"]]/following-sibling::div[2]//div[contains(@class,"ss-select-control")]`;
 const dropdownItems = '.show .dropdown-item';
+const userPermissionExpander = '.user-permissions-expander';
+const disabledPermissions = '.user-permission-checkbox[alt="Disabled"]';
+const enabledPermissions = '.user-permission-checkbox[alt="Enabled"]';
+const permissionHeading = '.user-permission-col';
 
 const dashboard = new Dashboard();
 const campaign = new Campaign();
@@ -197,6 +201,8 @@ export default class Setup {
         });
         cy.get(passwordChangeBtn).click();
         cy.get(passwordField).type(password);
+        this.clickUserPermissionExpander();
+        this.enableAgentDefaultPermissions();
         cy.xpath(saveBtn).click();
       } else {
         user.clickAddNewUserButton();
@@ -206,6 +212,8 @@ export default class Setup {
         user.enterEmail(email);
         user.enterPassword(password);
         user.enterPhoneNumber(phone);
+        this.clickUserPermissionExpander();
+        this.enableAgentDefaultPermissions();
         user.clickSaveButton();
         user.verifySuccessToast();
         cy.readFile('cypress/fixtures/testData.json', (err, data) => {
@@ -250,6 +258,8 @@ export default class Setup {
         });
         cy.get(passwordChangeBtn).click();
         cy.get(passwordField).type(password);
+        this.clickUserPermissionExpander();
+        this.enableSupervisorDefaultPermissions();
         cy.xpath(saveBtn).click();
       } else {
         user.clickAddNewUserButton();
@@ -259,6 +269,8 @@ export default class Setup {
         user.enterEmail(email);
         user.enterPassword(password);
         user.enterPhoneNumber(phone);
+        this.clickUserPermissionExpander();
+        this.enableSupervisorDefaultPermissions();
         user.clickSaveButton();
         user.verifySuccessToast();
         cy.readFile('cypress/fixtures/testData.json', (err, data) => {
@@ -445,5 +457,147 @@ export default class Setup {
         }
       }
     });
+  }
+
+  clickUserPermissionExpander() {
+    cy.get(userPermissionExpander).click();
+  }
+
+  enableAgentDefaultPermissions() {
+    cy.get('body').then((body) => {
+      if (body.find(enabledPermissions).length) {
+        cy.get(enabledPermissions).then((el) => {
+          for (let i = 0; i < el.length; i++) {
+            cy.get(el[i]).scrollIntoView().click({ force: true });
+            cy.wait(500);
+          }
+        });
+      }
+    });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('View Contact Lists')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('Edit Call Result & Note')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('View/Export Recent Contacts')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('Listen Audio')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('Download Audio')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('View All Campaigns')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+  }
+
+  enableSupervisorDefaultPermissions() {
+    cy.get('body').then((body) => {
+      if (body.find(enabledPermissions).length) {
+        cy.get(enabledPermissions).then((el) => {
+          for (let i = 0; i < el.length; i++) {
+            cy.get(el[i]).scrollIntoView().click({ force: true });
+            cy.wait(500);
+          }
+        });
+      }
+    });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('View Contact Lists')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('Edit Contact')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('Edit Call Result & Note')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('View/Export Recent Contacts')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('Listen Audio')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('Download Audio')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('View All Campaigns')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('View All Agents Tasks')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('View All Reports')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('View Recent Contacts of All Agents')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
   }
 }

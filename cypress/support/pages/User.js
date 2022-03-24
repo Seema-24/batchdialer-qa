@@ -46,7 +46,7 @@ const addAgentGroup =
   "//div[@class='users-narrow-header'][span[text()='User Groups']]//img[contains(@src,'add')]";
 const addAgent = 'div.show a.dropdown-item';
 const addSupervisor = 'a[data-key="supervisor"]';
-const agentCount = '.usage-stats-counter strong';
+const agentCount = 'div.billing-active-card__counter span:nth-of-type(1)';
 const newUserWindow = '.modal-content';
 const addAdmin = 'a[data-key="admin"]';
 const changePresenceIcon =
@@ -435,17 +435,22 @@ export default class User {
 
   async getTotalAgentCount() {
     return await promisify(
-      cy.get(agentCount).then((count) => {
-        return count.text();
-      })
+      cy
+        .get(agentCount)
+        .first()
+        .then((count) => {
+          return count.text();
+        })
     );
   }
 
   verifyAgentCount(count) {
-    cy.get(agentCount).then((newcount) => {
-      const newcount1 = newcount.text();
-      expect(parseInt(newcount1)).to.equal(parseInt(count) + 1);
-    });
+    cy.get(agentCount)
+      .first()
+      .then((newcount) => {
+        const newcount1 = newcount.text();
+        expect(parseInt(newcount1)).to.equal(parseInt(count) + 1);
+      });
   }
 
   verifyFieldValidation(ele) {

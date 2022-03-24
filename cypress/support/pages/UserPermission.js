@@ -53,6 +53,13 @@ const userDeleteBtn = '//a[@class="dropdown-item"][text()="Delete"]';
 const userGroupDropdown = `//label[text()="User Group"]/following-sibling::div[contains(@class,"ss-select")]`;
 const agentUserMenuBtn =
   '//div[contains(text(),"Agent")]/parent::div//div[@class="dropdown"]';
+const userPermissionBtn = '//button[text()="User Permissions"]';
+const enabledPermissions = (permissionName) =>
+  `//div[@class="user-permission-col"][text()="${permissionName}"][div[contains(@class,"user-permission-checkbox-wrapper")]//img[@alt="Enabled"]]`;
+const permissionCounter = '.user-permissions-counter';
+const firstPermission = '.user-permission-checkbox';
+const agentTitle = (agentName) =>
+  `//div[@class="tr"][div[text()="${agentName}"]]`;
 
 export default class UserPermission {
   clickUserPermissionExpander() {
@@ -406,5 +413,33 @@ export default class UserPermission {
 
   verifyAddUserToGroupNotEnable() {
     cy.xpath(userGroupDropdown).should('have.attr', 'readonly');
+  }
+
+  verifyUserPermissionBtnExist() {
+    cy.xpath(userPermissionBtn).should('be.visible');
+  }
+
+  clickUserPermissionBtnExist() {
+    cy.xpath(userPermissionBtn).click();
+  }
+
+  verifyDefaultPermissions(permissions) {
+    for (let i = 0; i < permissions.length; i++) {
+      cy.xpath(enabledPermissions(permissions[i]))
+        .scrollIntoView()
+        .should('be.visible');
+    }
+  }
+
+  verifyUserPermissionCounterVisible() {
+    cy.get(permissionCounter).should('be.visible');
+  }
+
+  checkUncheckFirstPermission() {
+    cy.get(firstPermission).first().click();
+  }
+
+  verifyAgentTitle(agentName) {
+    cy.xpath(agentTitle(agentName)).should('contain.text', 'Agent (Custom)');
   }
 }

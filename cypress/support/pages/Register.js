@@ -54,6 +54,8 @@ const errorMsg = '.error-msg';
 const paymentsPage = '.payment-details';
 const billingAddressInput = '.google-autocomplete-wrapper input';
 const billingAddressOption = '.google-autocomplete-option';
+const paymentSummary = '.main_signuparia .payment_modal_register';
+const cardEditBtn = '.billing-user-info__payment__edit';
 
 export default class Register {
   clickSignUpBtn() {
@@ -412,5 +414,13 @@ export default class Register {
 
   selectBillingAddressFromSuggestion() {
     cy.get(billingAddressOption).first().click();
+  }
+
+  verifyPaymentSummaryVisible() {
+    cy.get(paymentSummary, { timeout: 60000 }).should('be.visible');
+  }
+
+  clickCardEditBtn() {
+    cy.get(cardEditBtn).click();
   }
 }

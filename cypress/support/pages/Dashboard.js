@@ -8,9 +8,9 @@ const TotalCalls = 'Total Calls';
 const CallResults = 'Call Results';
 const CallLocations = 'Calls Locations';
 const AverageCallDuration = 'Average Call Duration';
-const ButtonLoginAs = '//button[text()="Login As"]';
+const ButtonLoginAs = '//div[@class="user__dropdown"][text()="Switch Account"]';
 const clientPlusIcon = '.group-client img';
-const groupExpended = 'div.group-client+div';
+const groupExpended = 'span.group-client+div';
 const StatusDropDown = 'div#navbarSupportedContent div.ss-select';
 const Dialer = 'img[src*="softphone.svg"]';
 const Task = 'a[href="/tasks/"]';
@@ -30,7 +30,7 @@ const pastButton = 'button[value="past"]';
 const futureButton = 'button[value="future"]';
 const UserProfileOptions = '.dropdown-menu.show';
 const UserSettingOptions = '.profile-buttons';
-const SettingsButton = 'div[href*="settings"]';
+const SettingsButton = 'div[href*="billing"]';
 const profile = 'div[href*="profile"]';
 const UserSettingProfileFields = (val) => "input[name='" + val + "']";
 const billing = 'div[href*="billing"]';
@@ -49,14 +49,14 @@ const ProfileAgentFeaturesEnable =
   "//div[label[text()='Agent Features']]//label[text()='Enable']";
 const ProfileAgentFeaturesDisable =
   "//div[label[text()='Agent Features']]//label[text()='Disable']";
-const BillingSingleLineDialer = "//div[text()='Single Line Dialer']";
+const currentBillingCard = '.billing-user-plan.billing-card';
 const BillingMultiLineDialer = "//div[text()='Multi-Line Dialer']";
-const BillingUsageStatus = "//div[text()='Usage Stats']";
-const BillingPaymentMethods = "//div[text()='Payment Methods']";
-const BillingAddress = "//div//span[text()='Billing Info']";
-const BillingPauseAccount = "//button[text()='Pause Account']";
-const BillingCancelAccount = "//button[text()='Cancel Account']";
-const BillingInvoicing = '.profile-invoices1';
+const BillingUsageStatus = '.billing-active-card.billing-card';
+const BillingPaymentMethods = '.billing-user-info__payment';
+const BillingAddress = '.billing-user-info .billing-user-info__info';
+const BillingPauseAccount = "//button[text()='Pause account']";
+const BillingCancelAccount = "//button[contains(text(),'Cancel Account')]";
+const BillingInvoicing = '.billing-content__lower__table';
 const AddressBookHeading = "//label[text()='Address Book']";
 const AddressBookNewContact = '.addnew';
 const tableHeaderElement = '.table thead';
@@ -67,7 +67,7 @@ const LeadScoringHeading = "//label[text()='Lead Scoring']";
 const Ticks = '.ticks';
 const Ruler = '.ruler';
 const title = '.titles';
-const addNewCard = "//button[contains(text(),'Add New Card')]";
+const addNewCard = "//button[contains(text(),'Add new card')]";
 const newRuleButton = "//button[text()='ADD NEW RULE']";
 const leadScoreExample = '.profile-right';
 const AgentScriptHeading = "//label[text()='Agent Scripts']";
@@ -98,8 +98,7 @@ const recording = (recordingName) =>
   "//tr[td[contains(text(),'" + recordingName + "')]]";
 const uploadFile = 'input[type="file"]';
 const recordingName = '.modal-body input[name="name"]';
-const recordingSaveButton =
-  "//div[@class='modal-footer']//button[text()=' SAVE']";
+const recordingSaveButton = "//button[contains(text(),'SAVE')]";
 const uploadedRecording = (fileName) =>
   "//span[contains(@class,'ss-select-value-label')][text()='" + fileName + "']";
 const textToSpeech = 'button[value="generate"]';
@@ -165,7 +164,7 @@ const loginAsPlusIcon = '.group-client img[src*="tree-open"]';
 const Agent = (user) =>
   `//div[@class="group-row-role__left__title"][text()="${user}"]`;
 const dashboardName = '.name';
-const backToAdmin = '.nav-item a[href*="logout"]';
+const backToAdmin = '.user__dropdown.user__dropdown-logout';
 const homeButton = '.breadcrumb-item .active';
 const radioBtn = (btnName) =>
   `//label[text()="${btnName}"]//span[@class="checkmark"]`;
@@ -365,7 +364,7 @@ export default class Dashboard {
   }
 
   verifyDashboardHeaderElement() {
-    cy.xpath(ButtonLoginAs).should('be.visible');
+    // cy.xpath(ButtonLoginAs).should('be.visible');
     cy.get(StatusDropDown).should('be.visible');
     cy.get(Dialer).should('exist');
     cy.get(Task).should('be.visible');
@@ -373,6 +372,7 @@ export default class Dashboard {
   }
 
   clickLoginAs() {
+    this.clickUserProfile();
     cy.xpath(ButtonLoginAs).click();
   }
 
@@ -381,7 +381,7 @@ export default class Dashboard {
   }
 
   verifySearchedUser() {
-    cy.get('.roletitle').then((el) => {
+    cy.get('.group-row-role__left__title').then((el) => {
       expect(el.text().toLowerCase()).to.contain(SearchedUser.toLowerCase());
     });
   }
@@ -574,8 +574,8 @@ export default class Dashboard {
     cy.xpath(ProfileAgentFeaturesEnable).should('be.visible');
   }
 
-  verifyBillingSingleLineDialer() {
-    cy.xpath(BillingSingleLineDialer).should('be.visible');
+  verifyCurrentBillingCard() {
+    cy.get(currentBillingCard).should('be.visible');
     this.clickCloseSoftphoneBtn();
   }
 
@@ -584,15 +584,15 @@ export default class Dashboard {
   }
 
   verifyUsageStatus() {
-    cy.xpath(BillingUsageStatus).should('be.visible');
+    cy.get(BillingUsageStatus).should('be.visible');
   }
 
   verifyPaymentMethod() {
-    cy.xpath(BillingPaymentMethods).should('be.visible');
+    cy.get(BillingPaymentMethods).should('be.visible');
   }
 
   verifyBillingAddress() {
-    cy.xpath(BillingAddress).should('be.visible');
+    cy.get(BillingAddress).should('be.visible');
   }
 
   verifyPauseAccount() {
@@ -604,7 +604,10 @@ export default class Dashboard {
   }
 
   verifyInvoice() {
-    cy.get(BillingInvoicing, { timeout: 60000 }).should('be.visible');
+    cy.get(BillingInvoicing, { timeout: 60000 })
+      .parent('.billing-content__lower')
+      .children('.billing-division')
+      .should('have.text', 'Invoices:');
   }
 
   verifyAddressBookingHeading() {
@@ -986,7 +989,7 @@ export default class Dashboard {
   }
 
   enterCardName(name) {
-    cy.get(enterName).type(name);
+    cy.get(enterName).clear().type(name);
   }
 
   Iframe() {
@@ -1066,27 +1069,29 @@ export default class Dashboard {
   }
 
   downloadAndVerifyInvoice() {
-    cy.get('.profile-invoices1 table tr:nth-child(1) a', {
+    cy.get('.billing-content__lower__td a', {
       timeout: 60000,
-    }).then((link) => {
-      const href = link[0].getAttribute('href');
-      let invoiceName;
-      cy.get('.profile-invoices1 table tr:nth-child(1) td:nth-of-type(2)').then(
-        (el) => {
-          invoiceName = el.text().trim();
-          cy.downloadFile(
-            href,
-            'cypress/fixtures/Download',
-            'Invoice-' + invoiceName + '.pdf'
-          );
-          cy.task('getPdfContent', 'Invoice-' + invoiceName + '.pdf').then(
-            (content) => {
-              expect(content.text).to.contains(invoiceName);
-            }
-          );
-        }
-      );
-    });
+    })
+      .first()
+      .then((link) => {
+        const href = link[0].getAttribute('href');
+        let invoiceName;
+        cy.get('.billing-content__lower__td a')
+          .first()
+          .then((el) => {
+            invoiceName = el.text().trim();
+            cy.downloadFile(
+              href,
+              'cypress/fixtures/Download',
+              'Invoice-' + invoiceName + '.pdf'
+            );
+            cy.task('getPdfContent', 'Invoice-' + invoiceName + '.pdf').then(
+              (content) => {
+                expect(content.text).to.contains(invoiceName);
+              }
+            );
+          });
+      });
   }
   verifyChaticon() {
     cy.get(chaticon).should('be.visible');
@@ -1282,6 +1287,7 @@ export default class Dashboard {
   }
 
   clickBackToAdmin() {
+    this.clickUserProfile();
     cy.get(backToAdmin).click();
   }
 

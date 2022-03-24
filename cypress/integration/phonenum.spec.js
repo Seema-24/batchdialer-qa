@@ -373,10 +373,10 @@ describe('Add Phone Number flow', () => {
     addCamp.clickCampaignMenu();
     cy.wait(3000);
     addCamp.clickAddNewCampaign();
-    addCamp.enableAdvancedSwitchBar();
-    addCamp.enterName(fixtureData.campaignName + randNum.toString());
-    addCamp.selectCallerId('Individual Numbers', testData.Number);
-    addCamp.clickNextCircleArrow();
+    addCamp.selectDialingMode('Predictive');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.selectPhoneNumberToAssign(testData.Number);
+    addCamp.enterCampaignName(fixtureData.campaignName + randNum.toString());
     addNum.verifyCreatedCallResultGroup('Testing');
   });
 
@@ -421,10 +421,10 @@ describe('Add Phone Number flow', () => {
     addCamp.clickCampaignMenu();
     cy.wait(3000);
     addCamp.clickAddNewCampaign();
-    addCamp.enableAdvancedSwitchBar();
-    addCamp.enterName(fixtureData.campaignName + randNum.toString());
-    addCamp.selectCallerId('Individual Numbers', testData.Number);
-    addCamp.clickNextCircleArrow();
+    addCamp.selectDialingMode('Predictive');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.selectPhoneNumberToAssign(testData.Number);
+    addCamp.enterCampaignName(fixtureData.campaignName + randNum.toString());
     addNum.verifyCreatedCallResult('DemoTesting');
   });
 

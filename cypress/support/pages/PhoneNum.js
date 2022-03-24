@@ -10,7 +10,8 @@ const orderNow = '.btn svg[data-icon="shopping-cart"]';
 const dropdownOptions = '.ss-select-group-items';
 const searchToast =
   '//div[@class="Toastify__toast-body"]//div[contains(text(),"Search started")]';
-const closeBtn = '//button[contains(text(),"Close")]';
+const closeBtn = '//button[contains(text(),"Cancel")]';
+const closeButton = '//button[contains(text(),"Close")]';
 const toast = '.Toastify__toast-body';
 const deleteToast =
   '//div[@class="Toastify__toast-body"]//div[contains(text(),"The number has been deleted")]';
@@ -180,7 +181,12 @@ export default class PhoneNum {
   }
 
   verifyCreatedCallResultGroup(groupName) {
-    cy.get('.row-calldisposition .ss-select-control').click();
+    cy.get('.form-label')
+      .contains('Call Results')
+      .parent()
+      .siblings('div')
+      .children('.ss-select')
+      .click();
     cy.xpath(campaignCallResultGroup).should('contain.text', groupName);
   }
 
@@ -288,7 +294,7 @@ export default class PhoneNum {
   }
 
   clickCloseBtn() {
-    cy.xpath(closeBtn, { timeout: 5000 }).click();
+    cy.xpath(closeButton, { timeout: 5000 }).click();
   }
 
   verifyUploadDncFile(fileName) {

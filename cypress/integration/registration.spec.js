@@ -230,6 +230,8 @@ describe('Registration', () => {
       Cypress.env('Coupon')
     );
     register.clickAgreeCheckbox();
+    register.enterBillingAddress('63 East June Street, Mesa, AZ, USA');
+    register.selectBillingAddressFromSuggestion();
     register.verifySubscribedNowBtnEnabled();
   });
 
@@ -261,10 +263,11 @@ describe('Registration', () => {
         );
         register.clickAgreeCheckbox();
         register.enterBillingAddress('63 East June Street, Mesa, AZ, USA');
-        register.selectBillingAddressFromSuggestion(
-          '63 East June Street, Mesa, AZ, USA'
-        );
+        register.selectBillingAddressFromSuggestion();
         register.clickSubscribeBtn();
+        register.verifyPaymentSummaryVisible();
+        cy.wait(1000);
+        register.clickOnButton('Continue to dashboard');
         cy.waitFor(cy.get('.main_sec', { timeout: 30000 }));
         ignoreSpeedTestPopup();
         login.verifySuccessfullLogin();
@@ -295,6 +298,7 @@ describe('Registration', () => {
     ignoreSpeedTestPopup();
     dashboard.clickUserProfile();
     dashboard.clickBilling();
+    register.clickCardEditBtn();
     dashboard.clickAddNewCard();
     dashboard.enterCardName(Cypress.env('CardName'));
     dashboard.enterCardNumber(Cypress.env('CardNumber'));

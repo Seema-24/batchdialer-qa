@@ -90,11 +90,12 @@ describe('Add Campaign flow', () => {
     addCamp.selectCallsOrder('adaptive'); //highestfirst //lowestfirst
     addCamp.selectCallConnectType('Automatic Answer'); //Manual Answer
     addCamp.enterSimultaneousDials(3);
-    addCamp.enterRingTimeDuration(15);
+    // addCamp.enterRingTimeDuration(15);
     addCamp.enterAbandonedTimeout(15);
-    addCamp.enterRetryTime(10);
-    addCamp.selectRetryTimeUnit('sec');
-    addCamp.enterMaxAttempts(5);
+    addCamp.enterRetryTime(8);
+    // addCamp.selectRetryTimeUnit('sec');
+    // addCamp.clickOnButton('Got it');
+    addCamp.enterMaxAttempts(2);
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Created');
   });
@@ -196,7 +197,8 @@ describe('Add Campaign flow', () => {
       'Successful Sale',
     ]);
     addCamp.clickAdvancedConfiguration();
-    addCamp.enterRingTimeDuration(10);
+    // addCamp.enterRingTimeDuration(10);
+    addCamp.enterRetryTime(10);
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Saved');
     addCamp.clickEditCampaign(
@@ -204,9 +206,10 @@ describe('Add Campaign flow', () => {
     );
     addCamp.clickEditBtn();
     addCamp.verifyCallResultValues(8);
+    addCamp.clickOnButton('Save');
   });
 
-  it('Verify that edit values of the campaign page in advanced mode reflects in the Change log', () => {
+  it.skip('Verify that edit values of the campaign page in advanced mode reflects in the Change log', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickEditCampaign(
       fixtureData.campaignName + randNum.toString() + '-edited'
@@ -218,7 +221,7 @@ describe('Add Campaign flow', () => {
     );
     cy.wait(1000);
     addCamp.verifyChangeLogItemsText(
-      `Ring Time Duration Been Changed from 15 seconds to 10 seconds by ${testData.AdminName}`
+      `Retry Time Been Changed from 8 hours to 10 hours by ${testData.AdminName}`
     );
     addCamp.clickModalCloseBtn();
   });
@@ -271,10 +274,9 @@ describe('Add Campaign flow', () => {
     ]);
     addCamp.clickAdvancedConfiguration();
     addCamp.selectCallsOrder('adaptive'); //highestfirst //lowestfirst
-    addCamp.enterRingTimeDuration(15);
+    // addCamp.enterRingTimeDuration(15);
     addCamp.enterRetryTime(10);
-    addCamp.selectRetryTimeUnit('sec');
-    addCamp.enterMaxAttempts(5);
+    addCamp.enterMaxAttempts(2);
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Created');
   });
@@ -358,7 +360,7 @@ describe('Add Campaign flow', () => {
     addCamp.verifyCallsOrder();
     addCamp.verifyCallConnectType();
     addCamp.verifySimultaneousDialsField();
-    addCamp.verifyRingTimeDuration();
+    // addCamp.verifyRingTimeDuration();
     addCamp.verifyAbandonedTimeout();
     addCamp.verifyRetryTime();
     addCamp.verifyRetryTimeUnitDropdown();

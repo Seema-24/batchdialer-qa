@@ -887,7 +887,9 @@ export default class Campaign {
   }
 
   enterRetryTime(duration) {
-    cy.xpath(retryTimeInput).clear().type(duration);
+    cy.xpath(retryTimeInput).clear();
+    this.clickOnButton('Got it');
+    cy.xpath(retryTimeInput).type(duration);
   }
 
   verifyRetryTime() {

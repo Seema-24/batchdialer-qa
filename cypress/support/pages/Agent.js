@@ -433,8 +433,11 @@ export default class Agent {
     cy.get(agentBtn).should('be.visible');
   }
   verfyCampaignTableHeader(CampHeader) {
-    for (let i = 0; i < CampHeader.length; i++)
-      cy.get(campaignTableHeader).should('contain.text', CampHeader[i]);
+    cy.get(campaignTableHeader).then((heading) => {
+      for (let i = 0; i < CampHeader.length; i++) {
+        expect(heading.text().replace(/\s+/g, ' ')).to.contain(CampHeader[i]);
+      }
+    });
   }
   vierifyTheHeaderOfViewContact(headViewCon) {
     for (let i = 0; i < headViewCon.length; i++) {

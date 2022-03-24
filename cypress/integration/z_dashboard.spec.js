@@ -125,14 +125,15 @@ describe('Dashboard Elements', () => {
   });
 
   it('Verify that clicking anywhere outside of the dropdown box will close it and act as "cancel"', () => {
-    Dash.clickOnBody();
+    Dash.clickUserProfile();
     Dash.verifyUserTreeNotVisible();
   });
 
   it('Login As Button Functionality', () => {
     Dash.clickLoginAs();
-    Dash.searchUser('automation');
+    Dash.enterUserToSearch('automation');
     Dash.verifySearchedUser();
+    Dash.clickUserProfile();
   });
 
   it('Change Admin Status', () => {
@@ -243,6 +244,7 @@ describe('Dashboard Elements', () => {
     Dash.verifyUserSettingOptions([
       'Address Book',
       'Voicemail',
+      'Billing',
       'Integrations',
       'Lead Score',
       'Agent Scripts',
@@ -275,8 +277,7 @@ describe('Dashboard Elements', () => {
   it('Verify User settings Billing Elements', () => {
     Dash.clickUserProfile();
     Dash.clickBilling();
-    Dash.verifyBillingSingleLineDialer();
-    Dash.verifyBillingMultipleLineDialer();
+    Dash.verifyCurrentBillingCard();
     Dash.verifyUsageStatus();
     Dash.verifyPaymentMethod();
     Dash.verifyBillingAddress();
@@ -398,7 +399,7 @@ describe('Dashboard Elements', () => {
     Dash.enterContactName('Testing');
     Dash.enterPhoneNumber('9999999999');
     Dash.enterDescription('This is a Testing contact');
-    Dash.clickSaveBtn();
+    Dash.clickOnButton('SAVE');
     Dash.verifyAddedContact('Testing');
   });
 
@@ -408,7 +409,7 @@ describe('Dashboard Elements', () => {
     Dash.enterContactName('Testing');
     Dash.enterPhoneNumber('9999999999');
     Dash.enterDescription('This is a Testing contact');
-    Dash.clickSaveBtn();
+    Dash.clickOnButton('SAVE');
     Dash.verifyErrorMessage('Duplicate contact name');
     Dash.clickCancelBtn();
   });
@@ -419,7 +420,7 @@ describe('Dashboard Elements', () => {
     Dash.enterContactName('DemoTesting');
     Dash.enterPhoneNumber('9999999999');
     Dash.enterDescription('This is the edited Contact');
-    Dash.clickSaveBtn();
+    Dash.clickOnButton('SAVE');
     Dash.verifyAddedContact('DemoTesting');
   });
 
@@ -504,14 +505,14 @@ describe('Dashboard Elements', () => {
   it('Add a New Lead Rule', () => {
     Dash.clickLeadScore();
     Dash.clickNewRuleBtn();
-    Dash.clickSaveBtn();
+    Dash.clickOnButton('Save');
     Dash.verifyAddedRule('Email');
   });
 
   it('Remove the added Lead Rule', () => {
     Dash.clickLeadScore();
     Dash.clickRuleRemoveBtn('Email');
-    Dash.clickSaveBtn();
+    Dash.clickOnButton('Save');
     Dash.verifyRuleRemoved('Email');
   });
 
@@ -527,7 +528,7 @@ describe('Dashboard Elements', () => {
     Dash.clickNewAgentScriptBtn();
     Dash.enterScriptName('Testing');
     Dash.enterScriptText('This is a testing Script');
-    Dash.clickSaveBtn();
+    Dash.clickOnButton('SAVE');
     Dash.verifyAddedScript('Testing');
   });
 
@@ -536,7 +537,7 @@ describe('Dashboard Elements', () => {
     Dash.clickNewAgentScriptBtn();
     Dash.enterScriptName('Testing');
     Dash.enterScriptText('This is a testing Script');
-    Dash.clickSaveBtn();
+    Dash.clickOnButton('SAVE');
     Dash.verifyErrorMessage('Duplicate agent script name');
     Dash.clickCancelBtn();
   });
@@ -546,7 +547,7 @@ describe('Dashboard Elements', () => {
     Dash.clickEditBtn('Testing');
     Dash.enterScriptName('DemoTesting');
     Dash.enterScriptText('This is the Edited Agent Script');
-    Dash.clickSaveBtn();
+    Dash.clickOnButton('SAVE');
     Dash.verifyEditScript('DemoTesting');
   });
 
@@ -657,7 +658,7 @@ describe('Dashboard Elements', () => {
     Dash.clickBilling();
     Dash.downloadAndVerifyInvoice();
   });
-  it('Verify chat option should be visible', () => {
+  it.skip('Verify chat option should be visible', () => {
     Dash.clickDashboard();
     Dash.verifyChaticon();
   });

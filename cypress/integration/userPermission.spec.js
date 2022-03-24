@@ -698,7 +698,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   //   cy.Logout();
   // });
 
-  it.only('Should Login', () => {
+  it('Should Login', () => {
     cy.Login(Cypress.env('username'), Cypress.env('password'));
     ignoreSpeedTestPopup();
   });
@@ -1323,7 +1323,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it.only('Verify that Admin(User) is able to Enable the permission of "Add User" and it Reflect on Supervisor Account', () => {
+  it('Verify that Admin(User) is able to Enable the permission of "Add User" and it Reflect on Supervisor Account', () => {
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1341,7 +1341,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it.only('Verify that Admin(User) is able to Enable the permission of "Edit User" and It Reflect on Supervisor Account', () => {
+  it('Verify that Admin(User) is able to Enable the permission of "Edit User" and It Reflect on Supervisor Account', () => {
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1375,7 +1375,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it.only('Verify that user(Admin) is able to enable permission of "Add User to the Group" and It Reflect in Supervisor Account', () => {
+  it('Verify that user(Admin) is able to enable permission of "Add User to the Group" and It Reflect in Supervisor Account', () => {
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1395,7 +1395,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it.only('Verify that user(Admin) is able to Disable permission of "Add User to the Group" and It Reflect in Supervisor Account', () => {
+  it('Verify that user(Admin) is able to Disable permission of "Add User to the Group" and It Reflect in Supervisor Account', () => {
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1433,7 +1433,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it.only('Verify that Admin(User) is able to Disable the permission of "Edit User" and It Reflect on Supervisor Account', () => {
+  it('Verify that Admin(User) is able to Disable the permission of "Edit User" and It Reflect on Supervisor Account', () => {
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1451,7 +1451,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it.only('Verify that Admin(User) is able to Disable the permission of "Add User" and it Reflect on Supervisor Account', () => {
+  it('Verify that Admin(User) is able to Disable the permission of "Add User" and it Reflect on Supervisor Account', () => {
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1465,5 +1465,124 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     permission.verifyUsersMenuNotExist();
     permission.clickBackToAdminBtn();
     ignoreSpeedTestPopup();
+  });
+});
+
+describe('User Permission Costumization Flow for Supervisor Role', () => {
+  before(() => {
+    cy.fixture('testData').then((data) => {
+      testData = data;
+      [supervisorFirstName, supervisorLastName] = data.supervisor.split(' ');
+      [agentFirstName, agentLastName] = data.agent.split(' ');
+    });
+    cy.visit('/', { failOnStatusCode: false });
+    Cypress.Cookies.defaults({
+      preserve: (cookies) => {
+        return true;
+      },
+    });
+  });
+
+  it('Should Login', () => {
+    cy.Login(Cypress.env('username'), Cypress.env('password'));
+    ignoreSpeedTestPopup();
+  });
+
+  it('Verify that user permission customization button is available in the Users page of the admin user', () => {
+    user.clickingOnUserOption();
+    permission.verifyUserPermissionBtnExist();
+  });
+
+  it('Verify the permissions Not applicable for Supervisor Roles for Custom permission', () => {
+    user.searchUser(testData.supervisor);
+    cy.wait(4000);
+    user.clickUserEditButton(supervisorFirstName, supervisorLastName);
+    permission.clickUserPermissionExpander();
+    permission.verifyNoAccessPermissions([
+      'View/Export Contacts from assigned Campaigns',
+      'Manage User Permissions',
+    ]);
+    user.clickOnButton('CANCEL');
+  });
+
+  it('Verify the permissions Not applicable for Agent Roles ( Custom permission)', () => {
+    user.searchUser(testData.agent);
+    cy.wait(4000);
+    user.clickUserEditButton(agentFirstName, agentLastName);
+    permission.clickUserPermissionExpander();
+    permission.verifyNoAccessPermissions([
+      'Manage Billing',
+      'Assign/Remove Agents',
+      'Add User',
+      'Manage User Permissions',
+      'Edit User',
+      'Delete User',
+      'Add User to the Group',
+      'Remove User from the Group',
+    ]);
+    user.clickOnButton('CANCEL');
+  });
+
+  it('Verify the default permissions for users in Agent role', () => {
+    user.searchUser(testData.agent);
+    cy.wait(4000);
+    user.clickUserEditButton(agentFirstName, agentLastName);
+    permission.clickUserPermissionExpander();
+    permission.verifyDefaultPermissions([
+      'View Contact Lists',
+      'Edit Call Result & Note',
+      'View/Export Recent Contacts',
+      'Listen Audio',
+      'Download Audio',
+      'View All Campaigns',
+    ]);
+    user.clickOnButton('CANCEL');
+  });
+
+  it('Verify the default permissions for users in Supervisor role', () => {
+    user.searchUser(testData.supervisor);
+    cy.wait(4000);
+    user.clickUserEditButton(supervisorFirstName, supervisorLastName);
+    permission.clickUserPermissionExpander();
+    permission.verifyDefaultPermissions([
+      'View Contact Lists',
+      'Edit Contact',
+      'View/Export Recent Contacts',
+      'Edit Call Result & Note',
+      'Listen Audio',
+      'Download Audio',
+      'View All Campaigns',
+      'View Recent Contacts of All Agents',
+      'View All Reports',
+      'View All Agents Tasks',
+    ]);
+    user.clickOnButton('CANCEL');
+  });
+
+  it('Verify that the number of Permissions given to a user is displayed in Edit User pop up', () => {
+    user.searchUser(testData.agent);
+    cy.wait(4000);
+    user.clickUserEditButton(agentFirstName, agentLastName);
+    permission.verifyUserPermissionCounterVisible();
+    user.clickOnButton('CANCEL');
+  });
+
+  it.only('Verify that If users role is having Custom permission word "Custom" is added against the Role in Users page list view', () => {
+    user.clickingOnUserOption();
+    user.searchUser(testData.agent);
+    cy.wait(4000);
+    user.clickUserEditButton(agentFirstName, agentLastName);
+    permission.clickUserPermissionExpander();
+    permission.checkUncheckFirstPermission();
+    user.clickOnButton('SAVE');
+    permission.verifyToastMessage('Saved');
+    user.searchUser(testData.agent);
+    cy.wait(2000);
+    permission.verifyAgentTitle(testData.agent);
+    user.clickUserEditButton(agentFirstName, agentLastName);
+    permission.clickUserPermissionExpander();
+    permission.checkUncheckFirstPermission();
+    user.clickOnButton('SAVE');
+    permission.verifyToastMessage('Saved');
   });
 });

@@ -52,7 +52,7 @@ describe('Agent Profile', function () {
     agent.verifyCallsLocationGraph();
   });
 
-  it('Agent should not access the edit/view Campaign page', () => {
+  it.skip('Agent should not access the edit/view Campaign page', () => {
     agent.clickCampaignMenu();
     agent.selectCampaignName(testData.campaign);
     agent.verifyAccessDeniedMsg();
@@ -202,7 +202,6 @@ describe('Agent Profile', function () {
       'Answered',
       'Voicemail',
       'Abandon',
-      'Agents',
       'DNC',
       'DNR',
       'Created',
