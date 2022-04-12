@@ -634,7 +634,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that when user enables the permission "View All Reports" then Agent user should able to View All Reports', () => {
+  it('Verify that when user Disable the permission "View All Reports" then Agent user should able to View All Reports', () => {
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -1466,9 +1466,94 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     permission.clickBackToAdminBtn();
     ignoreSpeedTestPopup();
   });
+
+  it('Verify that when user enables the permission "View All Reports" then Agent user should able to View All Reports', () => {
+    user.clickingOnUserOption();
+    user.searchUser(testData.supervisor);
+    cy.wait(4000);
+    user.clickUserEditButton(supervisorFirstName, supervisorLastName);
+    permission.clickUserPermissionExpander();
+    permission.enablePermission('View All Reports');
+    user.clickOnButton('SAVE');
+    permission.verifyToastMessage('Saved');
+    permission.loginWithUser(testData.SupervisorEmail);
+    permission.clickOnMenu('Reports');
+    cy.wait(2000);
+    permission.verifySubMenuExist([
+      'Live',
+      'Recent Contacts',
+      'Campaigns',
+      'Agents',
+      'Numbers',
+      'Heat Map',
+      'Floor Map',
+    ]);
+    permission.clickBackToAdminBtn();
+    ignoreSpeedTestPopup();
+  });
+
+  it('Verify that when user enables the permission "View Recent Contacts of All Agents" then Agent user should able to View Recent Contacts of All Agents', () => {
+    user.clickingOnUserOption();
+    user.searchUser(testData.supervisor);
+    cy.wait(4000);
+    user.clickUserEditButton(supervisorFirstName, supervisorLastName);
+    permission.clickUserPermissionExpander();
+    permission.enablePermission('View Recent Contacts of All Agents');
+    user.clickOnButton('SAVE');
+    permission.verifyToastMessage('Saved');
+    permission.loginWithUser(testData.SupervisorEmail);
+    permission.clickOnMenu('Reports');
+    permission.clickOnSubMenu('Recent Contacts');
+    cy.wait(2000);
+    permission.verifyAgentsHeaderAvailable();
+    permission.clickBackToAdminBtn();
+    ignoreSpeedTestPopup();
+  });
+
+  it('Verify that when user disables the permission "View Recent Contacts of All Agents" then Agent user should able to View Recent Contacts of All Agents', () => {
+    user.clickingOnUserOption();
+    user.searchUser(testData.supervisor);
+    cy.wait(4000);
+    user.clickUserEditButton(supervisorFirstName, supervisorLastName);
+    permission.clickUserPermissionExpander();
+    permission.enablePermission('View Recent Contacts of All Agents');
+    user.clickOnButton('SAVE');
+    permission.verifyToastMessage('Saved');
+    permission.loginWithUser(testData.SupervisorEmail);
+    permission.clickOnMenu('Reports');
+    permission.clickOnSubMenu('Recent Contacts');
+    cy.wait(2000);
+    permission.verifyAgentsHeaderNotAvailable();
+    permission.clickBackToAdminBtn();
+    ignoreSpeedTestPopup();
+  });
+
+  it('Verify that when user Disable the permission "View All Reports" then Agent user should able to View All Reports', () => {
+    user.clickingOnUserOption();
+    user.searchUser(testData.supervisor);
+    cy.wait(4000);
+    user.clickUserEditButton(supervisorFirstName, supervisorLastName);
+    permission.clickUserPermissionExpander();
+    permission.enablePermission('View All Reports');
+    user.clickOnButton('SAVE');
+    permission.verifyToastMessage('Saved');
+    permission.loginWithUser(testData.SupervisorEmail);
+    permission.clickOnMenu('Recent Contacts');
+    cy.wait(2000);
+    permission.verifySubMenuNotExist([
+      'Live',
+      'Campaigns',
+      'Agents',
+      'Numbers',
+      'Heat Map',
+      'Floor Map',
+    ]);
+    permission.clickBackToAdminBtn();
+    ignoreSpeedTestPopup();
+  });
 });
 
-describe('User Permission Costumization Flow for Supervisor Role', () => {
+describe('User Permission Costumization Flow for Admin Role', () => {
   before(() => {
     cy.fixture('testData').then((data) => {
       testData = data;
@@ -1567,7 +1652,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('CANCEL');
   });
 
-  it.only('Verify that If users role is having Custom permission word "Custom" is added against the Role in Users page list view', () => {
+  it('Verify that If users role is having Custom permission word "Custom" is added against the Role in Users page list view', () => {
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);

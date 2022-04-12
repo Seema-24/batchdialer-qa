@@ -24,7 +24,6 @@
     "phonenum.spec.js",
     "registration.spec.js",
     "report.spec.js",
-    "reseller.spec.js",
     "supervisor.spec.js",
     "userPermission.spec.js",
     "z_dashboard.spec.js"
