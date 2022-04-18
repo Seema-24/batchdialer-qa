@@ -45,7 +45,7 @@ Cypress.on('test:after:run', (test, runnable) => {
       .filter(Boolean)
       .join(' -- ')
       .slice(0, MAX_SPEC_NAME_LENGTH);
-    const imageUrl = `screenshots/${Cypress.spec.name}/${fullTestName} (failed).png`;
+    const imageUrl = `screenshots//${Cypress.spec.name}//${fullTestName} (failed).png`;
 
     addContext({ test }, imageUrl);
   }
