@@ -1,0 +1,41 @@
+pipeline {
+  agent any
+  
+  options {
+    timeout(time: 120, unit: 'MINUTES') 
+    ansiColor('xterm')
+    disableConcurrentBuilds()
+  }
+    
+  tools {
+    nodejs "Node14"
+  }
+    
+  stages {
+    stage("Install dependencies") {
+      steps {
+        sh """
+          npm install
+        """
+      }
+    }
+
+    stage("Build") {
+      steps {
+        sh """
+          npm run report:prod
+        """
+      }
+    }  
+
+    stage ("Upload report") {
+      steps {
+        s3Upload bucket: 'batch-qa-automation', 
+                  path: 'ProdReports',
+                  workingDir: 'cypress/ProdReports/html',
+                  includePathPattern: '**'
+        cleanWs()
+      }
+    }
+  }
+}
