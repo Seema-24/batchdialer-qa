@@ -1,7 +1,7 @@
 pipeline {
-  agent any
+  agent { label '!master' }
   options {
-      timeout(time: 15, unit: 'MINUTES') 
+      timeout(time: 2, unit: 'HOURS') 
   }
     
   tools {nodejs "Node14"}
