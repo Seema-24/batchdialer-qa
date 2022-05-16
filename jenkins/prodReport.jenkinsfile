@@ -1,8 +1,8 @@
 pipeline {
-  agent any
+  agent { label '!master' }
   
   options {
-    timeout(time: 120, unit: 'MINUTES') 
+    timeout(time: 7, unit: 'HOURS') 
     ansiColor('xterm')
     disableConcurrentBuilds()
   }
