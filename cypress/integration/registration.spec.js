@@ -49,7 +49,7 @@ describe('Registration', () => {
     register.verifyDecryptedPassword();
   });
 
-  it('Verify that when all the required fields are fiiled then user is able to go next step "plan Selection"', () => {
+  it('Verify that when all the required fields are filled then user is able to go next step "plan Selection"', () => {
     register.clickSignUpBtn();
     register.enterFirstName('Demo');
     register.enterLastName('testing');
@@ -231,7 +231,7 @@ describe('Registration', () => {
     );
     register.clickAgreeCheckbox();
     register.enterBillingAddress('63 East June Street, Mesa, AZ, USA');
-    register.selectBillingAddressFromSuggestion();
+    register.selectBillingAddressFromSuggestion(Cypress.env('BillingZip'));
     register.verifySubscribedNowBtnEnabled();
   });
 
@@ -263,7 +263,7 @@ describe('Registration', () => {
         );
         register.clickAgreeCheckbox();
         register.enterBillingAddress('63 East June Street, Mesa, AZ, USA');
-        register.selectBillingAddressFromSuggestion();
+        register.selectBillingAddressFromSuggestion( Cypress.env('BillingZip'));
         register.clickSubscribeBtn();
         register.verifyPaymentSummaryVisible();
         cy.wait(1000);
@@ -373,34 +373,33 @@ describe('Registration', () => {
     register.verifyProfilePictureChange(file);
   });
 
-  it('Cancel the Account from the Super Admin Panel', () => {
+  it.skip('Cancel the Account from the Super Admin Panel', () => {
     cy.url().then((url) => {
       if (url.includes('app.batchdialer.com')) {
         cy.log('Not performing Account Reactivation on Production');
       } else {
         cy.Login('god', 'god');
-        register.clickUserTreeDropdown();
+        register.clickUserTreeDropdown('Switch Account');
         register.clickOnUser('First Tenant');
         register.clickOnUser('Reseller 1');
         register.clickOnResellerUser();
         register.handleAlertWindow();
         register.clickClientsMenu();
-        register.enterUserToSearch('testing@test.com');
+        register.enterUserToSearch('trial@test.com'); //testing@test.com
         register.clickDeleteUserButton();
         register.clickCancelNowRadioBtn();
         register.clickOnButton('Continue');
-        cy.Logout();
         cy.Logout();
       }
     });
   });
 
-  it('Reactivate the Cancelled Account', () => {
+  it.skip('Reactivate the Cancelled Account', () => {
     cy.url().then((url) => {
       if (url.includes('app.batchdialer.com')) {
         cy.log('Not performing Account Reactivation on Production');
       } else {
-        login.enterEmailtoSignin('testing@test.com');
+        login.enterEmailtoSignin('trial@test.com'); //testing@test.com
         login.enterPasswordToSignin('Fleek@2016');
         login.clickTermsCheckBox();
         login.clickSigninButton();
@@ -416,6 +415,8 @@ describe('Registration', () => {
           Cypress.env('BillingZip'),
           Cypress.env('Coupon')
         );
+        register.enterBillingAddress('Columbus');
+        register.selectBillingAddressFromSuggestion(Cypress.env('BillingZip'));
         register.clickAgreeCheckbox();
         register.clickSubscribeBtn();
         cy.waitFor(cy.get('.main_sec', { timeout: 60000 }));
