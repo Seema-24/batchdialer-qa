@@ -30,10 +30,12 @@ const subscribeBtn = '.card_form button[type="button"]';
 const couponField = 'input[name="coupon"]';
 const applyCouponBtn = '.summary .value1 button';
 const planPrice = '.summary .value:not(.long)';
-const userTreeDropdown = '.dropdown-usertree';
+const userTreeDropdown = '.profile_drop.dropdown';
+const userDropdown =(option) => `//div[@class="user__dropdown" and text()="${option}"]`;
+const userDropdownMenu = '.dropdown img[alt="Menu"]';
 const resellerUserTree = (user) =>
-  `//span[@class="role-title"][text()="${user}"]/following-sibling::span//*[name()="svg"][@data-icon="plus"]`;
-const reseller = `//span[@class="roletitle"][contains(text(),"First Tenant Reseller 1")]`;
+  `//div[@class="group-row__center__title" and text()="${user}"]/parent::div[@class="group-row__center"]/preceding-sibling::div`
+const reseller = `//div[@class="group-row-role__left__title"][contains(text(),"First Tenant Reseller 1")]`;
 const clientsMenu = 'a[title="Clients"]';
 const searchBox = 'input[placeholder*="Search"]';
 const deleteUserButton = 'img[src*="delete"]';
@@ -267,7 +269,7 @@ export default class Register {
   }
 
   clickSubscribeBtn() {
-    cy.get(subscribeBtn).click();
+    cy.get(subscribeBtn).click({force:true});
   }
 
   verifySubscribedNowBtnEnabled() {
@@ -290,8 +292,9 @@ export default class Register {
     cy.get(applyCouponBtn).click();
   }
 
-  clickUserTreeDropdown() {
+  clickUserTreeDropdown(option) {
     cy.get(userTreeDropdown).click();
+    cy.xpath(userDropdown(option)).click();
   }
 
   clickOnUser(user) {
@@ -315,10 +318,12 @@ export default class Register {
 
   enterUserToSearch(user) {
     cy.get(searchBox).type(user);
+    cy.wait(1000);
   }
 
   clickDeleteUserButton() {
-    cy.get(deleteUserButton).click();
+    cy.get(userDropdownMenu).click()
+    cy.contains('Delete').click();
   }
 
   verifyAccountReactivationPage() {
@@ -412,8 +417,14 @@ export default class Register {
     cy.get(billingAddressInput).type(address, { delay: 10 });
   }
 
-  selectBillingAddressFromSuggestion() {
-    cy.get(billingAddressOption).first().click();
+  selectBillingAddressFromSuggestion(zip) {
+    cy.get(billingAddressOption).first().click({ force : true });
+    cy.wait(500);
+    cy.get('.card_form').then(($form) => {
+      if($form.find(billingZip).length){
+        this.enterBillingZip(zip);
+      }
+    })
   }
 
   verifyPaymentSummaryVisible() {

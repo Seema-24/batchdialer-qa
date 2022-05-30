@@ -519,10 +519,16 @@ export default class Setup {
   }
 
   enableSupervisorDefaultPermissions() {
+    let size = 0;
     cy.get('body').then((body) => {
+      cy.get(permissionHeading).then(($ele) => {
+        if(($ele.text().includes('View Recent Contacts of All Agents')) && body.find(enabledPermissions)) {
+          size++;
+        }
+      })
       if (body.find(enabledPermissions).length) {
         cy.get(enabledPermissions).then((el) => {
-          for (let i = 0; i < el.length; i++) {
+          for (let i = 0; i < el.length-size; i++) {
             cy.get(el[i]).scrollIntoView().click({ force: true });
             cy.wait(500);
           }

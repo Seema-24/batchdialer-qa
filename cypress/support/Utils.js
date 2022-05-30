@@ -3,6 +3,7 @@ const speedTestPopup = '.modal-dialog div.modal-content';
 const speedtestIgnoreButton = '.modal-dialog div.modal-content button';
 const accountSID = Cypress.env('twilioSID');
 const authToken = Cypress.env('twilioAuthToken');
+const quickStartGuidePopUp = '#pendo-guide-container';
 
 export function selectAgentStatus(status) {
   cy.get(statusDropdown)
@@ -14,7 +15,16 @@ export function selectAgentStatus(status) {
 }
 
 export function ignoreSpeedTestPopup() {
+  skipTourGuidePopup();
   cy.get(speedtestIgnoreButton, { timeout: 40000 }).first().click();
+}
+
+export function skipTourGuidePopup() {
+  cy.get('body').then(($body) => {
+    if($body.find(quickStartGuidePopUp).length) {
+      cy.contains('Skip Tour').click();
+    }
+  })
 }
 
 export function call(toNumber, fromNumber) {
