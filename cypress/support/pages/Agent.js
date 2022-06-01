@@ -19,7 +19,7 @@ const contactsMenu = 'a[title="Contacts"]';
 const contact = '.contacts__name';
 const phoneNumber = '.phone__a-wrapper';
 const callTransferBtn = 'div[title="Transfer"]';
-const callBtn = '.stg-softphone-callbutton';
+const callBtn = '.stg-softphone-callbutton img';
 const callResultWindow = '.modal-content .call-disposition-title';
 const cancelBtn = '//button[contains(text(),"Cancel")]';
 const confirmButton = '//button[contains(text(),"Confirm")]';
@@ -276,7 +276,7 @@ export default class Agent {
   }
 
   clickEndCallBtn() {
-    cy.get(callBtn).click();
+    cy.get(callBtn).click({force:true});
   }
 
   verifyCallResultWindow() {
@@ -713,7 +713,7 @@ export default class Agent {
     cy.wait(500);
     cy.get('.card-text').then(($ele) => {
       if($ele.text().includes(note)) {
-        cy.xpath(deleteNoteBtn(note)).click({force : true});
+        cy.xpath(deleteNoteBtn(note)).click({ multiple: true });
       }
     })
   }

@@ -403,6 +403,7 @@ describe('Agent Profile', function () {
     agent.clickCallBtn();
     cy.wait(5000);
     agent.clickEndCallBtn();
+    cy.wait(1000);
     agent.verifyCallResultWindow();
     agent.selectCallResult('No Answer');
     agent.clickContinueBtn();
