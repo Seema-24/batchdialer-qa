@@ -244,7 +244,7 @@ export default class Agent {
   }
 
   enterSearch(search) {
-    cy.get(searchBox).type(search);
+    cy.get(searchBox).clear().type(search);
   }
 
   clickConfirmButton() {
@@ -710,10 +710,16 @@ export default class Agent {
   }
 
   clickDeletNoteBtn(note) {
-    cy.xpath(deleteNoteBtn(note)).click();
+    cy.wait(500);
+    cy.get('.card-text').then(($ele) => {
+      if($ele.text().includes(note)) {
+        cy.xpath(deleteNoteBtn(note)).click({force : true});
+      }
+    })
   }
 
   verifyAddedNote(note, condition) {
+    cy.wait(1000);
     cy.xpath(deleteNoteBtn(note)).should(condition);
   }
 
