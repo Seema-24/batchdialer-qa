@@ -1,6 +1,6 @@
 import User from '../support/pages/User';
 import Dashboard from '../support/pages/Dashboard';
-import { ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { clickCallFunction, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 
 let fixtureData;
 let testData;
@@ -430,6 +430,7 @@ describe('Login Successfully and Add User', () => {
   });
 
   it('Verify Validation on fields on Add new user page', () => {
+    clickCallFunction();
     addUser.clickingOnUserOption();
     cy.wait(3000);
     addUser.searchUser(

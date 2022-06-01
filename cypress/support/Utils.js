@@ -4,6 +4,7 @@ const speedtestIgnoreButton = '.modal-dialog div.modal-content button';
 const accountSID = Cypress.env('twilioSID');
 const authToken = Cypress.env('twilioAuthToken');
 const quickStartGuidePopUp = '#pendo-guide-container';
+const callFunction = 'Takeover Call Functions';
 
 export function selectAgentStatus(status) {
   cy.get(statusDropdown)
@@ -85,4 +86,13 @@ export function covertNumberToNormal(num) {
     }
   }
   return convertedNumber;
+}
+
+export function clickCallFunction() {
+  cy.wait(1000);
+  cy.get('body').then(($body) => {
+    if($body.text().includes(callFunction)) {
+      cy.contains(callFunction).click();
+    }
+  })
 }

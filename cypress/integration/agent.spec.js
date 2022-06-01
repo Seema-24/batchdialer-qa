@@ -43,7 +43,7 @@ describe('Agent Profile', function () {
     agent.verifyAverageAbandonTimeBox();
     agent.verifyTotalCallsBox();
     agent.verifyTalkingTimeBox();
-    // agent.verifyRemainingLeadsBox();
+    agent.verifyRemainingLeadsBox();
     agent.verifyActiveCampaignsBox();
     agent.verifyCallResultsBox();
     agent.verifyCallsSummaryBox();
@@ -78,7 +78,7 @@ describe('Agent Profile', function () {
     agent.clickNotesBtn();
     agent.clickAddNewNoteBtn();
     agent.enterNote('Hello');
-    cy.wait(1000);
+    cy.wait(500);
     agent.clickSaveButton();
     agent.verifyAddedNote('Hello', 'exist');
   });
@@ -377,9 +377,10 @@ describe('Agent Profile', function () {
   });
 
   it('Verify the Active Campaign count when Agent become available', () => {
+    agent.clickingOnContactOption();
+    cy.wait(500);
     agent.clickDashboardMenu();
-    cy.reload();
-    ignoreSpeedTestPopup();
+    cy.wait(500);
     agent.verifyActiveCampaignCount();
   });
 
@@ -402,12 +403,14 @@ describe('Agent Profile', function () {
     agent.clickCallBtn();
     cy.wait(5000);
     agent.clickEndCallBtn();
+    cy.wait(1000);
     agent.verifyCallResultWindow();
     agent.selectCallResult('No Answer');
     agent.clickContinueBtn();
   });
 
   it('Verify the Recent Contacts Page Landing', () => {
+    agent.clickCloseSoftphoneBtn();
     agent.clickRecentContact();
     agent.verifyRecentContactPage();
   });
@@ -515,6 +518,9 @@ describe('Agent Profile', function () {
     contact.clickNotes();
     contact.clickAddNewNotes();
     contact.enterNotes('Testing');
+    contact.clickSavebtn();
+    cy.wait(1000)
+    agent.clickEndCallBtn();
     agent.verifyDispositionWindowVisible();
     agent.verifyDispositionNoteText('Testing');
     agent.selectCallResult('No Answer');

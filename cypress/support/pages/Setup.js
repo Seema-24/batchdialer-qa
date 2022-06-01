@@ -417,7 +417,7 @@ export default class Setup {
   }
 
   chooseAssignee(assignee) {
-    cy.xpath(assignDropdown).click();
+    cy.xpath(assignDropdown).click({ force:true });
     cy.get(options).then((opt) => {
       for (let i = 0; i < opt.length; i++) {
         if (opt[i].textContent.trim() === assignee) {
