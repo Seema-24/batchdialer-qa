@@ -1,5 +1,5 @@
 import Dashboard from '../support/pages/Dashboard';
-import { ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 import Contacts from '../support/pages/Contacts';
 
 const Dash = new Dashboard();

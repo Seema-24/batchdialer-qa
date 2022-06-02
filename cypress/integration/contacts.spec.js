@@ -1,5 +1,5 @@
 import Contacts from '../support/pages/Contacts';
-import { ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 import Dashboard from '../support/pages/Dashboard';
 import Dialer from '../support/pages/Dialer';
 

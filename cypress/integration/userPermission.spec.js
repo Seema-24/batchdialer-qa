@@ -1,6 +1,6 @@
 import User from '../support/pages/User';
 import UserPermission from '../support/pages/UserPermission';
-import { ignoreSpeedTestPopup } from '../support/Utils';
+import { handlePoorConnectionPopup, ignoreSpeedTestPopup } from '../support/Utils';
 
 const permission = new UserPermission();
 const user = new User();

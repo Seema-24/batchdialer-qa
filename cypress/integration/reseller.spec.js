@@ -1,7 +1,7 @@
 import Login from '../support/pages/Login';
 import Register from '../support/pages/Register';
 import Reseller from '../support/pages/ResellerAdmin';
-import { covertNumberToNormal, ignoreSpeedTestPopup } from '../support/Utils';
+import { covertNumberToNormal, handlePoorConnectionPopup, ignoreSpeedTestPopup } from '../support/Utils';
 
 const reseller = new Reseller();
 const login = new Login();

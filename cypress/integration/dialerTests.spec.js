@@ -6,6 +6,7 @@ import {
   call,
   callWithHangup,
   covertNumberToNormal,
+  handlePoorConnectionPopup,
   ignoreSpeedTestPopup,
   selectAgentStatus,
 } from '../support/Utils';

@@ -1,6 +1,6 @@
 import Campaign from '../support/pages/Campaigns';
 import Dialer from '../support/pages/Dialer';
-import { ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 
 let fixtureData;
 let testData;
@@ -29,7 +29,7 @@ describe('Add Campaign flow', () => {
   beforeEach(() => {
     handlePoorConnectionPopup();
   })
-  
+
   after(() => {
     selectAgentStatus('Offline');
     cy.Logout();
