@@ -127,20 +127,20 @@ export default class Setup {
 
   createNewCampaign(name, callResults, phone, agentName) {
     campaign.clickAddNewCampaign();
-    campaign.enableAdvancedSwitchBar();
-    cy.wait(2000);
-    campaign.enterName(name);
+    //campaign.enableAdvancedSwitchBar();
+    //cy.wait(2000);
     campaign.selectDialingModeOption('Predictive Dialer');
-    campaign.selectCallerId('Individual Numbers', phone);
-    campaign.clickNextCircleArrow();
-    campaign.selectCallResultsOption(callResults);
-    campaign.clickNextCircleArrow();
-    this.selectAgentsDrpdwn('Individual Agents', agentName);
+    // campaign.clickNextCircleArrow();
+    // campaign.selectCallResultsOption(callResults);
+    // campaign.clickNextCircleArrow();
+    this.selectAgentsDrpdwn(agentName);
+    campaign.selectCallerId(phone);
+    campaign.enterName(name);
     campaign.clickCreateCampButton();
   }
 
-  selectAgentsDrpdwn(agentMode, name) {
-    cy.xpath(radioBtn(agentMode)).click();
+  selectAgentsDrpdwn(name) {
+    //cy.xpath(radioBtn(agentMode)).click();
     cy.xpath(agentsDrpdwn).click();
     cy.get(dropdownOptions).then((agent) => {
       for (let i = 0; i < name.length; i++) {

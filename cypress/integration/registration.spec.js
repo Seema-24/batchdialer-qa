@@ -24,7 +24,7 @@ describe('Registration', () => {
     cy.Logout();
   });
 
-  it('Verify that when user click on "sign up now " button its should open the registration page', () => {
+  it('Verify that when user click on SIGN UP NOW button its should open the registration page', () => {
     register.clickSignUpBtn();
     register.verifyRegistrationUrl();
   });
@@ -42,14 +42,14 @@ describe('Registration', () => {
     register.verifyContinueToPlanButton();
   });
 
-  it('Verify that when user click on "Eye icon" then password should show in the password field', () => {
+  it('Verify that when user click on EYE ICON then password should show in the password field', () => {
     register.clickSignUpBtn();
     register.enterPassword('Test');
     register.clickEyeButton();
     register.verifyDecryptedPassword();
   });
 
-  it('Verify that when all the required fields are filled then user is able to go next step "plan Selection"', () => {
+  it('Verify that when all the required fields are filled then user is able to go next step PLAN SELECTION', () => {
     register.clickSignUpBtn();
     register.enterFirstName('Demo');
     register.enterLastName('testing');
@@ -61,7 +61,7 @@ describe('Registration', () => {
     register.verifyPlanSelectionWindow();
   });
 
-  it('Verify that when user select a plan ,then user go to the payment page', () => {
+  it('Verify that when user select a plan, then user go to the payment page', () => {
     register.clickSignUpBtn();
     register.enterFirstName('Demo');
     register.enterLastName('testing');
@@ -75,7 +75,7 @@ describe('Registration', () => {
     register.verifyPaymentsPage();
   });
 
-  it('Verify that User can increase te number of agent by using slider on the plan selection page', () => {
+  it('Verify that User can increase the number of agent by using slider on the plan selection page', () => {
     register.clickSignUpBtn();
     register.enterFirstName('Demo');
     register.enterLastName('testing');
@@ -205,7 +205,7 @@ describe('Registration', () => {
     register.verifyCouponUppercase('QATEST');
   });
 
-  it('Verify that when user fill the valid card details and Check the Terms of Service & Privacy Policy checkbox then "Subscribe Now " button should enable', () => {
+  it('Verify that when user fill the valid card details and Check the Terms of Service & Privacy Policy checkbox then SUBSCRIBE NOW button should enable', () => {
     register.clickSignUpBtn();
     register.enterFirstName('Demo');
     register.enterLastName('testing');

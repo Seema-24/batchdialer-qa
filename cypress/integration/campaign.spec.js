@@ -25,6 +25,11 @@ describe('Add Campaign flow', () => {
       },
     });
   });
+
+  beforeEach(() => {
+    handlePoorConnectionPopup();
+  })
+  
   after(() => {
     selectAgentStatus('Offline');
     cy.Logout();

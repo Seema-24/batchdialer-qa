@@ -25,6 +25,10 @@ describe('Agent Profile', function () {
       },
     });
   });
+  
+  beforeEach(() => {
+    handlePoorConnectionPopup();
+  })
 
   after(() => {
     agent.selectAgentStatus('Offline');

@@ -22,6 +22,10 @@ describe('Report Page', () => {
       },
     });
   });
+  
+  beforeEach(() => {
+    handlePoorConnectionPopup();
+  })
 
   after(() => {
     selectAgentStatus('Offline');

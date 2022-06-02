@@ -18,6 +18,10 @@ describe('SuperVisor Flow', () => {
     });
   });
 
+  beforeEach(() => {
+    handlePoorConnectionPopup();
+  })
+
   after(() => {
     cy.Logout();
   });

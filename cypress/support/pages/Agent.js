@@ -646,7 +646,7 @@ export default class Agent {
 
   clickOnContactName(contact) {
     const [firstName, lastName] = contact.split(' ');
-    cy.xpath(contactName(firstName, lastName)).click();
+    cy.xpath(contactName(firstName, lastName)).click({force:true});
   }
 
   clickFollowUpCall() {
@@ -698,11 +698,11 @@ export default class Agent {
   }
 
   clickNotesBtn() {
-    cy.xpath(notesBtn).click();
+    cy.xpath(notesBtn).click({force:true});
   }
 
   clickAddNewNoteBtn() {
-    cy.xpath(addNewNoteBtn).click();
+    cy.xpath(addNewNoteBtn).click({force:true});
   }
 
   enterNote(note) {

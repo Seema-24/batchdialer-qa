@@ -448,6 +448,10 @@ describe('Outbound Calling Scenarios', () => {
       });
     });
 
+    beforeEach(() => {
+      handlePoorConnectionPopup();
+    })
+
     after(() => {
       selectAgentStatus('Offline');
       cy.Logout();

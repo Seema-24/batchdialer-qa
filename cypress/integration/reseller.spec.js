@@ -71,6 +71,10 @@ describe('Reseller Admin', () => {
     cy.Logout();
   });
 
+  beforeEach(() => {
+    handlePoorConnectionPopup();
+  })
+
   after(() => {
     cy.Logout();
   });

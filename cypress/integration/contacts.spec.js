@@ -27,6 +27,10 @@ describe('Add Contact flow', () => {
     });
   });
 
+  beforeEach(() => {
+    handlePoorConnectionPopup();
+  })
+
   after(() => {
     selectAgentStatus('Offline');
     cy.Logout();
