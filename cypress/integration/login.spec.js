@@ -1,5 +1,5 @@
 import Login from '../support/pages/Login';
-import { ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 
 const login = new Login();
 let testData;
@@ -41,7 +41,7 @@ describe('Login Flow', () => {
     login.verifySignUpPage();
   });
 
-  it('Verify that when user check the " i agree the Terms of Service & Privacy Policy" checkbox then "Login " button should enable', () => {
+  it('Verify that when user check the I agree the Terms of Service & Privacy Policy checkbox then LOGIN button should enable', () => {
     login.verifySignInButtonDisabled();
     login.clickTermsCheckBox();
     login.verifySignInButtonEnabled();

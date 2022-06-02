@@ -1,5 +1,5 @@
 import Dashboard from '../support/pages/Dashboard';
-import { ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 import Contacts from '../support/pages/Contacts';
 
 const Dash = new Dashboard();
@@ -29,6 +29,10 @@ describe('Dashboard Elements', () => {
       },
     });
   });
+
+  beforeEach(() => {
+    handlePoorConnectionPopup();
+  })
 
   after(() => {
     selectAgentStatus('Offline');
@@ -80,7 +84,7 @@ describe('Dashboard Elements', () => {
     Dash.verifyGroupExpended();
   });
 
-  it('Verify that when user click on the user id it should copy the user id and shows success mesaage "Copied"', () => {
+  it('Verify that when user click on the user id it should copy the user id and shows success message COPIED', () => {
     Dash.clickClientUserId();
     Dash.verifyToastMessage('Copied!');
   });
@@ -124,7 +128,7 @@ describe('Dashboard Elements', () => {
     Dash.verifyUserRoleName('Agent');
   });
 
-  it('Verify that clicking anywhere outside of the dropdown box will close it and act as "cancel"', () => {
+  it('Verify that clicking anywhere outside of the dropdown box will close it and act as CANCEL', () => {
     Dash.clickUserProfile();
     Dash.verifyUserTreeNotVisible();
   });

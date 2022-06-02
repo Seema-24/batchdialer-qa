@@ -1,6 +1,6 @@
 import User from '../support/pages/User';
 import Dashboard from '../support/pages/Dashboard';
-import { clickCallFunction, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { clickCallFunction, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 
 let fixtureData;
 let testData;
@@ -33,6 +33,10 @@ describe('Login Successfully and Add User', () => {
       },
     });
   });
+
+  beforeEach(() => {
+    handlePoorConnectionPopup();
+  })
 
   after(() => {
     selectAgentStatus('Offline');

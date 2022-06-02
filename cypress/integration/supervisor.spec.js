@@ -1,5 +1,5 @@
 import Suprevisor from '../support/pages/Supervisor';
-import { ignoreSpeedTestPopup } from '../support/Utils';
+import { handlePoorConnectionPopup, ignoreSpeedTestPopup } from '../support/Utils';
 
 let testData;
 const suprevisor = new Suprevisor();
@@ -17,6 +17,10 @@ describe('SuperVisor Flow', () => {
       },
     });
   });
+
+  beforeEach(() => {
+    handlePoorConnectionPopup();
+  })
 
   after(() => {
     cy.Logout();

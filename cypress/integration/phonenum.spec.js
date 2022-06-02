@@ -2,7 +2,7 @@ import promisify from 'cypress-promise';
 import Campaign from '../support/pages/Campaigns';
 import Contacts from '../support/pages/Contacts';
 import PhoneNum from '../support/pages/PhoneNum';
-import { ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 
 let fixtureData;
 let testData;
@@ -28,6 +28,7 @@ describe('Add Phone Number flow', () => {
 
   beforeEach(() => {
     cy.fixture('constants').then((data) => (fixtureData = data));
+    handlePoorConnectionPopup();
   });
 
   after(() => {

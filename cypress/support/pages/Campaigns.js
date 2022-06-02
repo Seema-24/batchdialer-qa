@@ -187,8 +187,8 @@ export default class Campaign {
     cy.get(nextArrow).click({ force: true });
   }
 
-  selectCallerId(callerMode, number) {
-    cy.xpath(radioBtn(callerMode)).click();
+  selectCallerId(number) {
+    //cy.xpath(radioBtn(callerMode)).click();
     cy.xpath(callerIdDropdown).click();
     cy.get('.ss-select-option').then((el) => {
       for (let i = 0; i < el.length; i++) {
@@ -801,7 +801,7 @@ export default class Campaign {
   }
 
   selectCallResults(callResults) {
-    cy.xpath(callResultsDropdown).click();
+    cy.xpath(callResultsDropdown).click({force:true});
     cy.get(options).then((option) => {
       for (let i = 0; i < callResults.length; i++) {
         for (let j = 0; j < option.length; j++) {

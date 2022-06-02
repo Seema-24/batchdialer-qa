@@ -127,20 +127,20 @@ export default class Setup {
 
   createNewCampaign(name, callResults, phone, agentName) {
     campaign.clickAddNewCampaign();
-    campaign.enableAdvancedSwitchBar();
-    cy.wait(2000);
-    campaign.enterName(name);
+    //campaign.enableAdvancedSwitchBar();
+    //cy.wait(2000);
     campaign.selectDialingModeOption('Predictive Dialer');
-    campaign.selectCallerId('Individual Numbers', phone);
-    campaign.clickNextCircleArrow();
-    campaign.selectCallResultsOption(callResults);
-    campaign.clickNextCircleArrow();
-    this.selectAgentsDrpdwn('Individual Agents', agentName);
+    // campaign.clickNextCircleArrow();
+    // campaign.selectCallResultsOption(callResults);
+    // campaign.clickNextCircleArrow();
+    this.selectAgentsDrpdwn(agentName);
+    campaign.selectCallerId(phone);
+    campaign.enterName(name);
     campaign.clickCreateCampButton();
   }
 
-  selectAgentsDrpdwn(agentMode, name) {
-    cy.xpath(radioBtn(agentMode)).click();
+  selectAgentsDrpdwn(name) {
+    //cy.xpath(radioBtn(agentMode)).click();
     cy.xpath(agentsDrpdwn).click();
     cy.get(dropdownOptions).then((agent) => {
       for (let i = 0; i < name.length; i++) {
@@ -183,7 +183,7 @@ export default class Setup {
           .includes(firstName + ' ' + lastName)
       ) {
         cy.log('Agent already exist');
-        cy.xpath(userEditBtn(firstName, lastName)).click();
+        cy.xpath(userEditBtn(firstName, lastName)).click({force:true});
         this.clickDropdownItem('Edit');
         cy.get(emailField).then((el) => {
           const value = el.val();
@@ -203,7 +203,7 @@ export default class Setup {
         cy.get(passwordField).type(password);
         this.clickUserPermissionExpander();
         this.enableAgentDefaultPermissions();
-        cy.xpath(saveBtn).click();
+        cy.xpath(saveBtn).click({force:true});
       } else {
         user.clickAddNewUserButton();
         // user.clickAddAgent();
@@ -240,7 +240,7 @@ export default class Setup {
           .includes(firstName + ' ' + lastName)
       ) {
         cy.log('Supervisor already exist');
-        cy.xpath(userEditBtn(firstName, lastName)).click();
+        cy.xpath(userEditBtn(firstName, lastName)).click({force:true});
         this.clickDropdownItem('Edit');
         cy.get(emailField).then((el) => {
           const value = el.val();
@@ -260,7 +260,7 @@ export default class Setup {
         cy.get(passwordField).type(password);
         this.clickUserPermissionExpander();
         this.enableSupervisorDefaultPermissions();
-        cy.xpath(saveBtn).click();
+        cy.xpath(saveBtn).click({force:true});
       } else {
         user.clickAddNewUserButton();
         user.chooseUserRole('Supervisor');
@@ -297,7 +297,7 @@ export default class Setup {
           .includes(firstName + ' ' + lastName)
       ) {
         cy.log('Admin already exist');
-        cy.xpath(userEditBtn(firstName, lastName)).click();
+        cy.xpath(userEditBtn(firstName, lastName)).click({force:true});
         this.clickDropdownItem('Edit');
         cy.get(emailField).then((el) => {
           const value = el.val();
@@ -388,12 +388,12 @@ export default class Setup {
   }
 
   clickPhoneEditButton(number) {
-    cy.xpath(phoneEditButton(number)).click();
+    cy.xpath(phoneEditButton(number)).click({force:true});
     this.clickDropdownItem('Edit Number');
   }
 
   selectNumberGroup(numberGroup) {
-    cy.xpath(numberGroupDropdown).click();
+    cy.xpath(numberGroupDropdown).click({force:true});
     cy.get(options).then((opt) => {
       for (let i = 0; i < opt.length; i++) {
         if (opt[i].textContent.trim() === numberGroup) {
@@ -405,7 +405,7 @@ export default class Setup {
   }
 
   chooseDestination(destination) {
-    cy.xpath(destinationDropdown).click();
+    cy.xpath(destinationDropdown).click({force:true});
     cy.get(options).then((opt) => {
       for (let i = 0; i < opt.length; i++) {
         if (opt[i].textContent.trim() === destination) {

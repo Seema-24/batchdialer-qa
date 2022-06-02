@@ -96,3 +96,11 @@ export function clickCallFunction() {
     }
   })
 }
+
+export function handlePoorConnectionPopup() {
+  cy.get('body').then(($body) => {
+    if($body.text().includes('Poor Connection')) {
+      cy.contains('Got it').click();
+    }
+  })
+}

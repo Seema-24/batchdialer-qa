@@ -6,6 +6,7 @@ import {
   call,
   callWithHangup,
   covertNumberToNormal,
+  handlePoorConnectionPopup,
   ignoreSpeedTestPopup,
   selectAgentStatus,
 } from '../support/Utils';
@@ -447,6 +448,10 @@ describe('Outbound Calling Scenarios', () => {
         },
       });
     });
+
+    beforeEach(() => {
+      handlePoorConnectionPopup();
+    })
 
     after(() => {
       selectAgentStatus('Offline');

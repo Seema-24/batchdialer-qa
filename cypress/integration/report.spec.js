@@ -1,5 +1,5 @@
 import Report from '../support/pages/Report';
-import { ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 
 const report = new Report();
 let fixtureData;
@@ -22,6 +22,10 @@ describe('Report Page', () => {
       },
     });
   });
+
+  beforeEach(() => {
+    handlePoorConnectionPopup();
+  })
 
   after(() => {
     selectAgentStatus('Offline');
