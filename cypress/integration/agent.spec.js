@@ -414,7 +414,6 @@ describe('Agent Profile', function () {
   });
 
   it('Verify the Recent Contacts Page Landing', () => {
-    agent.clickCloseSoftphoneBtn();
     agent.clickRecentContact();
     agent.verifyRecentContactPage();
   });

@@ -605,7 +605,7 @@ export default class Campaign {
   }
 
   clickContactListDropdown() {
-    cy.xpath(cardDropdowns('Contact Lists')).click();
+    cy.xpath(cardDropdowns('Contact Lists')).click({force:true});
   }
 
   clickCampaignSetting() {
@@ -781,7 +781,7 @@ export default class Campaign {
   }
 
   selectPhoneNumberToAssign(phoneNumber) {
-    cy.xpath(cardDropdowns('Phone Numbers')).click();
+    cy.xpath(cardDropdowns('Phone Numbers')).click({force:true});
     this.selectOptions(phoneNumber);
   }
 

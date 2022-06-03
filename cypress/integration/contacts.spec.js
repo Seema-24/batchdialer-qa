@@ -5,7 +5,7 @@ import Dialer from '../support/pages/Dialer';
 
 let fixtureData;
 let testData;
-let randNum = Math.floor(Math.random() * 100);
+let randNum = Math.floor(Math.random() * 1000);
 const addCont = new Contacts();
 const dashboard = new Dashboard();
 const Dial = new Dialer();

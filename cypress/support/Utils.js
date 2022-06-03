@@ -7,6 +7,8 @@ const quickStartGuidePopUp = '#pendo-guide-container';
 const callFunction = 'Takeover Call Functions';
 
 export function selectAgentStatus(status) {
+  handlePoorConnectionPopup();
+  clickCallFunction();
   cy.get(statusDropdown)
     .invoke('show')
     .click()

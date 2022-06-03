@@ -50,7 +50,7 @@ describe('Login Successfully and Add User', () => {
     addUser.getPhoneNumber();
   });
 
-  it('Verify that authorized user is able to view he microphone status and Agents connection quality in users page', () => {
+  it.skip('Verify that authorized user is able to view he microphone status and Agents connection quality in users page', () => {
     addUser.clickingOnUserOption();
     addUser.verifyMicIconVisible();
     addUser.verifyQualityIconVisible();
@@ -434,7 +434,6 @@ describe('Login Successfully and Add User', () => {
   });
 
   it('Verify Validation on fields on Add new user page', () => {
-    clickCallFunction();
     addUser.clickingOnUserOption();
     cy.wait(3000);
     addUser.searchUser(
