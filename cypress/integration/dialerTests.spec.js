@@ -454,6 +454,8 @@ describe('Outbound Calling Scenarios', () => {
     })
 
     after(() => {
+      cy.reload();
+      ignoreSpeedTestPopup();
       selectAgentStatus('Offline');
       cy.Logout();
     });

@@ -1,3 +1,5 @@
+import { clickCallFunction } from "../Utils";
+
 const campaignsMenu = 'a[title="Campaigns"]';
 const campaign = (camp) =>
   `//span[@class="campaign-name-table"][text()="${camp}"]`;
@@ -167,6 +169,7 @@ export default class Agent {
   }
 
   selectAgentStatus(status) {
+    clickCallFunction();
     cy.get(statusDropdown).click().contains(status).click();
   }
 

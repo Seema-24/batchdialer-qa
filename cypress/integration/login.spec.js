@@ -11,6 +11,8 @@ describe('Login Flow', () => {
   });
 
   after(() => {
+    cy.reload();
+    ignoreSpeedTestPopup();
     selectAgentStatus('Offline');
     cy.Logout();
   });

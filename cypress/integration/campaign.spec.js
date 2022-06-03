@@ -1,10 +1,10 @@
 import Campaign from '../support/pages/Campaigns';
 import Dialer from '../support/pages/Dialer';
-import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { clickCallFunction, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 
 let fixtureData;
 let testData;
-let randNum = Math.floor(Math.random() * 100);
+let randNum = Math.floor(Math.random() * 1000);
 const addCamp = new Campaign();
 const Dial = new Dialer();
 
@@ -31,6 +31,8 @@ describe('Add Campaign flow', () => {
   })
 
   after(() => {
+    cy.reload();
+    ignoreSpeedTestPopup();
     selectAgentStatus('Offline');
     cy.Logout();
   });
@@ -301,6 +303,7 @@ describe('Add Campaign flow', () => {
   });
 
   it('Verify that it should give error on clicking Next Contact if there is no new lead', () => {
+    clickCallFunction();
     Dial.selectStatus('Available');
     Dial.verifySelectCampaignBoxHeading();
     Dial.clickSelectCampaignDropdown();

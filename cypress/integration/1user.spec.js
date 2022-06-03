@@ -39,6 +39,8 @@ describe('Login Successfully and Add User', () => {
   })
 
   after(() => {
+    cy.reload();
+    ignoreSpeedTestPopup();
     selectAgentStatus('Offline');
     cy.Logout();
   });
@@ -434,7 +436,6 @@ describe('Login Successfully and Add User', () => {
   });
 
   it('Verify Validation on fields on Add new user page', () => {
-    clickCallFunction();
     addUser.clickingOnUserOption();
     cy.wait(3000);
     addUser.searchUser(

@@ -1,3 +1,4 @@
+import { handlePoorConnectionPopup } from '../Utils';
 import Campaign from './Campaigns';
 import Contacts from './Contacts';
 import Dashboard from './Dashboard';
@@ -146,7 +147,7 @@ export default class Setup {
       for (let i = 0; i < name.length; i++) {
         for (let j = 0; j < agent.length; j++) {
           if (agent[j].textContent.trim() === name[i]) {
-            agent[j].click();
+            agent[j].click({force:true});
             break;
           }
         }
@@ -183,7 +184,8 @@ export default class Setup {
           .includes(firstName + ' ' + lastName)
       ) {
         cy.log('Agent already exist');
-        cy.xpath(userEditBtn(firstName, lastName)).click({force:true});
+        handlePoorConnectionPopup();
+        cy.xpath(userEditBtn(firstName, lastName)).click();
         this.clickDropdownItem('Edit');
         cy.get(emailField).then((el) => {
           const value = el.val();
@@ -240,7 +242,8 @@ export default class Setup {
           .includes(firstName + ' ' + lastName)
       ) {
         cy.log('Supervisor already exist');
-        cy.xpath(userEditBtn(firstName, lastName)).click({force:true});
+        handlePoorConnectionPopup();
+        cy.xpath(userEditBtn(firstName, lastName)).click();
         this.clickDropdownItem('Edit');
         cy.get(emailField).then((el) => {
           const value = el.val();
@@ -297,7 +300,8 @@ export default class Setup {
           .includes(firstName + ' ' + lastName)
       ) {
         cy.log('Admin already exist');
-        cy.xpath(userEditBtn(firstName, lastName)).click({force:true});
+        handlePoorConnectionPopup();
+        cy.xpath(userEditBtn(firstName, lastName)).click();
         this.clickDropdownItem('Edit');
         cy.get(emailField).then((el) => {
           const value = el.val();
@@ -388,7 +392,8 @@ export default class Setup {
   }
 
   clickPhoneEditButton(number) {
-    cy.xpath(phoneEditButton(number)).click({force:true});
+    handlePoorConnectionPopup();
+    cy.xpath(phoneEditButton(number)).click();
     this.clickDropdownItem('Edit Number');
   }
 
@@ -397,7 +402,7 @@ export default class Setup {
     cy.get(options).then((opt) => {
       for (let i = 0; i < opt.length; i++) {
         if (opt[i].textContent.trim() === numberGroup) {
-          opt[i].click();
+          opt[i].click({force:true});
           break;
         }
       }
@@ -405,11 +410,11 @@ export default class Setup {
   }
 
   chooseDestination(destination) {
-    cy.xpath(destinationDropdown).click({force:true});
+    cy.xpath(destinationDropdown).click();
     cy.get(options).then((opt) => {
       for (let i = 0; i < opt.length; i++) {
         if (opt[i].textContent.trim() === destination) {
-          opt[i].click();
+          opt[i].click({force:true});
           break;
         }
       }
@@ -417,11 +422,11 @@ export default class Setup {
   }
 
   chooseAssignee(assignee) {
-    cy.xpath(assignDropdown).click({ force:true });
+    cy.xpath(assignDropdown).click();
     cy.get(options).then((opt) => {
       for (let i = 0; i < opt.length; i++) {
         if (opt[i].textContent.trim() === assignee) {
-          opt[i].click();
+          opt[i].click({force:true});
           break;
         }
       }

@@ -31,6 +31,8 @@ describe('Agent Profile', function () {
   })
 
   after(() => {
+    cy.reload();
+    ignoreSpeedTestPopup();
     agent.selectAgentStatus('Offline');
     cy.Logout();
   });
@@ -414,7 +416,6 @@ describe('Agent Profile', function () {
   });
 
   it('Verify the Recent Contacts Page Landing', () => {
-    agent.clickCloseSoftphoneBtn();
     agent.clickRecentContact();
     agent.verifyRecentContactPage();
   });

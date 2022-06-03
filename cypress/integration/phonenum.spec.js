@@ -32,6 +32,8 @@ describe('Add Phone Number flow', () => {
   });
 
   after(() => {
+    cy.reload();
+    ignoreSpeedTestPopup();
     selectAgentStatus('Offline');
     cy.Logout();
   });
