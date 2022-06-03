@@ -31,6 +31,8 @@ describe('Agent Profile', function () {
   })
 
   after(() => {
+    cy.reload();
+    ignoreSpeedTestPopup();
     agent.selectAgentStatus('Offline');
     cy.Logout();
   });

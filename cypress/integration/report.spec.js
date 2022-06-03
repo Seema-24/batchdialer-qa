@@ -28,6 +28,8 @@ describe('Report Page', () => {
   })
 
   after(() => {
+    cy.reload();
+    ignoreSpeedTestPopup();
     selectAgentStatus('Offline');
     cy.Logout();
   });

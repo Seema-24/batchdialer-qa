@@ -32,6 +32,8 @@ describe('Add Contact flow', () => {
   })
 
   after(() => {
+    cy.reload();
+    ignoreSpeedTestPopup();
     selectAgentStatus('Offline');
     cy.Logout();
   });

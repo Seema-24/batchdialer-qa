@@ -39,6 +39,8 @@ describe('Login Successfully and Add User', () => {
   })
 
   after(() => {
+    cy.reload();
+    ignoreSpeedTestPopup();
     selectAgentStatus('Offline');
     cy.Logout();
   });

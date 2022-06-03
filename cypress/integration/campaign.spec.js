@@ -31,6 +31,8 @@ describe('Add Campaign flow', () => {
   })
 
   after(() => {
+    cy.reload();
+    ignoreSpeedTestPopup();
     selectAgentStatus('Offline');
     cy.Logout();
   });

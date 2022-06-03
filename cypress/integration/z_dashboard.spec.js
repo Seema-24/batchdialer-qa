@@ -35,6 +35,8 @@ describe('Dashboard Elements', () => {
   })
 
   after(() => {
+    cy.reload();
+    ignoreSpeedTestPopup();
     selectAgentStatus('Offline');
     cy.Logout();
   });
