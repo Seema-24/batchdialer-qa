@@ -548,7 +548,7 @@ export default class Campaign {
   }
 
   clickCallingHours() {
-    cy.xpath(callingHours).click();
+    cy.xpath(callingHours).click({force:true});
   }
 
   verifyScheduleTable() {
@@ -556,7 +556,7 @@ export default class Campaign {
   }
 
   clickScheduleCancelButton() {
-    cy.xpath(scheduleCancelButton).click();
+    cy.xpath(scheduleCancelButton).click({force:true});
   }
 
   clickScheduleCheckmark() {

@@ -160,10 +160,10 @@ export default class User {
     cy.get(dropdownItems).then((items) => {
       for (let i = 0; i < items.length; i++) {
         if (items[i].textContent.trim() === itemName) {
-          cy.get(items[i]).click();
+          cy.get(items[i]).click({force:true});
           break;
         }
-      }
+      }  
     });
   }
 

@@ -186,7 +186,7 @@ export default class PhoneNum {
       .parent()
       .siblings('div')
       .children('.ss-select')
-      .click();
+      .click({force:true});
     cy.xpath(campaignCallResultGroup).should('contain.text', groupName);
   }
 
@@ -322,7 +322,7 @@ export default class PhoneNum {
   }
 
   clickOpenCallResultGroup(groupName) {
-    cy.xpath(openCallResultGroup(groupName)).click();
+    cy.xpath(openCallResultGroup(groupName)).click({force:true});
   }
 
   chooseActiveInactive(choice) {

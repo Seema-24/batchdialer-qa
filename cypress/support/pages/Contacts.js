@@ -212,7 +212,11 @@ export default class Contacts {
   }
 
   clickDialerCallButton() {
-    cy.get(callButton, { timeout: 20000 }).click();
+    cy.get('body').then(($ele) => {
+      if($ele.find(callButton)) {
+        cy.get(callButton, { timeout: 20000 }).click();
+      }
+    })
   }
 
   clickFilterButton() {
@@ -342,11 +346,11 @@ export default class Contacts {
   }
 
   selectFirstNameDropdown() {
-    cy.xpath(firstNameDrpdown).click();
+    cy.xpath(firstNameDrpdown).click({force:true});
     cy.contains('First Name').click({ force: true });
   }
   selectLastNameDropdown() {
-    cy.xpath(lastNameDrpdwn).click();
+    cy.xpath(lastNameDrpdwn).click({force:true});
     cy.contains('Last Name').click({ force: true });
   }
   selectEmailDropdown() {

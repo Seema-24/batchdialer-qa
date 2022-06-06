@@ -1,4 +1,4 @@
-import { covertNumberToNormal, ignoreSpeedTestPopup } from '../Utils';
+import { covertNumberToNormal, ignoreSpeedTestPopup, clickCallFunction } from '../Utils';
 
 const statusDropdown = '.nav-item.auth__agent-presence .ss-select';
 const statusNames = `.ss-select-group-items .ss-select-option .agent__presence-name`;
@@ -94,7 +94,9 @@ const tableRefreshBtn = 'span[title="Refresh"]';
 const phoneRingning = '.Phone.is-animating';
 
 export default class Dialer {
+ 
   selectStatus(statusName) {
+    clickCallFunction();
     cy.get(statusDropdown).click();
     cy.get(statusNames).then((names) => {
       for (let i = 0; i < names.length; i++) {
