@@ -1,0 +1,100 @@
+{
+    "newCampaign":
+    {
+        "maxringtime": 28,
+        "answermode": 0,
+        "mode": "mixed",
+        "dailysaleslimit": 0,
+        "maxattempts": 3,
+        "dispositiongroups": [],
+        "agentscriptid": 13931,
+        "name": "automation test",
+        "abandonmenttimeout": 30,
+        "scrubfederal": 0,
+        "agents": [
+            {
+                "id": 18750
+            }
+        ],
+        "scrubcompany": 1,
+        "maxabandonmentrate": 5,
+        "callrecording": 1,
+        "dids": [
+            {
+                "id": 88160
+            }
+        ],
+        "retrytime": 3,
+        "lists": [
+            {
+                "id": 157790
+            }
+        ],
+        "schedule": [
+            {
+                "day": 0,
+                "from": 0,
+                "to": 86400
+            },
+            {
+                "day": 1,
+                "from": 0,
+                "to": 86400
+            },
+            {
+                "day": 2,
+                "from": 0,
+                "to": 86400
+            },
+            {
+                "day": 3,
+                "from": 0,
+                "to": 86400
+            },
+            {
+                "day": 4,
+                "from": 0,
+                "to": 86400
+            },
+            {
+                "day": 5,
+                "from": 0,
+                "to": 86400
+            },
+            {
+                "day": 6,
+                "from": 0,
+                "to": 86400
+            }
+        ],
+        "callsorder": "adaptive",
+        "amdetection": 0,
+        "timezone": "America/Detroit",
+        "calldispositions": [
+            {
+                "id": 21
+            },
+            {
+                "id": 6383
+            },
+            {
+                "id": 20
+            },
+            {
+                "id": 8
+            },
+            {
+                "id": 38728
+            },
+            {
+                "id": 38729
+            },
+            {
+                "id": 7
+            }
+        ],
+        "retrytimeinterval": 3600,
+        "maxdialingratio": 2,
+        "leadsheetid": null
+    }
+}

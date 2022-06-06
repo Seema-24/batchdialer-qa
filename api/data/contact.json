@@ -1,0 +1,29 @@
+{
+    "basic_contact":
+    {
+        "campaignid": 83695,
+        "contacts": [
+          {
+            "vendorcontactid": 0,
+            "phonenumber": "123-582-1295",
+            "title": "Mr.",
+            "firstname": "Automation",
+            "middlename": "t",
+            "lastname": "Test",
+            "addressline1": "52 Hickory Lane",
+            "city": "Smallville",
+            "state": "Kansas",
+            "postalcode": "66605",
+            "mailingaddressline1": "52 Hickory Lane",
+            "mailingcity": "Smallville",
+            "mailingstate": "Kansas",
+            "mailingpostalcode": "66605",
+            "country": "United States",
+            "gender": "Male",
+            "dateofbirth": "1981/06/18",
+            "email": "autocontact1@email.com",
+            "comments": "This contact is created by automated api test"
+          }
+        ]
+      }
+}
