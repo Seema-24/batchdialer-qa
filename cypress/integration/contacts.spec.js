@@ -410,13 +410,13 @@ describe('Add Contact flow', () => {
     addCont.clickPlayerPauseBtn();
   });
 
-  it.skip('Verify that the authorized user is able to Forward/Rewind the recorded call', () => {
+  it('Verify that the authorized user is able to Forward/Rewind the recorded call', () => {
     addCont.clickPlayerForwardBtn();
     cy.wait(1000);
     addCont.clickPlayerRewindBtn();
   });
 
-  it.skip('Verify the Elements of Recording Player', () => {
+  it('Verify the Elements of Recording Player', () => {
     addCont.verifyPlayerCampaignName(testData.campaign);
     addCont.verifyPlayerControlBtns();
     addCont.verifyPlayerVolumeBar();
@@ -424,7 +424,7 @@ describe('Add Contact flow', () => {
     addCont.verifyPlayerDownloadBtn();
   });
 
-  it.skip('Verify that the authorized user is able to play back the call recordings at lower and faster speeds', () => {
+  it('Verify that the authorized user is able to play back the call recordings at lower and faster speeds', () => {
     addCont.selectPlaySpeed('0.5x');
     addCont.clickPlayerPlayBtn();
     cy.wait(2000);
