@@ -19,7 +19,7 @@ export function selectAgentStatus(status) {
 
 export function ignoreSpeedTestPopup() {
   skipTourGuidePopup();
-  cy.get(speedtestIgnoreButton, { timeout: 40000 }).first().click();
+  cy.get(speedtestIgnoreButton, { timeout: 40000 }).first().click({force:true});
 }
 
 export function skipTourGuidePopup() {

@@ -373,7 +373,7 @@ describe('Registration', () => {
     register.verifyProfilePictureChange(file);
   });
 
-  it.skip('Cancel the Account from the Super Admin Panel', () => {
+  it('Cancel the Account from the Super Admin Panel', () => {
     cy.url().then((url) => {
       if (url.includes('app.batchdialer.com')) {
         cy.log('Not performing Account Reactivation on Production');
@@ -394,7 +394,7 @@ describe('Registration', () => {
     });
   });
 
-  it.skip('Reactivate the Cancelled Account', () => {
+  it('Reactivate the Cancelled Account', () => {
     cy.url().then((url) => {
       if (url.includes('app.batchdialer.com')) {
         cy.log('Not performing Account Reactivation on Production');

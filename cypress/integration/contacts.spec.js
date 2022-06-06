@@ -393,13 +393,13 @@ describe('Add Contact flow', () => {
     addCont.verifyAddedNote();
   });
 
-  it('Verify that the authorized user is able to play/pause the recorded call', () => {
+  it.skip('Verify that the authorized user is able to play/pause the recorded call', () => {
     addCont.clickingOnContactOption();
     addCont.enterSearch(testData.Contact);
     addCont.clickContactName(testData.Contact);
     addCont.clickContactPhoneNumber();
     addCont.clickDialerCallButton();
-    cy.wait(10000);
+    cy.wait(5000);
     addCont.clickDialerCallButton();
     addCont.selectCallResult('No Answer');
     addCont.clickContinueBtn();

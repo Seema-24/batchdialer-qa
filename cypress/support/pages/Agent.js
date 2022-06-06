@@ -267,7 +267,7 @@ export default class Agent {
   }
 
   clickPhoneNumber() {
-    cy.get(phoneNumber).first().click();
+    cy.get(phoneNumber).first().click({force:true});
   }
 
   clickCallTransferBtn() {
