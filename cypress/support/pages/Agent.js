@@ -267,7 +267,7 @@ export default class Agent {
   }
 
   clickPhoneNumber() {
-    cy.get(phoneNumber).first().click({force:true});
+    cy.get(phoneNumber).first().click();
   }
 
   clickCallTransferBtn() {
@@ -738,7 +738,7 @@ export default class Agent {
     cy.get('button').then((Btn) => {
       for (let i = 0; i < Btn.length; i++) {
         if (Btn[i].textContent.trim() === btnName) {
-          cy.get(Btn[i]).click();
+          cy.get(Btn[i]).click({force:true});
           break;
         }
       }

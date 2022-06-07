@@ -58,6 +58,7 @@ const billingAddressInput = '.google-autocomplete-wrapper input';
 const billingAddressOption = '.google-autocomplete-option';
 const paymentSummary = '.main_signuparia .payment_modal_register';
 const cardEditBtn = '.billing-user-info__payment__edit';
+const city = 'input[name="city"]';
 
 export default class Register {
   clickSignUpBtn() {
@@ -417,11 +418,12 @@ export default class Register {
     cy.get(billingAddressInput).type(address, { delay: 10 });
   }
 
-  selectBillingAddressFromSuggestion(zip) {
+  selectBillingAddressFromSuggestion(zip,city) {
     cy.get(billingAddressOption).first().click({ force : true });
     cy.wait(500);
     cy.get('.card_form').then(($form) => {
       if($form.find(billingZip).length){
+        this.enterCity(city);
         this.enterBillingZip(zip);
       }
     })
@@ -433,5 +435,9 @@ export default class Register {
 
   clickCardEditBtn() {
     cy.get(cardEditBtn).click();
+  }
+
+  enterCity(name) {
+    cy.get(city).clear().type(name);
   }
 }
