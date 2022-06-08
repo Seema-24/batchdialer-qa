@@ -322,7 +322,7 @@ export default class PhoneNum {
   }
 
   clickOpenCallResultGroup(groupName) {
-    cy.xpath(openCallResultGroup(groupName)).click({force:true});
+    cy.xpath(openCallResultGroup(groupName)).click();
   }
 
   chooseActiveInactive(choice) {

@@ -2,7 +2,7 @@ import Dashboard from '../support/pages/Dashboard';
 import Login from '../support/pages/Login';
 import PhoneNum from '../support/pages/PhoneNum';
 import Register from '../support/pages/Register';
-import { ignoreSpeedTestPopup } from '../support/Utils';
+import { ignoreSpeedTestPopup, skipTourGuidePopup } from '../support/Utils';
 
 const register = new Register();
 const dashboard = new Dashboard();
@@ -231,7 +231,7 @@ describe('Registration', () => {
     );
     register.clickAgreeCheckbox();
     register.enterBillingAddress('63 East June Street, Mesa, AZ, USA');
-    register.selectBillingAddressFromSuggestion(Cypress.env('BillingZip'));
+    register.selectBillingAddressFromSuggestion(Cypress.env('BillingZip'),'USA');
     register.verifySubscribedNowBtnEnabled();
   });
 
@@ -263,7 +263,7 @@ describe('Registration', () => {
         );
         register.clickAgreeCheckbox();
         register.enterBillingAddress('63 East June Street, Mesa, AZ, USA');
-        register.selectBillingAddressFromSuggestion( Cypress.env('BillingZip'));
+        register.selectBillingAddressFromSuggestion( Cypress.env('BillingZip'),'USA');
         register.clickSubscribeBtn();
         register.verifyPaymentSummaryVisible();
         cy.wait(1000);
@@ -278,7 +278,7 @@ describe('Registration', () => {
 
   it('Verify the Default call results present on New account registration', () => {
     cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
-    ignoreSpeedTestPopup();
+    skipTourGuidePopup();
     phone.clickPhoneNumberMenu();
     phone.clickCallResultMenu();
     phone.clickOpenCallResultGroup('UNGROUPED');
@@ -373,6 +373,7 @@ describe('Registration', () => {
     register.verifyProfilePictureChange(file);
   });
 
+  // test case failed due to implementation ---> BAT-2336
   it('Cancel the Account from the Super Admin Panel', () => {
     cy.url().then((url) => {
       if (url.includes('app.batchdialer.com')) {
@@ -394,6 +395,7 @@ describe('Registration', () => {
     });
   });
 
+  // test case failed due to implementation ---> BAT-2336
   it('Reactivate the Cancelled Account', () => {
     cy.url().then((url) => {
       if (url.includes('app.batchdialer.com')) {
@@ -416,7 +418,7 @@ describe('Registration', () => {
           Cypress.env('Coupon')
         );
         register.enterBillingAddress('Columbus');
-        register.selectBillingAddressFromSuggestion(Cypress.env('BillingZip'));
+        register.selectBillingAddressFromSuggestion(Cypress.env('BillingZip'),'New York');
         register.clickAgreeCheckbox();
         register.clickSubscribeBtn();
         cy.waitFor(cy.get('.main_sec', { timeout: 60000 }));
