@@ -1,6 +1,6 @@
 import User from '../support/pages/User';
 import Dashboard from '../support/pages/Dashboard';
-import { clickCallFunction, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 
 let fixtureData;
 let testData;
@@ -220,7 +220,7 @@ describe('Login Successfully and Add User', () => {
     addUser.chooseUserRole('Supervisor');
     addUser.verifyFirstName();
     addUser.verifyLastName();
-    // addUser.verifyRoleDropdownNewUser();
+    addUser.verifyRoleDropdownNewUser();
     addUser.verifyEmailField();
     addUser.verifyPasswordField();
     addUser.verifyPhoneNumber();

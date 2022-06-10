@@ -275,7 +275,7 @@ export default class Agent {
   }
 
   clickCallBtn() {
-    cy.get(callBtn).click();
+    cy.get(callBtn).click({force:true});
   }
 
   clickEndCallBtn() {
