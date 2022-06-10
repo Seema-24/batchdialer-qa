@@ -523,7 +523,7 @@ describe('Agent Profile', function () {
     contact.clickNotes();
     contact.clickAddNewNotes();
     contact.enterNotes('Testing');
-    contact.clickSavebtn();
+    //contact.clickSavebtn();
     cy.wait(1000)
     agent.clickEndCallBtn();
     agent.verifyDispositionWindowVisible();
@@ -535,7 +535,7 @@ describe('Agent Profile', function () {
     agent.ChooseCallResult('No Answer');
   });
 
-  it('Verify that note added in the Call Results window is reflected in the CONTACTS-->Notes Section', () => {
+  it('Verify that note added in the Call Results window is reflected in the CONTACTS--Notes Section', () => {
     agent.ChooseCallResult('No Answer');
     agent.clickingOnContactOption();
     agent.enterSearch('random Contact');
@@ -565,7 +565,7 @@ describe('Agent Profile', function () {
     agent.verifyContactCallData(testData.campaign, testData.agent, 'No Answer');
   });
 
-  it('Verify that Call mood added is reflected in Reports-->Recent Contacts', () => {
+  it('Verify that Call mood added is reflected in Reports--Recent Contacts', () => {
     dialer.clickOnMenu('Recent Contacts');
     agent.verifySelectedMood('neutral');
   });

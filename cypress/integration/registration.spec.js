@@ -277,100 +277,142 @@ describe('Registration', () => {
   });
 
   it('Verify the Default call results present on New account registration', () => {
-    cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
-    skipTourGuidePopup();
-    phone.clickPhoneNumberMenu();
-    phone.clickCallResultMenu();
-    phone.clickOpenCallResultGroup('UNGROUPED');
-    phone.verifyCallResultAvailable([
-      'Busy',
-      'Abandoned',
-      'Do Not Call',
-      'Voicemail',
-      'Successful Sale',
-      'No Answer',
-    ]);
+    cy.url().then((url) => {
+      if(url.includes('app.batchdialer.com')) {
+        cy.log('Not Registering user on Prod');
+      } else {
+        cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
+        skipTourGuidePopup();
+        phone.clickPhoneNumberMenu();
+        phone.clickCallResultMenu();
+        phone.clickOpenCallResultGroup('UNGROUPED');
+        phone.verifyCallResultAvailable([
+          'Busy',
+          'Abandoned',
+          'Do Not Call',
+          'Voicemail',
+          'Successful Sale',
+          'No Answer',
+        ]);
+      }
+    })
   });
 
   it('Verify that card with same details can not be added again', () => {
-    cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
-    cy.reload();
-    ignoreSpeedTestPopup();
-    dashboard.clickUserProfile();
-    dashboard.clickBilling();
-    register.clickCardEditBtn();
-    dashboard.clickAddNewCard();
-    dashboard.enterCardName(Cypress.env('CardName'));
-    dashboard.enterCardNumber(Cypress.env('CardNumber'));
-    dashboard.enterExpiryDate(Cypress.env('ExpiryDate'));
-    dashboard.enterCVC(Cypress.env('CVC'));
-    dashboard.chooseCountry('United States');
-    dashboard.enterBillingZip('43256');
-    dashboard.clickContinue();
-    register.verifyToastMessage('The card is already added');
+    cy.url().then((url) => {
+      if(url.includes('app.batchdialer.com')) {
+        cy.log('Not Registering user on Prod');
+      } else {
+        cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
+        cy.reload();
+        ignoreSpeedTestPopup();
+        dashboard.clickUserProfile();
+        dashboard.clickBilling();
+        register.clickCardEditBtn();
+        dashboard.clickAddNewCard();
+        dashboard.enterCardName(Cypress.env('CardName'));
+        dashboard.enterCardNumber(Cypress.env('CardNumber'));
+        dashboard.enterExpiryDate(Cypress.env('ExpiryDate'));
+        dashboard.enterCVC(Cypress.env('CVC'));
+        dashboard.chooseCountry('United States');
+        dashboard.enterBillingZip('43256');
+        dashboard.clickContinue();
+        register.verifyToastMessage('The card is already added');
+      }
+    })
   });
 
   it('Verify the user is able to change the password in Profile', () => {
-    cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
-    cy.reload();
-    ignoreSpeedTestPopup();
-    dashboard.clickUserProfile();
-    dashboard.clickProfile();
-    register.verifyFirstNameField();
-    register.clickOnChangePasswordBtn();
-    register.enterPassword('Test@123');
-    register.clickOnButton('Save');
-    register.verifyToastMessage('Profile Saved');
+    cy.url().then((url) => {
+      if(url.includes('app.batchdialer.com')) {
+        cy.log('Not Registering user on Prod');
+      } else {
+        cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
+        cy.reload();
+        ignoreSpeedTestPopup();
+        dashboard.clickUserProfile();
+        dashboard.clickProfile();
+        register.verifyFirstNameField();
+        register.clickOnChangePasswordBtn();
+        register.enterPassword('Test@123');
+        register.clickOnButton('Save');
+        register.verifyToastMessage('Profile Saved');
+      }
+    })
   });
 
   it('Verify that user is able to edit the profile', () => {
-    cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
-    cy.reload();
-    ignoreSpeedTestPopup();
-    dashboard.clickUserProfile();
-    dashboard.clickProfile();
-    register.verifyFirstNameField();
-    register.enterFirstName('User');
-    register.enterLastName('Edited');
-    register.enterProfilePhoneNumber('8888888888');
-    register.clickOnButton('Save');
-    register.verifyToastMessage('Profile Saved');
+    cy.url().then((url) => {
+      if(url.includes('app.batchdialer.com')) {
+        cy.log('Not Registering user on Prod');
+      } else {
+        cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
+        cy.reload();
+        ignoreSpeedTestPopup();
+        dashboard.clickUserProfile();
+        dashboard.clickProfile();
+        register.verifyFirstNameField();
+        register.enterFirstName('User');
+        register.enterLastName('Edited');
+        register.enterProfilePhoneNumber('8888888888');
+        register.clickOnButton('Save');
+        register.verifyToastMessage('Profile Saved');
+      }
+    })
   });
 
   it('Verify that the user is able login again after the edit profile info', () => {
-    cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
-    cy.reload();
-    ignoreSpeedTestPopup();
+    cy.url().then((url) => {
+      if(url.includes('app.batchdialer.com')) {
+        cy.log('Not Registering user on Prod');
+      } else {
+        cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
+        cy.reload();
+        ignoreSpeedTestPopup();
+      }
+    })
   });
 
   it('Verify that the user is able to add profile picture', () => {
     const file = 'BatchLogo.png';
-    cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
-    cy.reload();
-    ignoreSpeedTestPopup();
-    dashboard.clickUserProfile();
-    dashboard.clickProfile();
-    register.verifyFirstNameField();
-    register.verifyBeforeProfileAvatar();
-    register.uploadFile(file);
-    register.clickOnButton('CROP');
-    register.clickOnButton('Save');
-    cy.reload();
-    ignoreSpeedTestPopup();
-    register.verifyAddedProfileAvatar();
-    register.verifyProfilePictureChange(file);
+    cy.url().then((url) => {
+      if(url.includes('app.batchdialer.com')) {
+        cy.log('Not Registering user on Prod');
+      } else {
+        cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
+        cy.reload();
+        ignoreSpeedTestPopup();
+        dashboard.clickUserProfile();
+        dashboard.clickProfile();
+        register.verifyFirstNameField();
+        register.verifyBeforeProfileAvatar();
+        register.uploadFile(file);
+        register.clickOnButton('CROP');
+        register.clickOnButton('Save');
+        cy.reload();
+        ignoreSpeedTestPopup();
+        register.verifyAddedProfileAvatar();
+        register.verifyProfilePictureChange(file);
+      }
+    })
   });
 
   it('Verify that the user is able to change the existing profile picture', () => {
     const file = 'logo.jpg';
-    cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
-    cy.reload();
-    ignoreSpeedTestPopup();
-    dashboard.clickUserProfile();
-    dashboard.clickProfile();
-    register.verifyFirstNameField();
-    register.verifyAddedProfileAvatar();
-    register.verifyProfilePictureChange(file);
+    cy.url().then((url) => {
+      if(url.includes('app.batchdialer.com')) {
+        cy.log('Not Registering user on Prod');
+      } else {
+        cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
+        cy.reload();
+        ignoreSpeedTestPopup();
+        dashboard.clickUserProfile();
+        dashboard.clickProfile();
+        register.verifyFirstNameField();
+        register.verifyAddedProfileAvatar();
+        register.verifyProfilePictureChange(file);
+      }
+    })
   });
 
   // test case failed due to implementation ---> BAT-2336

@@ -1,5 +1,5 @@
 import Login from '../support/pages/Login';
-import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 
 const login = new Login();
 let testData;
