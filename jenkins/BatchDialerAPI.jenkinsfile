@@ -1,0 +1,46 @@
+pipeline {
+  agent { label 'qa' }
+  
+  options {
+    timeout(time: 7, unit: 'HOURS') 
+    ansiColor('xterm')
+    disableConcurrentBuilds()
+  }
+    
+  tools {
+    nodejs "Node14"
+  }
+    
+  stages {
+    stage("Install dependencies") {
+      steps {
+        sh """
+          npm install
+        """
+      }
+    }
+
+    stage("Build") {
+      steps {
+        sh """
+          npm run apitest
+        """
+      }
+    }  
+
+    stage ("Upload report") {
+      environment {
+        BUCKET      = 'batch-qa-automation'
+        BUCKET_PATH = 'batchdialer-api'
+      }
+      steps {
+        sh "aws s3 rm --recursive s3://${BUCKET}/${BUCKET_PATH}/"
+        s3Upload bucket: BUCKET, 
+                  path: BUCKET_PATH,
+                  workingDir: 'reports/dialer-api',
+                  includePathPattern: '**'
+        cleanWs()
+      }
+    }
+  }
+}
