@@ -28,26 +28,32 @@ const invalid_key = async function (endpoint) {
 const create_campaign = async function (request_body,endpoint) {
     return baseUrl.post(endpoint)
         .set('Content-Type', 'application/json')
-        .set('X-ApiKey', `${token.apiKey}`)
+        .set('X-Token', `${token.internal_token}`)
         .send(request_body);
 }
 
 describe('Campaigns API tests', async function () {
-  /*
+  
     it('should create a new campaign', async function () {
         let testReqObj = campaign_data.newCampaign;
         console.log(campaign_data.newCampaign.name);
         const response = await create_campaign(testReqObj,'/api/campaign');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
-
     });
-    */
+    
     it('should return status code 200 with valid key', async function () {
         const response = await valid_key('/api/campaigns');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
     });
+    
+    it('should check if newly created campaign present in the response', async function () {
+        const response = await valid_key('/api/campaigns');
+        body = JSON.parse(JSON.stringify(response.body));        
+        expect(body.map(e => (e.name))).to.include(campaign_data.newCampaign.name);
+    });
+
     it('should verify if response is a valid json and an array', async function () {
         const response = await valid_key('/api/campaigns');
         body = JSON.parse(JSON.stringify(response.body));
