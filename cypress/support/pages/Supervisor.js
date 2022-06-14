@@ -10,11 +10,11 @@ const uploadForm = '.import_step';
 const UserProfile = '.profile_name';
 const profileButton = 'div[href*="profile"]';
 const profilePage = '.profile-page';
-const loginAsBtn = '.dropdown-usertree';
+const loginAsBtn = '.profile_drop.dropdown';
 const openUserPlusBtn = '.group-client img[src*="tree-open"]';
 const userList = '.group-row-role__left__title';
 const profileName = '.name';
-const backToSupervisor = '.nav-item a[href*="logout"]';
+const backToSupervisor = '.user__dropdown.user__dropdown-logout';
 const dashboard = 'a[title="Dashboard"]';
 const supervisor = '.supervisor';
 const reportsMenu = 'a[title="Reports"]';
@@ -53,18 +53,25 @@ const dashboardGraphElements = (elementName) =>
   `//span[text()="${elementName}"]/ancestor::div[contains(@class,"col")]`;
 const addNewFloor = "//button[contains(text(),' Add New Floor')]";
 const filterButton = 'button.modal-filter-btn';
+const userDropdown =(option) => `//div[@class="user__dropdown" and text()="${option}"]`;
 
 export default class Suprevisor {
   clickingOnContactOption() {
     cy.get(contactsMenu).click({ force: true });
   }
 
-  clickLoginAsBtn() {
+  clickLoginAsBtn(option) {
     cy.get(loginAsBtn).click();
+    cy.xpath(userDropdown(option)).click();
   }
 
   clickOpenUser() {
-    cy.get(openUserPlusBtn).click();
+    cy.get('body').then($body => {
+      if($body.find(openUserPlusBtn)) {
+        cy.get(openUserPlusBtn).click();
+      }
+    })
+    
   }
 
   clickAddNewContactButton() {
