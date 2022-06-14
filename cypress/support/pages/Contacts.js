@@ -390,7 +390,7 @@ export default class Contacts {
     cy.get('button').then((btn) => {
       for (let i = 0; i < btn.length; i++) {
         if (btn[i].textContent.trim() === 'OK') {
-          cy.get(btn[i]).click();
+          cy.get(btn[i]).click({force:true});
           break;
         }
       }
@@ -860,7 +860,7 @@ export default class Contacts {
   }
 
   clickNotesBullets() {
-    cy.get(notesBullets).click();
+    cy.get(notesBullets).click({force:true});
   }
 
   clickOnDropdownItem(itemName) {
@@ -913,8 +913,15 @@ export default class Contacts {
     });
   }
 
-  verifyCurrentPlayTime(time) {
-    cy.get(currentPlayTime).should('have.text', time);
+  verifyCurrentPlayTime(time) { 
+    cy.get(currentPlayTime).then(el => {
+      for (let i = 0; i < time.length; i++) {
+        if(el.text().trim().includes(time[i])){
+          cy.get(currentPlayTime).should('have.text', time[i]);
+          break;
+        }
+      }
+    }) 
   }
 
   verifyContactViewPageVisible() {

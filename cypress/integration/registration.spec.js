@@ -415,7 +415,7 @@ describe('Registration', () => {
     })
   });
 
-  // test case failed due to implementation ---> BAT-2336
+  // test case failed ---> BAT-2336 --> FIXED ON 13 JUNE 2022
   it('Cancel the Account from the Super Admin Panel', () => {
     cy.url().then((url) => {
       if (url.includes('app.batchdialer.com')) {
@@ -428,7 +428,7 @@ describe('Registration', () => {
         register.clickOnResellerUser();
         register.handleAlertWindow();
         register.clickClientsMenu();
-        register.enterUserToSearch('trial@test.com'); //testing@test.com
+        register.enterUserToSearch('testing@test.com'); //testing@test.com
         register.clickDeleteUserButton();
         register.clickCancelNowRadioBtn();
         register.clickOnButton('Continue');
@@ -437,13 +437,13 @@ describe('Registration', () => {
     });
   });
 
-  // test case failed due to implementation ---> BAT-2336
+  // test case failed --> BAT-2336 --> FIXED ON 13 JUNE 2022
   it('Reactivate the Cancelled Account', () => {
     cy.url().then((url) => {
       if (url.includes('app.batchdialer.com')) {
         cy.log('Not performing Account Reactivation on Production');
       } else {
-        login.enterEmailtoSignin('trial@test.com'); //testing@test.com
+        login.enterEmailtoSignin('testing@test.com'); //testing@test.com
         login.enterPasswordToSignin('Fleek@2016');
         login.clickTermsCheckBox();
         login.clickSigninButton();

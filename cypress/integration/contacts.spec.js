@@ -393,7 +393,7 @@ describe('Add Contact flow', () => {
     addCont.verifyAddedNote();
   });
 
-  it.skip('Verify that the authorized user is able to play/pause the recorded call', () => {
+  it('Verify that the authorized user is able to play/pause the recorded call', () => {
     addCont.clickingOnContactOption();
     addCont.enterSearch(testData.Contact);
     addCont.clickContactName(testData.Contact);
@@ -432,13 +432,13 @@ describe('Add Contact flow', () => {
     addCont.clickPlayerPlayBtn();
     cy.wait(2000);
     addCont.clickPlayerPauseBtn();
-    addCont.verifyCurrentPlayTime('0:01');
+    addCont.verifyCurrentPlayTime(['0:01','0:02']);
     addCont.clickPlayerRewindBtn();
     addCont.selectPlaySpeed('2x');
     addCont.clickPlayerPlayBtn();
     cy.wait(2000);
     addCont.clickPlayerPauseBtn();
-    addCont.verifyCurrentPlayTime('0:05');
+    addCont.verifyCurrentPlayTime(['0:04','0:05','0:06']);
   });
 
   it.skip('Verify that the authorized user is able to download the call recording', () => {

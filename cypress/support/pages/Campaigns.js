@@ -909,7 +909,7 @@ export default class Campaign {
     cy.get('button').then((btns) => {
       for (let i = 0; i < btns.length; i++) {
         if (btns[i].textContent.trim() === btnName) {
-          cy.get(btns[i]).click();
+          cy.get(btns[i]).click({force:true});
           break;
         }
       }

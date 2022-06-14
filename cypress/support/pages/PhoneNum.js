@@ -186,7 +186,7 @@ export default class PhoneNum {
       .parent()
       .siblings('div')
       .children('.ss-select')
-      .click({force:true});
+      .click();
     cy.xpath(campaignCallResultGroup).should('contain.text', groupName);
   }
 

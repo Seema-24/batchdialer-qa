@@ -89,7 +89,7 @@ describe('SuperVisor Flow', () => {
   // Fixed according to the BAT-747
   it('Verify Supervisor can Login as Agent', () => {
     suprevisor.clickDashboardMenu();
-    suprevisor.clickLoginAsBtn();
+    suprevisor.clickLoginAsBtn('Switch Account');
     suprevisor.clickOpenUser();
     suprevisor.loginWithUser(testData.agent);
     ignoreSpeedTestPopup();
