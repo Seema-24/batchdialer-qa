@@ -10,7 +10,7 @@ const phone = new PhoneNum();
 const login = new Login();
 let fixtureData;
 let testData;
-const randomNumber = Math.floor(Math.random() * 100000);
+const randomNumber = Math.floor(Math.random() * 10000);
 describe('Registration', () => {
   beforeEach(() => {
     cy.fixture('constants').then((data) => (fixtureData = data));
@@ -264,6 +264,7 @@ describe('Registration', () => {
         register.clickAgreeCheckbox();
         register.enterBillingAddress('63 East June Street, Mesa, AZ, USA');
         register.selectBillingAddressFromSuggestion( Cypress.env('BillingZip'),'USA');
+        register.verifySubscribedNowBtnEnabled();
         register.clickSubscribeBtn();
         register.verifyPaymentSummaryVisible();
         cy.wait(1000);
@@ -415,7 +416,7 @@ describe('Registration', () => {
     })
   });
 
-  // test case failed ---> BAT-2336 --> FIXED ON 13 JUNE 2022
+  //BAT-2336 --> FIXED ON 14 JUNE 2022
   it('Cancel the Account from the Super Admin Panel', () => {
     cy.url().then((url) => {
       if (url.includes('app.batchdialer.com')) {
@@ -428,7 +429,7 @@ describe('Registration', () => {
         register.clickOnResellerUser();
         register.handleAlertWindow();
         register.clickClientsMenu();
-        register.enterUserToSearch('testing@test.com'); //testing@test.com
+        register.enterUserToSearch('testing@test.com');
         register.clickDeleteUserButton();
         register.clickCancelNowRadioBtn();
         register.clickOnButton('Continue');
@@ -437,13 +438,13 @@ describe('Registration', () => {
     });
   });
 
-  // test case failed --> BAT-2336 --> FIXED ON 13 JUNE 2022
+  //BAT-2336 --> FIXED ON 14 JUNE 2022
   it('Reactivate the Cancelled Account', () => {
     cy.url().then((url) => {
       if (url.includes('app.batchdialer.com')) {
         cy.log('Not performing Account Reactivation on Production');
       } else {
-        login.enterEmailtoSignin('testing@test.com'); //testing@test.com
+        login.enterEmailtoSignin('testing@test.com');
         login.enterPasswordToSignin('Fleek@2016');
         login.clickTermsCheckBox();
         login.clickSigninButton();
@@ -462,6 +463,7 @@ describe('Registration', () => {
         register.enterBillingAddress('Columbus');
         register.selectBillingAddressFromSuggestion(Cypress.env('BillingZip'),'New York');
         register.clickAgreeCheckbox();
+        register.verifySubscribedNowBtnEnabled();
         register.clickSubscribeBtn();
         cy.waitFor(cy.get('.main_sec', { timeout: 60000 }));
         ignoreSpeedTestPopup();

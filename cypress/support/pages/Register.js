@@ -425,6 +425,7 @@ export default class Register {
       if($form.find(billingZip).length){
         this.enterCity(city);
         this.enterBillingZip(zip);
+        cy.wait(500);
       }
     })
   }

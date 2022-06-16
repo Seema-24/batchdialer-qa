@@ -1,6 +1,6 @@
 import User from '../support/pages/User';
 import UserPermission from '../support/pages/UserPermission';
-import { handlePoorConnectionPopup, ignoreSpeedTestPopup } from '../support/Utils';
+import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus, verifyRoleTitle } from '../support/Utils';
 
 const permission = new UserPermission();
 const user = new User();
@@ -25,10 +25,10 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     handlePoorConnectionPopup();
   })
 
-  // after(() => {
-  //   selectAgentStatus('Offline');
-  //   cy.Logout();
-  // });
+  after(() => {
+    selectAgentStatus('Offline');
+    cy.Logout();
+  });
 
   it('Should Login', () => {
     cy.Login(Cypress.env('username'), Cypress.env('password'));
@@ -45,11 +45,12 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     user.clickOnButton('CANCEL');
   });
 
-  it('Verify that when user enabled the permission manage phone number then it should enabled the Phone number page and funtionality for the agent user', () => {
+  it('Verify that when user enabled the permission MANAGE PHONE NUMBER then it should enabled the Phone number page and funtionality for the agent user', () => {
     user.searchUser(testData.agent);
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
+    permission.disableDefaultPermission();
     permission.enablePermission('Manage Phone Numbers');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
@@ -57,10 +58,11 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     ignoreSpeedTestPopup();
     permission.verifyPhoneSystemMenu();
     permission.clickBackToAdminBtn();
+    ignoreSpeedTestPopup();
   });
 
   it('Verify that when user disabled the permission MANAGE PHONE NUMBER then phone number page should not appear for Agent user', () => {
-    ignoreSpeedTestPopup();
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -77,6 +79,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user enabled the permission VIEW CONTACT LISTS then user should be able to view contact lists', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -94,6 +97,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user enabled the permission EDIT CONTACT then user should be able to edit the contact', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -112,6 +116,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user disabled the permission EDIT CONTACT then Agent user should be unable to edit the contact', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -130,6 +135,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user enabled the permission EDIT CALL RESULT & NOTE then Agent user should be able to edit the Call result and note', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -141,6 +147,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     permission.loginWithUser(testData.AgentEmail);
     ignoreSpeedTestPopup();
     permission.clickOnMenu('Recent Contacts');
+    permission.clickOnSubMenu('Recent Contacts');
     permission.chooseDateToFilter();
     permission.clickCallResultEditBtn();
     permission.verifyCallDispositionModal();
@@ -150,6 +157,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user disabled the permission EDIT CALL RESULT & NOTE then Agent user should not able to edit the Call result and note', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -161,6 +169,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     permission.loginWithUser(testData.AgentEmail);
     ignoreSpeedTestPopup();
     permission.clickOnMenu('Recent Contacts');
+    permission.clickOnSubMenu('Recent Contacts');
     permission.chooseDateToFilter();
     permission.verifyCallResultBtnNotExist();
     permission.clickBackToAdminBtn();
@@ -168,6 +177,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that User is Enable the permission of View/Export Recent Contacts and It Reflect on Agent Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -179,12 +189,14 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     permission.loginWithUser(testData.AgentEmail);
     ignoreSpeedTestPopup();
     permission.clickOnMenu('Recent Contacts');
+    permission.clickOnSubMenu('Recent Contacts');
     permission.verifyRecentContactsExportBtnExist();
     permission.clickBackToAdminBtn();
     ignoreSpeedTestPopup();
   });
 
   it('Verify that User is Enable the permission of View/Export Recent Contacts and It Reflect on Agent Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -196,12 +208,14 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     permission.loginWithUser(testData.AgentEmail);
     ignoreSpeedTestPopup();
     permission.clickOnMenu('Recent Contacts');
+    permission.clickOnSubMenu('Recent Contacts');
     permission.verifyRecentContactsExportBtnNotExist();
     permission.clickBackToAdminBtn();
     ignoreSpeedTestPopup();
   });
 
   it('Verify that when user disabled the permission View Contact Lists then user should saw only assign list', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -221,6 +235,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user enables the permission View/Export Do-Not-Call then Agent user should able to see DNC page', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -238,6 +253,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user disabled the permission View/Export Do-Not-Call then Agent user should not able to see DNC page', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -254,6 +270,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user enables the permission Export Contact Lists then Agent user should able to export contact list', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -272,6 +289,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user disabled the permission Export Contact Lists then Agent user should not able to export contact list', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -291,6 +309,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user enables the permission Upload Contacts Lists then Agent user should able to upload contact list ', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -309,6 +328,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user disables  the permission Upload Contacts Lists then Agent user should not able to upload contact list ', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -328,6 +348,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user enables the permission Listen Audio then Agent user should able to listen Audio', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -339,6 +360,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     permission.loginWithUser(testData.AgentEmail);
     ignoreSpeedTestPopup();
     permission.clickOnMenu('Recent Contacts');
+    permission.clickOnSubMenu('Recent Contacts');
     permission.chooseDateToFilter();
     permission.verifyListenIconVisible();
     permission.clickListenIcon();
@@ -349,6 +371,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user enables the permission Download Audio then Agent user should able to download Audio', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -360,6 +383,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     permission.loginWithUser(testData.AgentEmail);
     ignoreSpeedTestPopup();
     permission.clickOnMenu('Recent Contacts');
+    permission.clickOnSubMenu('Recent Contacts');
     permission.chooseDateToFilter();
     permission.verifyListenIconVisible();
     permission.clickListenIcon();
@@ -371,6 +395,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user disables the permission Download Audio then Agent user should not able to download Audio', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -382,6 +407,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     permission.loginWithUser(testData.AgentEmail);
     ignoreSpeedTestPopup();
     permission.clickOnMenu('Recent Contacts');
+    permission.clickOnSubMenu('Recent Contacts');
     permission.chooseDateToFilter();
     permission.verifyListenIconVisible();
     permission.clickListenIcon();
@@ -393,6 +419,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user disables the permission Listen Audio then Agent user should not able to listen Audio', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -404,6 +431,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     permission.loginWithUser(testData.AgentEmail);
     ignoreSpeedTestPopup();
     permission.clickOnMenu('Recent Contacts');
+    permission.clickOnSubMenu('Recent Contacts')
     permission.chooseDateToFilter();
     cy.wait(2000);
     permission.verifyListenIconNotExist();
@@ -412,6 +440,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user enables the permission View All Agents Tasks then Agent user should able to View all agent tasks', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -433,6 +462,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user Disable the permission View All Agents Tasks then Agent user should able to View all agent tasks', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -454,6 +484,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user enables the permission View All Campaigns then Agent user should able to View All Campaigns', () => {
+    verifyRoleTitle();
     permission.clickOnMenu('Campaigns');
     cy.wait(2000);
     permission.getUserCampaignCount(testData.agent);
@@ -477,6 +508,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user enables the permission Create & Edit Campaigns then Agent user should able to Create & Edit Campaigns', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -496,6 +528,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user disable the permission Create & Edit Campaigns then Agent user should able to Create & Edit Campaigns', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -515,6 +548,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user enables the permission Pause/Activate Campaign then Agent user should able to Pause/Activate Campaign', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -533,6 +567,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user disables the permission Pause/Activate Campaign then Agent user should able to Pause/Activate Campaign', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -551,6 +586,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user disables the permission View All Campaigns then Agent user should able to View All Campaigns', () => {
+    verifyRoleTitle();
     permission.clickOnMenu('Campaigns');
     cy.wait(2000);
     permission.getUserCampaignCount(testData.agent);
@@ -574,6 +610,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user enables the permission View All Reports then Agent user should able to View All Reports', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -600,6 +637,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user enables the permission View Recent Contacts of All Agents then Agent user should able to View Recent Contacts of All Agents', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -619,6 +657,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user disables the permission View Recent Contacts of All Agents then Agent user should able to View Recent Contacts of All Agents', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -638,6 +677,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that when user Disable the permission View All Reports then Agent user should able to View All Reports', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -663,6 +703,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
 
   it('Verify that Agent user is not able to access some permissions', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
@@ -696,10 +737,10 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     });
   });
 
-  // after(() => {
-  //   selectAgentStatus('Offline');
-  //   cy.Logout();
-  // });
+  after(() => {
+    selectAgentStatus('Offline');
+    cy.Logout();
+  });
 
   it('Should Login', () => {
     cy.Login(Cypress.env('username'), Cypress.env('password'));
@@ -721,6 +762,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
+    permission.disableDefaultPermission();
     permission.enablePermission('Manage Phone Numbers');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
@@ -728,10 +770,11 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(1000);
     permission.verifyPhoneSystemMenu();
     permission.clickBackToAdminBtn();
+    ignoreSpeedTestPopup();
   });
 
   it('Verify that Admin(User)is able to Disable the Permission of Manage Phone Numbers and It Reflect on Supervisor Account', () => {
-    ignoreSpeedTestPopup();
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -748,6 +791,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(user)is enable the permission of View Contact Lists and It Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -765,6 +809,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User)is Enable the permission of Edit Contact and It Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -783,6 +828,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User)is Disable  the permission of Edit Contact and It Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -801,6 +847,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User)is Enable the permission of Edit Call Result & Note and It Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -822,6 +869,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User)is Disable the permission of Edit Call Result & Note and It Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -841,6 +889,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User) is Enable the permission of View/Export Recent Contacts and It Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -859,6 +908,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('verify that Admin(User) is Disable the permission of View/Export Recent Contacts and It Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -877,6 +927,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(user)is Disable the permission of View Contact Lists and It Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -896,6 +947,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User)is Enable the Permission of View/Export Do-Not-Call and It Reflects on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -913,6 +965,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User)is Disable the Permission of View/Export Do-Not-Call and It Reflects on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -929,6 +982,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User)is Enable the Permission of Export Contact Lists and It Reflects on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -947,6 +1001,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User)is Disable the Permission of Export Contact Lists and It Reflects on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -966,6 +1021,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User)is Enable the Permission of Upload Contacts Lists and It Reflects on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -984,6 +1040,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User)is Disable the Permission of Upload Contacts Lists and It Reflects on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1003,6 +1060,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(user)is able to Enable the permission Of Listen Audio and It Reflect on Supervisor Account.', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1025,6 +1083,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User)is able to Enable the permission of Download Audio and It Reflects on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1048,6 +1107,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User)is able to Disable the permission of Download Audio and It Reflects on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1071,6 +1131,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(user)is able to Disable the permission Of Listen Audio and It Reflect on Supervisor Account.', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1091,6 +1152,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User) is Enable the Permission of Manage Billing and It Reflects on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1108,6 +1170,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User) is Enable the Permission of Manage Billing and It Reflects on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1125,6 +1188,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('verify that Admin(User) is able to Enable View All Agents Tasks and It Reflects on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1146,6 +1210,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('verify that Admin(User) is able to Disable View All Agents Tasks and It Reflects on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1167,6 +1232,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User)is able to Enable the permission of View All Campaigns and It Reflects on Supervisor Account', () => {
+    verifyRoleTitle();
     permission.clickOnMenu('Campaigns');
     cy.wait(2000);
     permission.getTotalCampaignCount();
@@ -1190,6 +1256,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User) is able to Enable Edit and Create Campaign and it Reflects on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1209,6 +1276,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User)is able to Enable the permission of Assign/Remove Agents and It Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1234,6 +1302,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User) is able to Enable the permission of Pause/Activate Campaign and It Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1252,6 +1321,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User) is able to Disable the permission of Pause/Activate Campaign and It Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1270,6 +1340,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User)is able to Disable the permission of Assign/Remove Agents and It Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1293,6 +1364,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User) is able to Disabled Edit and Create Campaign and it Reflects on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1311,6 +1383,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User)is able to Disable the permission of View All Campaigns and It Reflects on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1327,6 +1400,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User) is able to Enable the permission of Add User and it Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1345,6 +1419,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User) is able to Enable the permission of Edit User and It Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1362,6 +1437,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that user(Admin) is able to Enable permission for Delete User and It Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1379,6 +1455,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that user(Admin) is able to enable permission of Add User to the Group and It Reflect in Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1399,6 +1476,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that user(Admin) is able to Disable permission of Add User to the Group and It Reflect in Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1419,6 +1497,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that user(Admin) is able to Disable permission for Delete User and It Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1437,6 +1516,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User) is able to Disable the permission of Edit User and It Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1455,6 +1535,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User) is able to Disable the permission of Add User and it Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1471,6 +1552,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that when user enables the permission View All Reports then Agent user should able to View All Reports', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1496,6 +1578,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that when user enables the permission View Recent Contacts of All Agents then Agent user should able to View Recent Contacts of All Agents', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1514,6 +1597,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that when user disables the permission View Recent Contacts of All Agents then Agent user should able to View Recent Contacts of All Agents', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
@@ -1532,6 +1616,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that when user Disable the permission View All Reports then Agent user should able to View All Reports', () => {
+    verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
