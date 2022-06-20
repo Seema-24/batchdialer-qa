@@ -1,29 +1,157 @@
 {
-    "basic_contact":
+    "single_contact":
     {
-        "campaignid": 93292,
-        "contacts": [
+      "campaignid": 93635,
+      "contacts": [
           {
-            "vendorcontactid": 0,
-            "phonenumber": "123-582-1295",
-            "title": "Mr.",
-            "firstname": "Automation",
-            "middlename": "t",
-            "lastname": "Test",
-            "addressline1": "52 Hickory Lane",
-            "city": "Smallville",
-            "state": "Kansas",
-            "postalcode": "66605",
-            "mailingaddressline1": "52 Hickory Lane",
-            "mailingcity": "Smallville",
-            "mailingstate": "Kansas",
-            "mailingpostalcode": "66605",
-            "country": "United States",
-            "gender": "Male",
-            "dateofbirth": "1981/06/18",
-            "email": "autocontact1@email.com",
-            "comments": "This contact is created by automated api test"
+              "vendorcontactid": "",
+              "ignorevendorid": 1,
+              "phonenumber": "1234567891",
+              "altphonenumber": "1359123094",
+              "title": "Title",
+              "firstname": "John",
+              "lastname": "Doe",
+              "middlename": "Jr.",
+              "addressline1": "My home address",
+              "city": "New York",
+              "state": "NY",
+              "postalcode": "12345",
+              "mailingaddressline1": "my mailing address",
+              "mailingcity": "New York",
+              "mailingstate": "NY",
+              "mailingpostalcode": "12345",
+              "country": "USA",
+              "gender": "m",
+              "dateofbirth": "1983-01-13",
+              "email": "john@doe.com",
+              "comments": "Add comment if you like",
+              "customfieldss": {
+                  "custom": "field"
+              }
           }
-        ]
-      }
+      ]
+  },
+    "multiple_contact":
+    {
+      "campaignid": 93635,
+      "contacts": [
+          {
+              "vendorcontactid": "",
+              "ignorevendorid": 1,
+              "phonenumber": "1234567891",
+              "altphonenumber": "1359123094",
+              "title": "Title",
+              "firstname": "John",
+              "lastname": "Doe",
+              "middlename": "Jr.",
+              "addressline1": "My home address",
+              "city": "New York",
+              "state": "NY",
+              "postalcode": "12345",
+              "mailingaddressline1": "my mailing address",
+              "mailingcity": "New York",
+              "mailingstate": "NY",
+              "mailingpostalcode": "12345",
+              "country": "USA",
+              "gender": "m",
+              "dateofbirth": "1983-01-13",
+              "email": "john@doe.com",
+              "comments": "Add comment if you like",
+              "customfieldss": {
+                  "custom": "field"
+              }
+          },
+          {
+              "vendorcontactid": "",
+              "ignorevendorid": 1,
+              "phonenumber": "1567382908",
+              "altphonenumber": "9876543210",
+              "title": "Title",
+              "firstname": "John",
+              "lastname": "Doe",
+              "middlename": "Jr.",
+              "addressline1": "My home address",
+              "city": "New York",
+              "state": "NY",
+              "postalcode": "12345",
+              "mailingaddressline1": "my mailing address",
+              "mailingcity": "New York",
+              "mailingstate": "NY",
+              "mailingpostalcode": "12345",
+              "country": "USA",
+              "gender": "m",
+              "dateofbirth": "1983-01-13",
+              "email": "john@doe.com",
+              "comments": "Add comment if you like",
+              "customfieldss": {
+                  "custom": "field"
+              }
+          }
+      ]
+  },
+  "invaild_request":{
+    "campaigni": 93635,
+    "contacts": [
+        {
+            "vendorcontactid": "",
+            "ignorevendorid": 1,
+            "phonenumber": "1234567891",
+            "altphonenumber": "1359123094",
+            "title": "Title",
+            "firstname": "John",
+            "lastname": "Doe",
+            "middlename": "Jr.",
+            "addressline1": "My home address",
+            "city": "New York",
+            "state": "NY",
+            "postalcode": "12345",
+            "mailingaddressline1": "my mailing address",
+            "mailingcity": "New York",
+            "mailingstate": "NY",
+            "mailingpostalcode": "12345",
+            "country": "USA",
+            "gender": "m",
+            "dateofbirth": "1983-01-13",
+            "email": "john@doe.com",
+            "comments": "Add comment if you like",
+            "customfieldss": {
+                "custom": "field"
+            }
+        }
+    ]
+},
+
+"invaild_url":
+    {
+      "campaignid": 93635,
+      "contacts": [
+          {
+              "vendorcontactid": "",
+              "ignorevendorid": 1,
+              "phonenumber": "1234567891",
+              "altphonenumber": "1359123094",
+              "title": "Title",
+              "firstname": "John",
+              "lastname": "Doe",
+              "middlename": "Jr.",
+              "addressline1": "My home address",
+              "city": "New York",
+              "state": "NY",
+              "postalcode": "12345",
+              "mailingaddressline1": "my mailing address",
+              "mailingcity": "New York",
+              "mailingstate": "NY",
+              "mailingpostalcode": "12345",
+              "country": "USA",
+              "gender": "m",
+              "dateofbirth": "1983-01-13",
+              "email": "john@doe.com",
+              "comments": "Add comment if you like",
+              "customfieldss": {
+                  "custom": "field"
+              }
+          }
+      ]
+  }
+
 }

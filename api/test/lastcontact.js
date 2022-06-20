@@ -39,11 +39,17 @@ describe('Last contact API tests', async function () {
         expect(body.msg).to.equal("Wrong API key");
     });
 
+    it('should return status code 404 with url', async function () {
+        const response = await valid_key('/api/contacts/las');
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(404);
+    });
+
     it('should verify all fields in the response', async function () {
         const response = await valid_key('/api/contacts/last');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
-        if(body.length>0){
+        if (body.length > 0) {
             expect(body[0]).to.have.property("id");
             expect(body[0]).to.have.property("vendorcontactid");
             expect(body[0]).to.have.property("calledphonenumber");
@@ -63,6 +69,6 @@ describe('Last contact API tests', async function () {
             expect(body[0]).to.have.property("datetime");
             expect(body[0]).to.have.property("compaignIDs");
             expect(body[0]).to.have.property("listIDs");
-        } 
+        }
     });
 });

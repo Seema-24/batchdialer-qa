@@ -9,6 +9,8 @@ let timestamp= [d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getM
 
 const token = JSON.parse(fs.readFileSync('./api/data/token.json', 'utf8'));
 const campaign_data = JSON.parse(fs.readFileSync('./api/data/campaign.json', 'utf8'));
+
+
 //adding timestamp in the campaignname
 campaign_data.newCampaign.name = campaign_data.newCampaign.name + timestamp;
 const baseUrl = supertest(token.baseUrl);
@@ -65,6 +67,13 @@ describe('Campaigns API tests', async function () {
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(403);
         expect(body.msg).to.equal("Wrong API key");
+    });
+
+    it('should return status code 404 with invalid url', async function () {
+        const response = await valid_key('/api/campaig');
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(404);
+        
     });
 
     it('should verify all fields in the response', async function () {
