@@ -1,3 +1,5 @@
+import UserPermission from "./pages/UserPermission";
+
 const statusDropdown = '.nav-item .ss-select';
 const speedTestPopup = '.modal-dialog div.modal-content';
 const speedtestIgnoreButton = '.modal-dialog div.modal-content button';
@@ -5,6 +7,7 @@ const accountSID = Cypress.env('twilioSID');
 const authToken = Cypress.env('twilioAuthToken');
 const quickStartGuidePopUp = '#pendo-guide-container';
 const callFunction = 'Takeover Call Functions';
+const permit = new UserPermission();
 
 export function selectAgentStatus(status) {
   handlePoorConnectionPopup();
@@ -104,6 +107,18 @@ export function handlePoorConnectionPopup() {
   cy.get('body').then(($body) => {
     if($body.text().includes('Poor Connection')) {
       cy.contains('Got it').click();
+    }
+  })
+}
+
+export function verifyRoleTitle() {
+  cy.get('.profile_drop').then((profile) => {
+    if(profile.text().includes('Agent')) {
+      permit.clickBackToAdminBtn();
+      ignoreSpeedTestPopup();
+    } else if(profile.text().includes('Supervisor')) {
+      permit.clickBackToAdminBtn();
+      ignoreSpeedTestPopup();
     }
   })
 }

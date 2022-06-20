@@ -60,6 +60,8 @@ const permissionCounter = '.user-permissions-counter';
 const firstPermission = '.user-permission-checkbox';
 const agentTitle = (agentName) =>
   `//div[@class="tr"][div[text()="${agentName}"]]`;
+const permissionHeading = '.user-permission-col';
+const enabledPermission = '.user-permission-checkbox[alt="Enabled"]';
 
 export default class UserPermission {
   clickUserPermissionExpander() {
@@ -99,7 +101,7 @@ export default class UserPermission {
   }
 
   clickUserTreeExpander() {
-    cy.get(userTreeExpander).click();
+    cy.get(userTreeExpander).click({force:true});
   }
 
   clickUserRoleEmail(email) {
@@ -115,7 +117,7 @@ export default class UserPermission {
 
   clickBackToAdminBtn() {
     this.clickProfileDropdown();
-    cy.get(backToAdmin).click();
+    cy.get(backToAdmin).click({force:true});
   }
 
   verifyContactEditBtn() {
@@ -220,7 +222,7 @@ export default class UserPermission {
     cy.get(dropdownItem).then((items) => {
       for (let i = 0; i < items.length; i++) {
         if (items[i].textContent.trim() === itemName) {
-          cy.get(items[i]).click();
+          cy.get(items[i]).click({force:true});
           break;
         }
       }
@@ -441,5 +443,18 @@ export default class UserPermission {
 
   verifyAgentTitle(agentName) {
     cy.xpath(agentTitle(agentName)).should('contain.text', 'Agent (Custom)');
+  }
+
+  disableDefaultPermission() {
+    cy.get('body').then((body) => {
+      if (body.find(enabledPermission).length) {
+        cy.get(enabledPermission).then((el) => {
+          for (let i = 0; i < el.length; i++) {
+            cy.get(el[i]).scrollIntoView().click({ force: true });
+            cy.wait(500);
+          }
+        });
+      }
+    });
   }
 }

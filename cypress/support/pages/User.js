@@ -191,7 +191,7 @@ export default class User {
   }
 
   searchUser(user) {
-    cy.get(searchBox).clear().type(user);
+    cy.get(searchBox).clear({force:true}).type(user);
   }
 
   clearSearch() {
