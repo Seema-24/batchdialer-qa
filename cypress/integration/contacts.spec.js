@@ -393,7 +393,7 @@ describe('Add Contact flow', () => {
     addCont.verifyAddedNote();
   });
 
-  it('Verify that the authorized user is able to play/pause the recorded call', () => {
+  it('Verify that the authorized user is able to play or pause the recorded call', () => {
     addCont.clickingOnContactOption();
     addCont.enterSearch(testData.Contact);
     addCont.clickContactName(testData.Contact);
@@ -404,6 +404,9 @@ describe('Add Contact flow', () => {
     addCont.selectCallResult('No Answer');
     addCont.clickContinueBtn();
     addCont.clickContactsCamapign();
+    cy.reload();
+    ignoreSpeedTestPopup();
+    addCont.clickContactsCamapign();
     addCont.clickRecordingIcon();
     addCont.clickPlayerPlayBtn();
     cy.wait(1000);
@@ -411,7 +414,7 @@ describe('Add Contact flow', () => {
   });
 
   //failed test case --> BAT-2346
-  it('Verify that the authorized user is able to Forward/Rewind the recorded call', () => {
+  it('Verify that the authorized user is able to Forward or Rewind the recorded call', () => {
     addCont.clickPlayerForwardBtn();
     cy.wait(1000);
     addCont.clickPlayerRewindBtn();

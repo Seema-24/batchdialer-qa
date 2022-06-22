@@ -169,6 +169,7 @@ export default class Campaign {
       .clear()
       .scrollIntoView()
       .type(name, { delay: 200 });
+    cy.contains('Next').click();
   }
 
   verifyCampaignNameField() {
