@@ -762,7 +762,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.disableDefaultPermission();
+    permission.disableDefaultPermissionOfSupervisor();
     permission.enablePermission('Manage Phone Numbers');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');

@@ -823,7 +823,7 @@ export default class Campaign {
   }
 
   clickAdvancedConfiguration() {
-    cy.get(advanceConfiguration).click();
+    cy.get(advanceConfiguration).click({force:true});
   }
 
   selectCallsOrder(order) {
