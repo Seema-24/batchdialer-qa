@@ -420,7 +420,7 @@ export default class Register {
 
   selectBillingAddressFromSuggestion(zip,city) {
     cy.get(billingAddressOption).first().click({ force : true });
-    cy.wait(500);
+    cy.wait(1000);
     cy.get('.card_form').then(($form) => {
       if($form.find(billingZip).length){
         this.enterCity(city);

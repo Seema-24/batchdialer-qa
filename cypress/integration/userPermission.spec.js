@@ -176,7 +176,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that User is Enable the permission of View/Export Recent Contacts and It Reflect on Agent Account', () => {
+  it('Verify that User is Enable the permission of View or Export Recent Contacts and It Reflect on Agent Account', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
@@ -195,7 +195,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that User is Enable the permission of View/Export Recent Contacts and It Reflect on Agent Account', () => {
+  it('Verify that User is Enable the permission of View or Export Recent Contacts and It Reflect on Agent Account', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
@@ -234,7 +234,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that when user enables the permission View/Export Do-Not-Call then Agent user should able to see DNC page', () => {
+  it('Verify that when user enables the permission View or Export Do-Not-Call then Agent user should able to see DNC page', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
@@ -252,7 +252,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that when user disabled the permission View/Export Do-Not-Call then Agent user should not able to see DNC page', () => {
+  it('Verify that when user disabled the permission View or Export Do-Not-Call then Agent user should not able to see DNC page', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
@@ -461,7 +461,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that when user Disable the permission View All Agents Tasks then Agent user should able to View all agent tasks', () => {
+  it('Verify that when user Disable the permission View All Agents Tasks then Agent user should not able to View all agent tasks', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
@@ -547,7 +547,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that when user enables the permission Pause/Activate Campaign then Agent user should able to Pause/Activate Campaign', () => {
+  it('Verify that when user enables the permission Pause or Activate Campaign then Agent user should able to Pause or Activate Campaign', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
@@ -566,7 +566,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that when user disables the permission Pause/Activate Campaign then Agent user should able to Pause/Activate Campaign', () => {
+  it('Verify that when user disables the permission Pause or Activate Campaign then Agent user should able to Pause or Activate Campaign', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
@@ -585,7 +585,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that when user disables the permission View All Campaigns then Agent user should able to View All Campaigns', () => {
+  it('Verify that when user disables the permission View All Campaigns then Agent user should not able to View All Campaigns', () => {
     verifyRoleTitle();
     permission.clickOnMenu('Campaigns');
     cy.wait(2000);
@@ -762,7 +762,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.disableDefaultPermission();
+    permission.disableDefaultPermissionOfSupervisor();
     permission.enablePermission('Manage Phone Numbers');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
@@ -888,7 +888,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that Admin(User) is Enable the permission of View/Export Recent Contacts and It Reflect on Supervisor Account', () => {
+  it('Verify that Admin(User) is Enable the permission of View or Export Recent Contacts and It Reflect on Supervisor Account', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
@@ -907,7 +907,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('verify that Admin(User) is Disable the permission of View/Export Recent Contacts and It Reflect on Supervisor Account', () => {
+  it('verify that Admin(User) is Disable the permission of View or Export Recent Contacts and It Reflect on Supervisor Account', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
@@ -946,7 +946,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that Admin(User)is Enable the Permission of View/Export Do-Not-Call and It Reflects on Supervisor Account', () => {
+  it('Verify that Admin(User)is Enable the Permission of View or Export Do-Not-Call and It Reflects on Supervisor Account', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
@@ -964,7 +964,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that Admin(User)is Disable the Permission of View/Export Do-Not-Call and It Reflects on Supervisor Account', () => {
+  it('Verify that Admin(User)is Disable the Permission of View or Export Do-Not-Call and It Reflects on Supervisor Account', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
@@ -1275,7 +1275,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that Admin(User)is able to Enable the permission of Assign/Remove Agents and It Reflect on Supervisor Account', () => {
+  it('Verify that Admin(User)is able to Enable the permission of Assign or Remove Agents and It Reflect on Supervisor Account', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
@@ -1301,7 +1301,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that Admin(User) is able to Enable the permission of Pause/Activate Campaign and It Reflect on Supervisor Account', () => {
+  it('Verify that Admin(User) is able to Enable the permission of Pause or Activate Campaign and It Reflect on Supervisor Account', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
@@ -1320,7 +1320,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that Admin(User) is able to Disable the permission of Pause/Activate Campaign and It Reflect on Supervisor Account', () => {
+  it('Verify that Admin(User) is able to Disable the permission of Pause or Activate Campaign and It Reflect on Supervisor Account', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
@@ -1339,7 +1339,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that Admin(User)is able to Disable the permission of Assign/Remove Agents and It Reflect on Supervisor Account', () => {
+  it('Verify that Admin(User)is able to Disable the permission of Assign or Remove Agents and It Reflect on Supervisor Account', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
