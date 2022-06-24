@@ -12,5 +12,6 @@
     "username": "testing01@email.com",
     "password": "Fleek@2016"
   },
-  "projectId": "7pkh52"
+  "projectId": "7pkh52",
+  "retries": 1
 }

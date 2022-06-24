@@ -736,6 +736,9 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
       },
     });
   });
+  beforeEach(() => {
+    handlePoorConnectionPopup();
+  })
 
   after(() => {
     selectAgentStatus('Offline');
@@ -762,7 +765,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.disableDefaultPermissionOfSupervisor();
+    permission.disableDefaultPermission();
     permission.enablePermission('Manage Phone Numbers');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
@@ -1655,6 +1658,10 @@ describe('User Permission Costumization Flow for Admin Role', () => {
       },
     });
   });
+
+  beforeEach(() => {
+    handlePoorConnectionPopup();
+  })
 
   it('Should Login', () => {
     cy.Login(Cypress.env('username'), Cypress.env('password'));

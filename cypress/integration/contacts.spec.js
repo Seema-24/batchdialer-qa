@@ -12,6 +12,9 @@ const Dial = new Dialer();
 
 describe('Add Contact flow', () => {
   before(() => {
+    cy.exec('del /q "cypress\\fixtures\\Download\\*.*"', { log: true, failOnNonZeroExit: false })
+    cy.exec('rm cypress/fixtures/Download/*', { log: true, failOnNonZeroExit: false })
+
     cy.readFile('cypress/fixtures/testData.json').then(
       (data) => (testData = data)
     );
@@ -451,7 +454,7 @@ describe('Add Contact flow', () => {
   it('Verify that agent user is able to dial a valid phone number which is not in the contacts', () => {
     dashboard.clickDashboard();
     addCont.ClickToOpenSoftphone();
-    addCont.dialPhoneNumber('7209834562');
+    addCont.dialPhoneNumber('7209834562'); // 9142509276
     addCont.clickDialerCallButton();
     cy.wait(5000);
     addCont.clickDialerCallButton();

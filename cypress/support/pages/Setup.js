@@ -34,12 +34,16 @@ const userPermissionExpander = '.user-permissions-expander';
 const disabledPermissions = '.user-permission-checkbox[alt="Disabled"]';
 const enabledPermissions = '.user-permission-checkbox[alt="Enabled"]';
 const permissionHeading = '.user-permission-col';
+const enablePermission = (permit) => `//div[@class="user-permission-col" ][text()="${permit}"] //img[@alt="Enabled"]`;
+const permissionCheckbox = (index) => `.user-permissions div:nth-child(${index}) img[alt="Enabled"]`;
 
 const dashboard = new Dashboard();
 const campaign = new Campaign();
 const phone = new PhoneNum();
 const user = new User();
 const contact = new Contacts();
+const permit = 'View Recent Contacts of All Agents';
+const index = 25 ;
 
 export default class Setup {
   clickCampaignMenu() {
@@ -523,17 +527,17 @@ export default class Setup {
       .click({ force: true });
   }
 
-  enableSupervisorDefaultPermissions() {
-    let size = 0;
+  enableSupervisorDefaultPermissions() { 
+    cy.contains(permit).scrollIntoView();
     cy.get('body').then((body) => {
-      cy.get(permissionHeading).then(($ele) => {
-        if(($ele.text().includes('View Recent Contacts of All Agents')) && body.find(enabledPermissions)) {
-          size++;
-        }
-      })
+      if(body.find(permissionCheckbox(index)).length) {
+        cy.xpath(enablePermission(permit)).should('be.visible');
+        cy.xpath(enablePermission(permit)).click();  
+      }
+
       if (body.find(enabledPermissions).length) {
         cy.get(enabledPermissions).then((el) => {
-          for (let i = 0; i < el.length-size; i++) {
+          for (let i = 0; i < el.length; i++) {
             cy.get(el[i]).scrollIntoView().click({ force: true });
             cy.wait(500);
           }

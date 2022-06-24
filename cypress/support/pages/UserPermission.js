@@ -60,8 +60,12 @@ const permissionCounter = '.user-permissions-counter';
 const firstPermission = '.user-permission-checkbox';
 const agentTitle = (agentName) =>
   `//div[@class="tr"][div[text()="${agentName}"]]`;
-const permissionHeading = '.user-permission-col';
 const enabledPermission = '.user-permission-checkbox[alt="Enabled"]';
+const enablePermission = (permit) => `//div[@class="user-permission-col" ][text()="${permit}"] //img[@alt="Enabled"]`;
+const permissionCheckbox = (index) => `.user-permissions div:nth-child(${index}) img[alt="Enabled"]`;
+
+const permit = 'View Recent Contacts of All Agents';
+const index = 25 ;
 
 export default class UserPermission {
   clickUserPermissionExpander() {
@@ -85,7 +89,8 @@ export default class UserPermission {
   }
 
   verifyToastMessage(message) {
-    cy.get(toast).should('contain.text', message);
+    cy.get(toast,{timeout:60000}).should('contain.text', message);
+    cy.wait(1000);
   }
 
   clickOnMenu(menuName) {
@@ -446,29 +451,17 @@ export default class UserPermission {
   }
 
   disableDefaultPermission() {
+    
+    cy.contains(permit).scrollIntoView();
     cy.get('body').then((body) => {
+      if(body.find(permissionCheckbox(index)).length) {
+        cy.xpath(enablePermission(permit)).should('be.visible');
+        cy.xpath(enablePermission(permit)).click();  
+      }
+
       if (body.find(enabledPermission).length) {
         cy.get(enabledPermission).then((el) => {
           for (let i = 0; i < el.length; i++) {
-            cy.get(el[i]).scrollIntoView().click({ force: true });
-            cy.wait(500);
-          }
-        });
-      }
-    });
-  }
-
-  disableDefaultPermissionOfSupervisor() {
-    let size = 0;
-    cy.get('body').then((body) => {
-      cy.get(permissionHeading).then(($ele) => {
-        if(($ele.text().includes('View Recent Contacts of All Agents')) && body.find(enabledPermissions)) {
-          size++;
-        }
-      })
-      if (body.find(enabledPermission).length) {
-        cy.get(enabledPermission).then((el) => {
-          for (let i = 0; i < el.length-size; i++) {
             cy.get(el[i]).scrollIntoView().click({ force: true });
             cy.wait(500);
           }

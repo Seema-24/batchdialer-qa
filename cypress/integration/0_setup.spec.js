@@ -26,10 +26,10 @@ describe('Setup Account for Testing', () => {
   it('login successfully', () => {
     cy.Login(Cypress.env('username'), Cypress.env('password'));
     cy.reload();
+    ignoreSpeedTestPopup();
   });
 
   it('Setup Account', () => {
-    ignoreSpeedTestPopup();
     const [agentFirstName, agentlastName] = testData.agent.split(' ');
     const [supervisorFirstName, supervisorlastName] =
       testData.supervisor.split(' ');
