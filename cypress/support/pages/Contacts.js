@@ -1,4 +1,5 @@
 import promisify from 'cypress-promise';
+import { clickCallFunction } from '../Utils';
 
 const contactsMenu = 'a[title="Contacts"] .menu_cricle';
 const addNewContact = '//button[contains(text(),"NEW CONTACT")]';
@@ -332,6 +333,7 @@ export default class Contacts {
       if ($body.find(openSoftphone).length) {
         cy.log('Softphone is already Opened');
       } else {
+        clickCallFunction();
         cy.get(softphoneIcon).click();
       }
     });
@@ -633,7 +635,7 @@ export default class Contacts {
   }
 
   enterSearch(search) {
-    cy.get(searchBox).type(search);
+    cy.get(searchBox).clear().type(search);
   }
 
   verifyContact(firstname, lastname, status) {
