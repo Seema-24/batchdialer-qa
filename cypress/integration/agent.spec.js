@@ -216,7 +216,6 @@ describe('Agent Profile', function () {
   it('Verify The Elements On The Page Of View Contact On Contact Page', () => {
     agent.clickingOnContactOption();
     agent.enterSearch('random Contact');
-    cy.wait(1000);
     agent.clickContactName();
     agent.vierifyTheHeaderOfViewContact(['Address', 'Phone']);
     agent.verifyContactViewBtn();
@@ -393,7 +392,6 @@ describe('Agent Profile', function () {
   it('Verify it Open the Dialing Keypad when we click on Phone number in Contact View Page', () => {
     agent.clickingOnContactOption();
     agent.enterSearch('random Contact');
-    cy.wait(1000);
     agent.clickContactName();
     agent.clickPhoneNumber();
     agent.verifySoftphoneOpen();
@@ -403,7 +401,6 @@ describe('Agent Profile', function () {
   it('Open the Call Result Window when Agent disconnect the Call', () => {
     agent.clickingOnContactOption();
     agent.enterSearch('random Contact');
-    cy.wait(1000);
     agent.clickContactName();
     agent.clickPhoneNumber();
     agent.clickCallBtn();
@@ -479,7 +476,6 @@ describe('Agent Profile', function () {
     agent.getTotalCallsCount();
     agent.clickingOnContactOption();
     agent.enterSearch('random Contact');
-    cy.wait(1000);
     agent.clickContactName();
     agent.clickPhoneNumber();
     agent.clickCallBtn();
@@ -507,7 +503,6 @@ describe('Agent Profile', function () {
     agent.ChooseCallResult('No Answer');
     agent.clickingOnContactOption();
     agent.enterSearch('random Contact');
-    cy.wait(1000);
     agent.clickContactName();
     agent.getContactPhoneNumber();
     agent.clickPhoneNumber();
@@ -539,7 +534,6 @@ describe('Agent Profile', function () {
     agent.ChooseCallResult('No Answer');
     agent.clickingOnContactOption();
     agent.enterSearch('random Contact');
-    cy.wait(1000);
     agent.clickContactName();
     agent.clickNotesBtn();
     agent.verifyNotesContent('testing note');
@@ -548,7 +542,6 @@ describe('Agent Profile', function () {
   it('Verify that Outbound call details are updated in View Contacts ACTIVITIES Tab', () => {
     agent.clickingOnContactOption();
     agent.enterSearch('random Contact');
-    cy.wait(1000);
     agent.clickContactName();
     cy.wait(2000);
     agent.clickOnButton('Activities');

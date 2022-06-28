@@ -454,10 +454,10 @@ export default class UserPermission {
     
     cy.contains(permit).scrollIntoView();
     cy.get('body').then((body) => {
-      if(body.find(permissionCheckbox(index)).length) {
-        cy.xpath(enablePermission(permit)).should('be.visible');
-        cy.xpath(enablePermission(permit)).click();  
-      }
+      // if(body.find(permissionCheckbox(index)).length) {
+      //   cy.xpath(enablePermission(permit)).should('be.visible');
+      //   cy.xpath(enablePermission(permit)).click();  
+      // }
 
       if (body.find(enabledPermission).length) {
         cy.get(enabledPermission).then((el) => {

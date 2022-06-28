@@ -537,7 +537,7 @@ export default class User {
     cy.get('button').then((button) => {
       for (let i = 0; i < button.length; i++) {
         if (button[i].textContent.trim() === btnName) {
-          cy.get(button[i]).click();
+          cy.get(button[i]).click({force:true});
           break;
         }
       }
