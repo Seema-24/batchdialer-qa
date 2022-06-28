@@ -636,6 +636,7 @@ export default class Contacts {
 
   enterSearch(search) {
     cy.get(searchBox).clear().type(search);
+    cy.wait(1000);
   }
 
   verifyContact(firstname, lastname, status) {

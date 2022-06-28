@@ -1,4 +1,4 @@
-import { ignoreSpeedTestPopup } from '../Utils';
+import { clickCallFunction, ignoreSpeedTestPopup } from '../Utils';
 
 const DashboardMenu = 'a[title="Dashboard"]';
 const CallSummery = 'Calls Summary';
@@ -415,6 +415,7 @@ export default class Dashboard {
   }
 
   selectAvailable(Status, campaign) {
+    clickCallFunction();
     cy.get(SelectStatus)
       .contains(Status)
       .then((option) => {

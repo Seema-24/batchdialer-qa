@@ -262,7 +262,7 @@ describe('Registration', () => {
           Cypress.env('Coupon')
         );
         register.clickAgreeCheckbox();
-        register.enterBillingAddress('63 East June Street, Mesa, AZ, USA');
+        register.enterBillingAddress('63 East June');
         register.selectBillingAddressFromSuggestion( Cypress.env('BillingZip'),'USA');
         register.verifySubscribedNowBtnEnabled();
         register.clickSubscribeBtn();
