@@ -1,4 +1,4 @@
-import { clickCallFunction, ignoreSpeedTestPopup } from '../Utils';
+import { clickCallFunction, ignoreSpeedTestPopup } from "../Utils";
 
 const DashboardMenu = 'a[title="Dashboard"]';
 const CallSummery = 'Calls Summary';
@@ -301,7 +301,7 @@ export default class Dashboard {
   }
 
   enterEmojiName(name) {
-    cy.get(emojiSearchBox).type(name, { delay: 200 });
+    cy.get(emojiSearchBox).clear().type(name, { delay: 200 });
   }
 
   VerifySendMessageButton(condition) {
@@ -395,11 +395,12 @@ export default class Dashboard {
   }
 
   clickStatusButton() {
+    clickCallFunction();
     cy.get(StatusDropDown).click();
   }
 
   clickLeadItemsNameField(name) {
-    cy.xpath(leadItemsName(name)).first().click();
+    cy.xpath(leadItemsName(name)).first().click({force:true});
   }
 
   enterLeadItemsName(name) {
@@ -415,7 +416,6 @@ export default class Dashboard {
   }
 
   selectAvailable(Status, campaign) {
-    clickCallFunction();
     cy.get(SelectStatus)
       .contains(Status)
       .then((option) => {
@@ -509,7 +509,8 @@ export default class Dashboard {
   }
 
   clickUserProfile() {
-    cy.get(UserProfile).click();
+    cy.get(UserProfile).click({force:true});
+    cy.wait(500);
   }
 
   selectLeadItem(leadItemName) {
@@ -532,7 +533,7 @@ export default class Dashboard {
   }
 
   clickLeadSheetName() {
-    cy.get(leadSheetName).click();
+    cy.get(leadSheetName).click({force:true});
   }
 
   enterLeadSheetName(name) {
@@ -741,7 +742,7 @@ export default class Dashboard {
   clickRuleRemoveBtn(rule) {
     cy.xpath(ruleRemoveBtn(rule))
       .scrollIntoView()
-      .click({ force: true, multiple: true });
+      .click({force:true});
   }
 
   verifyRuleRemoved(rule) {
@@ -809,7 +810,7 @@ export default class Dashboard {
   }
 
   enterNameToSearch(name) {
-    cy.get(AudioLibrarySearchBox).clear().type(name);
+    cy.get(AudioLibrarySearchBox).clear({force:true}).type(name);
   }
 
   verifySearchResult(recordingName) {
@@ -1495,7 +1496,7 @@ export default class Dashboard {
     cy.get('button').then((Btn) => {
       for (let i = 0; i < Btn.length; i++) {
         if (Btn[i].textContent.trim() === buttonName) {
-          cy.get(Btn[i]).click();
+          cy.get(Btn[i]).click({force:true});
           break;
         }
       }
@@ -1523,6 +1524,7 @@ export default class Dashboard {
   }
 
   verifyStatusTimerVisible() {
+    clickCallFunction();
     cy.get(statusTimer).should('contain.text', '0:');
   }
 
@@ -1588,7 +1590,7 @@ export default class Dashboard {
   }
 
   enterUserToSearch(user) {
-    cy.get(userTreeSearchBox).type(user);
+    cy.get(userTreeSearchBox).clear().type(user);
   }
 
   verifySearchedUserName(user) {

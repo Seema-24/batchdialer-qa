@@ -120,7 +120,7 @@ export default class Dialer {
     cy.get(campaignNames).then((Names) => {
       for (let i = 0; i < Names.length; i++) {
         if (Names[i].textContent.trim() === campaignName) {
-          cy.get(Names[i]).click();
+          cy.get(Names[i]).click({force:true});
           break;
         }
       }

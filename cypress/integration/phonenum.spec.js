@@ -61,7 +61,7 @@ describe('Add Phone Number flow', () => {
     });
   });
 
-  it('Should Buy Phone number successfully ', () => {
+  it('Should Buy Phone number successfully', () => {
     addNum.clickPhoneNumberMenu();
     addNum.clickBuyDidButton();
     addNum.selectStateModeOption('Colorado');
