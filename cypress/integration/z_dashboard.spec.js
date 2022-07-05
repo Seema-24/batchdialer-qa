@@ -63,10 +63,10 @@ describe('Dashboard Elements', () => {
     Dash.verifyModalTitle('SPEED TEST');
     Dash.clickOnButton('Start test');
     Dash.verifySpeedTestCompletion();
-    ignoreSpeedTestPopup();
   });
 
   it('Verify the Microphone test Functionality', () => {
+    ignoreSpeedTestPopup();
     Dash.clickOnButton('Test Microphone');
     Dash.verifyModalTitle('MICROPHONE TEST');
     Dash.clickMicTestStartButton();
@@ -695,6 +695,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Verify Calendar Month Left Arrow Functionality', () => {
+    Dash.clickDashboard();
     Dash.clickDashboardCalendar();
     var month = Dash.getLastMonth();
     Dash.clickTaskLeftArrow();
