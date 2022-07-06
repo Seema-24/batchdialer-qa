@@ -19,39 +19,34 @@ const invalid_key = async function (endpoint) {
         .set('X-ApiKey', `${token.invalid_apiKey}`);
 }
 
-describe('Last contact API tests', async function () {
+describe('Salemade API tests', async function () {
     it('should return status code 200 with valid key', async function () {
-        const response = await valid_key('/api/contacts/last');
+        const response = await valid_key('/api/z/salemade');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
     });
 
     it('should verify if response is a valid json and an array', async function () {
-        const response = await valid_key('/api/contacts/last');
+        const response = await valid_key('/api/z/salemade');
         body = JSON.parse(JSON.stringify(response.body));
         expect(body).to.be.an('array');
     });
 
     it('should return status code 403 with invalid key', async function () {
-        const response = await invalid_key('/api/contacts/last');
+        const response = await invalid_key('/api/z/salemade');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(403);
         expect(body.msg).to.equal("Wrong API key");
     });
 
-    it('should return status code 404 with url', async function () {
-        const response = await valid_key('/api/contacts/las');
-        body = JSON.parse(JSON.stringify(response.body));
-        expect(response.status).to.equal(404);
-    });
-
     it('should verify all fields in the response', async function () {
-        const response = await valid_key('/api/contacts/last');
+        const response = await valid_key('/api/z/salemade');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
-        if (body.length > 0) {
+        if(body.length>0){
             expect(body[0]).to.have.property("id");
             expect(body[0]).to.have.property("vendorcontactid");
+            expect(body[0]).to.have.property("campaignid");
             expect(body[0]).to.have.property("calledphonenumber");
             expect(body[0]).to.have.property("firstname");
             expect(body[0]).to.have.property("lastname");
@@ -59,16 +54,18 @@ describe('Last contact API tests', async function () {
             expect(body[0]).to.have.property("city");
             expect(body[0]).to.have.property("state");
             expect(body[0]).to.have.property("postalcode");
-            expect(body[0]).to.have.property("mailingAddressLine1");
+            expect(body[0]).to.have.property("mailingaddressline1");
             expect(body[0]).to.have.property("mailingcity");
             expect(body[0]).to.have.property("mailingstate");
             expect(body[0]).to.have.property("mailingpostalcode");
+            expect(body[0]).to.have.property("agent");
             expect(body[0]).to.have.property("country");
             expect(body[0]).to.have.property("email");
-            expect(body[0]).to.have.property("comments");
+            expect(body[0]).to.have.property("mood");
+            expect(body[0]).to.have.property("disposition");
+            expect(body[0]).to.have.property("comment");
             expect(body[0]).to.have.property("datetime");
-            expect(body[0]).to.have.property("compaignIDs");
-            expect(body[0]).to.have.property("listIDs");
-        }
+            expect(body[0]).to.have.property("leadsheetsummary");
+        } 
     });
 });

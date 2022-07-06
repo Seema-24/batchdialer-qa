@@ -5,10 +5,10 @@ const tv4 = require('tv4');
 const fs = require('fs');
 
 const d = new Date();
-let timestamp= [d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()].join('');
+let timestamp = [d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()].join('');
 
 const token = JSON.parse(fs.readFileSync('./api/data/token.json', 'utf8'));
-const campaign_data = JSON.parse(fs.readFileSync('./api/data/campaign.json', 'utf8'));
+const campaign_data = JSON.parse(fs.readFileSync('./api/data/Campaigns/campaign.json', 'utf8'));
 
 
 //adding timestamp in the campaignname
@@ -27,7 +27,7 @@ const invalid_key = async function (endpoint) {
         .set('X-ApiKey', `${token.invalid_apiKey}`);
 }
 //create new campaign API request
-const create_campaign = async function (request_body,endpoint) {
+const create_campaign = async function (request_body, endpoint) {
     return baseUrl.post(endpoint)
         .set('Content-Type', 'application/json')
         .set('X-Token', `${token.internal_token}`)
@@ -35,24 +35,24 @@ const create_campaign = async function (request_body,endpoint) {
 }
 
 describe('Campaigns API tests', async function () {
-  
+
     it('should create a new campaign', async function () {
         let testReqObj = campaign_data.newCampaign;
         console.log(campaign_data.newCampaign.name);
-        const response = await create_campaign(testReqObj,'/api/campaign');
+        const response = await create_campaign(testReqObj, '/api/campaign');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
     });
-    
+
     it('should return status code 200 with valid key', async function () {
         const response = await valid_key('/api/campaigns');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
     });
-    
+
     it('should check if newly created campaign present in the response', async function () {
         const response = await valid_key('/api/campaigns');
-        body = JSON.parse(JSON.stringify(response.body));        
+        body = JSON.parse(JSON.stringify(response.body));
         expect(body.map(e => (e.name))).to.include(campaign_data.newCampaign.name);
     });
 
@@ -73,7 +73,7 @@ describe('Campaigns API tests', async function () {
         const response = await valid_key('/api/campaig');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(404);
-        
+
     });
 
     it('should verify all fields in the response', async function () {
@@ -86,5 +86,6 @@ describe('Campaigns API tests', async function () {
         expect(body[0]).to.have.property("mode");
         expect(body[0]).to.have.property("recyclecount");
         expect(body[0]).to.have.property("level");
-    });
+    }); 
 });
+
