@@ -122,3 +122,13 @@ export function verifyRoleTitle() {
     }
   })
 }
+
+export function closeDialogBox() {
+  cy.get('body').then(($body) => {
+    if($body.text().includes('Edit User')){
+      cy.get('.close-button').click();
+    } else if($body.text().includes('SPEED TEST')) {
+      ignoreSpeedTestPopup();
+    }
+  })
+}

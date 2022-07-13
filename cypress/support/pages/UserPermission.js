@@ -148,7 +148,7 @@ export default class UserPermission {
   }
 
   clickCallResultEditBtn() {
-    cy.get(callResultEditBtn).first().click();
+    cy.get(callResultEditBtn).first().click({force:true});
   }
 
   verifyCallDispositionModal() {

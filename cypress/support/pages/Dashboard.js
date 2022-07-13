@@ -740,9 +740,14 @@ export default class Dashboard {
   }
 
   clickRuleRemoveBtn(rule) {
-    cy.xpath(ruleRemoveBtn(rule))
-      .scrollIntoView()
-      .click({force:true});
+    cy.xpath(ruleRemoveBtn(rule)).then((rows) => {
+      for (let i = 0; i < rows.length; i++) {
+        cy.xpath(ruleRemoveBtn(rule))
+        .first()
+        .scrollIntoView()
+        .click({force:true});
+      }
+    })  
   }
 
   verifyRuleRemoved(rule) {

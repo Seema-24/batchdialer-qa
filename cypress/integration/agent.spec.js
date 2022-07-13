@@ -2,7 +2,7 @@ import Agent from '../support/pages/Agent';
 import Campaign from '../support/pages/Campaigns';
 import Contacts from '../support/pages/Contacts';
 import Dialer from '../support/pages/Dialer';
-import { handlePoorConnectionPopup, ignoreSpeedTestPopup } from '../support/Utils';
+import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup } from '../support/Utils';
 
 let testData;
 let randNum = Math.floor(Math.random() * 100000);
@@ -28,6 +28,7 @@ describe('Agent Profile', function () {
 
   beforeEach(() => {
     handlePoorConnectionPopup();
+    closeDialogBox();
   })
 
   after(() => {

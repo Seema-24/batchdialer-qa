@@ -1,6 +1,6 @@
 import User from '../support/pages/User';
 import UserPermission from '../support/pages/UserPermission';
-import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus, verifyRoleTitle } from '../support/Utils';
+import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus, verifyRoleTitle } from '../support/Utils';
 
 const permission = new UserPermission();
 const user = new User();
@@ -23,6 +23,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
   });
   beforeEach(() => {
     handlePoorConnectionPopup();
+    closeDialogBox();
   })
 
   after(() => {
@@ -738,6 +739,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
   beforeEach(() => {
     handlePoorConnectionPopup();
+    closeDialogBox();
   })
 
   after(() => {
@@ -1661,6 +1663,7 @@ describe('User Permission Costumization Flow for Admin Role', () => {
 
   beforeEach(() => {
     handlePoorConnectionPopup();
+    closeDialogBox();
   })
 
   it('Should Login', () => {
