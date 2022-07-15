@@ -215,7 +215,11 @@ export default class Contacts {
   clickDialerCallButton() {
     cy.get('body').then(($ele) => {
       if($ele.find(callButton)) {
-        cy.get(callButton, { timeout: 20000 }).click();
+        if($ele.find(callResults).length) {
+          cy.log('Disposition Found');
+        } else{
+          cy.get(callButton, { timeout: 20000 }).click();
+        }
       }
     })
   }

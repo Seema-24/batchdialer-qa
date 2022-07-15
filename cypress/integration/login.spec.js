@@ -76,6 +76,5 @@ describe('Login Flow', () => {
     login.clickTermsCheckBox();
     login.clickSigninButton();
     login.verifySuccessfullLogin();
-    ignoreSpeedTestPopup();
   });
 });

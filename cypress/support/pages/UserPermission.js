@@ -73,7 +73,10 @@ export default class UserPermission {
   }
 
   verifyUserPermissionsVisible() {
-    cy.get(permissions).should('be.visible');
+    cy.get(permissions)
+    .parent()
+    .scrollIntoView()
+    .should('be.visible');
   }
 
   enablePermission(permissionName) {
@@ -94,7 +97,7 @@ export default class UserPermission {
   }
 
   clickOnMenu(menuName) {
-    cy.get(menu(menuName)).click();
+    cy.get(menu(menuName),{timeout:60000}).click({force:true});
   }
 
   verifyContactsPage() {
@@ -130,7 +133,7 @@ export default class UserPermission {
   }
 
   clickContactName() {
-    cy.get(contactName).first().click();
+    cy.get(contactName,{timeout:60000}).first().click();
   }
 
   verifyContactEditBtnNotExist() {
@@ -148,7 +151,7 @@ export default class UserPermission {
   }
 
   clickCallResultEditBtn() {
-    cy.get(callResultEditBtn).first().click();
+    cy.get(callResultEditBtn).first().click({force:true});
   }
 
   verifyCallDispositionModal() {
@@ -204,7 +207,7 @@ export default class UserPermission {
   }
 
   verifyPlayerModalVisible() {
-    cy.get(playerModal).should('be.visible');
+    cy.get(playerModal).should('be.visible'); 
   }
 
   clickPlayerCloseIcon() {
@@ -283,11 +286,13 @@ export default class UserPermission {
   }
 
   verifyCampaignEditIconVisible() {
-    cy.get(campaignEditIcon).should('be.visible');
+    cy.get(campaignEditIcon).first().click();
+    cy.get('.custom_drop_menu2').should('contain.text','Edit')
   }
 
   verifyCampaignEditIconNotExist() {
-    cy.get(campaignEditIcon).should('not.exist');
+    cy.get(campaignEditIcon).first().click();
+    cy.get('.custom_drop_menu2').should('not.contain.text','Edit');
   }
 
   verifyNoAccessPermissions(permissions) {
@@ -393,7 +398,8 @@ export default class UserPermission {
   }
 
   verifyUserEditBtnNotExist() {
-    cy.get(userMenuBtn).should('not.exist');
+    cy.get(userMenuBtn).first().click()
+    cy.xpath(userEditBtn).should('not.exist');
   }
 
   clickUserMenuBtn() {
@@ -454,10 +460,10 @@ export default class UserPermission {
     
     cy.contains(permit).scrollIntoView();
     cy.get('body').then((body) => {
-      // if(body.find(permissionCheckbox(index)).length) {
-      //   cy.xpath(enablePermission(permit)).should('be.visible');
-      //   cy.xpath(enablePermission(permit)).click();  
-      // }
+      if(body.find(permissionCheckbox(index)).length) {
+        cy.xpath(enablePermission(permit)).should('be.visible');
+        cy.xpath(enablePermission(permit)).click();  
+      }
 
       if (body.find(enabledPermission).length) {
         cy.get(enabledPermission).then((el) => {
@@ -468,6 +474,10 @@ export default class UserPermission {
         });
       }
     });
+  }
+
+  verifyReportsMenuNotExist() {
+    cy.get(menu('Reports')).should('not.exist');
   }
   
 }
