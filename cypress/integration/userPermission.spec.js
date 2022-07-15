@@ -1,9 +1,11 @@
+import Setup from '../support/pages/Setup';
 import User from '../support/pages/User';
 import UserPermission from '../support/pages/UserPermission';
 import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus, verifyRoleTitle } from '../support/Utils';
 
 const permission = new UserPermission();
 const user = new User();
+const setup = new Setup();
 let testData;
 let agentFirstName, agentLastName;
 let supervisorFirstName, supervisorLastName;
@@ -356,11 +358,12 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
     permission.enablePermission('Listen Audio');
+    permission.enablePermission('View Recent Contacts of All Agents');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
     ignoreSpeedTestPopup();
-    permission.clickOnMenu('Recent Contacts');
+    permission.clickOnMenu('Reports');
     permission.clickOnSubMenu('Recent Contacts');
     permission.chooseDateToFilter();
     permission.verifyListenIconVisible();
@@ -383,7 +386,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
     ignoreSpeedTestPopup();
-    permission.clickOnMenu('Recent Contacts');
+    permission.clickOnMenu('Reports');
     permission.clickOnSubMenu('Recent Contacts');
     permission.chooseDateToFilter();
     permission.verifyListenIconVisible();
@@ -407,7 +410,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
     ignoreSpeedTestPopup();
-    permission.clickOnMenu('Recent Contacts');
+    permission.clickOnMenu('Reports');
     permission.clickOnSubMenu('Recent Contacts');
     permission.chooseDateToFilter();
     permission.verifyListenIconVisible();
@@ -431,7 +434,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
     ignoreSpeedTestPopup();
-    permission.clickOnMenu('Recent Contacts');
+    permission.clickOnMenu('Reports');
     permission.clickOnSubMenu('Recent Contacts')
     permission.chooseDateToFilter();
     cy.wait(2000);
@@ -528,7 +531,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that when user disable the permission Create & Edit Campaigns then Agent user should able to Create & Edit Campaigns', () => {
+  it('Verify that when user disable the permission Create & Edit Campaigns then Agent user should not able to Create & Edit Campaigns', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
@@ -617,6 +620,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
+    permission.disableDefaultPermission();
     permission.enablePermission('View All Reports');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
@@ -722,6 +726,16 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     ]);
     user.clickOnButton('CANCEL');
   });
+
+  it('Verify that Agent user is able to enable default permissions', () => {
+    user.clickingOnUserOption();
+    user.searchUser(testData.agent);
+    cy.wait(4000);
+    user.clickUserEditButton(agentFirstName, agentLastName);
+    permission.clickUserPermissionExpander();
+    setup.enableAgentDefaultPermissions();
+    user.clickOnButton('SAVE');
+  });
 });
 
 describe('User Permission Costumization Flow for Supervisor Role', () => {
@@ -763,6 +777,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
   });
 
   it('Verify that Admin(User)is able to Enable the Permission of Manage Phone Numbers and It Reflect on Supervisor Account', () => {
+    verifyRoleTitle();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
@@ -859,6 +874,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
     permission.enablePermission('Edit Call Result & Note');
+    permission.enablePermission('View All Reports');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1383,6 +1399,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     permission.clickOnMenu('Campaigns');
     cy.wait(2000);
     permission.verifyNewCampaignBtnNotExist();
+    permission.verifyCampaignEditIconNotExist();
     permission.clickBackToAdminBtn();
     ignoreSpeedTestPopup();
   });
@@ -1563,12 +1580,13 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
+    permission.disableDefaultPermission();
     permission.enablePermission('View All Reports');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
-    permission.clickOnMenu('Reports');
     cy.wait(2000);
+    permission.clickOnMenu('Reports');
     permission.verifySubMenuExist([
       'Live',
       'Recent Contacts',
@@ -1582,7 +1600,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that when user enables the permission View Recent Contacts of All Agents then Agent user should able to View Recent Contacts of All Agents', () => {
+  it('Verify that when user enables the permission View Recent Contacts of All Agents then supervisor user should able to View Recent Contacts of All Agents', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
@@ -1593,6 +1611,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    cy.wait(2000);
     permission.clickOnMenu('Reports');
     permission.clickOnSubMenu('Recent Contacts');
     cy.wait(2000);
@@ -1601,7 +1620,8 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that when user disables the permission View Recent Contacts of All Agents then Agent user should able to View Recent Contacts of All Agents', () => {
+  //The user permission of Supervisor Role are dependent to each other (View All report) and it has no calling feature.
+  it.skip('Verify that when user disables the permission View Recent Contacts of All Agents then supervisor user should not able to View Recent Contacts of All Agents', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
@@ -1612,6 +1632,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    cy.wait(2000);
     permission.clickOnMenu('Reports');
     permission.clickOnSubMenu('Recent Contacts');
     cy.wait(2000);
@@ -1620,7 +1641,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that when user Disable the permission View All Reports then Agent user should able to View All Reports', () => {
+  it('Verify that when user Disable the permission View All Reports then supervisor user should not able to View All Reports', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
@@ -1631,18 +1652,21 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
-    permission.clickOnMenu('Recent Contacts');
     cy.wait(2000);
-    permission.verifySubMenuNotExist([
-      'Live',
-      'Campaigns',
-      'Agents',
-      'Numbers',
-      'Heat Map',
-      'Floor Map',
-    ]);
+    permission.verifyReportsMenuNotExist();
     permission.clickBackToAdminBtn();
     ignoreSpeedTestPopup();
+  });
+
+  it('Verify that Supervisor user is able to enable default permissions', () => {
+    verifyRoleTitle();
+    user.clickingOnUserOption();
+    user.searchUser(testData.supervisor);
+    cy.wait(4000);
+    user.clickUserEditButton(supervisorFirstName, supervisorLastName);
+    permission.clickUserPermissionExpander();
+    setup.enableSupervisorDefaultPermissions();
+    user.clickOnButton('SAVE');
   });
 });
 
@@ -1682,7 +1706,7 @@ describe('User Permission Costumization Flow for Admin Role', () => {
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
     permission.verifyNoAccessPermissions([
-      'View/Export Contacts from assigned Campaigns',
+      'View/Export Contacts from Assigned Campaigns',
       'Manage User Permissions',
     ]);
     user.clickOnButton('CANCEL');
@@ -1767,5 +1791,6 @@ describe('User Permission Costumization Flow for Admin Role', () => {
     permission.checkUncheckFirstPermission();
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
+    cy.Logout();
   });
 });

@@ -165,7 +165,7 @@ const Agent = (user) =>
   `//div[@class="group-row-role__left__title"][text()="${user}"]`;
 const dashboardName = '.name';
 const backToAdmin = '.user__dropdown.user__dropdown-logout';
-const homeButton = '.breadcrumb-item .active';
+const homeButton = '.breadcrumb-item a';
 const radioBtn = (btnName) =>
   `//label[text()="${btnName}"]//span[@class="checkmark"]`;
 const addNewBtn = '//button//div[contains(text(),"Add New")]';

@@ -13,5 +13,6 @@
     "password": "Fleek@2016"
   },
   "projectId": "7pkh52",
-  "retries": 1
+  "retries": 1,
+  "numTestsKeptInMemory": 0
 }
