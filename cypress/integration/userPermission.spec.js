@@ -613,6 +613,22 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     ignoreSpeedTestPopup();
   });
 
+  it('Verify that If Create & Edit Campaign is enabled view All Campaigns is automatically enabled', () => {
+    verifyRoleTitle();
+    permission.clickOnMenu('Campaigns');
+    cy.wait(2000);
+    permission.getUserCampaignCount(testData.agent);
+    user.clickingOnUserOption();
+    user.searchUser(testData.agent);
+    cy.wait(4000);
+    user.clickUserEditButton(agentFirstName, agentLastName);
+    permission.clickUserPermissionExpander();
+    permission.verifyPermissionDisabled('View All Campaigns');
+    permission.enablePermission('Create & Edit Campaigns');
+    permission.verifyPermissionEnabled('View All Campaigns');
+    user.clickOnButton('CANCEL');
+  });
+
   it('Verify that when user enables the permission View All Reports then Agent user should able to View All Reports', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();

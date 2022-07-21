@@ -479,5 +479,13 @@ export default class UserPermission {
   verifyReportsMenuNotExist() {
     cy.get(menu('Reports')).should('not.exist');
   }
+
+  verifyPermissionDisabled(permission) {
+    cy.xpath(enablePermission(permission)).should('not.exist');
+  }
+
+  verifyPermissionEnabled(permission) {
+    cy.xpath(enablePermission(permission)).should('exist');
+  }
   
 }

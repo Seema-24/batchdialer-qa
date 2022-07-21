@@ -82,6 +82,8 @@ const options = '.ss-select-option';
 const userRoleDropdown = `//label[text()="User Role"]/following-sibling::div`;
 const micIcon = 'div.user-quality-icon.mic svg';
 const qualityIcon = 'div.user-quality-icon.mos svg';
+const alertMsg = '[role="alert"]';
+const enableCallingFeature = '//label[text()="Enable Calling Feature"]/child::input[@type="checkbox"]';
 
 export default class User {
   clickingOnUserOption() {
@@ -582,5 +584,18 @@ export default class User {
         }
       }
     });
+  }
+
+  verifySeatsWarningMsg(msg) {
+    cy.get(alertMsg).should('contain.text', msg);
+    cy.xpath('//button[text()="Order"]').should('be.visible');
+  }
+
+  verifySaveButtonDisabled() {
+    cy.xpath(saveButton).should('be.disabled');
+  }
+
+  verifyDisableCallingFeatureCheckbox() {
+    cy.xpath(enableCallingFeature).should('be.disabled');
   }
 }
