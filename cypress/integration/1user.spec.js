@@ -436,6 +436,26 @@ describe('Login Successfully and Add User', () => {
     addUser.verifyAgentCount(count);
   });
 
+  it('Verify that warning  message is displayed when ADD NEW agent user if the account has reached maximum usage states', () => {
+    addUser.clickingOnUserOption();
+    cy.wait(3000);
+    addUser.clickAddNewUserButton();
+    addUser.chooseUserRole('Agent');
+    addUser.verifySeatsWarningMsg('Please order more seats to create agent');
+    addUser.verifySaveButtonDisabled();
+    addUser.clickCancelBtn();
+  });
+
+  it('Verify that warning  message is displayed when ADD NEW agent user if the account has reached maximum usage states', () => {
+    addUser.clickingOnUserOption();
+    cy.wait(3000);
+    addUser.clickAddNewUserButton();
+    addUser.chooseUserRole('Administrator');
+    addUser.verifySeatsWarningMsg('Agent Features will be disabled until you order more seats');
+    addUser.verifyDisableCallingFeatureCheckbox();
+    addUser.clickCancelBtn();
+  });
+
   it('Verify Validation on fields on Add new user page', () => {
     addUser.clickingOnUserOption();
     cy.wait(3000);

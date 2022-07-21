@@ -125,10 +125,14 @@ export function verifyRoleTitle() {
 
 export function closeDialogBox() {
   cy.get('body').then(($body) => {
-    if($body.text().includes('Edit User')){
+    if($body.text().includes('Edit User')) {
       cy.get('.close-button').click();
     } else if($body.text().includes('SPEED TEST')) {
       ignoreSpeedTestPopup();
+    } else if($body.text().includes('New User')) {
+      cy.get('.close-button').click();
+    } else if($body.text().includes('Start Calling')) {
+      cy.get('[alt="Logo"]').click();
     }
   })
 }
