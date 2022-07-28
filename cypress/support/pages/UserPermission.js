@@ -61,7 +61,7 @@ const firstPermission = '.user-permission-checkbox';
 const agentTitle = (agentName) =>
   `//div[@class="tr"][div[text()="${agentName}"]]`;
 const enabledPermission = '.user-permission-checkbox[alt="Enabled"]';
-const enablePermission = (permit) => `//div[@class="user-permission-col" ][text()="${permit}"] //img[@alt="Enabled"]`;
+const enablePermission = (permit) => `//div[@class="user-permission-col"][text()="${permit}"] //img[@alt="Enabled"]`;
 const permissionCheckbox = (index) => `.user-permissions div:nth-child(${index}) img[alt="Enabled"]`;
 
 const permit = 'View Recent Contacts of All Agents';
@@ -80,7 +80,19 @@ export default class UserPermission {
   }
 
   enablePermission(permissionName) {
-    cy.xpath(checkPermission(permissionName)).click();
+    cy.xpath(`//div[@class="user-permission-col"][text()="${permissionName}"]`).within(($ele) => { 
+      if($ele.find('[alt="Disabled"]').length) {
+        cy.xpath(checkPermission(permissionName)).click();
+      }
+    })
+  }
+
+  disablePermission(permissionName) {
+    cy.xpath(`//div[@class="user-permission-col"][text()="${permissionName}"]`).within(($ele) => { 
+      if($ele.find('[alt="Enabled"]').length) {
+        cy.xpath(checkPermission(permissionName)).click();
+      }
+    })
   }
 
   verifyPhoneSystemMenu() {
