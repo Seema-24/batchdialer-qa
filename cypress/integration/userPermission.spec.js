@@ -71,7 +71,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Manage Phone Numbers');
+    permission.disablePermission('Manage Phone Numbers');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
@@ -125,7 +125,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Edit Contact');
+    permission.disablePermission('Edit Contact');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
@@ -166,7 +166,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Edit Call Result & Note');
+    permission.disablePermission('Edit Call Result & Note');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
@@ -198,14 +198,14 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that User is Enable the permission of View or Export Recent Contacts and It Reflect on Agent Account', () => {
+  it('Verify that User is disable the permission of View or Export Recent Contacts and It Reflect on Agent Account', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('View/Export Recent Contacts');
+    permission.disablePermission('View/Export Recent Contacts');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
@@ -224,7 +224,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('View Contact Lists');
+    permission.disablePermission('View Contact Lists');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
@@ -233,7 +233,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     permission.verifyToastMessage(
       `You don't have sufficient rights to run this action!`
     );
-    permission.clickBackToAdminBtn();
+    permission.clickBackToAdminBtn(); 
     ignoreSpeedTestPopup();
   });
 
@@ -262,7 +262,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('View/Export Do-Not-Call');
+    permission.disablePermission('View/Export Do-Not-Call');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
@@ -298,7 +298,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Export Contact Lists');
+    permission.disablePermission('Export Contact Lists');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
@@ -337,7 +337,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Upload Contacts Lists');
+    permission.disablePermission('Upload Contacts Lists');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
@@ -405,7 +405,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Download Audio');
+    permission.disablePermission('Download Audio');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
@@ -429,7 +429,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Listen Audio');
+    permission.disablePermission('Listen Audio');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
@@ -472,7 +472,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('View All Agents Tasks');
+    permission.disablePermission('View All Agents Tasks');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
@@ -538,7 +538,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Create & Edit Campaigns');
+    permission.disablePermission('Create & Edit Campaigns');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
@@ -577,7 +577,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Pause/Activate Campaign');
+    permission.disablePermission('Pause/Activate Campaign');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
@@ -599,7 +599,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('View All Campaigns');
+    permission.disablePermission('View All Campaigns');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
@@ -684,7 +684,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('View Recent Contacts of All Agents');
+    permission.disablePermission('View Recent Contacts of All Agents');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
@@ -704,7 +704,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(agentFirstName, agentLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('View All Reports');
+    permission.disablePermission('View All Reports');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.AgentEmail);
@@ -816,7 +816,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Manage Phone Numbers');
+    permission.disablePermission('Manage Phone Numbers');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -870,7 +870,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Edit Contact');
+    permission.disablePermission('Edit Contact');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -912,7 +912,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Edit Call Result & Note');
+    permission.disablePermission('Edit Call Result & Note');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -951,7 +951,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('View/Export Recent Contacts');
+    permission.disablePermission('View/Export Recent Contacts');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -970,7 +970,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('View Contact Lists');
+    permission.disablePermission('View Contact Lists');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1008,7 +1008,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('View/Export Do-Not-Call');
+    permission.disablePermission('View/Export Do-Not-Call');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1044,7 +1044,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Export Contact Lists');
+    permission.disablePermission('Export Contact Lists');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1083,7 +1083,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Upload Contacts Lists');
+    permission.disablePermission('Upload Contacts Lists');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1150,7 +1150,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Download Audio');
+    permission.disablePermission('Download Audio');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1174,7 +1174,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Listen Audio');
+    permission.disablePermission('Listen Audio');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1206,14 +1206,14 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that Admin(User) is Enable the Permission of Manage Billing and It Reflects on Supervisor Account', () => {
+  it('Verify that Admin(User) is disable the Permission of Manage Billing and It Reflects on Supervisor Account', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Manage Billing');
+    permission.disablePermission('Manage Billing');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1253,7 +1253,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('View All Agents Tasks');
+    permission.disablePermission('View All Agents Tasks');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1364,7 +1364,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Pause/Activate Campaign');
+    permission.disablePermission('Pause/Activate Campaign');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1383,7 +1383,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Assign/Remove Agents');
+    permission.disablePermission('Assign/Remove Agents');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1407,7 +1407,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Create & Edit Campaigns');
+    permission.disablePermission('Create & Edit Campaigns');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1427,7 +1427,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('View All Campaigns');
+    permission.disablePermission('View All Campaigns');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1520,7 +1520,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Add User to the Group');
+    permission.disablePermission('Add User to the Group');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1541,7 +1541,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Delete User');
+    permission.disablePermission('Delete User');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1560,7 +1560,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Edit User');
+    permission.disablePermission('Edit User');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1579,7 +1579,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('Add User');
+    permission.disablePermission('Add User');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1644,7 +1644,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('View Recent Contacts of All Agents');
+    permission.disablePermission('View Recent Contacts of All Agents');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
@@ -1664,7 +1664,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
-    permission.enablePermission('View All Reports');
+    permission.disablePermission('View All Reports');
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);

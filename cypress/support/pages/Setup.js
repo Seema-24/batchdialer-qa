@@ -91,7 +91,7 @@ export default class Setup {
     cy.get('body').then(($body) => {
       if ($body.find('.dids-twopane .resizable-table-tbody .tr').length) {
         cy.xpath(
-          '(//div[@class="resizable-table-tbody"]//div[@class="tr"]//div[@class="td"][2])[1]'
+          '(//div[@class="resizable-table-tbody"]//div[@class="tr"]//div[@class="td"][3])[1]'
         ).then((el) => {
           const number = el.text().trim();
           cy.readFile('cypress/fixtures/testData.json', (err, data) => {

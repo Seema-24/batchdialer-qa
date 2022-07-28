@@ -295,6 +295,7 @@ describe('Registration', () => {
           'Successful Sale',
           'No Answer',
         ]);
+        cy.Logout();
       }
     })
   });
@@ -319,6 +320,7 @@ describe('Registration', () => {
         dashboard.enterBillingZip('43256');
         dashboard.clickContinue();
         register.verifyToastMessage('The card is already added');
+        cy.Logout();
       }
     })
   });
@@ -338,6 +340,7 @@ describe('Registration', () => {
         register.enterPassword('Test@123');
         register.clickOnButton('Save');
         register.verifyToastMessage('Profile Saved');
+        cy.Logout();
       }
     })
   });
@@ -358,6 +361,7 @@ describe('Registration', () => {
         register.enterProfilePhoneNumber('8888888888');
         register.clickOnButton('Save');
         register.verifyToastMessage('Profile Saved');
+        cy.Logout();
       }
     })
   });
@@ -370,6 +374,7 @@ describe('Registration', () => {
         cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
         cy.reload();
         ignoreSpeedTestPopup();
+        cy.Logout();
       }
     })
   });
@@ -394,6 +399,7 @@ describe('Registration', () => {
         ignoreSpeedTestPopup();
         register.verifyAddedProfileAvatar();
         register.verifyProfilePictureChange(file);
+        cy.Logout();
       }
     })
   });
@@ -412,6 +418,7 @@ describe('Registration', () => {
         register.verifyFirstNameField();
         register.verifyAddedProfileAvatar();
         register.verifyProfilePictureChange(file);
+        cy.Logout();
       }
     })
   });

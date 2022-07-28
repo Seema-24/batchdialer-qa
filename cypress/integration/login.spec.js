@@ -1,5 +1,5 @@
 import Login from '../support/pages/Login';
-import { ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { ignoreSpeedTestPopup, selectAgentStatus, verifyReactivateAccount } from '../support/Utils';
 
 const login = new Login();
 let testData;
@@ -71,6 +71,7 @@ describe('Login Flow', () => {
   });
 
   it('SuccessFully Login', () => {
+    verifyReactivateAccount();
     login.enterEmailtoSignin(Cypress.env('username'));
     login.enterPasswordToSignin(Cypress.env('password'));
     login.clickTermsCheckBox();
