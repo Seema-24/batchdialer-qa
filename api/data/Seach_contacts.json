@@ -17,6 +17,6 @@
         "sortfield": "contacts.id",
         "sortdir": "asc",
         "page": 1,
-        "pagelength": 1
+        "pagelength": 10
       }
 }

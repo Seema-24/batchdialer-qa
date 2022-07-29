@@ -28,7 +28,9 @@ describe('Campaigns stats API tests', async function () {
         expect(response.status).to.equal(200);
         expect(body).to.have.property("active");
         expect(body).to.have.property("complete");
-        
+        expect(body).to.have.property("deleted");
+        expect(body).to.have.property("draft");
+        expect(body).to.have.property("paused");
     });
 
     it('should return status code 403 with invalid key', async function () {

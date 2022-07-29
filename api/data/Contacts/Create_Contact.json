@@ -1,0 +1,63 @@
+{
+    "Create_Contact_Camp" : {
+        "lists": [
+      
+        ],
+        "vendorcontactid": "",
+        "phonenumbers": [
+          {
+            "numberid": 1,
+            "phonenumber": "3452674536",
+            "numbertype": "Mobile",
+            "dnc": 0,
+            "tested": 0,
+            "reachable": 0
+          }
+        ],
+        "firstname": "ross",
+        "lastname": "geller",
+        "address": "23 Saint Claude Ave",
+        "city": "New Orleans",
+        "state": "LA",
+        "postalcode": "70117",
+        "mailingaddress": "23 Saint Claude Ave",
+        "mailingcity": "New Orleans",
+        "mailingstate": "LA",
+        "mailingpostalcode": "70117",
+        "email": "api19@test.com",
+        "campaignid": 103524
+      },
+      
+      "Create_Contact_List" :
+      {
+        "lists": [
+             {
+            "id": 182782
+          }
+      
+        ],
+        "vendorcontactid": "",
+        "phonenumbers": [
+          {
+            "numberid": 1,
+            "phonenumber": "5463728393",
+            "numbertype": "Mobile",
+            "dnc": 0,
+            "tested": 0,
+            "reachable": 0
+          }
+        ],
+        "firstname": "ross",
+        "lastname": "geller",
+        "address": "23 Saint Claude Ave",
+        "city": "New Orleans",
+        "state": "LA",
+        "postalcode": "70117",
+        "mailingaddress": "23 Saint Claude Ave",
+        "mailingcity": "New Orleans",
+        "mailingstate": "LA",
+        "mailingpostalcode": "70117",
+        "email": "api19@test.com",
+        "campaignid": 0
+      }
+}

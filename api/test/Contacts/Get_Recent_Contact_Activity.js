@@ -67,7 +67,7 @@ describe('Last contact API tests', async function () {
             expect(body[0]).to.have.property("email");
             expect(body[0]).to.have.property("comments");
             expect(body[0]).to.have.property("datetime");
-            expect(body[0]).to.have.property("compaignIDs");
+            expect(body[0]).to.have.property("campaignIDs");
             expect(body[0]).to.have.property("listIDs");
         }
     });

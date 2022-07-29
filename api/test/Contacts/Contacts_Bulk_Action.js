@@ -6,7 +6,7 @@ const fs = require('fs');
 
 const token = JSON.parse(fs.readFileSync('./api/data/token.json', 'utf8'));
 const baseUrl = supertest(token.baseUrl);
-const bulkAction_data = JSON.parse(fs.readFileSync('./api/data/bulk_action_on_contacts.json', 'utf8'));
+const bulkAction_data = JSON.parse(fs.readFileSync('./api/data/Contacts/bulk_action_on_contacts.json', 'utf8'));
 
 
 //create new API request
@@ -34,11 +34,23 @@ const invalid_key = async function (request_body, endpoint) {
 
 describe('Bulk Action on Contacts API tests', async function () {
 
-    it('should return status code 200 ', async function () {
-        let testReqObj = bulkAction_data.Action_on_Contacts;
+    it('Bulk Action Campaign', async function () {
+        let testReqObj = bulkAction_data.Action_on_Camp;
         const response = await bulkAction(testReqObj, '/api/contacts/bulk');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
+        expect(body.affected).to.equal(1);
+       //expect(body).to.have.property("affected");
+
+    });
+
+    it('should return status code 200 ', async function () {
+        let testReqObj = bulkAction_data.Action_on_list;
+        const response = await bulkAction(testReqObj, '/api/contacts/bulk');
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(200);
+       //expect(body.affected).to.equal(0);
+       expect(body).to.have.property("affected");
 
     });
 
@@ -51,14 +63,15 @@ describe('Bulk Action on Contacts API tests', async function () {
 
     });
 
-    it('should return status code 200 ', async function () {
-        let testReqObj = bulkAction_data.Action_on_Contacts;
-        const response = await valid_key(testReqObj, '/api/contacts/bulk');
+    
+    it('bulk action dnc ', async function () {
+        let testReqObj = bulkAction_data.Action_on_dnc;
+        const response = await bulkAction(testReqObj, '/api/contacts/bulk');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
+       //expect(body.affected).to.equal(0);
+       expect(body).to.have.property("affected");
 
     });
-
-
 
 });

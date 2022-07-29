@@ -1,0 +1,29 @@
+{
+    "resolve_landline_numbers":
+    
+    [
+      {
+        "id": 157673765,
+        "num": "2022072756",
+        "callId": 485441159
+      }
+    ] ,
+    "resolve_dnc_numbers":   
+    [ 
+    { 
+        "id": 157666817,
+         "num": "2022072790", 
+         "callId": 483824651
+          }
+           ],
+           "resolve_mobile_numbers":   
+           [
+            {
+              "id": 157666430,
+              "num": "6575647564",
+              "callId": 483509111
+            }
+          ]
+          
+    
+}

@@ -3,56 +3,37 @@ const expect = require('chai').expect;
 const mocha = require('mocha')
 const tv4 = require('tv4');
 const fs = require('fs');
-
+const d = new Date();
 const token = JSON.parse(fs.readFileSync('./api/data/token.json', 'utf8'));
 const baseUrl = supertest(token.baseUrl);
+const createcontact_data = JSON.parse(fs.readFileSync('./api/data/Contacts/Create_Contact.json', 'utf8'));
+let phone_number = d.toISOString().split("T")[0].replace(/\-/g,"") + Math.floor(Math.random() * 90 + 10);
 
-//preparing property APIs request
-const valid_key = async function (endpoint) {
-    return baseUrl.get(endpoint)
+//prepare valid key APIs request
+const valid_key = async function (request_body, endpoint) {
+    return baseUrl.post(endpoint)
         .set('Content-Type', 'application/json')
-        .set('X-ApiKey', `${token.apiKey}`);
+        .set('X-ApiKey', `${token.apiKey}`)
+        .send(request_body);
 }
-const invalid_key = async function (endpoint) {
-    return baseUrl.get(endpoint)
+//prepare invalid key APIs request
+const invalid_key = async function (request_body, endpoint) {
+    return baseUrl.post(endpoint)
         .set('Content-Type', 'application/json')
-        .set('X-ApiKey', `${token.invalid_apiKey}`);
+        .set('X-ApiKey', `${token.invalid_apiKey}`)
+        .send(request_body);
 }
-
-describe('Get Single Contact Api', async function () {
-    it('should return status code 200 with valid key', async function () {
-        const response = await valid_key('/api/contact/148552808');
-        body = JSON.parse(JSON.stringify(response.body));
-        expect(response.status).to.equal(200);
-    });
-
-    it('should return status code 403 with invalid key', async function () {
-        const response = await invalid_key('/api/contact/148552808');
-        body = JSON.parse(JSON.stringify(response.body));
-        expect(response.status).to.equal(403);
-        expect(body.msg).to.equal("Wrong API key");
-    });
-
-    it('should verify all fields in the response', async function () {
-        const response = await valid_key('/api/contact/148552808');
+describe('Should create contact Api test', async function () {
+    it('should create into campaign', async function () {
+        createcontact_data.Create_Contact_Camp.phonenumbers[0].phonenumber = phone_number;
+        let testReqObj = createcontact_data.Create_Contact_Camp;
+        const response = await valid_key(testReqObj, '/api/contact');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
         expect(body).to.have.property("id");
         expect(body).to.have.property("lists");
-        expect(body.lists[0]).to.have.property("id");
-        expect(body.lists[0]).to.have.property("name");
-        expect(body.lists[0]).to.have.property("contactscount");
-        expect(body.lists[0]).to.have.property("campaignscount");
-        expect(body.lists[0]).to.have.property("numbers");
-        expect(body.lists[0]).to.have.property("status");
-        expect(body.lists[0]).to.have.property("message");
-        expect(body.lists[0]).to.have.property("health");
-        expect(body.lists[0]).to.have.property("round");
-        expect(body.lists[0]).to.have.property("age");
-        expect(body.lists[0]).to.have.property("default");
-        expect(body.lists[0]).to.have.property("daterecycled");
-        expect(body.lists[0]).to.have.property("dateadded");
         expect(body).to.have.property("vendorcontactid");
+        expect(body).to.have.property("phonenumbers");
         expect(body.phonenumbers[0]).to.have.property("id");
         expect(body.phonenumbers[0]).to.have.property("clientid");
         expect(body.phonenumbers[0]).to.have.property("contactid");
@@ -99,9 +80,13 @@ describe('Get Single Contact Api', async function () {
         expect(body).to.have.property("disposition");
         expect(body).to.have.property("dateadded");
         expect(body).to.have.property("datemodified");
-        expect(body).to.have.property("phonenumber1");
-        expect(body).to.have.property("stats");
-        expect(body.stats).to.have.property("answered");
-        expect(body.stats).to.have.property("voicemail");
-    });
+    })
+    
+   /* it('should create into list', async function () {
+        createcontact_data.Create_Contact_List.phonenumbers[0].phonenumber = phone_number;
+        let testReqObj = createcontact_data.Create_Contact_List;
+        const response = await valid_key(testReqObj, '/api/contact');
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(200);
+    })*/
 });

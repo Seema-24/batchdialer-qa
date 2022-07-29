@@ -1,29 +1,27 @@
 {
-    "Action_on_Contacts":
+    "Action_on_Camp":
     {
-        "campaignid": 93635,
-        "contacts": [
-          {
-            "vendorcontactid": "",
-            "phonenumber": "1234567891",
-            "title": "1234567891",
-            "firstname": "John",
-            "middlename": "k",
-            "lastname": "Doe",
-            "addressline1": "My home address",
-            "city": "New York",
-            "state": "NY",
-            "postalcode": "12345",
-            "mailingaddressline1": "my mailing address",
-            "mailingcity": "string",
-            "mailingstate": "string",
-            "mailingpostalcode": "string",
-            "country": "string",
-            "gender": "string",
-            "dateofbirth": "1983-01-15",
-            "email": "johnk@doek.com",
-            "comments": "Add comment if you like"
-          }
-        ]
-      }
+      "items": [
+        157673765
+      ],
+      "action": "campaign",
+      "value": 104208
+    },
+
+    "Action_on_list":
+    {
+      "items": [
+        157673765
+      ],
+      "action": "list",
+      "value": 182803
+    },
+    "Action_on_dnc":
+    {
+      "items": [
+        157673765
+      ],
+      "action": "dnc",
+      "value": 0
+    }
 }

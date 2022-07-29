@@ -1,6 +1,61 @@
 {
     "UpdateContact" :
     {
-
+        "lists": [
+        ],
+        "vendorcontactid": 0,
+        "phonenumbers": [
+          {
+            "numberid": 1,
+            "phonenumber": "3452112890",
+            "numbertype": "Mobile",
+            "dnc": 1,
+            "tested": 1,
+            "reachable": 1
+          }
+        ],
+        "firstname": "herry",
+        "lastname": "poter",
+        "address": "2325 Saint Claude Ave",
+        "city": "New Orleans",
+        "state": "LA",
+        "postalcode": "70117",
+        "mailingaddress": "2325 Saint Claude Ave",
+        "mailingcity": "New Orleans",
+        "mailingstate": "LA",
+        "mailingpostalcode": "70117",
+        "email": "api@test.com"
+      },
+      "UpdateContact_list" :  {
+        "lists": [
+            {
+      "id": 182765
+    },
+    {
+      "id": 182764
     }
+        ],
+        "vendorcontactid": "",
+        "phonenumbers": [
+          {
+            "numberid": 1,
+            "phonenumber": "1875643763",
+            "numbertype": "Mobile",
+            "dnc": 1,
+            "tested": 1,
+            "reachable": 1
+          }
+        ],
+        "firstname": "hunny",
+        "lastname": "poter",
+        "address": "2325 Saint Claude Ave",
+        "city": "New Orleans",
+        "state": "LA",
+        "postalcode": "70117",
+        "mailingaddress": "2325 Saint Claude Ave",
+        "mailingcity": "New Orleans",
+        "mailingstate": "LA",
+        "mailingpostalcode": "70117",
+        "email": "api@test.com"
+      }
 }

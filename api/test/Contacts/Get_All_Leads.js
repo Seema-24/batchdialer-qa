@@ -42,6 +42,7 @@ describe('Salemade API tests', async function () {
     it('should verify all fields in the response', async function () {
         const response = await valid_key('/api/z/salemade');
         body = JSON.parse(JSON.stringify(response.body));
+        console.log(body);
         expect(response.status).to.equal(200);
         if(body.length>0){
             expect(body[0]).to.have.property("id");

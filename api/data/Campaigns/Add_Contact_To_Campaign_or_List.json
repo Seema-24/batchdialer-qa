@@ -1,0 +1,354 @@
+{
+    "single_contact":
+    {
+      "listid": 0,
+      "campaignid": 102858,
+      "contacts": [
+        {
+          "phonenumber": "555-666-7778",
+          "vendorcontactid": 0,
+          "altphonenumber": "055-666-7777",
+          "phonenumber1": "955-666-7777",
+          "phonenumber2": "855-666-7777",
+          "phonenumber3": "755-666-7777",
+          "phonenumber4": "655-666-7777",
+          "phonenumber5": "785-666-7777",
+          "phonenumber6": "125-666-7777",
+          "phonenumber7": "345-666-7777",
+          "phonenumber8": "235-666-7777",
+          "phonenumber9": "765-666-7777",
+          "phonenumber10": "235-666-7777",
+          "title": "Mr.",
+          "firstname": "John",
+          "middlename": "Jr.",
+          "lastname": "Doe",
+          "addressline1": "2325 Saint Claude Ave",
+          "city": "New Orleans",
+          "state": "LA",
+          "postalcode": "70117",
+          "mailingaddressline1": "2325 Saint Claude Ave",
+          "mailingcity": "New Orleans",
+          "mailingstate": "LA",
+          "mailingpostalcode": "70117",
+          "country": "USA",
+          "gender": "M",
+          "dateofbirth": "2020-10-15T18:30:00.000Z",
+          "email": "test@api.com",
+          "securityphrase": "securityphrase",
+          "comments": "comments",
+          "customfields": {
+    "PR Name":"Lince",
+    "Email2":"jb@consultjbc.com"
+    }
+        }
+      ],
+      "campaignids": [],
+      "options": {
+        "landlines": false,
+        "mobiles": false,
+        "systemDNC": false,
+        "unknown": false,
+        "wrongNumbers": false,
+        "federalDNC": false
+      }
+    },
+    "multiple_contact":
+    {
+        "campaignid": 93635,
+        "listid": 0,
+        "contacts": [
+          {
+           
+            "phonenumber": "555-666-7777",
+            "vendorcontactid": 0,
+          "altphonenumber": "055-666-7777",
+          "phonenumber1": "955-666-7777",
+          "phonenumber2": "855-666-7777",
+          "phonenumber3": "755-666-7777",
+          "phonenumber4": "655-666-7777",
+          "phonenumber5": "785-666-7777",
+          "phonenumber6": "125-666-7777",
+          "phonenumber7": "345-666-7777",
+          "phonenumber8": "235-666-7777",
+          "phonenumber9": "765-666-7777",
+          "phonenumber10": "235-666-7777",
+          "title": "Mr.",
+          "firstname": "Johni",
+          "middlename": "Jr.",
+          "lastname": "Doee",
+          "addressline1": "2325 Saint Claude Ave",
+          "city": "New Orleans",
+          "state": "LA",
+          "postalcode": "70117",
+          "mailingaddressline1": "2325 Saint Claude Ave",
+          "mailingcity": "New Orleans",
+          "mailingstate": "LA",
+          "mailingpostalcode": "70117",
+          "country": "USA",
+          "gender": "M",
+          "dateofbirth": "2020-10-15T18:30:00.000Z",
+          "email": "test@api.com",
+          "securityphrase": "securityphrase",
+          "comments": "comments",
+          "customfields": {
+    "PR Name":"Lince",
+    "Email2":"jb@consultjbc.com"
+    }
+               
+          },
+          {
+      
+            "phonenumber": "555-777-6666",
+            "vendorcontactid": 0,
+          "altphonenumber": "055-666-7777",
+          "phonenumber1": "955-666-7777",
+          "phonenumber2": "855-666-7777",
+          "phonenumber3": "755-666-7777",
+          "phonenumber4": "655-666-7777",
+          "phonenumber5": "785-666-7777",
+          "phonenumber6": "125-666-7777",
+          "phonenumber7": "345-666-7777",
+          "phonenumber8": "235-666-7777",
+          "phonenumber9": "765-666-7777",
+          "phonenumber10": "235-666-7777",
+          "title": "Mr.",
+          "firstname": "Johni",
+          "middlename": "Jr.",
+          "lastname": "Doee",
+          "addressline1": "2325 Saint Claude Ave",
+          "city": "New Orleans",
+          "state": "LA",
+          "postalcode": "70117",
+          "mailingaddressline1": "2325 Saint Claude Ave",
+          "mailingcity": "New Orleans",
+          "mailingstate": "LA",
+          "mailingpostalcode": "70117",
+          "country": "USA",
+          "gender": "M",
+          "dateofbirth": "2020-10-15T18:30:00.000Z",
+          "email": "test@api.com",
+          "securityphrase": "securityphrase",
+          "comments": "comments",
+          "customfields": {
+    "PR Name":"Lince",
+    "Email2":"jb@consultjbc.com"
+    }
+          }
+        ],
+        "campaignids": [],
+        "options": {
+          "landlines": false,
+          "mobiles": false,
+          "systemDNC": false,
+          "unknown": false,
+          "wrongNumbers": false,
+          "federalDNC": false
+        }
+      },
+  "invaild_request":{
+    "listid": 0,
+    "campaign": 93635,
+    "contacts": [
+      {
+        "firstname": "John",
+        "lastname": "Doe",
+        "phonenumber": "555-666-7777"
+      }
+    ],
+    "campaignids": [],
+    "options": {
+      "landlines": false,
+      "mobiles": false,
+      "systemDNC": false,
+      "unknown": false,
+      "wrongNumbers": false,
+      "federalDNC": false
+    }
+  },
+  "addContact_list":
+  {
+    "listid": 180562,
+    "campaignid": 0,
+    "contacts": [
+      {
+        "phonenumber": "555-666-7777",
+        "vendorcontactid": 0,
+          "altphonenumber": "055-666-7777",
+          "phonenumber1": "955-666-7777",
+          "phonenumber2": "855-666-7777",
+          "phonenumber3": "755-666-7777",
+          "phonenumber4": "655-666-7777",
+          "phonenumber5": "785-666-7777",
+          "phonenumber6": "125-666-7777",
+          "phonenumber7": "345-666-7777",
+          "phonenumber8": "235-666-7777",
+          "phonenumber9": "765-666-7777",
+          "phonenumber10": "235-666-7777",
+          "title": "Mr.",
+          "firstname": "Johni",
+          "middlename": "Jr.",
+          "lastname": "Doee",
+          "addressline1": "2325 Saint Claude Ave",
+          "city": "New Orleans",
+          "state": "LA",
+          "postalcode": "70117",
+          "mailingaddressline1": "2325 Saint Claude Ave",
+          "mailingcity": "New Orleans",
+          "mailingstate": "LA",
+          "mailingpostalcode": "70117",
+          "country": "USA",
+          "gender": "M",
+          "dateofbirth": "2020-10-15T18:30:00.000Z",
+          "email": "test@api.com",
+          "securityphrase": "securityphrase",
+          "comments": "comments",
+          "customfields": {
+    "PR Name":"Lince",
+    "Email2":"jb@consultjbc.com"
+    }
+      }
+    ],
+    "campaignids": [],
+    "options": {
+      "landlines": false,
+      "mobiles": false,
+      "systemDNC": false,
+      "unknown": false,
+      "wrongNumbers": false,
+      "federalDNC": false
+  }
+},
+"no_camp_or_list" : {
+  "listid": 0,
+  "campaignid": 0,
+  "contacts": [
+    {
+      "phonenumber": "555-666-7778",
+      "vendorcontactid": 0,
+      "altphonenumber": "055-666-7777",
+      "phonenumber1": "955-666-7777",
+          "phonenumber2": "855-666-7777",
+          "phonenumber3": "755-666-7777",
+          "phonenumber4": "655-666-7777",
+          "phonenumber5": "785-666-7777",
+          "phonenumber6": "125-666-7777",
+          "phonenumber7": "345-666-7777",
+          "phonenumber8": "235-666-7777",
+          "phonenumber9": "765-666-7777",
+          "phonenumber10": "235-666-7777",
+          "title": "Mr.",
+          "firstname": "Johni",
+          "middlename": "Jr.",
+          "lastname": "Doee",
+          "addressline1": "2325 Saint Claude Ave",
+          "city": "New Orleans",
+          "state": "LA",
+          "postalcode": "70117",
+          "mailingaddressline1": "2325 Saint Claude Ave",
+          "mailingcity": "New Orleans",
+          "mailingstate": "LA",
+          "mailingpostalcode": "70117",
+          "country": "USA",
+          "gender": "M",
+          "dateofbirth": "2020-10-15T18:30:00.000Z",
+          "email": "test@api.com",
+          "securityphrase": "securityphrase",
+          "comments": "comments",
+      "customfields": {
+"PR Name":"Lince",
+"Email2":"jb@consultjbc.com"
+}
+    }
+  ],
+  "campaignids": [],
+  "options": {
+    "landlines": false,
+    "mobiles": false,
+    "systemDNC": false,
+    "unknown": false,
+    "wrongNumbers": false,
+    "federalDNC": false
+  }
+},
+"no_phonenumber" : 
+{
+  "listid": 0,
+  "campaignid": 102858,
+  "contacts": [
+    {
+      "phonenumber": "",
+      "vendorcontactid": 0,
+      "firstname": "John",
+      "middlename": "Jr.",
+      "lastname": "Doe",
+      "addressline1": "2325 Saint Claude Ave",
+      "city": "New Orleans",
+      "state": "LA",
+      "postalcode": "70117",
+      "mailingaddressline1": "2325 Saint Claude Ave",
+      "mailingcity": "New Orleans",
+      "mailingstate": "LA",
+      "mailingpostalcode": "70117",
+      "country": "USA",
+      "gender": "M",
+      "dateofbirth": "2020-10-15T18:30:00.000Z",
+      "email": "test@api.com",
+      "securityphrase": "securityphrase",
+      "comments": "comments",
+      "customfields": {
+"PR Name":"Lince",
+"Email2":"jb@consultjbc.com"
+}
+    }
+  ],
+  "campaignids": [],
+  "options": {
+    "landlines": false,
+    "mobiles": false,
+    "systemDNC": false,
+    "unknown": false,
+    "wrongNumbers": false,
+    "federalDNC": false
+  }
+},
+"multiple_campaignids": {
+  
+  "listid": 0,
+  "campaignid": 0,
+  "contacts": [
+    {
+      "phonenumber": "123-657-3409",
+      "vendorcontactid": 0,
+      "firstname": "John",
+      "lastname": "Doe",
+      "addressline1": "",
+      "city": "",
+      "state": "",
+      "postalcode": "",
+      "mailingaddressline1": "",
+      "mailingcity": "",
+      "mailingstate": "",
+      "mailingpostalcode": "",
+      "country": "",
+      "gender": "",
+      "dateofbirth": "",
+      "email": "",
+      "securityphrase": "",
+      "comments": "",
+      "customfields": {}
+    }
+  ],
+  "campaignids": [104155,104154],
+  "options": {
+    "landlines": false,
+    "mobiles": false,
+    "systemDNC": false,
+    "unknown": false,
+    "wrongNumbers": false,
+    "federalDNC": false
+  
+}
+
+}
+
+}

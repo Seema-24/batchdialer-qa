@@ -8,7 +8,7 @@ const d = new Date();
 let timestamp = [d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getMilliseconds()].join('');
 let randomNumber = [d.getSeconds(), d.getMilliseconds()].join('');
 const token = JSON.parse(fs.readFileSync('./api/data/token.json', 'utf8'));
-const contact_data = JSON.parse(fs.readFileSync('./api/data/Campaigns/AddContactToCampaignorList.json', 'utf8'));
+const contact_data = JSON.parse(fs.readFileSync('./api/data/Campaigns/Add_Contact_To_Campaign_or_List.json', 'utf8'));
 const campaign_data = JSON.parse(fs.readFileSync('./api/data/Campaigns/campaign.json', 'utf8'));
 let new_campaignid = "";
 let new_contactid="";
@@ -84,7 +84,7 @@ describe('Delete Contacts API tests', async function () {
     });
   
     it('should delete contact created above', async function () {
-        const response = await delete_contact(`/api/contact/${new_contactid}`);
+        const response = await valid_key(`/api/contact/${new_contactid}`);
         body = JSON.parse(JSON.stringify(response.body));
         console.log(body);
         expect(response.status).to.equal(200);
@@ -92,11 +92,19 @@ describe('Delete Contacts API tests', async function () {
     });
     
     it('should return status code 403 with invalid key', async function () {
-        const response = await invalid_key('/api/contact/150290280');
+        const response = await invalid_key(`/api/contact/${new_contactid}`);
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(403);
         expect(body.msg).to.equal("Wrong API key");
     });
+
+    it('should return status code 404 for invaild id', async function () {
+        const response = await valid_key('/api/contact/158461546');
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(404);
+        expect(body.msg).to.equal("Contact not found");
+    });
+    
 });
 
     

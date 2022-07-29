@@ -37,6 +37,9 @@ describe('Get Recent Calls API tests', async function () {
         expect(body.items[0]).to.have.property("duration"); 
         expect(body.items[0]).to.have.property("status");
         expect(body.items[0]).to.have.property("agent");
+        expect(body.items[0].agent).to.have.property("id");
+        expect(body.items[0].agent).to.have.property("firstname");
+        expect(body.items[0].agent).to.have.property("lastname");
         expect(body.items[0]).to.have.property("contact"); 
         expect(body.items[0].contact).to.have.property("id");  
         expect(body.items[0].contact).to.have.property("firstname");
@@ -47,8 +50,10 @@ describe('Get Recent Calls API tests', async function () {
         expect(body.items[0].contact).to.have.property("zip");
         expect(body.items[0].contact).to.have.property("status");
         expect(body.items[0].contact).to.have.property("email");
+        expect(body.items[0]).to.have.property("campaign")
         expect(body.items[0].campaign).to.have.property("id")
         expect(body.items[0].campaign).to.have.property("name")
+        expect(body.items[0]).to.have.property("client");
         expect(body.items[0].client).to.have.property("id");
         expect(body.items[0].client).to.have.property("name");
         expect(body.items[0]).to.have.property("callid")
