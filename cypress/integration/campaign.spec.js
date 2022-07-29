@@ -1,6 +1,6 @@
 import Campaign from '../support/pages/Campaigns';
 import Dialer from '../support/pages/Dialer';
-import { clickCallFunction, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { clickCallFunction, closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 
 let fixtureData;
 let testData;
@@ -28,6 +28,7 @@ describe('Add Campaign flow', () => {
 
   beforeEach(() => {
     handlePoorConnectionPopup();
+    closeDialogBox();
   })
 
   after(() => {

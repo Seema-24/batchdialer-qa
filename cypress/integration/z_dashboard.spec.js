@@ -72,10 +72,10 @@ describe('Dashboard Elements', () => {
     Dash.clickMicTestStartButton();
     Dash.verifyMicTestCompletion();
     Dash.clickOnButton('Done');
-    Dash.clickCallGraphCloseBtn();
   });
 
   it('verify elements in Dashboard', () => {
+    Dash.clickCallGraphCloseBtn();
     Dash.clickDashboard();
     Dash.verifyDashboardElements();
   });

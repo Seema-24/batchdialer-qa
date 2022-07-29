@@ -1,5 +1,5 @@
 import Contacts from '../support/pages/Contacts';
-import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 import Dashboard from '../support/pages/Dashboard';
 import Dialer from '../support/pages/Dialer';
 
@@ -32,6 +32,7 @@ describe('Add Contact flow', () => {
 
   beforeEach(() => {
     handlePoorConnectionPopup();
+    closeDialogBox();
   })
 
   after(() => {
@@ -454,11 +455,11 @@ describe('Add Contact flow', () => {
   it('Verify that agent user is able to dial a valid phone number which is not in the contacts', () => {
     dashboard.clickDashboard();
     addCont.ClickToOpenSoftphone();
-    addCont.dialPhoneNumber('7209834562'); // 9142509276
+    addCont.dialPhoneNumber('8586515050'); //8586515050 //7209834562
     addCont.clickDialerCallButton();
-    cy.wait(5000);
+    cy.wait(10000);
     addCont.clickDialerCallButton();
-    addCont.selectCallResult('No Answer');
+    addCont.selectCallResult('Successful Sale'); //Voicemail
     addCont.clickContinueBtn();
   });
 

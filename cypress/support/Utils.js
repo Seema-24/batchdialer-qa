@@ -106,7 +106,7 @@ export function clickCallFunction() {
 export function handlePoorConnectionPopup() {
   cy.get('body').then(($body) => {
     if($body.text().includes('Poor Connection')) {
-      cy.contains('Got it').click();
+      cy.contains('Got it').click({force:true});
     }
   })
 }
@@ -119,6 +119,28 @@ export function verifyRoleTitle() {
     } else if(profile.text().includes('Supervisor')) {
       permit.clickBackToAdminBtn();
       ignoreSpeedTestPopup();
+    }
+  })
+}
+
+export function closeDialogBox() {
+  cy.get('body').then(($body) => {
+    if($body.text().includes('Edit User')) {
+      cy.get('.close-button').click();
+    } else if($body.text().includes('SPEED TEST')) {
+      ignoreSpeedTestPopup();
+    } else if($body.text().includes('New User')) {
+      cy.get('.close-button').click();
+    } else if($body.text().includes('Start Calling')) {
+      cy.get('[alt="Logo"]').click();
+    }
+  })
+}
+
+export function verifyReactivateAccount() {
+  cy.get('body').then(($body) => {
+    if($body.text().includes('Would you like to reactivate it?')) {
+      cy.contains('CANCEL').click({force:true});
     }
   })
 }

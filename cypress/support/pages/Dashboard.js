@@ -165,7 +165,7 @@ const Agent = (user) =>
   `//div[@class="group-row-role__left__title"][text()="${user}"]`;
 const dashboardName = '.name';
 const backToAdmin = '.user__dropdown.user__dropdown-logout';
-const homeButton = '.breadcrumb-item .active';
+const homeButton = '.breadcrumb-item a';
 const radioBtn = (btnName) =>
   `//label[text()="${btnName}"]//span[@class="checkmark"]`;
 const addNewBtn = '//button//div[contains(text(),"Add New")]';
@@ -740,9 +740,14 @@ export default class Dashboard {
   }
 
   clickRuleRemoveBtn(rule) {
-    cy.xpath(ruleRemoveBtn(rule))
-      .scrollIntoView()
-      .click({force:true});
+    cy.xpath(ruleRemoveBtn(rule)).then((rows) => {
+      for (let i = 0; i < rows.length; i++) {
+        cy.xpath(ruleRemoveBtn(rule))
+        .first()
+        .scrollIntoView()
+        .click({force:true});
+      }
+    })  
   }
 
   verifyRuleRemoved(rule) {

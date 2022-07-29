@@ -61,7 +61,7 @@ const firstPermission = '.user-permission-checkbox';
 const agentTitle = (agentName) =>
   `//div[@class="tr"][div[text()="${agentName}"]]`;
 const enabledPermission = '.user-permission-checkbox[alt="Enabled"]';
-const enablePermission = (permit) => `//div[@class="user-permission-col" ][text()="${permit}"] //img[@alt="Enabled"]`;
+const enablePermission = (permit) => `//div[@class="user-permission-col"][text()="${permit}"] //img[@alt="Enabled"]`;
 const permissionCheckbox = (index) => `.user-permissions div:nth-child(${index}) img[alt="Enabled"]`;
 
 const permit = 'View Recent Contacts of All Agents';
@@ -73,11 +73,26 @@ export default class UserPermission {
   }
 
   verifyUserPermissionsVisible() {
-    cy.get(permissions).should('be.visible');
+    cy.get(permissions)
+    .parent()
+    .scrollIntoView()
+    .should('be.visible');
   }
 
   enablePermission(permissionName) {
-    cy.xpath(checkPermission(permissionName)).click();
+    cy.xpath(`//div[@class="user-permission-col"][text()="${permissionName}"]`).within(($ele) => { 
+      if($ele.find('[alt="Disabled"]').length) {
+        cy.xpath(checkPermission(permissionName)).click();
+      }
+    })
+  }
+
+  disablePermission(permissionName) {
+    cy.xpath(`//div[@class="user-permission-col"][text()="${permissionName}"]`).within(($ele) => { 
+      if($ele.find('[alt="Enabled"]').length) {
+        cy.xpath(checkPermission(permissionName)).click();
+      }
+    })
   }
 
   verifyPhoneSystemMenu() {
@@ -94,7 +109,7 @@ export default class UserPermission {
   }
 
   clickOnMenu(menuName) {
-    cy.get(menu(menuName)).click();
+    cy.get(menu(menuName),{timeout:60000}).click({force:true});
   }
 
   verifyContactsPage() {
@@ -130,7 +145,7 @@ export default class UserPermission {
   }
 
   clickContactName() {
-    cy.get(contactName).first().click();
+    cy.get(contactName,{timeout:60000}).first().click();
   }
 
   verifyContactEditBtnNotExist() {
@@ -148,7 +163,7 @@ export default class UserPermission {
   }
 
   clickCallResultEditBtn() {
-    cy.get(callResultEditBtn).first().click();
+    cy.get(callResultEditBtn).first().click({force:true});
   }
 
   verifyCallDispositionModal() {
@@ -204,7 +219,7 @@ export default class UserPermission {
   }
 
   verifyPlayerModalVisible() {
-    cy.get(playerModal).should('be.visible');
+    cy.get(playerModal).should('be.visible'); 
   }
 
   clickPlayerCloseIcon() {
@@ -283,11 +298,13 @@ export default class UserPermission {
   }
 
   verifyCampaignEditIconVisible() {
-    cy.get(campaignEditIcon).should('be.visible');
+    cy.get(campaignEditIcon).first().click();
+    cy.get('.custom_drop_menu2').should('contain.text','Edit')
   }
 
   verifyCampaignEditIconNotExist() {
-    cy.get(campaignEditIcon).should('not.exist');
+    cy.get(campaignEditIcon).first().click();
+    cy.get('.custom_drop_menu2').should('not.contain.text','Edit');
   }
 
   verifyNoAccessPermissions(permissions) {
@@ -393,7 +410,8 @@ export default class UserPermission {
   }
 
   verifyUserEditBtnNotExist() {
-    cy.get(userMenuBtn).should('not.exist');
+    cy.get(userMenuBtn).first().click()
+    cy.xpath(userEditBtn).should('not.exist');
   }
 
   clickUserMenuBtn() {
@@ -454,10 +472,10 @@ export default class UserPermission {
     
     cy.contains(permit).scrollIntoView();
     cy.get('body').then((body) => {
-      // if(body.find(permissionCheckbox(index)).length) {
-      //   cy.xpath(enablePermission(permit)).should('be.visible');
-      //   cy.xpath(enablePermission(permit)).click();  
-      // }
+      if(body.find(permissionCheckbox(index)).length) {
+        cy.xpath(enablePermission(permit)).should('be.visible');
+        cy.xpath(enablePermission(permit)).click();  
+      }
 
       if (body.find(enabledPermission).length) {
         cy.get(enabledPermission).then((el) => {
@@ -468,6 +486,18 @@ export default class UserPermission {
         });
       }
     });
+  }
+
+  verifyReportsMenuNotExist() {
+    cy.get(menu('Reports')).should('not.exist');
+  }
+
+  verifyPermissionDisabled(permission) {
+    cy.xpath(enablePermission(permission)).should('not.exist');
+  }
+
+  verifyPermissionEnabled(permission) {
+    cy.xpath(enablePermission(permission)).should('exist');
   }
   
 }

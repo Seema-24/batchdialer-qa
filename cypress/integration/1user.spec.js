@@ -1,6 +1,6 @@
 import User from '../support/pages/User';
 import Dashboard from '../support/pages/Dashboard';
-import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 
 let fixtureData;
 let testData;
@@ -36,6 +36,7 @@ describe('Login Successfully and Add User', () => {
 
   beforeEach(() => {
     handlePoorConnectionPopup();
+    closeDialogBox();
   })
 
   after(() => {
@@ -433,6 +434,26 @@ describe('Login Successfully and Add User', () => {
     Dash.clickUserProfile();
     Dash.clickBilling();
     addUser.verifyAgentCount(count);
+  });
+
+  it('Verify that warning  message is displayed when ADD NEW agent user if the account has reached maximum usage states', () => {
+    addUser.clickingOnUserOption();
+    cy.wait(3000);
+    addUser.clickAddNewUserButton();
+    addUser.chooseUserRole('Agent');
+    addUser.verifySeatsWarningMsg('Please order more seats to create agent');
+    addUser.verifySaveButtonDisabled();
+    addUser.clickCancelBtn();
+  });
+
+  it('Verify that warning  message is displayed when ADD NEW agent user if the account has reached maximum usage states', () => {
+    addUser.clickingOnUserOption();
+    cy.wait(3000);
+    addUser.clickAddNewUserButton();
+    addUser.chooseUserRole('Administrator');
+    addUser.verifySeatsWarningMsg('Agent Features will be disabled until you order more seats');
+    addUser.verifyDisableCallingFeatureCheckbox();
+    addUser.clickCancelBtn();
   });
 
   it('Verify Validation on fields on Add new user page', () => {
