@@ -1,7 +1,7 @@
-const userTreeDropdown = '.dropdown-usertree';
+const userTreeDropdown = '.profile_drop.dropdown';
 const resellerUserTree = (user) =>
-  `//span[@class="role-title"][text()="${user}"]/following-sibling::span//*[name()="svg"][@data-icon="plus"]`;
-const reseller = `//span[@class="roletitle"][contains(text(),"First Tenant Reseller 1")]`;
+  `//div[@class="group-row__center__title" and text()="${user}"]/parent::div[@class="group-row__center"]/preceding-sibling::div`;
+const reseller = `//div[@class="group-row-role__left__title"][contains(text(),"First Tenant Reseller 1")]`;
 const clientsMenu = 'a[title="Clients"]';
 const searchBox = 'input[placeholder*="Search"]';
 const deleteUserButton = 'img[src*="delete"]';
@@ -14,11 +14,11 @@ const menu = (menuName) => `li:not(.subitem) a[title="${menuName}"]`;
 const subMenu = (menuName) => `.subitem a[title="${menuName}"]`;
 const searchInputField = 'input[placeholder*="Search"]';
 const searchResult = (searchQuery) =>
-  `//tbody/tr[contains(.,"${searchQuery}")]`;
-const accountStatus = (searchQuery, status) =>
-  `//tbody/tr[contains(.,"${searchQuery}")][contains(.,"${status}")]`;
-const clientDeleteBtn = (searchQuery) =>
-  `//tr[td[div[text()="${searchQuery}"]]]//img[contains(@src,"delete")]`;
+  `//div[@class="resizable-table-tbody"]//div[@class="td"]//div[contains(.,"${searchQuery}")]`;
+const accountStatus = (status) =>
+  `.tr .td:nth-of-type(4) img[src*="${status}"]`;
+const menuBtn = (searchQuery) =>
+  `//div[@class="td"][contains(.,"${searchQuery}")]/following-sibling::div//img[@alt="Menu"]`;
 const accountEditBtn = 'img[src*="edit"]';
 const generalTabLabel = '#tabs-reseller-edit-tabpane-general label';
 const inputFields = (inputField) => `input[name="${inputField}"]`;
@@ -39,21 +39,26 @@ const cancelAccountNowRadioBtn =
   '//label[text()="Cancel the account now (fraud etc.)"]//span[@class="checkmark"]';
 const cancelAccountAtEndRadioBtn =
   '//label[text()="Cancel the account in the end of current billing cycle"]//span[@class="checkmark"]';
-const trialButton = 'span[title="Click to edit trial"]';
+const trialButton = '//span[@class="badge"]';
 const modalDialog = '.modal-dialog .modal-content';
 const disableTrialReadioBtn =
   '//label[text()="Disable Trial"]//span[@class="checkmark"]';
 const changeTrialRadioBtn =
   '//label[text()="Change Trial Period to"]//span[@class="checkmark"]';
 const trialDays = 'input[name="days"]';
-const noOfTrialDays = 'span[title="Click to edit trial"] .badge-warning';
+const noOfTrialDays = '//span[@class="badge"]';
 const tableHeader = '.resizable-table-thead .th';
-const clientNameData = '.tr .td:nth-of-type(1)';
+const clientNameData = '.tr .td:nth-of-type(2)';
 const billingEditIcon = '.billing-card-title button';
+const billingInfoEditBtn = '.billing-user-info__wrapper .billing-user-info__edit.btn';
+const selectAdd = (key) => `//label[text() ="${key}"]/parent::div/child::div//span[@class="ss-select-value-label single"]`;
+const userDropdown =(option) => `//div[@class="user__dropdown" and text()="${option}"]`;
+const statusIcon = '.tr .td:nth-of-type(4)';
 
 export default class Reseller {
-  clickUserTreeDropdown() {
+  clickUserTreeDropdown(option) {
     cy.get(userTreeDropdown).click();
+    cy.xpath(userDropdown(option)).click();
   }
 
   clickOnUser(user) {
@@ -101,7 +106,7 @@ export default class Reseller {
   }
 
   verifyToastMessage(message) {
-    cy.get(toastMessage).should('be.visible').should('contain.text', message);
+    cy.get(toastMessage,{timeout:60000}).should('be.visible').should('contain.text', message);
   }
 
   enterProfileFieldValue(fieldName, value) {
@@ -132,7 +137,7 @@ export default class Reseller {
   }
 
   enterSearchQuery(searchText) {
-    cy.get(searchInputField).clear().type(searchText);
+    cy.get(searchInputField).clear({force:true}).type(searchText);
   }
 
   verifySearchResult(searchQuery) {
@@ -143,16 +148,18 @@ export default class Reseller {
     cy.get(searchInputField).clear();
   }
 
-  verifyAccountStatus(searchQuery, status) {
-    cy.xpath(accountStatus(searchQuery, status)).should('be.visible');
+  verifyAccountStatus(status) {
+    cy.get(accountStatus(status)).should('be.visible');
   }
 
   clickClientDeleteButton(searchQuery) {
-    cy.xpath(clientDeleteBtn(searchQuery)).click();
+    cy.xpath(menuBtn(searchQuery)).click();
+    cy.contains('Delete').click();
   }
 
   clickAccountEditButton() {
     cy.get(accountEditBtn).first().click();
+    cy.contains('Edit').click();
   }
 
   verifyGeneralTabLabels(labels) {
@@ -220,7 +227,14 @@ export default class Reseller {
   }
 
   selectState(state) {
-    cy.get(stateDropdown).select(state);
+    cy.get('body').then(($body) => {
+      if($body.find(stateDropdown).length) {
+        cy.get(stateDropdown).select(state);
+      } else {
+        cy.xpath(selectAdd('State')).click();
+        cy.get(searchBox).type(state).click();
+      }
+    })
   }
 
   clickIPAddIcon() {
@@ -256,7 +270,7 @@ export default class Reseller {
   }
 
   clickTrialButton() {
-    cy.get(trialButton).click();
+    cy.xpath(trialButton).click();
   }
 
   verifyModalDialogOpen() {
@@ -280,7 +294,7 @@ export default class Reseller {
   }
 
   verifyNoOfTrialDays(days) {
-    cy.get(noOfTrialDays).should('have.text', `${days} days`);
+    cy.xpath(noOfTrialDays).should('have.text', `${days}days`);
   }
 
   verifySearchFieldVisible() {
@@ -298,6 +312,18 @@ export default class Reseller {
   }
 
   clickBillingDetailsEditIcon() {
-    cy.get(billingEditIcon).click();
+    cy.get(billingInfoEditBtn).click();
+  }
+
+  clickOnStatusIcon() {
+    cy.get(statusIcon).click();
+  }
+
+  clickDialogBox() {
+    cy.get('body').then($body => {
+      if($body.find(modalDialog).length) {
+        cy.contains('CANCEL').click();
+      }
+    })
   }
 }
