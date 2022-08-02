@@ -277,7 +277,7 @@ describe('SuperVisor Flow', () => {
     suprevisor.verifyRangeSelectRadioBtns(['Day', 'Week', 'Month']);
   });
 
-  it(`Verifies the Floor Map Elements for Supervisor`, () => {
+  it('Verifies the Floor Map Elements for Supervisor', () => {
     suprevisor.clickReportsMenu();
     suprevisor.clickReportsHeader('Floor Map');
     suprevisor.verifyAddNewFloorButton();
