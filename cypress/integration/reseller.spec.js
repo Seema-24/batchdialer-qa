@@ -8,7 +8,7 @@ const login = new Login();
 const register = new Register();
 let fixtureData;
 let testData;
-const randomNumber = Math.floor(Math.random() * 10000);
+const randomNumber = Math.floor(Math.random() * 100000);
 const email = 'testing' + randomNumber + '@test.com';
 const [billto, address, city, state, zip, phone] = [
   'Test User',
