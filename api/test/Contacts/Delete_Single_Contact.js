@@ -14,7 +14,9 @@ const campaign_data = JSON.parse(fs.readFileSync('./api/data/Campaigns/campaign.
 let new_campaignid = "";
 let new_contactid="";
 
-
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 const baseUrl = supertest(token.baseUrl);
 

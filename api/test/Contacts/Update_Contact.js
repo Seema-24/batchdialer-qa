@@ -9,7 +9,6 @@ const Updatecontact_data = JSON.parse(fs.readFileSync('./api/data/Contacts/Updat
 const baseUrl = supertest(token.baseUrl); 
 let randomNumber = [d.getSeconds(), d.getMilliseconds()].join('');
 let randomNumber1 = [d.getSeconds(), d.getMilliseconds()].join('');
-
 let timestamp = [d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getMilliseconds()].join('');
 
 const contact_data = JSON.parse(fs.readFileSync('./api/data/Campaigns/Add_Contact_To_Campaign_or_List.json', 'utf8'));
@@ -54,7 +53,6 @@ const add_contact = async function (request_body, endpoint) {
 const get_phone_number = function () {
     let tStamp = new Date().toISOString().replace(/(-)|(T)|(Z)|(:)|(\.)/g,"");
     let phone_number = tStamp.substring(tStamp.length-10,tStamp.length);
-
     return phone_number;
 }
 
