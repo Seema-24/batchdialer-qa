@@ -27,7 +27,7 @@ describe('Search Contacts Api', async function () {
         let testReqObj = SearchContacts_data.search_contacts;
         const response = await valid_key(testReqObj, '/api/contacts/search');
         body = JSON.parse(JSON.stringify(response.body));
-        console.log(testReqObj); 
+        //console.log(testReqObj); 
         //console.log(body);
         expect(response.status).to.equal(200);
         expect(body[0]).to.have.property("id");
@@ -87,5 +87,25 @@ describe('Search Contacts Api', async function () {
         const response = await invalid_key(testReqObj, '/api/contacts/search');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(403);
+    });
+
+
+    it('should throw error for empty search field', async function () {
+        let testReqObj = SearchContacts_data.empty_searchfield_phonenumbers;
+        const response = await valid_key(testReqObj, '/api/contacts/search');
+        console.log(testReqObj); 
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(400);
+        expect(body.msg).to.equal("Bad Request");
+
+    });
+
+    it('should throw error without passing requied fields', async function () {
+        let testReqObj = SearchContacts_data.empty_searchfield_phonenumbers;
+        const response = await valid_key(testReqObj, '/api/contacts/search');
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(400);
+        expect(body.msg).to.equal("Bad sort field");
+
     });
 });

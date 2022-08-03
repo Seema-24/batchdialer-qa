@@ -5,20 +5,24 @@ const tv4 = require('tv4');
 const fs = require('fs');
 
 const d = new Date();
-let timestamp = [d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getMilliseconds()].join('');
 let randomNumber = [d.getSeconds(), d.getMilliseconds()].join('');
+let randomNumber1 = [d.getSeconds(), d.getMilliseconds()].join('');
+let timestamp = [d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getMilliseconds()].join('');
 const token = JSON.parse(fs.readFileSync('./api/data/token.json', 'utf8'));
 const contact_data = JSON.parse(fs.readFileSync('./api/data/Campaigns/Add_Contact_To_Campaign_or_List.json', 'utf8'));
 const campaign_data = JSON.parse(fs.readFileSync('./api/data/Campaigns/campaign.json', 'utf8'));
 let new_campaignid = "";
 let new_contactid="";
-let phone_number = d.toISOString().split("T")[0].replace(/\-/g,"") + Math.floor(Math.random() * 90 + 10);
+
+
 
 const baseUrl = supertest(token.baseUrl);
 
-//adding timestamp in the contact
-//contact_data.newContact.name = contact_data.newContact.name + timestamp;
-
+const get_phone_number = function () {
+    let tStamp = new Date().toISOString().replace(/(-)|(T)|(Z)|(:)|(\.)/g, "");
+    let phone_number = tStamp.substring(tStamp.length - 10, tStamp.length);
+    return phone_number;
+}
 
 //preparing property APIs request
 const valid_key = async function (endpoint) {
@@ -70,11 +74,15 @@ describe('Delete Contacts API tests', async function () {
 
     it('should add a contact to the campaign', async function () {
         //replacing values with dynamic data in contact.json
-        contact_data.single_contact.campaignid = new_campaignid;
-        contact_data.single_contact.contacts[0].phonenumber = phone_number;
-        contact_data.single_contact.contacts[0].firstname = contact_data.single_contact.contacts[0].firstname + randomNumber;
-
-        let testReqObj = contact_data.single_contact;
+        contact_data.multiple_contact.campaignid = new_campaignid;
+        contact_data.multiple_contact.contacts[0].phonenumber = get_phone_number;
+        await sleep(10);
+        contact_data.multiple_contact.contacts[0].altphonenumber = get_phone_number;
+        await sleep(10);
+        contact_data.multiple_contact.contacts[0].firstname = contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].firstname + randomNumber;
+        await sleep(10);
+        contact_data.multiple_contact.contacts[0].lastname = contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].lastname + randomNumber1;
+        let testReqObj = contact_data.multiple_contact;
         console.log(testReqObj);
         const response = await add_contact(testReqObj, '/api/contacts');
         body = JSON.parse(JSON.stringify(response.body));
