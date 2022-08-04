@@ -1,0 +1,26 @@
+{"resolve_mobile_numbers" : 
+[
+    {
+      "id": 157666430,
+      "num": "6575647564",
+      "callId": 0
+    }
+  ],
+  "resolve_dnc_numbers" : 
+  [
+    {
+      "id": 155911943,
+      "num": "2022072138",
+      "callId": 0
+    }
+  ],
+  "resolve_landline_numbers":
+  [
+    {
+      "id": 155911943,
+      "num": "2022072138",
+      "callId": 0
+    }
+  ]
+  
+}

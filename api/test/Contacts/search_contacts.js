@@ -5,7 +5,7 @@ const tv4 = require('tv4');
 const fs = require('fs');
 
 const token = JSON.parse(fs.readFileSync('./api/data/token.json', 'utf8'));
-const SearchContacts_data = JSON.parse(fs.readFileSync('./api/data/Contacts/Seach_contacts.json', 'utf8'));
+const SearchContacts_data = JSON.parse(fs.readFileSync('./api/data/Contacts/search_contacts.json', 'utf8'));
 
 const baseUrl = supertest(token.baseUrl);
 //preparing property APIs request

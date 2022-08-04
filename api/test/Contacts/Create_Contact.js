@@ -6,7 +6,7 @@ const fs = require('fs');
 const d = new Date();
 const token = JSON.parse(fs.readFileSync('./api/data/token.json', 'utf8'));
 const baseUrl = supertest(token.baseUrl);
-const createcontact_data = JSON.parse(fs.readFileSync('./api/data/Contacts/Create_Contact.json', 'utf8'));
+const createcontact_data = JSON.parse(fs.readFileSync('./api/data/Contacts/create_contact.json', 'utf8'));
 let phone_number = d.toISOString().split("T")[0].replace(/\-/g,"") + Math.floor(Math.random() * 90 + 10);
 
 //prepare valid key APIs request
