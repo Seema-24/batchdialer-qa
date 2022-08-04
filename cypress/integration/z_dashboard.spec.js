@@ -879,4 +879,11 @@ describe('Dashboard Elements', () => {
     Dash.clickSendMessageButton();
     Dash.clickChatCloseButton();
   });
+
+  it('Verify that Next Billing date is displayed in the BILLING INFO section', () => {
+    Dash.clickUserProfile();
+    Dash.clickBilling();
+    Dash.verifyBillingCycle();
+  });
+
 });
