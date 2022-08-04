@@ -262,7 +262,7 @@ describe('Registration', () => {
           Cypress.env('Coupon')
         );
         register.clickAgreeCheckbox();
-        register.enterBillingAddress('63 East June');
+        register.enterBillingAddress('63 East June Circle, Meza, AZ');
         register.selectBillingAddressFromSuggestion( Cypress.env('BillingZip'),'USA');
         register.verifySubscribedNowBtnEnabled();
         register.clickSubscribeBtn();
@@ -270,7 +270,7 @@ describe('Registration', () => {
         cy.wait(1000);
         register.clickOnButton('Continue to dashboard');
         cy.waitFor(cy.get('.main_sec', { timeout: 30000 }));
-        ignoreSpeedTestPopup();
+        skipTourGuidePopup();
         login.verifySuccessfullLogin();
         cy.Logout();
       }
@@ -307,7 +307,7 @@ describe('Registration', () => {
       } else {
         cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
         cy.reload();
-        ignoreSpeedTestPopup();
+        skipTourGuidePopup();
         dashboard.clickUserProfile();
         dashboard.clickBilling();
         register.clickCardEditBtn();
@@ -332,7 +332,7 @@ describe('Registration', () => {
       } else {
         cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
         cy.reload();
-        ignoreSpeedTestPopup();
+        skipTourGuidePopup();
         dashboard.clickUserProfile();
         dashboard.clickProfile();
         register.verifyFirstNameField();
@@ -352,7 +352,7 @@ describe('Registration', () => {
       } else {
         cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
         cy.reload();
-        ignoreSpeedTestPopup();
+        skipTourGuidePopup();
         dashboard.clickUserProfile();
         dashboard.clickProfile();
         register.verifyFirstNameField();
@@ -387,7 +387,7 @@ describe('Registration', () => {
       } else {
         cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
         cy.reload();
-        ignoreSpeedTestPopup();
+        skipTourGuidePopup();
         dashboard.clickUserProfile();
         dashboard.clickProfile();
         register.verifyFirstNameField();
@@ -395,6 +395,7 @@ describe('Registration', () => {
         register.uploadFile(file);
         register.clickOnButton('CROP');
         register.clickOnButton('Save');
+        cy.wait(1000);
         cy.reload();
         ignoreSpeedTestPopup();
         register.verifyAddedProfileAvatar();
@@ -418,6 +419,25 @@ describe('Registration', () => {
         register.verifyFirstNameField();
         register.verifyAddedProfileAvatar();
         register.verifyProfilePictureChange(file);
+        cy.Logout();
+      }
+    })
+  });
+
+  it('Verify that zip code captured during registration process and store in the users billing Profile', () => {
+    cy.url().then((url) => {
+      if(url.includes('app.batchdialer.com')) {
+        cy.log('Not Registering user on Prod');
+      } else {
+        cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
+        cy.reload();
+        ignoreSpeedTestPopup();
+        dashboard.clickUserProfile();
+        dashboard.clickBilling();
+        dashboard.clickBillingDetailsEditIcon();
+        dashboard.verifyZip(Cypress.env('BillingZip'));
+        dashboard.verifyCountry(Cypress.env('Country'));
+        dashboard.clickCancelBtn();
         cy.Logout();
       }
     })
