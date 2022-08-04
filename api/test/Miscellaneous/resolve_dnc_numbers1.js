@@ -5,7 +5,7 @@ const tv4 = require('tv4');
 const fs = require('fs');
 
 const token = JSON.parse(fs.readFileSync('./api/data/token.json', 'utf8'));
-const contact_data = JSON.parse(fs.readFileSync('./api/data/Miscellaneous/resolve_dNC_numbers.json', 'utf8'));
+const contact_data = JSON.parse(fs.readFileSync('./api/data/Miscellaneous/resolve_dnc_numbers.json', 'utf8'));
 const baseUrl = supertest(token.baseUrl);
 //preparing property APIs request
 const valid_key = async function (request_body, endpoint) {
