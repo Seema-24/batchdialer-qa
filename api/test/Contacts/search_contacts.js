@@ -5,7 +5,7 @@ const tv4 = require('tv4');
 const fs = require('fs');
 
 const token = JSON.parse(fs.readFileSync('./api/data/token.json', 'utf8'));
-const SearchContacts_data = JSON.parse(fs.readFileSync('./api/data/Contacts/search_contacts.json', 'utf8'));
+const SearchContacts_data = JSON.parse(fs.readFileSync('./api/data/Contacts/Seach_contacts.json', 'utf8'));
 
 const baseUrl = supertest(token.baseUrl);
 //preparing property APIs request
@@ -95,17 +95,65 @@ describe('Search Contacts Api', async function () {
         const response = await valid_key(testReqObj, '/api/contacts/search');
         console.log(testReqObj); 
         body = JSON.parse(JSON.stringify(response.body));
-        expect(response.status).to.equal(400);
-        expect(body.msg).to.equal("Bad Request");
+        expect(response.status).to.equal(500);
+        expect(body.msg).to.equal("Internal Server Error");
 
     });
 
     it('should throw error without passing requied fields', async function () {
-        let testReqObj = SearchContacts_data.empty_searchfield_phonenumbers;
+        let testReqObj = SearchContacts_data.without_required_fields;
         const response = await valid_key(testReqObj, '/api/contacts/search');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(400);
         expect(body.msg).to.equal("Bad sort field");
+
+    });
+
+    it('should return 200 status code sorting with contacts.id ', async function () {
+        let testReqObj = SearchContacts_data.sorting_with_contactid;
+        const response = await valid_key(testReqObj, '/api/contacts/search');
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(200);
+
+    });
+
+    it('should return 200 status code sorting with name', async function () {
+        let testReqObj = SearchContacts_data.sorting_with_name;
+        const response = await valid_key(testReqObj, '/api/contacts/search');
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(200);
+
+    });
+
+    it('should return 200 status code sorting with phonenumber', async function () {
+        let testReqObj = SearchContacts_data.sorting_with_phonenumber;
+        const response = await valid_key(testReqObj, '/api/contacts/search');
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(200);
+
+    });
+
+    it('should return 200 status code sorting with conatct.score', async function () {
+        let testReqObj = SearchContacts_data.sorting_with_conatctScore;
+        const response = await valid_key(testReqObj, '/api/contacts/search');
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(200);
+
+    });
+
+    it('should return 200 status code sorting with contacts.dialedcount', async function () {
+        let testReqObj = SearchContacts_data.sorting_with_contactsdialedcount;
+        const response = await valid_key(testReqObj, '/api/contacts/search');
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(200);
+
+    });
+
+    it('should return 200 status code sorting with contacts.lastcallid', async function () {
+        let testReqObj = SearchContacts_data.sorting_with_contactslastcallid;
+        const response = await valid_key(testReqObj, '/api/contacts/search');
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(200);
 
     });
 });

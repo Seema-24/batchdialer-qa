@@ -29,13 +29,13 @@ const valid_key = async function (endpoint, comment) {
         .field('comment', comment)
 }
 
-const invalid_key = async function (request_body, endpoint) {
+const invalid_key = async function (endpoint) {
     return baseUrl.post(endpoint)
         .set('Content-Type', 'application/json')
-        .set('X-ApiKey', `${token.invalid_apiKey}`)
-        .send(request_body);
-
+        .set('X-ApiKey', `${token.invalid_apiKey}`);
 }
+
+
 //prepare add a new contact to the campaign
 const add_contact = async function (request_body, endpoint) {
     return baseUrl.post(endpoint)
@@ -93,13 +93,25 @@ describe('should Add Comment to Contact', async function () {
         const response = await valid_key(`/api/contact/${new_contactid}/comment`, comment);
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
+        expect(body).to.have.property("id")
 
     });
-    /*
-        it('should return 403 status code for invaild api key', async function () {
-             let testReqObj = _data.Create_Contact_Comment;
-             const response = await valid_key(testReqObj, '/api/contact/150545516/comment');
-             body = JSON.parse(JSON.stringify(response.body));
-             expect(response.status).to.equal(403);
-         });*/
+
+    it('should return 403 status code for invaild api key', async function () {
+        const comment =  `This is a test comment added by automated test ${randomNumber}`
+        const response = await invalid_key( `/api/contact/${new_contactid}/comment`, comment);
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(403);
+        expect(body.msg).to.equal("Wrong API key");
+
+    });
+
+    
+   it('should throw error for passing empty comment', async function () {
+        const comment = ''
+        const response = await valid_key( `/api/contact/${new_contactid}/comment`, comment);
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(400);
+        expect(body.msg).to.equal("Please enter comment");
+    });
 });

@@ -1,0 +1,26 @@
+{
+    "Create_Contact_Appointment" :
+    {
+      "title": "this is appointment for testing api33",
+      "description": "description225",
+      "status": "pending",
+      "duedate": "2022-08-25T00:00:00Z"
+    }
+  ,
+  
+  "Create_Appointment_without_status" :
+  {
+    "title": "this is appointment for testing api22",
+    "description": "description225",
+    "status": "",
+    "duedate": "2022-08-25T00:00:00Z"
+  },
+
+  "Create_Appointment_without_date" :
+  {
+    "title": "this is appointment for testing api11",
+    "description": "description225",
+    "status": "pending",
+    "duedate": ""
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "search_contacts": {
+    "filter": {
+      "search": "1",
+      "dialed": "",
+      "dialedcount": [
+        1
+      ],
+      "score": [
+        1
+      ],
+      "listid": 0,
+      "salemade": 0,
+      "appointmentmade": 0
+    },
+    "sortfield": "contacts.id",
+    "sortdir": "asc",
+    "page": 1,
+    "pagelength": 10
+  },
+  "empty_searchfield_phonenumbers": {
+    "filter": {
+      "search": "",
+      "dialed": "",
+      "dialedcount": [
+        0
+      ],
+      "score": [
+        0
+      ],
+      "listid": 0,
+      "salemade": 0,
+      "appointmentmade": 0
+    },
+    "sortfield": "phonenumbers.phonenumber",
+    "sortdir": "asc",
+    "page": 1,
+    "pagelength": 10
+  },
+  "without_required_fields": 
+
+  {
+    "filter": {
+      "search": "",
+      "dialed": "",
+      "dialedcount": [ 0 ],
+      "score": [ 0 ],
+      "listid": 0,
+      "salemade": 0,
+      "appointmentmade": 0
+    },
+    "sortfield": "",
+    "sortdir": "",
+    "page": 0,
+    "pagelength": 0
+  },
+  "sorting_with_contactid" : {
+    "filter": {
+      "search": "a",
+      "dialed": "",
+      "dialedcount": [
+        0
+      ],
+      "score": [
+        0
+      ],
+      "listid": 0,
+      "salemade": 0,
+      "appointmentmade": 0
+    },
+    "sortfield": "contacts.id",
+    "sortdir": "desc",
+    "page": 1,
+    "pagelength": 10
+  },
+  "sorting_with_name" : {
+    "filter": {
+      "search": "a",
+      "dialed": "",
+      "dialedcount": [
+        0
+      ],
+      "score": [
+        0
+      ],
+      "listid": 0,
+      "salemade": 0,
+      "appointmentmade": 0
+    },
+    "sortfield": "name",
+    "sortdir": "desc",
+    "page": 1,
+    "pagelength": 10
+  },
+  "sorting_with_phonenumber" :
+  {
+    "filter": {
+      "search": "a",
+      "dialed": "",
+      "dialedcount": [
+        0
+      ],
+      "score": [
+        0
+      ],
+      "listid": 0,
+      "salemade": 0,
+      "appointmentmade": 0
+    },
+    "sortfield": "phonenumbers.phonenumber",
+    "sortdir": "desc",
+    "page": 1,
+    "pagelength": 10
+  },
+  "sorting_with_conatctScore" : {
+    "filter": {
+      "search": "a",
+      "dialed": "",
+      "dialedcount": [
+        0
+      ],
+      "score": [
+        0
+      ],
+      "listid": 0,
+      "salemade": 0,
+      "appointmentmade": 0
+    },
+    "sortfield": "contacts.score",
+    "sortdir": "desc",
+    "page": 1,
+    "pagelength": 10
+  },
+  "sorting_with_contactsdialedcount" : {
+    "filter": {
+      "search": "a",
+      "dialed": "",
+      "dialedcount": [
+        0
+      ],
+      "score": [
+        0
+      ],
+      "listid": 0,
+      "salemade": 0,
+      "appointmentmade": 0
+    },
+    "sortfield": "contacts.dialedcount",
+    "sortdir": "desc",
+    "page": 1,
+    "pagelength": 10
+  },
+  "sorting_with_contactslastcallid" : {
+    "filter": {
+      "search": "a",
+      "dialed": "",
+      "dialedcount": [
+        0
+      ],
+      "score": [
+        0
+      ],
+      "listid": 0,
+      "salemade": 0,
+      "appointmentmade": 0
+    },
+    "sortfield": "contacts.lastcallid",
+    "sortdir": "desc",
+    "page": 1,
+    "pagelength": 10
+  }
+}

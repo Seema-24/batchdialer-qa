@@ -15,10 +15,10 @@ const contact_data = JSON.parse(fs.readFileSync('./api/data/Campaigns/Add_Contac
 const campaign_data = JSON.parse(fs.readFileSync('./api/data/Campaigns/campaign.json', 'utf8'));
 let new_campaignid = "";
 let new_contactid = "";
-//let phone_number = d.toISOString().split("T")[0].replace(/\-/g, "") + Math.floor(Math.random() * 90 + 10);
-//let phone_number1 = d.toISOString().split("T")[0].replace(/\-/g, "") + Math.floor(Math.random() * 90 + 10);
-//let phone_number13 = d.toISOString().split("T")[0].replace(/\-/g, "") + Math.floor(Math.random() * 90 + 10);
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 //prepare create new campaign API request
 const create_campaign = async function (request_body, endpoint) {
@@ -69,13 +69,16 @@ describe('Update Contact Api', async function () {
         expect(response.status).to.equal(200);
     });
 
-
     it('should add a contact to the campaign', async function () {
         //replacing values with dynamic data in contact.json
         contact_data.Addcontacts_withSingle_PhoneNumber.campaignid = new_campaignid;
+
         contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].phonenumber = get_phone_number();
+        await sleep(10);
         contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].altphonenumber = get_phone_number();
+        await sleep(10);
         contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].firstname = contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].firstname + randomNumber;
+        await sleep(10);
         contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].lastname = contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].lastname + randomNumber1;
         let testReqObj = contact_data.Addcontacts_withSingle_PhoneNumber;
         console.log(testReqObj);
@@ -87,8 +90,9 @@ describe('Update Contact Api', async function () {
     });
 
     it('should return 200 status code and update contact', async function () {
-        Updatecontact_data.UpdateContact.phonenumbers[0].phonenumber = get_phone_number();
-        let testReqObj = Updatecontact_data.UpdateContact;
+        Updatecontact_data.UpdateContact_withoutlist.phonenumbers[0].phonenumber = get_phone_number();
+        await sleep(10);
+        let testReqObj = Updatecontact_data.UpdateContact_withoutlist;
         console.log(testReqObj);
         const response = await valid_key(testReqObj, `/api/contact/${new_contactid}`);
         body = JSON.parse(JSON.stringify(response.body));
@@ -147,16 +151,64 @@ describe('Update Contact Api', async function () {
     });
 
     it('should return 403 status code for invaild api key', async function () {
-        let testReqObj = Updatecontact_data.UpdateContact;
+        let testReqObj = Updatecontact_data.UpdateContact_with_multiplelist;
         const response = await invalid_key(testReqObj, `/api/contact/${new_contactid}`);
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(403);
     });
 
-    /*it('should return 200 update new list in the contact', async function () {
-        let testReqObj = Updatecontact_data.UpdateContact_list;
+    it('should return 404 status code for invaild URL', async function () {
+        let testReqObj = Updatecontact_data.UpdateContact_with_multiplelist;
+        const response = await valid_key(testReqObj, `/api/contac/${new_contactid}`);
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(404);
+    });
+
+    it('should return 200 update multiple list in the contact', async function () {
+       Updatecontact_data.UpdateContact_with_multiplelist.phonenumbers[0].phonenumber = get_phone_number();
+       await sleep(10);
+        let testReqObj = Updatecontact_data.UpdateContact_with_multiplelist;
+        console.log(testReqObj);
+        const response = await valid_key(testReqObj, `/api/contact/${new_contactid}`);
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(200);
+    });
+
+  
+   /* it('should delete contact without passing phonenumber field', async function () {
+        let testReqObj = Updatecontact_data.UpdateContact_with_nophonenumber;
+       // console.log(testReqObj);
         const response = await valid_key(testReqObj, `/api/contact/${new_contactid}`);
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
     });*/
+    
+    it('should throw error for invaild contact id ', async function () {
+        let testReqObj = Updatecontact_data.UpdateContact_with_nophonenumber;
+       // console.log(testReqObj);
+        const response = await valid_key(testReqObj, '/api/contact/158461546}');
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(404);
+        //expect(body.msg).to.equal("Contact is deleted or does not exist");
+    });
+
+    it('should throw error without passing numberid ', async function () {
+        let testReqObj = Updatecontact_data.emptynumber_and_numberidZero;
+       // console.log(testReqObj);
+       const response = await valid_key(testReqObj, `/api/contact/${new_contactid}`);
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(400);
+        expect(body.msg).to.equal("Please enter at least one valid phone number OR valid numberid");
+    });
+
+    it('should return 200 update single list in the contact', async function () {
+        Updatecontact_data.UpdateContact_with_singlelist.phonenumbers[0].phonenumber = get_phone_number();
+        await sleep(10);
+         let testReqObj = Updatecontact_data.UpdateContact_with_singlelist;
+         console.log(testReqObj);
+         const response = await valid_key(testReqObj, `/api/contact/${new_contactid}`);
+         body = JSON.parse(JSON.stringify(response.body));
+         expect(response.status).to.equal(200);
+     });
+
 });

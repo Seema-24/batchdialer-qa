@@ -1,5 +1,5 @@
 {
-    "UpdateContact" :
+    "UpdateContact_withoutlist" :
     {
         "lists": [
         ],
@@ -26,7 +26,7 @@
         "mailingpostalcode": "70117",
         "email": "api@test.com"
       },
-      "UpdateContact_list" :  {
+      "UpdateContact_with_multiplelist" :  {
         "lists": [
             {
       "id": 182765
@@ -57,5 +57,82 @@
         "mailingstate": "LA",
         "mailingpostalcode": "70117",
         "email": "api@test.com"
-      }
+      },
+      "UpdateContact_with_nophonenumber" : {
+        "lists": [
+          {
+            "id": 186266
+          },
+          {
+            "id": 186265
+          }
+        ],
+        "vendorcontactid": "",
+        "phonenumbers": [
+          {
+            "numberid": 1,
+            "phonenumber": "",
+            "numbertype": "Mobile",
+            "dnc": 1,
+            "tested": 1,
+            "reachable": 1
+          }
+        ],
+        "firstname": "HELEN",
+        "lastname": "GUIDRY",
+        "address": "2325 Saint Claude Ave",
+        "city": "New Orleans",
+        "state": "LA",
+        "postalcode": "70117",
+        "mailingaddress": "2325 Saint Claude Ave",
+        "mailingcity": "New Orleans",
+        "mailingstate": "LA",
+        "mailingpostalcode": "70117",
+        "email": "test@api.com"
+      },
+
+      "UpdateContact_with_singlelist" : {
+        "lists": [
+          {
+            "id": 186266
+          }
+        ],
+        "vendorcontactid": "",
+        "phonenumbers": [
+          {
+            "numberid": 1,
+            "phonenumber": "",
+            "numbertype": "Mobile",
+            "dnc": 1,
+            "tested": 1,
+            "reachable": 1
+          }
+        ],
+        "firstname": "HELEN",
+        "lastname": "GUIDRY",
+        "address": "2325 Saint Claude Ave",
+        "city": "New Orleans",
+        "state": "LA",
+        "postalcode": "70117",
+        "mailingaddress": "2325 Saint Claude Ave",
+        "mailingcity": "New Orleans",
+        "mailingstate": "LA",
+        "mailingpostalcode": "70117",
+        "email": "test@api.com"
+      },
+
+    "emptynumber_and_numberidZero" : {
+      "lists": [
+      
+      
+      ],
+      "vendorcontactid": "",
+      "phonenumbers": [
+        {
+          "numberid": 0,
+          "phonenumber": ""
+        }
+      ]
+     
+    }
 }

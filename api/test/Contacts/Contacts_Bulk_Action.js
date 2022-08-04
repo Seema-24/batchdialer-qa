@@ -7,6 +7,15 @@ const fs = require('fs');
 const token = JSON.parse(fs.readFileSync('./api/data/token.json', 'utf8'));
 const baseUrl = supertest(token.baseUrl);
 const bulkAction_data = JSON.parse(fs.readFileSync('./api/data/Contacts/bulk_action_on_contacts.json', 'utf8'));
+const d = new Date();
+let randomNumber = [d.getSeconds(), d.getMilliseconds()].join('');
+let randomNumber1 = [d.getSeconds(), d.getMilliseconds()].join('');
+let timestamp = [d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getMilliseconds()].join('');
+const contact_data = JSON.parse(fs.readFileSync('./api/data/Campaigns/Add_Contact_To_Campaign_or_List.json', 'utf8'));
+const campaign_data = JSON.parse(fs.readFileSync('./api/data/Campaigns/campaign.json', 'utf8'));
+let new_campaignid = "";
+let new_contactid="";
+
 
 
 //create new API request
@@ -40,17 +49,17 @@ describe('Bulk Action on Contacts API tests', async function () {
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
         expect(body.affected).to.equal(1);
-       //expect(body).to.have.property("affected");
+        expect(body).to.have.property("affected");
 
     });
 
-    it('should return status code 200 ', async function () {
+    it('Bulk Action List', async function () {
         let testReqObj = bulkAction_data.Action_on_list;
         const response = await bulkAction(testReqObj, '/api/contacts/bulk');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
-       //expect(body.affected).to.equal(0);
-       expect(body).to.have.property("affected");
+        expect(body.affected).to.equal(0);
+        expect(body).to.have.property("affected");
 
     });
 
@@ -63,14 +72,14 @@ describe('Bulk Action on Contacts API tests', async function () {
 
     });
 
-    
-    it('bulk action dnc ', async function () {
+
+    it('Bulk Action dnc', async function () {
         let testReqObj = bulkAction_data.Action_on_dnc;
         const response = await bulkAction(testReqObj, '/api/contacts/bulk');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
-       //expect(body.affected).to.equal(0);
-       expect(body).to.have.property("affected");
+        expect(body.affected).to.equal(0);
+        expect(body).to.have.property("affected");
 
     });
 
