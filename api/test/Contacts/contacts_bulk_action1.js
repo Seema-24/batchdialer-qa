@@ -4,36 +4,53 @@ const mocha = require('mocha')
 const tv4 = require('tv4');
 const fs = require('fs');
 
+const bulkAction_data = JSON.parse(fs.readFileSync('./api/data/Contacts/bulk_action_on_contacts.json', 'utf8'));
 const d = new Date();
 let randomNumber = [d.getSeconds(), d.getMilliseconds()].join('');
-
 let randomNumber1 = [d.getSeconds(), d.getMilliseconds()].join('');
 let timestamp = [d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getMilliseconds()].join('');
 const token = JSON.parse(fs.readFileSync('./api/data/token.json', 'utf8'));
-const baseUrl = supertest(token.baseUrl);
 const contact_data = JSON.parse(fs.readFileSync('./api/data/Campaigns/add_contact_to_campaign_or_list.json', 'utf8'));
 const campaign_data = JSON.parse(fs.readFileSync('./api/data/Campaigns/campaign.json', 'utf8'));
 let new_campaignid = "";
-let new_contactid="";
+let new_contactid = "";
+const baseUrl = supertest(token.baseUrl);
+
+
+
+
+
+//prepare valid key APIs request
+const valid_key = async function (request_body, endpoint) {
+    return baseUrl.post(endpoint)
+        .set('Content-Type', 'application/json')
+        .set('X-ApiKey', `${token.apiKey}`)
+        .send(request_body);
+}
+const invalid_key = async function (request_body, endpoint) {
+    return baseUrl.post(endpoint)
+        .set('Content-Type', 'application/json')
+        .set('X-ApiKey', `${token.invalid_apiKey}`)
+        .send(request_body);
+}
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-
-
-//preparing property APIs request
-const valid_key = async function (endpoint) {
-    return baseUrl.delete(endpoint)
+//create new API request
+const bulkAction = async function (request_body, endpoint) {
+    return baseUrl.post(endpoint)
         .set('Content-Type', 'application/json')
-        .set('X-ApiKey', `${token.apiKey}`);
-}
-const invalid_key = async function (endpoint) {
-    return baseUrl.delete(endpoint)
-        .set('Content-Type', 'application/json')
-        .set('X-ApiKey', `${token.invalid_apiKey}`);
+        .set('X-Token', `${token.internal_token}`)
+        .send(request_body);
 }
 
+const get_phone_number = function () {
+    let tStamp = new Date().toISOString().replace(/(-)|(T)|(Z)|(:)|(\.)/g, "");
+    let phone_number = tStamp.substring(tStamp.length - 10, tStamp.length);
+    return phone_number;
+}
 //prepare create new campaign API request
 const create_campaign = async function (request_body, endpoint) {
     return baseUrl.post(endpoint)
@@ -50,21 +67,8 @@ const add_contact = async function (request_body, endpoint) {
         .send(request_body);
 }
 
-//prepare delete a contact to the campaign
-const delete_contact = async function (endpoint) {
-    return baseUrl.delete(endpoint)
-        .set('Content-Type', 'application/json')
-        .set('X-ApiKey', `${token.apiKey}`);
-}
 
-const get_phone_number = function () {
-    let tStamp = new Date().toISOString().replace(/(-)|(T)|(Z)|(:)|(\.)/g, "");
-    let phone_number = tStamp.substring(tStamp. length - 10, tStamp.length);
-    return phone_number;
-}
-
-
-describe('Delete Contacts API tests', async function () {
+describe('Bulk Action on Contacts API tests', async function () {
 
     it('should create a new campaign to add contacts', async function () {
         //adding timestamp in the campaignname
@@ -96,29 +100,58 @@ describe('Delete Contacts API tests', async function () {
         new_contactid = body.ids[0];
         console.log(new_contactid);
     });
-  
-    it('should delete contact created above', async function () {
-        const response = await valid_key(`/api/contact/${new_contactid}`);
+
+    it('Bulk Action Campaign', async function () {
+        bulkAction_data.Action_Camp.value = new_campaignid;
+        bulkAction_data.Action_Camp.items[0] = new_contactid;
+        let testReqObj = bulkAction_data.Action_Camp;
+        const response = await bulkAction(testReqObj, '/api/contacts/bulk');
         body = JSON.parse(JSON.stringify(response.body));
-        console.log(body);
         expect(response.status).to.equal(200);
-        expect(body).to.equal("OK");
+        expect(body.affected).to.equal(1);
+        expect(body).to.have.property("affected");
+
     });
-    
-    it('should return status code 403 with invalid key', async function () {
-        const response = await invalid_key(`/api/contact/${new_contactid}`);
+
+    it('should throw error for invalid api key', async function () {
+        let testReqObj = bulkAction_data.Action_Camp;
+        const response = await invalid_key(testReqObj, '/api/contacts/bulk');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(403);
         expect(body.msg).to.equal("Wrong API key");
+
     });
 
-    it('should return status code 404 for invaild id', async function () {
-        const response = await valid_key('/api/contact/158461546');
+    it('Bulk Action Delete', async function () {
+        bulkAction_data.Action_delete.items[0] = new_contactid;
+        let testReqObj = bulkAction_data.Action_delete;
+        const response = await bulkAction(testReqObj, '/api/contacts/bulk');
         body = JSON.parse(JSON.stringify(response.body));
-        expect(response.status).to.equal(404);
-        expect(body.msg).to.equal("Contact not found");
-    });
-    
-});
+        expect(response.status).to.equal(200);
+        expect(body.affected).to.equal(1);
+        expect(body).to.have.property("affected");
 
-    
+    });
+
+    /*it('Bulk Action DNC', async function () {
+        bulkAction_data.Action_dnc.items[0] = new_contactid;
+        bulkAction_data.Action_dnc.value = new_campaignid;
+        let testReqObj = bulkAction_data.Action_dnc;
+        const response = await bulkAction(testReqObj, '/api/contacts/bulk');
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(200);
+        expect(body.affected).to.equal(1);
+        expect(body).to.have.property("affected");
+
+    });*/
+
+    it('Bulk Action List', async function () {
+        //bulkAction_data.Action_List.items[0] = new_contactid;
+        let testReqObj = bulkAction_data.Action_List;
+        const response = await bulkAction(testReqObj, '/api/contacts/bulk');
+        body = JSON.parse(JSON.stringify(response.body));
+        expect(response.status).to.equal(200);
+        //expect(body.affected).to.equal(1);
+        expect(body).to.have.property("affected");
+});
+});

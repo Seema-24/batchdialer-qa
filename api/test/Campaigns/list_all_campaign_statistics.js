@@ -7,7 +7,6 @@ const fs = require('fs');
 const token = JSON.parse(fs.readFileSync('./api/data/token.json', 'utf8'));
 const baseUrl = supertest(token.baseUrl);
 
-
 //preparing property APIs request
 const valid_key = async function (endpoint) {
     return baseUrl.get(endpoint)

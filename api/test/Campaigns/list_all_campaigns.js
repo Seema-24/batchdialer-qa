@@ -11,6 +11,7 @@ const token = JSON.parse(fs.readFileSync('./api/data/token.json', 'utf8'));
 const campaign_data = JSON.parse(fs.readFileSync('./api/data/Campaigns/campaign.json', 'utf8'));
 
 
+
 //adding timestamp in the campaignname
 campaign_data.newCampaign.name = campaign_data.newCampaign.name + timestamp;
 const baseUrl = supertest(token.baseUrl);

@@ -90,6 +90,7 @@ describe('Create Contact Appointment', async function () {
 
 
     it('should Create Contact Appointment', async function () {
+        createAppointment_data.Create_Contact_Appointment.description = createAppointment_data.Create_Contact_Appointment.description + randomNumber;
         let testReqObj = createAppointment_data.Create_Contact_Appointment;
         createAppointment_data.Create_Contact_Appointment.duedate = new Date(d.setDate(d.getDate() + 5));
         const response = await valid_key(testReqObj, `/api/contact/${new_contactid}/appointment`);

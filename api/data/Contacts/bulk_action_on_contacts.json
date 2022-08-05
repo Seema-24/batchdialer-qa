@@ -1,5 +1,5 @@
 {
-    "Action_on_Camp":
+    "Action_Camp":
     {
       "items": [
         157673765
@@ -8,7 +8,7 @@
       "value": 104208
     },
 
-    "Action_on_list":
+    "Action_list":
     {
       "items": [
         157673765
@@ -16,12 +16,28 @@
       "action": "list",
       "value": 182803
     },
-    "Action_on_dnc":
+    "Action_dnc":
     {
       "items": [
         157673765
       ],
       "action": "dnc",
       "value": 0
+    },
+    "Action_delete":
+    {
+      "items": [
+        157673765
+      ],
+      "action": "delete",
+      "value": 0
+    },
+    "Action_List":
+    {
+      "items": [
+        160568501
+      ],
+      "action": "list",
+      "value": 186838
     }
 }
