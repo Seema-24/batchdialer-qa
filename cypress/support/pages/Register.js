@@ -393,6 +393,7 @@ export default class Register {
       this.uploadFile(fileName);
       this.clickOnButton('CROP');
       this.clickOnButton('Save');
+      cy.wait(1000);
       cy.reload();
       ignoreSpeedTestPopup();
       cy.get(profilePictureAdded).then((pic) => {
@@ -415,7 +416,7 @@ export default class Register {
   }
 
   enterBillingAddress(address) {
-    cy.get(billingAddressInput).type(address, { delay: 10 });
+    cy.get(billingAddressInput).type(address, { delay: 100 });
   }
 
   selectBillingAddressFromSuggestion(zip,city) {

@@ -234,6 +234,9 @@ const userRoleName = '.sign-user.sign-role';
 const userTreeSearchBox = '.dropdown-usertree-search__input';
 const searchedUserName = '.group-row-role__left__title';
 const userTreeDropdown = 'div.dropdown-usertree.show';
+const billingCycle = '.billing-user-info__period__period';
+const billingInfoEditBtn = '.billing-user-info__wrapper .billing-user-info__edit.btn';
+const addDropdown = (add) => `//label[text() ="${add}"]/parent::div/child::div//span[@class="ss-select-value"]/span`;
 
 export default class Dashboard {
   clickDashboard() {
@@ -1609,5 +1612,27 @@ export default class Dashboard {
 
   clickOnBody() {
     cy.get('body').click();
+  }
+
+  verifyBillingCycle() {
+    cy.url().then((url) => {
+      if (url.includes('app.batchdialer.com')) {
+        cy.get(billingCycle).should('contain.text', 'Every 8th of each month');
+      } else {
+        cy.get(billingCycle).should('contain.text', 'Every 19th of each month');
+      }
+    });
+  }
+
+   clickBillingDetailsEditIcon() {
+    cy.get(billingInfoEditBtn).click();
+  }
+
+  verifyZip(Zip) {
+    cy.get(zip).should('have.value', Zip);
+  }
+
+  verifyCountry(country) {
+    cy.xpath(addDropdown('Country')).should('have.text', country);
   }
 }
