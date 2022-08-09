@@ -282,6 +282,7 @@ describe('Registration', () => {
       if(url.includes('app.batchdialer.com')) {
         cy.log('Not Registering user on Prod');
       } else {
+        login.verifyCloseApp();
         cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
         skipTourGuidePopup();
         phone.clickPhoneNumberMenu();
@@ -305,6 +306,7 @@ describe('Registration', () => {
       if(url.includes('app.batchdialer.com')) {
         cy.log('Not Registering user on Prod');
       } else {
+        login.verifyCloseApp();
         cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
         cy.reload();
         skipTourGuidePopup();
@@ -330,6 +332,7 @@ describe('Registration', () => {
       if(url.includes('app.batchdialer.com')) {
         cy.log('Not Registering user on Prod');
       } else {
+        login.verifyCloseApp();
         cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
         cy.reload();
         skipTourGuidePopup();
@@ -350,6 +353,7 @@ describe('Registration', () => {
       if(url.includes('app.batchdialer.com')) {
         cy.log('Not Registering user on Prod');
       } else {
+        login.verifyCloseApp();
         cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
         cy.reload();
         skipTourGuidePopup();
@@ -371,6 +375,7 @@ describe('Registration', () => {
       if(url.includes('app.batchdialer.com')) {
         cy.log('Not Registering user on Prod');
       } else {
+        login.verifyCloseApp();
         cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
         cy.reload();
         ignoreSpeedTestPopup();
@@ -385,6 +390,7 @@ describe('Registration', () => {
       if(url.includes('app.batchdialer.com')) {
         cy.log('Not Registering user on Prod');
       } else {
+        login.verifyCloseApp();
         cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
         cy.reload();
         skipTourGuidePopup();
@@ -411,6 +417,7 @@ describe('Registration', () => {
       if(url.includes('app.batchdialer.com')) {
         cy.log('Not Registering user on Prod');
       } else {
+        login.verifyCloseApp();
         cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
         cy.reload();
         ignoreSpeedTestPopup();
@@ -429,6 +436,7 @@ describe('Registration', () => {
       if(url.includes('app.batchdialer.com')) {
         cy.log('Not Registering user on Prod');
       } else {
+        login.verifyCloseApp();
         cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
         cy.reload();
         ignoreSpeedTestPopup();
@@ -449,6 +457,7 @@ describe('Registration', () => {
       if (url.includes('app.batchdialer.com')) {
         cy.log('Not performing Account Reactivation on Production');
       } else {
+        login.verifyCloseApp();
         cy.Login('god', 'god');
         register.clickUserTreeDropdown('Switch Account');
         register.clickOnUser('First Tenant');
@@ -471,6 +480,7 @@ describe('Registration', () => {
       if (url.includes('app.batchdialer.com')) {
         cy.log('Not performing Account Reactivation on Production');
       } else {
+        login.verifyCloseApp();
         login.enterEmailtoSignin('testing@test.com');
         login.enterPasswordToSignin('Fleek@2016');
         login.clickTermsCheckBox();
