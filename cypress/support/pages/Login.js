@@ -80,4 +80,12 @@ export default class Login {
   verifyErrorMessage(message) {
     cy.get(errorMessage).should('contain.text', message);
   }
+
+  verifyCloseApp() {
+    cy.get('body').then(($body) => {
+      if($body.find(dashboardProfilePic).length) {
+        cy.logout();
+      }
+    })
+  }
 }

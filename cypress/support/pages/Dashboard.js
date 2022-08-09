@@ -237,6 +237,9 @@ const userTreeDropdown = 'div.dropdown-usertree.show';
 const billingCycle = '.billing-user-info__period__period';
 const billingInfoEditBtn = '.billing-user-info__wrapper .billing-user-info__edit.btn';
 const addDropdown = (add) => `//label[text() ="${add}"]/parent::div/child::div//span[@class="ss-select-value"]/span`;
+const selectState = (state) => `//div[text() ="${state}"]/parent::div/child::div//span[@class="ss-select-value-label single"]`;
+const billingBtn = (btn) => `//button[@class="billing-button"][text()="${btn}"]`;
+const successToastMsg = '.mytoast-bottom';
 
 export default class Dashboard {
   clickDashboard() {
@@ -532,7 +535,7 @@ export default class Dashboard {
   }
 
   clickBilling() {
-    cy.get(billing).click();
+    cy.get(billing).click({force:true});
   }
 
   clickLeadSheetName() {
@@ -1223,7 +1226,7 @@ export default class Dashboard {
 
   clickCancelImmediately() {
     cy.get('button').then((button) => {
-      for (let i = 0; i < button.length; i++) {
+      for (let  i = 0; i < button.length; i++) {
         if (button[i].textContent.trim() === 'Cancel Immediately') {
           cy.get(button[i]).click();
           break;
@@ -1232,11 +1235,8 @@ export default class Dashboard {
     });
   }
 
-  verifyContactSupportWindow() {
-    cy.get('.modal-content p').should(
-      'have.text',
-      'Your cancellation request has been successfully submitted. We will reach out to you within 24-48 hours for an update.'
-    );
+  verifyContactSupportWindow(msg) {
+    cy.get('.modal-content p').should('have.text', msg);
   }
 
   clickDialogCloseButton() {
@@ -1634,5 +1634,41 @@ export default class Dashboard {
 
   verifyCountry(country) {
     cy.xpath(addDropdown('Country')).should('have.text', country);
+  }
+
+  selectState(state) {
+    cy.xpath(selectState('Select State')).click();
+    cy.get('.ss-select-option').then((el) => {
+      for (let i = 0; i < el.length; i++) {
+        if (el[i].textContent.trim() === state) {
+          cy.get(el[i]).scrollIntoView().click({ force: true });
+          break;
+        }
+      }
+    });
+  }
+
+  clickBillingNotificationBtn(btn) {
+    cy.xpath(billingBtn(btn)).click();
+  }
+
+  ClickSubscriptionOnHoldBtn() {
+    cy.wait(500);
+    cy.get('button').then((button) => {
+      for (let i = 0; i < button.length; i++) {
+        if (button[i].textContent.trim() === 'Put Subscription On Hold') {
+          cy.get(button[i]).click();
+          break;
+        }
+      }
+    });
+  }
+
+  verifySuccessMsg(msg) {
+    cy.get(successToastMsg).should('have.text',msg);
+  }
+
+  verifyState(state) {
+    cy.xpath(selectState('Select State')).should('have.text', state);
   }
 }

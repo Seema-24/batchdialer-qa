@@ -655,7 +655,9 @@ describe('Dashboard Elements', () => {
     Dash.EnterConfirmCancelAccount('DELETE');
     Dash.clickProceedWithCancel();
     Dash.clickCancelImmediately();
-    Dash.verifyContactSupportWindow();
+    Dash.verifyContactSupportWindow(
+      'Your cancellation request has been successfully submitted. We will reach out to you within 24-48 hours for an update.'
+    );
     Dash.clickDialogCloseButton();
   });
 
@@ -886,4 +888,53 @@ describe('Dashboard Elements', () => {
     Dash.verifyBillingCycle();
   });
 
+  it('Verify that State name is prefilled in the feedback form  If the state info is present in the Billing profile', () => {
+    Dash.clickCancelAccount();
+    Dash.chooseCancelAccountReason('It Costs Too Much');
+    Dash.EnterConfirmCancelAccount('DELETE');
+    Dash.verifyState('NY');
+    Dash.clickDialogCloseButton();
+  });
+
+
+  it('Verify that the authorized user is able to cancel the account states other than CA, NY, OR', () => {
+    Dash.clickCancelAccount();
+    Dash.chooseCancelAccountReason('It Costs Too Much');
+    Dash.EnterConfirmCancelAccount('DELETE');
+    Dash.selectState('AZ');
+    Dash.clickProceedWithCancel();
+    Dash.clickCancelImmediately();
+    Dash.verifyContactSupportWindow(
+      'Your Cancellation Request has been successfully submitted. Please reach out to your Account Manager to finalize request.'
+    );
+    Dash.clickDialogCloseButton();
+    Dash.clickBillingNotificationBtn('Renew Subscription');
+    Dash.verifySuccessMsg('Your subscription has been renewed');
+  });
+
+  it('Verify that the authorized user is able to cancel the account states CA, NY OR', () => {
+    Dash.clickCancelAccount();
+    Dash.chooseCancelAccountReason('It Costs Too Much');
+    Dash.EnterConfirmCancelAccount('DELETE');
+    Dash.selectState('CA');  //NY OR
+    Dash.clickProceedWithCancel();
+    Dash.clickCancelImmediately();
+    Dash.verifyContactSupportWindow(
+      'Your request for cancellation has been submitted successfully. Your plan will be cancelled at the end of the current billing cycle.'
+    );
+    Dash.clickDialogCloseButton();
+  });
+
+  it('Verify the functionality of PAUSE INSTEAD button in the Cancelled notification.', () => {
+    Dash.clickBillingNotificationBtn('Pause Instead');
+    Dash.ClickSubscriptionOnHoldBtn();
+    Dash.verifySuccessMsg('Your account pause has been scheduled');
+    cy.reload();
+    ignoreSpeedTestPopup();
+  });
+
+  it('Verify the functionality of RENEW SUBSCRIPTION in the Cancelled Notification', () => {
+    Dash.clickBillingNotificationBtn('Renew Subscription');
+    Dash.verifySuccessMsg('Your subscription has been renewed');
+  });
 });
