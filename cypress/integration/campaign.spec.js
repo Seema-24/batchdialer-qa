@@ -100,7 +100,7 @@ describe('Add Campaign flow', () => {
     addCamp.enterSimultaneousDials(3);
     // addCamp.enterRingTimeDuration(15);
     addCamp.enterAbandonedTimeout(15);
-    addCamp.enterRetryTime(8);
+    addCamp.enterRetryTime(5);
     // addCamp.selectRetryTimeUnit('sec');
     // addCamp.clickOnButton('Got it');
     addCamp.enterMaxAttempts(2);
@@ -206,7 +206,7 @@ describe('Add Campaign flow', () => {
     ]);
     addCamp.clickAdvancedConfiguration();
     // addCamp.enterRingTimeDuration(10);
-    addCamp.enterRetryTime(10);
+    addCamp.enterRetryTime(2);
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Saved');
     addCamp.clickEditCampaign(
@@ -217,7 +217,7 @@ describe('Add Campaign flow', () => {
     addCamp.clickOnButton('Save');
   });
 
-  it.skip('Verify that edit values of the campaign page in advanced mode reflects in the Change log', () => {
+  it('Verify that edit values of the campaign page in advanced mode reflects in the Change log', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickEditCampaign(
       fixtureData.campaignName + randNum.toString() + '-edited'

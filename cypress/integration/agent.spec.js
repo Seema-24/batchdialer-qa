@@ -2,7 +2,7 @@ import Agent from '../support/pages/Agent';
 import Campaign from '../support/pages/Campaigns';
 import Contacts from '../support/pages/Contacts';
 import Dialer from '../support/pages/Dialer';
-import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup } from '../support/Utils';
+import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, verifyCloseApp } from '../support/Utils';
 
 let testData;
 let randNum = Math.floor(Math.random() * 100000);
@@ -39,6 +39,7 @@ describe('Agent Profile', function () {
   });
 
   it('Agent Should Login Successfully', () => {
+    verifyCloseApp();
     cy.Login(testData.AgentEmail, testData.password);
     cy.reload();
     ignoreSpeedTestPopup();
@@ -58,7 +59,8 @@ describe('Agent Profile', function () {
     agent.verifyAverageCallDurationGraph();
     agent.verifyCallsLocationGraph();
   });
-
+ 
+  //access denied msg not verified here, This testcase is in UserPermission page
   it.skip('Agent should not access the edit/view Campaign page', () => {
     agent.clickCampaignMenu();
     agent.selectCampaignName(testData.campaign);
@@ -124,13 +126,13 @@ describe('Agent Profile', function () {
     ]);
   });
 
-  it.skip('Verify Table In Header Calender and Export should be Visible', () => {
+  it('Verify Table In Header Calender and Export should be Visible', () => {
     agent.clickTimeInStatusButton();
     agent.verifyTableInStatusCalender();
     agent.verifyTableInStatusExport();
   });
 
-  it.skip('Verify Table In Status Table Header Elements', () => {
+  it('Verify Table In Status Table Header Elements', () => {
     agent.verifyTableInStatusTableHeader([
       'Agent',
       'Logged Time',
@@ -152,18 +154,18 @@ describe('Agent Profile', function () {
     ]);
   });
 
-  it.skip('Verify Table In Status Table Data should be visible', () => {
+  it('Verify Table In Status Table Data should be visible', () => {
     agent.verifyTableInStatusTableData();
   });
 
   it('Verify Elements On Contact Page', () => {
     agent.clickOnContactButton();
     agent.verifySearchBox();
-    // agent.checkRoundAndCheckBtns();
-    // agent.selectAllRoundBtn();
-    // agent.clickOnAppointmentMadeOnlyBtn();
-    // agent.clickOnSelfMadeButton();
-    // agent.selectAllRoundBtn();
+    agent.clickFilterButton();
+    agent.checkRoundAndCheckBtns();
+    agent.selectAllRoundBtn();
+    agent.clickOnAppointmentMadeOnlyBtn();
+    agent.clickOnSelfMadeButton();
   });
 
   it('Verify Table In Contact Table Header Elements', () => {
@@ -179,7 +181,7 @@ describe('Agent Profile', function () {
       'Created',
     ]);
   });
-  it.skip('Verify Refersh Button On Contact Page Table Header', () => {
+  it('Verify Refersh Button On Contact Page Table Header', () => {
     agent.verifyRefreshBtn();
   });
   it('Verify All List Button On Contact Page Table', () => {
@@ -305,7 +307,7 @@ describe('Agent Profile', function () {
     agent.verifyAgentPasswordChangeBtn();
   });
 
-  it.skip('Verify The Header Of Calender', () => {
+  it('Verify The Header Of Calender', () => {
     agent.openCalender();
     agent.verifyDateChangeBar();
     agent.verifyDaysOfcalender([
@@ -344,7 +346,7 @@ describe('Agent Profile', function () {
     agent.verifyMonthChangeBnts();
     agent.verifyMonthYearStatusBar();
   });
-  it.skip('Verify The Summary Of Agent In Time In Status Of Recent Contacts', () => {
+  it('Verify The Summary Of Agent In Time In Status Of Recent Contacts', () => {
     agent.clickRecentContact();
     agent.clickTimeInStatusButton();
     agent.clickOnAgentDetailsPlusBtn([
@@ -434,42 +436,6 @@ describe('Agent Profile', function () {
     cy.wait(2000);
     agent.verifyCallResult('Busy');
     agent.ChooseCallResult('No Answer');
-  });
-
-  it.skip('Verify When Admin Assign Campaign to user it should show in agent Profile', () => {
-    cy.Login(Cypress.env('username'), Cypress.env('password'));
-    addCamp.clickCampaignMenu();
-    addCamp.clickAddNewCampaign();
-    addCamp.enableAdvancedSwitchBar();
-    cy.wait(2000);
-    addCamp.enterName(fixtureData.campaignName + randNum.toString());
-    addCamp.selectDialingModeOption('Predictive Dialer');
-    addCamp.selectCallerId('Individual Numbers', testData.Number);
-    addCamp.clickNextCircleArrow();
-    addCamp.selectCallResultsOption(['Answering Machine', 'Busy', 'Call Back']);
-    addCamp.clickNextCircleArrow();
-    addCamp.selectAgentsDrpdwn('Individual Agents', testData.agent);
-    // agent.selectAgent();
-    // agent.ClickAgent();
-    addCamp.clickCreateCampButton();
-    cy.Logout();
-    cy.wait(4000);
-    cy.visit('/', { failOnStatusCode: false });
-    cy.Login(testData.AgentEmail, testData.password);
-    agent.clickCampaignMenu();
-    agent.verifyCampaign(fixtureData.campaignName + randNum.toString());
-    cy.Logout();
-    cy.wait(4000);
-    cy.visit('/', { failOnStatusCode: false });
-    cy.Login(Cypress.env('username'), Cypress.env('password'));
-    addCamp.clickCampaignMenu();
-    addCamp.clickEditCampaign(fixtureData.campaignName + randNum.toString());
-    addCamp.clickArchiveCampaignButton();
-    addCamp.handleAlertForDelete();
-    addCamp.verifyArchivedCampaign(
-      fixtureData.campaignName + randNum.toString(),
-      'not.exist'
-    );
   });
 
   it('Verify the Total Calls should increase when agent call a contact', () => {
@@ -562,5 +528,43 @@ describe('Agent Profile', function () {
   it('Verify that Call mood added is reflected in Reports--Recent Contacts', () => {
     dialer.clickOnMenu('Recent Contacts');
     agent.verifySelectedMood('neutral');
+    cy.Logout();
+  });
+
+  it('Verify When Admin Assign Campaign to user it should show in agent Profile', () => {
+    verifyCloseApp();
+    cy.Login(Cypress.env('username'), Cypress.env('password'));
+    ignoreSpeedTestPopup();
+    addCamp.clickCampaignMenu();
+    addCamp.clickAddNewCampaign();
+    addCamp.selectDialingMode('Predictive');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.selectPhoneNumberToAssign(testData.Number);
+    addCamp.enterCampaignName(fixtureData.campaignName + randNum.toString());
+    addCamp.selectCallResults([
+      'Answering Machine',
+      'Busy',
+      'Call Back'
+    ]);
+    addCamp.clickOnButton('Save');
+    addCamp.verifyToast('Campaign Created');
+    cy.Logout();
+    cy.wait(1000);
+    cy.visit('/', { failOnStatusCode: false });
+    cy.Login(testData.AgentEmail, testData.password);
+    agent.clickCampaignMenu();
+    agent.verifyCampaign(fixtureData.campaignName + randNum.toString());
+    cy.Logout();
+    cy.wait(1000);
+    cy.visit('/', { failOnStatusCode: false });
+    cy.Login(Cypress.env('username'), Cypress.env('password'));
+    addCamp.clickCampaignMenu();
+    addCamp.clickEditCampaign(fixtureData.campaignName + randNum.toString());
+    addCamp.clickArchiveCampaignButton();
+    addCamp.handleAlertForDelete();
+    addCamp.verifyArchivedCampaign(
+      fixtureData.campaignName + randNum.toString(),
+      'not.exist'
+    );
   });
 });

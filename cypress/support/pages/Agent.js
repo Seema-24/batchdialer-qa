@@ -57,26 +57,26 @@ const selectAgent =
 const clickAgent = "//div[text()='automation testing']";
 const RecentContactInboundOutbound = "span[title='Inbound+Outbound']";
 const RecentContactTableHeader = '.resizable-table-thead .tr .th';
-const timeInStatus = "//div[text()='Time In Status']";
+const timeInStatus = "//a[text()='Time In Status']";
 const TISCalender = '.date-picker';
 const TISExport = "//button[text()='Export']";
-const TISTableHeader = '.report-agents__table thead';
-const TISTableData = '.reports-agents__agent-row';
+const TISTableHeader = '.resizable-table-thead';
+const TISTableData = '.resizable-table-tbody';
 const clickContact = "[viewBox='0 0 45 45']";
 const searchBoxOnContact = "[placeholder='Search...']";
 const roundBtns = '.checkmark';
 const selectSelfMadeOnly =
-  "//*[@id='root']/section/div/div[1]/form/div[2]/div[1]/div/label/span";
+  '//div[@class="modal-filter-body"]//label[text()="Sale Made Only"]/span';
 const selectAppointmentMadeOnly =
-  "//*[@id='root']/section/div/div[1]/form/div[2]/div[2]/div/label/span";
+  '//div[@class="modal-filter-body"]//label[text()="Appointment Made Only"]/span';
 const allBtn =
-  "//*[@id='root']/section/div/div[1]/form/div[1]/div[2]/label[1]/span";
+  '//div[@class="modal-filter-body"]//label[@class="radio_cstm" and text()="All"]/span';
 const dialedBtn =
-  "//*[@id='root']/section/div/div[1]/form/div[1]/div[2]/label[2]/span";
+  '//div[@class="modal-filter-body"]//label[@class="radio_cstm" and text()="Dialed"]/span';
 const undialedBtn =
-  "//*[@id='root']/section/div/div[1]/form/div[1]/div[2]/label[3]/span";
+  '//div[@class="modal-filter-body"]//label[@class="radio_cstm" and text()="Undialed"]/span';
 const contactTable = '.resizable-table-thead .tr .th';
-const refreshBtn = "[title='Refresh']";
+const refreshBtn = "";
 const allListBtn = `//span[text()="All Lists"]/ancestor::div[contains(@class,"ss-select-control")]`;
 const equityBox = '.equity_box';
 const statusBtn = "[title='Status']";
@@ -124,8 +124,8 @@ const changeCampaignBtn =
 const changeCampaignBody = '.modal-content';
 const confirmBtnOnChangeCamp = "//button[contains(text(),'Confirm')]";
 const calenderBtn = ".nav-link[href='/tasks/']";
-const dateChangeBar = "//*[@id='root']/section/div/div/div[1]/div[1]/span[2]";
-const verifyCalaenderDays = '.titles';
+const dateChangeBar = `//div[@class="DayPicker"]//span[@class=" fakelink"]`;
+const verifyCalaenderDays = (day) => `abbr[title="${day}"]`;
 const DashboardBtn = "//*[@id='root']/div[1]/div[2]/ul/li[1]/a/span";
 const calenderOnDashBoard =
   "//div[@class='fakeinput inverted fakeinput__overflow']";
@@ -418,7 +418,7 @@ export default class Agent {
       cy.get(contactTable).should('contain.text', contactHeader[i]);
   }
   verifyRefreshBtn() {
-    cy.get(refreshBtn).should('be.visible');
+    cy.contains('Reset').should('be.visible');
   }
   verifyListButton() {
     cy.xpath(allListBtn).should('be.visible');
@@ -558,7 +558,7 @@ export default class Agent {
   }
   verifyDaysOfcalender(days) {
     for (let i = 0; i < days.length; i++) {
-      cy.get(verifyCalaenderDays).should('contain.text', days[i]);
+      cy.get(verifyCalaenderDays(days[i])).should('be.visible');
     }
   }
   clickOnDashboardBtn() {
@@ -728,7 +728,7 @@ export default class Agent {
   }
 
   clickFilterButton() {
-    cy.get(filterButton).click();
+    cy.get(filterButton).contains('FILTER').click();
   }
 
   enterDispositionNote(note) {

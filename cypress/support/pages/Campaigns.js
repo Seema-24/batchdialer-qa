@@ -146,6 +146,8 @@ const dialingBehaviour = (fieldName) =>
   `//label[text()="${fieldName}"]//following-sibling::div[contains(@class,"number-editor")]//input`;
 const retryTimeInput =
   '//label[text()="Retry Time"]//following-sibling::div//div[contains(@class,"number-editor")]//input';
+const retryTimeplusIcon =
+  '//label[text()="Retry Time"]//following-sibling::div//div[contains(@class,"number-editor")]//img[@src="/img/number-editor-plus.svg"]';
 const retryTimeDropdown =
   '//label[text()="Retry Time"]//following-sibling::div//div[contains(@class,"ss-select-control")]';
 const tooltip = '.question-tooltip';
@@ -689,7 +691,7 @@ export default class Campaign {
   }
 
   verifyToast(message) {
-    cy.get(toast).should('contain.text', message);
+    cy.get(toast,{timeout:60000}).should('contain.text', message);
   }
 
   verifyAddedRecycleCampaign(campaignName) {
@@ -892,9 +894,10 @@ export default class Campaign {
   }
 
   enterRetryTime(duration) {
-    cy.xpath(retryTimeInput).clear();
-    this.clickOnButton('Got it');
-    cy.xpath(retryTimeInput).type(duration);
+    for (let i = 0; i < duration; i++) {
+      cy.xpath(retryTimeplusIcon).click();
+      this.clickOnButton('Got it');
+    }
   }
 
   verifyRetryTime() {

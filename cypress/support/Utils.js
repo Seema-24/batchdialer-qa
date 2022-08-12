@@ -145,3 +145,11 @@ export function verifyReactivateAccount() {
     }
   })
 }
+
+export function verifyCloseApp() {
+  cy.get('body').then(($body) => {
+    if($body.find('.profile_pic').length) {
+      cy.Logout();
+    }
+  })
+}
