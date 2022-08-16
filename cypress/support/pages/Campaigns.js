@@ -94,10 +94,10 @@ const contactListDropdown = '.ss-select-dropdown';
 const campaignSetting = '.tr .dropdown';
 const campaignSettingOptions = '.show .dropdown-item';
 const FirstCampaignMenuButton =
-  "//span[text()='FirstCampaign']/ancestor::tr//div[contains(@class,'custom_drop ')]/span";
+  '//span[text()="FirstCampaign"]/ancestor::div[@class="tr"]/descendant::img[@alt="Menu"]';
 const campaignEditButton = "//a[text()='Edit Campaign']";
 const campaignChange =
-  "//span[text()='FirstCampaign']/ancestor::tr//td[text()='Predictive Dialer']";
+  '//span[text()="FirstCampaign"]/ancestor::div[@class="td"]/following-sibling::div[1]';
 const callerIdError = '.ss-select.error';
 const campaign = '.main_sec .ss-select:not(.multiple)';
 const options = '.ss-select-option';
@@ -146,6 +146,8 @@ const dialingBehaviour = (fieldName) =>
   `//label[text()="${fieldName}"]//following-sibling::div[contains(@class,"number-editor")]//input`;
 const retryTimeInput =
   '//label[text()="Retry Time"]//following-sibling::div//div[contains(@class,"number-editor")]//input';
+const retryTimeplusIcon =
+  '//label[text()="Retry Time"]//following-sibling::div//div[contains(@class,"number-editor")]//img[@src="/img/number-editor-plus.svg"]';
 const retryTimeDropdown =
   '//label[text()="Retry Time"]//following-sibling::div//div[contains(@class,"ss-select-control")]';
 const tooltip = '.question-tooltip';
@@ -628,15 +630,17 @@ export default class Campaign {
   }
 
   clickFirstCampaignMenuButton() {
-    cy.xpath(FirstCampaignMenuButton).click({ force: true });
+    cy.xpath(FirstCampaignMenuButton, {timeout:60000}).click();
   }
 
   clickEditCampaignNew() {
-    cy.xpath(campaignEditButton).click({ force: true });
+    cy.xpath(campaignEditButton).first().click({force:true});
   }
 
-  verifyCampaignChange() {
-    cy.xpath(campaignChange).should('be.visible');
+  verifyCampaignChange(mode) {
+    cy.xpath(campaignChange, {timeout:60000}).trigger('mouseover');
+    cy.xpath(`//div[@class="tooltip-inner"][text()="${mode}"]`).should('be.visible');
+    
   }
 
   selectOptions(optionName) {
@@ -689,7 +693,7 @@ export default class Campaign {
   }
 
   verifyToast(message) {
-    cy.get(toast).should('contain.text', message);
+    cy.get(toast,{timeout:60000}).should('contain.text', message);
   }
 
   verifyAddedRecycleCampaign(campaignName) {
@@ -892,9 +896,10 @@ export default class Campaign {
   }
 
   enterRetryTime(duration) {
-    cy.xpath(retryTimeInput).clear();
-    this.clickOnButton('Got it');
-    cy.xpath(retryTimeInput).type(duration);
+    for (let i = 0; i < duration; i++) {
+      cy.xpath(retryTimeplusIcon).click();
+      this.clickOnButton('Got it');
+    }
   }
 
   verifyRetryTime() {

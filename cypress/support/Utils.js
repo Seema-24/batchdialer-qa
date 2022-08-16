@@ -134,6 +134,15 @@ export function closeDialogBox() {
       cy.get('.close-button').click();
     } else if($body.text().includes('Start Calling')) {
       cy.get('[alt="Logo"]').click();
+    } else if($body.find('#pendo-guide-container').length) {
+      cy.get('button').then((btns) => {
+        for (let i = 0; i < btns.length; i++) {
+          if (btns[i].textContent.trim() === 'Dismiss') {
+            cy.get(btns[i]).click({force:true});
+            break;
+          }
+        }
+      });
     }
   })
 }
@@ -142,6 +151,14 @@ export function verifyReactivateAccount() {
   cy.get('body').then(($body) => {
     if($body.text().includes('Would you like to reactivate it?')) {
       cy.contains('CANCEL').click({force:true});
+    }
+  })
+}
+
+export function verifyCloseApp() {
+  cy.get('body').then(($body) => {
+    if($body.find('.profile_pic').length) {
+      cy.Logout();
     }
   })
 }
