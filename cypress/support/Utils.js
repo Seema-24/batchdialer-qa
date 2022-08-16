@@ -134,6 +134,15 @@ export function closeDialogBox() {
       cy.get('.close-button').click();
     } else if($body.text().includes('Start Calling')) {
       cy.get('[alt="Logo"]').click();
+    } else if($body.find('#pendo-guide-container').length) {
+      cy.get('button').then((btns) => {
+        for (let i = 0; i < btns.length; i++) {
+          if (btns[i].textContent.trim() === 'Dismiss') {
+            cy.get(btns[i]).click({force:true});
+            break;
+          }
+        }
+      });
     }
   })
 }

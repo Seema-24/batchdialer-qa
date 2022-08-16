@@ -481,17 +481,18 @@ describe('Add Campaign flow', () => {
     ]);
   });
 
-  it.skip('Verify functionality of edit Campaign button', () => {
+  it('Verify functionality of edit Campaign button', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickFirstCampaignMenuButton();
     addCamp.clickEditCampaignNew();
-    addCamp.selectDialingModeOption('Predictive Dialer');
-    addCamp.clickSaveCampaign();
-    addCamp.verifyCampaignChange();
+    addCamp.selectDialingMode('Predictive');
+    cy.wait(1000);
+    addCamp.clickOnButton('Save');
+    addCamp.verifyCampaignChange('Predictive Dialer');
     addCamp.clickFirstCampaignMenuButton();
     addCamp.clickEditCampaignNew();
-    addCamp.selectDialingModeOption('Preview Dialer');
-    addCamp.clickSaveCampaign();
+    addCamp.selectDialingMode('Preview');
+    addCamp.clickOnButton('Save');
   });
 
   it('Create the Recycle Campaign', () => {
