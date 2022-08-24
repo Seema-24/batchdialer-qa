@@ -64,8 +64,8 @@ const enabledPermission = '.user-permission-checkbox[alt="Enabled"]';
 const enablePermission = (permit) => `//div[@class="user-permission-col"][text()="${permit}"] //img[@alt="Enabled"]`;
 const permissionCheckbox = (index) => `.user-permissions div:nth-child(${index}) img[alt="Enabled"]`;
 
-const permit = 'View Recent Contacts of All Agents';
-const index = 25 ;
+const permit = ['Upload Contacts Lists','View Recent Contacts of All Agents'];
+const index = [9,25] ;
 
 export default class UserPermission {
   clickUserPermissionExpander() {
@@ -470,11 +470,12 @@ export default class UserPermission {
 
   disableDefaultPermission() {
     
-    cy.contains(permit).scrollIntoView();
+    cy.contains(permit[1]).scrollIntoView();
     cy.get('body').then((body) => {
-      if(body.find(permissionCheckbox(index)).length) {
-        cy.xpath(enablePermission(permit)).should('be.visible');
-        cy.xpath(enablePermission(permit)).click();  
+      for (let i = 0; i < permit.length; i++) {
+        if(body.find(permissionCheckbox(index[i])).length) {
+          cy.xpath(enablePermission(permit[i])).should('be.visible').click();  
+        } 
       }
 
       if (body.find(enabledPermission).length) {

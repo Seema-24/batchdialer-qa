@@ -222,6 +222,7 @@ describe('Report Page', () => {
     report.verifyStatusNotVisible('paused');
   });
 
+  //it can't be verified Export data in CSV file
   it.skip('Verifies the Export Functionality of Recent Contact', () => {
     report.clickReportMenu();
     report.clickReportsHeader('Recent Contacts');

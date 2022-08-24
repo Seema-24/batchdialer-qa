@@ -431,27 +431,28 @@ describe('Add Phone Number flow', () => {
     addNum.verifyCreatedCallResult('DemoTesting');
   });
 
-  // it('Add New Rule while Creating Call Result', () => {
-  //   addNum.clickPhoneNumberMenu();
-  //   addNum.clickCallResultMenu();
-  //   addNum.clickAddNewCallResultBtn();
-  //   addNum.enterName('Testing');
-  //   addNum.chooseShowOnNewCampaignPage('Yes');
-  //   addNum.chooseActiveInactive('Active');
-  //   addNum.selectCallResultCampaignDropdown(testData.campaign);
-  //   addNum.clickAddNewRuleBtn();
-  //   addNum.selectRule('Schedule a Callback');
-  //   addNum.clickCallResultSaveBtn();
-  //   cy.wait(3000);
-  // });
+  it('Add New Rule while Creating Call Result', () => {
+    addNum.clickPhoneNumberMenu();
+    addNum.clickCallResultMenu();
+    addNum.clickAddNewCallResultBtn();
+    addNum.enterName('A demo test');
+    addNum.chooseActiveInactive('Active');
+    addNum.selectCallResultCampaignDropdown(testData.campaign);
+    addNum.clickAddNewRuleBtn();
+    cy.wait(500)
+    addNum.selectRule('Schedule a Callback');
+    addNum.clickCallResultSaveBtn();
+    cy.wait(1000);
+  });
 
-  // it('Remove the added New Rule from Call Result', () => {
-  //   addNum.clickPhoneNumberMenu();
-  //   addNum.clickCallResultMenu();
-  //   addNum.clickCallResultEditBtn('Testing');
-  //   addNum.clickDeleteRuleBtn('Schedule a callback');
-  //   addNum.clickCallResultSaveBtn();
-  // });
+  it('Remove the added New Rule from Call Result', () => {
+    addNum.clickPhoneNumberMenu();
+    addNum.clickCallResultMenu();
+    addNum.clickOpenCallResultGroup('UNGROUPED');
+    addNum.clickCallResultEditBtn('A demo test');
+    addNum.clickDeleteRuleBtn();
+    addNum.clickCallResultSaveBtn();
+  });
 
   it('Delete Added Call Result', () => {
     cy.wait(1000);

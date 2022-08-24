@@ -406,6 +406,7 @@ describe('Add Campaign flow', () => {
     addCamp.verifyAddedCampaign(testData.campaign);
   });
 
+  //old testcase, validation on req field not working
   it.skip('Verify Validation on required field of new campaign page', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickAddNewCampaign();

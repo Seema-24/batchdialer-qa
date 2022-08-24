@@ -695,7 +695,7 @@ export default class Contacts {
     cy.get(playerDownloadBtn).then((btn) => {
       const recording = btn[0].getAttribute('href');
       cy.downloadFile(recording, 'cypress/fixtures/Download', 'Recording.mp3');
-      // cy.readFile('cypress/fixtures/Download/Recording').should('be.visible');
+      cy.readFile('cypress/fixtures/Download/Recording.mp3').should('exist');
     });
   }
 

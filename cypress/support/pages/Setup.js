@@ -42,8 +42,8 @@ const campaign = new Campaign();
 const phone = new PhoneNum();
 const user = new User();
 const contact = new Contacts();
-const permit = 'View Recent Contacts of All Agents';
-const index = 25 ;
+const permit = ['Upload Contacts Lists','View Recent Contacts of All Agents'];
+const index = [9,25] ;
 
 export default class Setup {
   clickCampaignMenu() {
@@ -528,10 +528,12 @@ export default class Setup {
   }
 
   enableSupervisorDefaultPermissions() { 
-    cy.contains(permit).scrollIntoView();
+    cy.contains(permit[1]).scrollIntoView();
     cy.get('body').then((body) => {
-      if(body.find(permissionCheckbox(index)).length) {
-        cy.xpath(enablePermission(permit)).should('be.visible').click();
+      for (let i = 0; i < permit.length; i++) {
+        if(body.find(permissionCheckbox(index[i])).length) {
+          cy.xpath(enablePermission(permit[i])).should('be.visible').click();
+        }
       }
 
       if (body.find(enabledPermissions).length) {
@@ -609,6 +611,13 @@ export default class Setup {
     cy.get(disabledPermissions)
       .parents(permissionHeading)
       .contains('View Recent Contacts of All Agents')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('Upload Contacts Lists')
       .children('div')
       .children(disabledPermissions)
       .scrollIntoView()

@@ -72,7 +72,7 @@ describe('SuperVisor Flow', () => {
     suprevisor.verifyEditForm();
   });
 
-  it.skip('Verify Add Contact using Upload File option', () => {
+  it('Verify Add Contact using Upload File option', () => {
     suprevisor.clickingOnContactOption();
     cy.wait(3000);
     suprevisor.clickAddNewContactButton();

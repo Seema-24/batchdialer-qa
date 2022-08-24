@@ -1,5 +1,5 @@
 const phoneNumMenu = 'a[title="Phone System"]';
-const buyDidbtn = '//button[div[text()="BUY NUMBER"]]';
+const buyDidbtn = '//button[text()="BUY NUMBER"]';
 const stateDrpdwn =
   '//div[@class="modal-body"]//div[contains(@class,"ss-select")]//span[contains(text(),"Select state")]';
 const searchBtn = '.modal-body button svg[data-icon="search"]';
@@ -100,7 +100,7 @@ const callResultSaveBtn = '//button[contains(text(),"Save")]';
 const callResultCancelBtn = '//button[contains(text(),"Cancel")]';
 const callResultDeleteBtn = '.disposition-controls .fa-trash';
 const callResultEditBtn = (callResult) =>
-  `//tr[@class="group-inner"]//li[div[text()="${callResult}"]]`;
+  `//li[div[text()="${callResult}"]]/ancestor::tbody/descendant::span[@class="disposition-pencil-icon"]`;
 const addPhoneGroup = '.card-title img[src*="add"]';
 const destinationDropdown = '.modal-content .ss-select';
 const destinationOptions = (option) =>
@@ -118,10 +118,7 @@ const dncUploadSearchBox =
   "//div[text()='DNC File Upload']/following-sibling::div//input[contains(@class,'search-box')]";
 const callresultDropdown =
   'div[class="collapse show"] .row-calldisposition .ss-select';
-const deleteRuleBtn = (rule) =>
-  "//div[@class='rule'][contains(.,'" +
-  rule +
-  "')]//img[contains(@src,'delete')]";
+const deleteRuleBtn = 'svg[data-icon="trash"]';
 const addedNewDigit = '.number-editor input';
 const removeNewDigit = (val) =>
   "//div[contains(@class,'number-editor')][input[@value='" +
@@ -191,7 +188,7 @@ export default class PhoneNum {
   }
 
   clickCallResultEditBtn(callResult) {
-    cy.xpath(callResultEditBtn(callResult)).click({ force: true });
+    cy.xpath(callResultEditBtn(callResult)).first().click();
   }
 
   verifyCallResultDelete(callResult) {
@@ -219,8 +216,8 @@ export default class PhoneNum {
     cy.xpath(newRuleOptions(option)).click();
   }
 
-  clickDeleteRuleBtn(rule) {
-    cy.xpath(deleteRuleBtn(rule)).click({ force: true });
+  clickDeleteRuleBtn() {
+    cy.get(deleteRuleBtn).scrollIntoView().click();
   }
 
   verifySearchResults(callResult) {
@@ -665,7 +662,7 @@ export default class PhoneNum {
   selectCallResultCampaignDropdown(campaign) {
     cy.xpath(selectDropdown('Select Campaigns')).click();
     cy.wait(1000);
-    cy.contains(campaign).click();
+    cy.get('.ss-select-group-items').contains(campaign).click();
   }
 
   verifyRingStrategy(strategy) {
