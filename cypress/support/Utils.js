@@ -157,6 +157,7 @@ export function verifyReactivateAccount() {
 
 export function verifyCloseApp() {
   cy.get('body').then(($body) => {
+    cy.wait(1500);
     if($body.find('.profile_pic').length) {
       cy.Logout();
     }

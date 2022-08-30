@@ -91,6 +91,7 @@ describe('Dashboard Elements', () => {
     Dash.verifyToastMessage('Copied!');
   });
 
+  //it can't be automated bcuz username is in smaller letter shows in HTML page
   it.skip('Verify that username is capitalized only', () => {
     Dash.verifyUserNameCapitalized();
   });
@@ -157,13 +158,14 @@ describe('Dashboard Elements', () => {
     Dash.verifyDialPad();
   });
 
-  it.skip('Verify user is able to make call using dialer button', () => {
+  it('Verify user is able to make call using dialer button', () => {
     Dash.dialNumber();
     Dash.clickCallButton();
     Dash.verifyCallStarted();
+    cy.wait(3000);
     Dash.clickCallButton();
     Dash.clickAnsweringMachine();
-    Dash.clickContinue();
+    Dash.clickOnDoneButton();
   });
 
   it('Verify Task Button Functionality', () => {
@@ -224,18 +226,18 @@ describe('Dashboard Elements', () => {
     Dash.clickEventStatusCheckbox(testData.Contact, 'Pending');
   });
 
-  it.skip('Verify that if event is marked as completed then it should disappear from list', () => {
+  it('Verify that if event is marked as completed then it should disappear from list', () => {
     Dash.verifyCompletedEventDisappear(testData.Contact);
   });
 
-  it.skip('Mark the Completed Event as Pending Event', () => {
+  it('Mark the Completed Event as Pending Event', () => {
     Dash.clickCompletedCheckbox();
     Dash.clickEventStatusCheckbox(testData.Contact, 'Completed');
   });
 
   it('Delete the Added Event', () => {
     Dash.clickEventThreeDotMenuBtn(testData.Contact);
-    Dash.selectDropdownItemToClick('Delete Appointment');
+    Dash.selectDropdownItemToClick('Delete Event');
   });
 
   it('Verify on click user profile show options', () => {
@@ -293,33 +295,54 @@ describe('Dashboard Elements', () => {
   });
 
   it.skip('Add New Credit Card', () => {
-    Dash.clickUserProfile();
-    Dash.clickBilling();
-    Dash.clickAddNewCard();
-    Dash.enterCardName(fixtureData.cardHolderName);
-    Dash.enterCardNumber(fixtureData.cardNumber);
-    Dash.enterExpiryDate(fixtureData.cardExpiryDate);
-    Dash.enterCVC(fixtureData.cardCVC);
-    Dash.chooseCountry('United States');
-    Dash.enterBillingZip('43256');
-    Dash.clickContinue();
-    Dash.verifyAddedCard(cardLast4Digit);
+    cy.url().then((url) => {
+      if(url.includes('app.batchdialer.com')) {
+        cy.log('Not having credit card details for Production')
+      } else {
+        Dash.closeCreditCardPopup();
+        Dash.clickUserProfile();
+        Dash.clickBilling();
+        Dash.clickCardEditBtn();
+        Dash.clickAddNewCard();
+        Dash.enterCardName(fixtureData.cardHolderName);
+        Dash.enterCardNumber(fixtureData.cardNumber);
+        Dash.enterExpiryDate(fixtureData.cardExpiryDate);
+        Dash.enterCVC(fixtureData.cardCVC);
+        Dash.chooseCountry('United States');
+        Dash.enterBillingZip('43256');
+        Dash.clickContinue();
+        Dash.verifyAddedCard(cardLast4Digit);
+      }
+    })
   });
 
   it.skip('Verify the Default Credit Card Functionality', () => {
-    Dash.clickUserProfile();
-    Dash.clickBilling();
-    Dash.clickCardDefaultBtn(cardLast4Digit);
-    Dash.verifyCardDefault(cardLast4Digit);
-    Dash.clickCardDefaultBtn('0505');
-    Dash.verifyCardDefault('0505');
+    cy.url().then((url) => {
+      if(url.includes('app.batchdialer.com')) {
+        cy.log('Not having credit card details for Production')
+      } else {
+        Dash.closeCreditCardPopup();
+        Dash.clickUserProfile();
+        Dash.clickBilling();
+        Dash.clickCardDefaultBtn(cardLast4Digit);
+        Dash.verifyCardDefault(cardLast4Digit);
+        Dash.clickCardDefaultBtn('0505');
+        Dash.verifyCardDefault('0505');
+      }
+    })
   });
 
   it.skip('Delete the Added New Credit Card', () => {
-    Dash.clickUserProfile();
-    Dash.clickBilling();
-    Dash.clickDeleteCardBtn(cardLast4Digit);
-    Dash.verifyCardDelete();
+    cy.url().then((url) => {
+      if(url.includes('app.batchdialer.com')) {
+        cy.log('Not having credit card details for Production')
+      } else {
+        Dash.clickUserProfile();
+        Dash.clickBilling();
+        Dash.clickDeleteCardBtn(cardLast4Digit);
+        Dash.verifyCardDelete();
+      }
+    })
   });
 
   it('Verifies monthly total should be greater when keeping phone', () => {
