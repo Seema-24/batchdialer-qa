@@ -231,17 +231,16 @@ describe('Add Contact flow', () => {
     addCont.verifyDeletedToast();
   });
 
-  it.skip('Verify Dialed/Undialed Radio Button Functionality', () => {
+  it('Verify Dialed/Undialed Radio Button Functionality', () => {
     addCont.clickingOnContactOption();
     addCont.clickFilterButton();
     addCont.clickDialedUndialedButton('Dialed');
     addCont.clickFilterButton();
     addCont.verifyContact('Testing', 'User', 'not.exist');
-    addCont.verifyContact('Automation', 'Contact', 'not.exist');
+    addCont.verifyContact('Automation', 'Contact', 'be.visible');
     addCont.clickFilterButton();
     addCont.clickDialedUndialedButton('Undialed');
     addCont.clickFilterButton();
-    addCont.enterSearch('User');
     addCont.verifyContact('Testing', 'User', 'be.visible');
     addCont.verifyContact('Automation', 'Contact', 'not.exist');
     addCont.clickFilterButton();
@@ -448,7 +447,7 @@ describe('Add Contact flow', () => {
     addCont.verifyCurrentPlayTime(['0:04','0:05','0:06']);
   });
 
-  it.skip('Verify that the authorized user is able to download the call recording', () => {
+  it('Verify that the authorized user is able to download the call recording', () => {
     addCont.downloadRecording();
   });
 
