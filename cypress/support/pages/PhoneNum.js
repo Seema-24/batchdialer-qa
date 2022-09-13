@@ -434,7 +434,7 @@ export default class PhoneNum {
 
   verifyAddedPhoneNum(num) {
     cy.xpath(
-      `//div[@class="resizable-table-tbody"]//div[@class="td"][text()="${num}"]`,
+      `//div[contains(@class,"resizable-table-tbody")]//div[@class="td"][text()="${num}"]`,
       { timeout: 10000 }
     ).should('be.visible');
   }

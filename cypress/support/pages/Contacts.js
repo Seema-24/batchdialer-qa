@@ -83,7 +83,7 @@ const importContactSelectCompaignDropdown =
 const importContactOptionsCheckbox = '.radio_cstm';
 const searchedContact = '.contacts__name';
 const contactCheckbox = (number) =>
-  `(//div[@class="resizable-table-tbody"]//span[@class="checkmark"])[${number}]`;
+  `(//div[contains(@class,"resizable-table-tbody")]//span[@class="checkmark"])[${number}]`;
 
 const lists = 'a[title="Contact Lists"]';
 const actionCampaign = '//a[text()="Add to Campaign"]';
