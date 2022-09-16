@@ -14,7 +14,7 @@ const menu = (menuName) => `li:not(.subitem) a[title="${menuName}"]`;
 const subMenu = (menuName) => `.subitem a[title="${menuName}"]`;
 const searchInputField = 'input[placeholder*="Search"]';
 const searchResult = (searchQuery) =>
-  `//div[@class="resizable-table-tbody"]//div[@class="td"]//div[contains(.,"${searchQuery}")]`;
+  `//div[contains(@class,"resizable-table-tbody")]//div[@class="td"]//div[contains(.,"${searchQuery}")]`;
 const accountStatus = (status) =>
   `.tr .td:nth-of-type(4) img[src*="${status}"]`;
 const menuBtn = (searchQuery) =>

@@ -92,7 +92,7 @@ export default class Setup {
     cy.get('body').then(($body) => {
       if ($body.find('.dids-twopane .resizable-table-tbody .tr').length) {
         cy.xpath(
-          '(//div[@class="resizable-table-tbody"]//div[@class="tr"]//div[@class="td"][3])[1]'
+          '(//div[contains(@class,"resizable-table-tbody")]//div[@class="tr"]//div[@class="td"][3])[1]'
         ).then((el) => {
           const number = el.text().trim();
           cy.readFile('cypress/fixtures/testData.json', (err, data) => {
@@ -119,7 +119,7 @@ export default class Setup {
         this.createNewCampaign(name, callResults, phone, agentName);
       } else {
         cy.xpath(
-          '//div[@class="resizable-table-tbody"]//div[@class="td"]//span[contains(@class,"campaign-name-table")]'
+          '//div[contains(@class,"resizable-table-tbody")]//div[@class="td"]//span[contains(@class,"campaign-name-table")]'
         ).then((el) => {
           if (el.text().trim().includes(name)) {
             cy.log('Campaign already exist');

@@ -663,7 +663,7 @@ export default class Campaign {
 
   selectRecycleCallResult(callResult) {
     cy.xpath(recycleCallResult).click();
-    this.selectOptions(callResult);
+    //this.selectOptions(callResult);
     this.clickQuestionIcon();
   }
 

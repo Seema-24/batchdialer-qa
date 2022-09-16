@@ -6,6 +6,7 @@ const Dash = new Dashboard();
 let fixtureData;
 let testData;
 let cardLast4Digit;
+let prodCardLast4Digit
 let randNum = Math.floor(Math.random() * 100000);
 const addCont = new Contacts();
 const message = (user) => `This is a testing message from ${user}`;
@@ -21,6 +22,9 @@ describe('Dashboard Elements', () => {
         cy.visit('/', { failOnStatusCode: false });
         cardLast4Digit = fixtureData.cardNumber.slice(
           fixtureData.cardNumber.length - 4
+        );
+        prodCardLast4Digit = fixtureData.prodCardNumber.slice(
+          fixtureData.prodCardNumber.length - 4
         );
       });
     Cypress.Cookies.defaults({
@@ -294,10 +298,22 @@ describe('Dashboard Elements', () => {
     Dash.verifyInvoice();
   });
 
-  it.skip('Add New Credit Card', () => {
+  it('Add New Credit Card', () => {
     cy.url().then((url) => {
       if(url.includes('app.batchdialer.com')) {
-        cy.log('Not having credit card details for Production')
+        Dash.closeCreditCardPopup();
+        Dash.clickUserProfile();
+        Dash.clickBilling();
+        Dash.clickCardEditBtn();
+        Dash.clickAddNewCard();
+        Dash.enterCardName(fixtureData.cardHolderName);
+        Dash.enterCardNumber(fixtureData.prodCardNumber);
+        Dash.enterExpiryDate(fixtureData.cardExpiryDate);
+        Dash.enterCVC(fixtureData.cardCVC);
+        Dash.chooseCountry('United States');
+        Dash.enterBillingZip('43256');
+        Dash.clickContinue();
+        Dash.verifyAddedCard(prodCardLast4Digit);
       } else {
         Dash.closeCreditCardPopup();
         Dash.clickUserProfile();
@@ -316,29 +332,36 @@ describe('Dashboard Elements', () => {
     })
   });
 
-  it.skip('Verify the Default Credit Card Functionality', () => {
+  it('Verify the Default Credit Card Functionality', () => {
     cy.url().then((url) => {
       if(url.includes('app.batchdialer.com')) {
-        cy.log('Not having credit card details for Production')
+        Dash.closeCreditCardPopup();
+        Dash.clickCardEditBtn();
+        Dash.clickCardDefaultBtn(prodCardLast4Digit);
+        Dash.verifyCardDefault(prodCardLast4Digit);
+        Dash.clickCardDefaultBtn('4257');
+        Dash.verifyCardDefault('4257');
       } else {
         Dash.closeCreditCardPopup();
-        Dash.clickUserProfile();
-        Dash.clickBilling();
+        Dash.clickCardEditBtn();
         Dash.clickCardDefaultBtn(cardLast4Digit);
         Dash.verifyCardDefault(cardLast4Digit);
-        Dash.clickCardDefaultBtn('0505');
-        Dash.verifyCardDefault('0505');
+        Dash.clickCardDefaultBtn('5100');
+        Dash.verifyCardDefault('5100');
       }
     })
   });
 
-  it.skip('Delete the Added New Credit Card', () => {
+  it('Delete the Added New Credit Card', () => {
     cy.url().then((url) => {
       if(url.includes('app.batchdialer.com')) {
-        cy.log('Not having credit card details for Production')
+        Dash.closeCreditCardPopup();
+        Dash.clickCardEditBtn();
+        Dash.clickDeleteCardBtn(prodCardLast4Digit);
+        Dash.verifyCardDelete();
       } else {
-        Dash.clickUserProfile();
-        Dash.clickBilling();
+        Dash.closeCreditCardPopup();
+        Dash.clickCardEditBtn();
         Dash.clickDeleteCardBtn(cardLast4Digit);
         Dash.verifyCardDelete();
       }
@@ -346,6 +369,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Verifies monthly total should be greater when keeping phone', () => {
+    Dash.closeCreditCardPopup();
     Dash.clickUserProfile();
     Dash.clickBilling();
     Dash.clickPauseAccountBtn();
@@ -717,6 +741,7 @@ describe('Dashboard Elements', () => {
     Dash.selectAvailable('Available', testData.campaign);
     Dash.verifyPopUpHeader('Start Calling');
     Dash.clickConfirmButton();
+    Dash.clickCloseSoftphoneBtn();
   });
 
   it('Verify Calendar Month Left Arrow Functionality', () => {

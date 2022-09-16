@@ -134,13 +134,11 @@ const countires = '.modal-body .ss-select-value';
 const zip = 'input[name="zip"]';
 const cards = '.billing-payment-preview__card__label';
 const deleteCardBtn = (last4Digit) =>
-  "//tr[td[@class='cardtype' and contains(.,'" +
+  "//div[@class='billing-payment-preview__card' and contains(.," +
   last4Digit +
-  "')]]//*[name()='svg'][@data-icon='trash-alt']";
+  ")]//*[name()='svg'][@data-icon='trash']";
 const cardDefaultBtn = (last4Digit) =>
-  "//tr[td[@class='cardtype' and contains(.,'" +
-  last4Digit +
-  "')]]//*[name()='svg'][@data-icon='star']";
+  `//div[@class='billing-payment-preview__card' and contains(.,"${last4Digit}")]//button[img[@alt='Star']]`;
 const cardDeleteToast =
   "//div[contains(@class,'mytoast') and text()='The card has been successfully removed']";
 const chaticon = 'div[id="fc_frame"]';
@@ -1088,6 +1086,7 @@ export default class Dashboard {
   }
 
   verifyAddedCard(last4digit) {
+    cy.wait(1000)
     cy.get(cards).should('contain.text', last4digit);
   }
 
