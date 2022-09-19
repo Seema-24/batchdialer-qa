@@ -5,8 +5,7 @@ import Contacts from '../support/pages/Contacts';
 const Dash = new Dashboard();
 let fixtureData;
 let testData;
-let cardLast4Digit;
-let prodCardLast4Digit
+let cardLast4Digit, prodCardLast4Digit;
 let randNum = Math.floor(Math.random() * 100000);
 const addCont = new Contacts();
 const message = (user) => `This is a testing message from ${user}`;
@@ -741,7 +740,6 @@ describe('Dashboard Elements', () => {
     Dash.selectAvailable('Available', testData.campaign);
     Dash.verifyPopUpHeader('Start Calling');
     Dash.clickConfirmButton();
-    Dash.clickCloseSoftphoneBtn();
   });
 
   it('Verify Calendar Month Left Arrow Functionality', () => {
@@ -760,6 +758,7 @@ describe('Dashboard Elements', () => {
 
   // Fixed according to the BAT-747
   it('Verify Admin is able to Switch to Agents Account', () => {
+    Dash.clickCloseSoftphoneBtn();
     Dash.clickLoginAs();
     Dash.clickLoginAsPlusIcon();
     Dash.clickAgentOrSupervisor(testData.agent);

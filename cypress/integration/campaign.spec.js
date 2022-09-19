@@ -509,6 +509,24 @@ describe('Add Campaign flow', () => {
     addCamp.verifyAddedRecycleCampaign('RecycledCampaign');
   });
 
+  it('Verify that Change log for the Reycled campaign is updated', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickRecycleCampaignMenuBtn('RecycledCampaign');
+    addCamp.clickDropdownItem('Changelog');
+    addCamp.verifyDialogOpen();
+    addCamp.verifyModalTitle(
+      `Change Log ${'RecycledCampaign'}`
+    );
+    addCamp.verifyChangeLogItemsText(
+      `${'RecycledCampaign'} Recycled by ${
+        testData.AdminName
+      } based on ${
+        testData.campaign
+      }`
+    );
+    addCamp.clickModalCloseBtn();
+  });
+
   it('Archieve the Created Recycle Campaign', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickRecycleCampaignMenuBtn('RecycledCampaign');
