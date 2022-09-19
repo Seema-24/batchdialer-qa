@@ -1,4 +1,5 @@
 import { ignoreSpeedTestPopup } from '../Utils';
+import User from './User';
 
 const campaignsMenu = 'a[title="Campaigns"]';
 const addCampaign = '//button[text()="NEW CAMPAIGN"]';
@@ -152,6 +153,7 @@ const retryTimeDropdown =
   '//label[text()="Retry Time"]//following-sibling::div//div[contains(@class,"ss-select-control")]';
 const tooltip = '.question-tooltip';
 
+const addUser = new User();
 export default class Campaign {
   clickCampaignMenu() {
     cy.get(campaignsMenu).click({ force: true });
@@ -928,5 +930,52 @@ export default class Campaign {
 
   clickQuestionTooltip() {
     cy.get(tooltip).last().click({ force: true });
+  }
+
+  verifyDefaultCampaignName(name) {
+    var today = new Date();
+    today = String(today.getMonth() + 1).padStart(2,'0') 
+      + '-' +
+      String(today.getDate()).padStart(2,'0') 
+      + '-' + 
+      String(today.getFullYear()).slice(-2);
+
+    cy.xpath('//label[text()="Campaign Name"]/parent::div/child::input[@name="name"]')
+      .should('have.value', name +' - '+ today);
+  }
+
+  createAgentViaCampaignCreation(name,email,phone,password) {
+    const [agentFirstName, agentlastName] = name.split(' ');
+
+    cy.get('body').then(($body) => {
+      if($body.find('#pendo-guide-container').length) {
+        cy.contains('Next').click();
+      }
+      cy.contains('Create agents').click();
+      if($body.find('#pendo-guide-container').length) {
+        cy.contains('×').click();
+      }
+      addUser.enterFirstName(agentFirstName);
+      addUser.enterLastName(agentlastName);
+      addUser.enterEmail(email);
+      addUser.enterPhoneNumber(phone);
+      addUser.chooseUserRole('Agent');
+      addUser.enterPassword(password);
+      addUser.clickSaveButton();
+      addUser.verifySuccessToast();
+    })
+  }
+
+  verifyCreatedAgentsInField(agent) {
+    cy.xpath(cardDropdowns('Agents')+'//span[@class="ss-select-value-label multiple"]').should('have.text',agent);
+  }
+
+  deleteAgent(agent) {
+    const [agentFirstName, agentlastName] = agent.split(' ');
+    addUser.clickingOnUserOption();
+    cy.wait(3000);
+    addUser.searchUser(agent);
+    cy.wait(2000);
+    addUser.deleteAddedContact(agentFirstName,agentlastName);
   }
 }

@@ -388,7 +388,7 @@ describe('Agent Profile', function () {
     agent.clickingOnContactOption();
     cy.wait(500);
     agent.clickDashboardMenu();
-    cy.wait(500);
+    cy.wait(1500);
     agent.verifyActiveCampaignCount();
   });
 

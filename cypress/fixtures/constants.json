@@ -15,6 +15,7 @@
   "supervisorUsername": "random+3@email.com",
   "supervisorPassword": "Fleek@2016",
   "cardNumber": "3056930009020004",
+  "prodCardNumber": "370021808123713",
   "cardExpiryDate": "0525",
   "cardCVC": "656",
   "cardHolderName": "DemoTesting",

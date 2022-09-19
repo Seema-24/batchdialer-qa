@@ -158,7 +158,7 @@ const phoneNumberCheckbox = (checkboxCount) =>
 const actionsDropdown = '.dids-selected .dropdown button';
 const selectedCount = '.dids-selected .dids-selected-text span';
 const selectAllCheckbox =
-  '//div[@class="resizable-table-thead"]//span[@class="checkmark"]';
+  '//div[contains(@class,"resizable-table-thead")]//span[@class="checkmark"]';
 const totalNumbers = '.resizable-table-tbody .tr';
 const modalWindow = '.modal-content';
 const modalContentDropdown = '.modal-content .ss-select-control';

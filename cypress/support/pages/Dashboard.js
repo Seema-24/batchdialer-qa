@@ -19,8 +19,9 @@ const LoginSearchBox = '.dropdown-usertree.show .search-box';
 const SearchedUser = 'AUTOMATION';
 const SelectStatus = '.ss-select-group-items';
 const ContinueButton = '//button[text()="Continue"]';
+const DoneButton = '//button[text()="Done"]';
 const DialPad = '.stg-softphone-wrapper';
-const DialpadNumber9 = "//div[text()='9']";
+const DialpadNumber = (number) => `//div[@class="stg-softphone-keyboard-button"][text()='${number}']`;
 const DialpadCallButton = '.stg-softphone-callbutton';
 const CallTimerContactButton = '.stg-softphone-contact';
 const AnsweringMachine = "//div[text()='Busy']";
@@ -131,15 +132,13 @@ const expiryDate = 'input[name="exp-date"]';
 const cvc = 'input[name="cvc"]';
 const countires = '.modal-body .ss-select-value';
 const zip = 'input[name="zip"]';
-const cards = '.cardtype';
+const cards = '.billing-payment-preview__card__label';
 const deleteCardBtn = (last4Digit) =>
-  "//tr[td[@class='cardtype' and contains(.,'" +
+  "//div[@class='billing-payment-preview__card' and contains(.," +
   last4Digit +
-  "')]]//*[name()='svg'][@data-icon='trash-alt']";
+  ")]//*[name()='svg'][@data-icon='trash']";
 const cardDefaultBtn = (last4Digit) =>
-  "//tr[td[@class='cardtype' and contains(.,'" +
-  last4Digit +
-  "')]]//*[name()='svg'][@data-icon='star']";
+  `//div[@class='billing-payment-preview__card' and contains(.,"${last4Digit}")]//button[img[@alt='Star']]`;
 const cardDeleteToast =
   "//div[contains(@class,'mytoast') and text()='The card has been successfully removed']";
 const chaticon = 'div[id="fc_frame"]';
@@ -240,6 +239,7 @@ const addDropdown = (add) => `//label[text() ="${add}"]/parent::div/child::div//
 const selectState = (state) => `//div[text() ="${state}"]/parent::div/child::div//span[@class="ss-select-value-label single"]`;
 const billingBtn = (btn) => `//button[@class="billing-button"][text()="${btn}"]`;
 const successToastMsg = '.mytoast-bottom';
+const cardEditBtn = '.billing-user-info__payment__edit';
 
 export default class Dashboard {
   clickDashboard() {
@@ -457,6 +457,10 @@ export default class Dashboard {
     cy.xpath(ContinueButton).click();
   }
 
+  clickOnDoneButton() {
+    cy.xpath(DoneButton).click();
+  }
+
   VerifyRadioBtn(btnName) {
     for (let i = 0; i < btnName.length; i++) {
       cy.xpath(radioBtn(btnName[i])).should('be.visible');
@@ -477,13 +481,21 @@ export default class Dashboard {
 
   dialNumber() {
     for (let i = 0; i < 10; i++) {
-      cy.xpath(DialpadNumber9).click();
-      cy.wait(1000);
+      cy.xpath(DialpadNumber(9)).click();
+      cy.wait(500);
     }
   }
 
-  clickCallButton() {
-    cy.get(DialpadCallButton).click();
+  clickCallButton() { 
+    cy.get('body').then(($ele) => {
+      if($ele.find(DialpadCallButton)) {
+        if($ele.find('.disposition-cell .disposition').length) {
+          cy.log('Disposition Found');
+        } else{
+          cy.get(DialpadCallButton, { timeout: 20000 }).click();
+        }
+      }
+    })
   }
 
   verifyCallStarted() {
@@ -1041,8 +1053,20 @@ export default class Dashboard {
     iframe.find(cvc).type(cvv);
   }
 
+  clickCardEditBtn() {
+    cy.get(cardEditBtn).click();
+  }
+
   clickAddNewCard() {
     cy.xpath(addNewCard).click();
+  }
+
+  closeCreditCardPopup() {
+    cy.get('body').then(($body) => {
+      if($body.text().includes('Credit card management')) {
+        cy.get('.close-button').click();
+      }
+    })
   }
 
   chooseCountry(country) {
@@ -1062,6 +1086,7 @@ export default class Dashboard {
   }
 
   verifyAddedCard(last4digit) {
+    cy.wait(1000)
     cy.get(cards).should('contain.text', last4digit);
   }
 
@@ -1470,7 +1495,7 @@ export default class Dashboard {
     cy.xpath(eventTimeDropdown).click();
     cy.get('.ss-select-option').then((opt) => {
       for (let i = 0; i < opt.length; i++) {
-        if (opt[i].textContent.trim() === '11:30 PM') {
+        if (opt[i].textContent.trim() === '11:30 AM') {
           opt[i].click();
           break;
         }
