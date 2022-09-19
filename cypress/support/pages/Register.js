@@ -39,7 +39,7 @@ const reseller = `//div[@class="group-row-role__left__title"][contains(text(),"F
 const clientsMenu = 'a[title="Clients"]';
 const searchBox = 'input[placeholder*="Search"]';
 const deleteUserButton = 'img[src*="delete"]';
-const accountReactivationPage = '.main_signuparia.reactivation';
+const accountReactivationPage = '.main_signuparia.reactivation .content_contain';
 const hiddenFields = (fieldName) => `input[name="${fieldName}"]`;
 const toast = '.Toastify__toast-body';
 const fileInput = 'input[type="file"]';

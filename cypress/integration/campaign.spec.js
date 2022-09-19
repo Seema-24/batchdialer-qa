@@ -5,6 +5,7 @@ import { clickCallFunction, closeDialogBox, handlePoorConnectionPopup, ignoreSpe
 let fixtureData;
 let testData;
 let randNum = Math.floor(Math.random() * 1000);
+let AgentName = 'demoTest automation';
 const addCamp = new Campaign();
 const Dial = new Dialer();
 
@@ -508,6 +509,24 @@ describe('Add Campaign flow', () => {
     addCamp.verifyAddedRecycleCampaign('RecycledCampaign');
   });
 
+  it('Verify that Change log for the Reycled campaign is updated', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickRecycleCampaignMenuBtn('RecycledCampaign');
+    addCamp.clickDropdownItem('Changelog');
+    addCamp.verifyDialogOpen();
+    addCamp.verifyModalTitle(
+      `Change Log ${'RecycledCampaign'}`
+    );
+    addCamp.verifyChangeLogItemsText(
+      `${'RecycledCampaign'} Recycled by ${
+        testData.AdminName
+      } based on ${
+        testData.campaign
+      }`
+    );
+    addCamp.clickModalCloseBtn();
+  });
+
   it('Archieve the Created Recycle Campaign', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickRecycleCampaignMenuBtn('RecycledCampaign');
@@ -515,4 +534,28 @@ describe('Add Campaign flow', () => {
     addCamp.handleAlertForDelete();
     addCamp.verifyArchivedCampaign('RecycledCampaign', 'not.exist');
   });
+
+  it('Verify that default Campaign name should be in the format of (New Campaign - MM-DD-YY, unless changed)', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickAddNewCampaign();
+    addCamp.selectDialingMode('Predictive');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.selectPhoneNumberToAssign(testData.Number);
+    addCamp.verifyDefaultCampaignName('New Campaign');
+  });
+
+  it('Verify that User can Create agent from campaign creation page by clicking on (+ Create Agents)', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickAddNewCampaign();
+    addCamp.selectDialingMode('Predictive');
+    addCamp.createAgentViaCampaignCreation(
+      AgentName,
+      'demo'+randNum.toString()+'@email.com',
+      '1234567890', 
+      'Fleek@2016'
+    );
+    addCamp.verifyCreatedAgentsInField(AgentName);
+    addCamp.deleteAgent(AgentName);
+  });
+
 });

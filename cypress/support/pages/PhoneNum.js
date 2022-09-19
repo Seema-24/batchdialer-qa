@@ -158,7 +158,7 @@ const phoneNumberCheckbox = (checkboxCount) =>
 const actionsDropdown = '.dids-selected .dropdown button';
 const selectedCount = '.dids-selected .dids-selected-text span';
 const selectAllCheckbox =
-  '//div[@class="resizable-table-thead"]//span[@class="checkmark"]';
+  '//div[contains(@class,"resizable-table-thead")]//span[@class="checkmark"]';
 const totalNumbers = '.resizable-table-tbody .tr';
 const modalWindow = '.modal-content';
 const modalContentDropdown = '.modal-content .ss-select-control';
@@ -434,7 +434,7 @@ export default class PhoneNum {
 
   verifyAddedPhoneNum(num) {
     cy.xpath(
-      `//div[@class="resizable-table-tbody"]//div[@class="td"][text()="${num}"]`,
+      `//div[contains(@class,"resizable-table-tbody")]//div[@class="td"][text()="${num}"]`,
       { timeout: 10000 }
     ).should('be.visible');
   }

@@ -42,8 +42,9 @@ const campaign = new Campaign();
 const phone = new PhoneNum();
 const user = new User();
 const contact = new Contacts();
-const permit = ['Upload Contacts Lists','View Recent Contacts of All Agents'];
-const index = [9,25] ;
+const permit = ['View Recent Contacts of All Agents', 'Assign/Remove Agents',
+'Upload Contacts Lists', 'Export Contact Lists'];
+const index = [25,16,9,8] ;
 
 export default class Setup {
   clickCampaignMenu() {
@@ -91,7 +92,7 @@ export default class Setup {
     cy.get('body').then(($body) => {
       if ($body.find('.dids-twopane .resizable-table-tbody .tr').length) {
         cy.xpath(
-          '(//div[@class="resizable-table-tbody"]//div[@class="tr"]//div[@class="td"][3])[1]'
+          '(//div[contains(@class,"resizable-table-tbody")]//div[@class="tr"]//div[@class="td"][3])[1]'
         ).then((el) => {
           const number = el.text().trim();
           cy.readFile('cypress/fixtures/testData.json', (err, data) => {
@@ -118,7 +119,7 @@ export default class Setup {
         this.createNewCampaign(name, callResults, phone, agentName);
       } else {
         cy.xpath(
-          '//div[@class="resizable-table-tbody"]//div[@class="td"]//span[contains(@class,"campaign-name-table")]'
+          '//div[contains(@class,"resizable-table-tbody")]//div[@class="td"]//span[contains(@class,"campaign-name-table")]'
         ).then((el) => {
           if (el.text().trim().includes(name)) {
             cy.log('Campaign already exist');
@@ -528,7 +529,7 @@ export default class Setup {
   }
 
   enableSupervisorDefaultPermissions() { 
-    cy.contains(permit[1]).scrollIntoView();
+    cy.contains(permit[0]).scrollIntoView();
     cy.get('body').then((body) => {
       for (let i = 0; i < permit.length; i++) {
         if(body.find(permissionCheckbox(index[i])).length) {

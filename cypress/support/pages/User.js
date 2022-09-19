@@ -62,7 +62,7 @@ const userThreeDotMenu = (firstName, lastName) =>
   `//div[@class="tr"][div[@class="td"][text()="${firstName} ${lastName}"]]//div[@class="dropdown"]`;
 const dropdownItems = '.show .dropdown-item';
 const searchedUser = (fstName, lstName) =>
-  `//div[@class="resizable-table-tbody"]//div[@class="tr"]//div[@class="td"][text()="${fstName} ${lstName}"]`;
+  `//div[contains(@class,"resizable-table-tbody")]//div[@class="tr"]//div[@class="td"][text()="${fstName} ${lstName}"]`;
 const defaultAgentStatuses = (statusName) =>
   `//div[@class="users-narrow-body"]//div[contains(@class,"agent-editing")]//span[text()="${statusName}"]`;
 const customAgentStatuses = (statusName) =>

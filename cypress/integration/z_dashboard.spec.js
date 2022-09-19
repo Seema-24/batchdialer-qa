@@ -5,7 +5,7 @@ import Contacts from '../support/pages/Contacts';
 const Dash = new Dashboard();
 let fixtureData;
 let testData;
-let cardLast4Digit;
+let cardLast4Digit, prodCardLast4Digit;
 let randNum = Math.floor(Math.random() * 100000);
 const addCont = new Contacts();
 const message = (user) => `This is a testing message from ${user}`;
@@ -21,6 +21,9 @@ describe('Dashboard Elements', () => {
         cy.visit('/', { failOnStatusCode: false });
         cardLast4Digit = fixtureData.cardNumber.slice(
           fixtureData.cardNumber.length - 4
+        );
+        prodCardLast4Digit = fixtureData.prodCardNumber.slice(
+          fixtureData.prodCardNumber.length - 4
         );
       });
     Cypress.Cookies.defaults({
@@ -91,6 +94,7 @@ describe('Dashboard Elements', () => {
     Dash.verifyToastMessage('Copied!');
   });
 
+  //it can't be automated bcuz username is in smaller letter shows in HTML page
   it.skip('Verify that username is capitalized only', () => {
     Dash.verifyUserNameCapitalized();
   });
@@ -157,13 +161,14 @@ describe('Dashboard Elements', () => {
     Dash.verifyDialPad();
   });
 
-  it.skip('Verify user is able to make call using dialer button', () => {
+  it('Verify user is able to make call using dialer button', () => {
     Dash.dialNumber();
     Dash.clickCallButton();
     Dash.verifyCallStarted();
+    cy.wait(3000);
     Dash.clickCallButton();
     Dash.clickAnsweringMachine();
-    Dash.clickContinue();
+    Dash.clickOnDoneButton();
   });
 
   it('Verify Task Button Functionality', () => {
@@ -224,18 +229,18 @@ describe('Dashboard Elements', () => {
     Dash.clickEventStatusCheckbox(testData.Contact, 'Pending');
   });
 
-  it.skip('Verify that if event is marked as completed then it should disappear from list', () => {
+  it('Verify that if event is marked as completed then it should disappear from list', () => {
     Dash.verifyCompletedEventDisappear(testData.Contact);
   });
 
-  it.skip('Mark the Completed Event as Pending Event', () => {
+  it('Mark the Completed Event as Pending Event', () => {
     Dash.clickCompletedCheckbox();
     Dash.clickEventStatusCheckbox(testData.Contact, 'Completed');
   });
 
   it('Delete the Added Event', () => {
     Dash.clickEventThreeDotMenuBtn(testData.Contact);
-    Dash.selectDropdownItemToClick('Delete Appointment');
+    Dash.selectDropdownItemToClick('Delete Event');
   });
 
   it('Verify on click user profile show options', () => {
@@ -292,37 +297,78 @@ describe('Dashboard Elements', () => {
     Dash.verifyInvoice();
   });
 
-  it.skip('Add New Credit Card', () => {
-    Dash.clickUserProfile();
-    Dash.clickBilling();
-    Dash.clickAddNewCard();
-    Dash.enterCardName(fixtureData.cardHolderName);
-    Dash.enterCardNumber(fixtureData.cardNumber);
-    Dash.enterExpiryDate(fixtureData.cardExpiryDate);
-    Dash.enterCVC(fixtureData.cardCVC);
-    Dash.chooseCountry('United States');
-    Dash.enterBillingZip('43256');
-    Dash.clickContinue();
-    Dash.verifyAddedCard(cardLast4Digit);
+  it('Add New Credit Card', () => {
+    cy.url().then((url) => {
+      if(url.includes('app.batchdialer.com')) {
+        Dash.closeCreditCardPopup();
+        Dash.clickUserProfile();
+        Dash.clickBilling();
+        Dash.clickCardEditBtn();
+        Dash.clickAddNewCard();
+        Dash.enterCardName(fixtureData.cardHolderName);
+        Dash.enterCardNumber(fixtureData.prodCardNumber);
+        Dash.enterExpiryDate(fixtureData.cardExpiryDate);
+        Dash.enterCVC(fixtureData.cardCVC);
+        Dash.chooseCountry('United States');
+        Dash.enterBillingZip('43256');
+        Dash.clickContinue();
+        Dash.verifyAddedCard(prodCardLast4Digit);
+      } else {
+        Dash.closeCreditCardPopup();
+        Dash.clickUserProfile();
+        Dash.clickBilling();
+        Dash.clickCardEditBtn();
+        Dash.clickAddNewCard();
+        Dash.enterCardName(fixtureData.cardHolderName);
+        Dash.enterCardNumber(fixtureData.cardNumber);
+        Dash.enterExpiryDate(fixtureData.cardExpiryDate);
+        Dash.enterCVC(fixtureData.cardCVC);
+        Dash.chooseCountry('United States');
+        Dash.enterBillingZip('43256');
+        Dash.clickContinue();
+        Dash.verifyAddedCard(cardLast4Digit);
+      }
+    })
   });
 
-  it.skip('Verify the Default Credit Card Functionality', () => {
-    Dash.clickUserProfile();
-    Dash.clickBilling();
-    Dash.clickCardDefaultBtn(cardLast4Digit);
-    Dash.verifyCardDefault(cardLast4Digit);
-    Dash.clickCardDefaultBtn('0505');
-    Dash.verifyCardDefault('0505');
+  it('Verify the Default Credit Card Functionality', () => {
+    cy.url().then((url) => {
+      if(url.includes('app.batchdialer.com')) {
+        Dash.closeCreditCardPopup();
+        Dash.clickCardEditBtn();
+        Dash.clickCardDefaultBtn(prodCardLast4Digit);
+        Dash.verifyCardDefault(prodCardLast4Digit);
+        Dash.clickCardDefaultBtn('4257');
+        Dash.verifyCardDefault('4257');
+      } else {
+        Dash.closeCreditCardPopup();
+        Dash.clickCardEditBtn();
+        Dash.clickCardDefaultBtn(cardLast4Digit);
+        Dash.verifyCardDefault(cardLast4Digit);
+        Dash.clickCardDefaultBtn('5100');
+        Dash.verifyCardDefault('5100');
+      }
+    })
   });
 
-  it.skip('Delete the Added New Credit Card', () => {
-    Dash.clickUserProfile();
-    Dash.clickBilling();
-    Dash.clickDeleteCardBtn(cardLast4Digit);
-    Dash.verifyCardDelete();
+  it('Delete the Added New Credit Card', () => {
+    cy.url().then((url) => {
+      if(url.includes('app.batchdialer.com')) {
+        Dash.closeCreditCardPopup();
+        Dash.clickCardEditBtn();
+        Dash.clickDeleteCardBtn(prodCardLast4Digit);
+        Dash.verifyCardDelete();
+      } else {
+        Dash.closeCreditCardPopup();
+        Dash.clickCardEditBtn();
+        Dash.clickDeleteCardBtn(cardLast4Digit);
+        Dash.verifyCardDelete();
+      }
+    })
   });
 
   it('Verifies monthly total should be greater when keeping phone', () => {
+    Dash.closeCreditCardPopup();
     Dash.clickUserProfile();
     Dash.clickBilling();
     Dash.clickPauseAccountBtn();
@@ -712,6 +758,7 @@ describe('Dashboard Elements', () => {
 
   // Fixed according to the BAT-747
   it('Verify Admin is able to Switch to Agents Account', () => {
+    Dash.clickCloseSoftphoneBtn();
     Dash.clickLoginAs();
     Dash.clickLoginAsPlusIcon();
     Dash.clickAgentOrSupervisor(testData.agent);
