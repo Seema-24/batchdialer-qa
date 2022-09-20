@@ -1,5 +1,6 @@
 import Campaign from '../support/pages/Campaigns';
 import Dialer from '../support/pages/Dialer';
+import Report from '../support/pages/Report';
 import { clickCallFunction, closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 
 let fixtureData;
@@ -8,6 +9,7 @@ let randNum = Math.floor(Math.random() * 1000);
 let AgentName = 'demoTest automation';
 const addCamp = new Campaign();
 const Dial = new Dialer();
+const report = new Report();
 
 describe('Add Campaign flow', () => {
   before(() => {
@@ -509,6 +511,16 @@ describe('Add Campaign flow', () => {
     addCamp.verifyAddedRecycleCampaign('RecycledCampaign');
   });
 
+  it('Verify that when a campaign is recycled first time new campaign is having recycle icon is displayed in the campaign page.', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.verifyRecycleIconWithCount('RecycledCampaign', 1)
+  });
+
+  it('Verify that when hovering on the recycle icon tooltip is displayed indicating the source campaign.', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.verifySourceCampaign(testData.campaign, 'RecycledCampaign');
+  });
+
   it('Verify that Change log for the Reycled campaign is updated', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickRecycleCampaignMenuBtn('RecycledCampaign');
@@ -525,6 +537,25 @@ describe('Add Campaign flow', () => {
       }`
     );
     addCamp.clickModalCloseBtn();
+  });
+
+  it('Verify that if the same campaign is Recycled multiple times count inside the Recycle icon is remains the same.', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickEditCampaign(testData.campaign);
+    addCamp.clickRecycleOption();
+    cy.wait(500);
+    addCamp.enterNewCampaignName('RecycledCampaign-1');
+    addCamp.removeCheckBox();
+    addCamp.clickRecycleSaveCampaign();
+    addCamp.verifyToast('Recycled campaign created');
+    addCamp.verifyAddedRecycleCampaign('RecycledCampaign-1');
+    addCamp.verifyRecycleIconWithCount('RecycledCampaign-1', 1)
+  });
+
+  it('Verify that REPORTS-->CAMPAIGN page is updated with the Recycled icon along with the counts', () => {
+    report.clickReportMenu();  
+    report.clickReportsHeader('Campaigns');
+    report.verifyRecycleIconWithCount('RecycledCampaign', 1)
   });
 
   it('Archieve the Created Recycle Campaign', () => {

@@ -36,6 +36,7 @@ const FloorViewDropdown = "//label[text()='Floor View']/parent::div//button";
 const addNewFloor = "//button[contains(text(),' Add New Floor')]";
 const filtersButton = '.modal-filter-btn';
 const rowsData = '.resizable-table .resizable-table-tbody .tr';
+const recycleIcon = (name) => `//div[text()="${name}"]/*[@class="recycle-icon-svg"]`
 
 export default class Report {
   clickReportMenu() {
@@ -228,5 +229,10 @@ export default class Report {
 
   verifyRowsData(data) {
     cy.get(rowsData).should('contain.text', data);
+  }
+
+  verifyRecycleIconWithCount(name, count) {
+    cy.xpath(recycleIcon(name)).should('be.visible');
+    cy.xpath(recycleIcon(name)+'/*[@class="recycle-icon-text"]').first().should('have.text', count);
   }
 }
