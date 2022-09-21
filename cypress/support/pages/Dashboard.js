@@ -240,6 +240,7 @@ const selectState = (state) => `//div[text() ="${state}"]/parent::div/child::div
 const billingBtn = (btn) => `//button[@class="billing-button"][text()="${btn}"]`;
 const successToastMsg = '.mytoast-bottom';
 const cardEditBtn = '.billing-user-info__payment__edit';
+const mainTab = '//div[@class="dashboard"]//li[text()="MAIN"]';
 
 export default class Dashboard {
   clickDashboard() {
@@ -1695,5 +1696,9 @@ export default class Dashboard {
 
   verifyState(state) {
     cy.xpath(selectState('Select State')).should('have.text', state);
+  }
+
+  clickOnMainTab() {
+    cy.xpath(mainTab).click();
   }
 }

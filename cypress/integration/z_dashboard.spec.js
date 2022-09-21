@@ -75,11 +75,12 @@ describe('Dashboard Elements', () => {
     Dash.clickMicTestStartButton();
     Dash.verifyMicTestCompletion();
     Dash.clickOnButton('Done');
+    Dash.clickCallGraphCloseBtn();
   });
 
   it('verify elements in Dashboard', () => {
-    Dash.clickCallGraphCloseBtn();
     Dash.clickDashboard();
+    Dash.clickOnMainTab();
     Dash.verifyDashboardElements();
   });
 
@@ -744,6 +745,7 @@ describe('Dashboard Elements', () => {
 
   it('Verify Calendar Month Left Arrow Functionality', () => {
     Dash.clickDashboard();
+    Dash.clickOnMainTab();
     Dash.clickDashboardCalendar();
     var month = Dash.getLastMonth();
     Dash.clickTaskLeftArrow();

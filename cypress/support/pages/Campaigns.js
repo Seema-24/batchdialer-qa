@@ -946,6 +946,10 @@ export default class Campaign {
       .should('have.value', name +' - '+ today);
   }
 
+  verifyDefaultRecycleCampaignName(val) {
+    cy.get(RecCampaignName).should('have.value', val);
+  }
+   
   createAgentViaCampaignCreation(name,email,phone,password) {
     const [agentFirstName, agentlastName] = name.split(' ');
 

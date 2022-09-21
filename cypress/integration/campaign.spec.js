@@ -499,6 +499,13 @@ describe('Add Campaign flow', () => {
     addCamp.clickOnButton('Save');
   });
 
+  it('Verify the Auto generated Name of Recycled campaign for First Recycle of Initial campaign', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickEditCampaign(testData.campaign);
+    addCamp.clickRecycleOption();
+    addCamp.verifyDefaultRecycleCampaignName(testData.campaign + ' - 1');
+  });
+
   it('Create the Recycle Campaign', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickEditCampaign(testData.campaign);
@@ -509,6 +516,17 @@ describe('Add Campaign flow', () => {
     addCamp.clickRecycleSaveCampaign();
     addCamp.verifyToast('Recycled campaign created');
     addCamp.verifyAddedRecycleCampaign('RecycledCampaign');
+  });
+
+  it('Verify the Auto generated Name of Recycled campaign for Second Recycle of Initial campaign', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickEditCampaign(testData.campaign);
+    addCamp.clickRecycleOption();
+    cy.wait(500);
+    addCamp.enterNewCampaignName('RecycledCampaign');
+    addCamp.removeCheckBox();
+    addCamp.clickRecycleSaveCampaign();
+    addCamp.verifyToast('Duplicate campaign name');
   });
 
   it('Verify that when a campaign is recycled first time new campaign is having recycle icon is displayed in the campaign page.', () => {
