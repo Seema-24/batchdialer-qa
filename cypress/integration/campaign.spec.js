@@ -576,6 +576,13 @@ describe('Add Campaign flow', () => {
     report.verifyRecycleIconWithCount('RecycledCampaign', 1)
   });
 
+  it('Verify the Auto generated Name of Recycled campaign for First Recycle of Recycled Campaign', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickRecycleCampaignMenuBtn('RecycledCampaign');
+    addCamp.clickDropdownItem('Recycle');
+    addCamp.verifyDefaultRecycleCampaignName('RecycledCampaign - 2');
+  });
+
   it('Archieve the Created Recycle Campaign', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickRecycleCampaignMenuBtn('RecycledCampaign');
