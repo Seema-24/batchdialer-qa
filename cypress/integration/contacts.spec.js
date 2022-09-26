@@ -130,7 +130,7 @@ describe('Add Contact flow', () => {
     addCont.verifyImportContactListName();
     addCont.verifyImportContactSelectCompaignDropdown();
     addCont.verifyImportContactOptionsCheckbox([
-      'Scrub Against Existing Contacts',
+      //'Scrub Against Existing Contacts',
       'Remove Duplicates In List',
       'Scrub Federal DNC',
       'Scrub Company DNC',

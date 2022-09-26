@@ -645,7 +645,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     permission.clickOnMenu('Reports');
     cy.wait(2000);
     permission.verifySubMenuExist([
-      'Live',
+      //'Live',
       'Recent Contacts',
       'Campaigns',
       'Agents',
@@ -712,7 +712,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     permission.clickOnMenu('Recent Contacts');
     cy.wait(2000);
     permission.verifySubMenuNotExist([
-      'Live',
+      //'Live',
       'Campaigns',
       'Agents',
       'Numbers',
@@ -1604,7 +1604,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     cy.wait(2000);
     permission.clickOnMenu('Reports');
     permission.verifySubMenuExist([
-      'Live',
+      //'Live',
       'Recent Contacts',
       'Campaigns',
       'Agents',

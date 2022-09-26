@@ -32,28 +32,29 @@ describe('SuperVisor Flow', () => {
   });
 
   it('Verify the Dashboard Elements', () => {
+    suprevisor.clickOnMainTab();
     suprevisor.verifyDashboardElementsBox([
-      'Average Call Duration',
-      'Average Wait Time',
-      'Average Abandon Time',
-      'Average Calls Per Agent Daily',
-      'Active Campaigns',
-      'Active agents',
-      'Active Numbers',
-      'Total DNC',
-      'Total Calls',
-      'Total Connects',
-      'Leads Generated',
-      'Average Agent Wait Time',
+      'Outbound Calls',                // 'Average Call Duration',
+      'Connected Calls',                // 'Average Wait Time',
+      'Avg. Call Duration',             // 'Average Abandon Time',
+      'Avg. Agent Wait Time',           // 'Average Calls Per Agent Daily',
+      'Abandon Rate',                   // 'Active Campaigns',
+      'Active Campaigns',               // 'Active agents',
+      'Leads Generated',                // 'Active Numbers',
+      'Connect Rate',                   // 'Total DNC',
+      'Dialing Time',                   // 'Total Calls',
+      'Avg. CPA(Calls Per Agent)',      // 'Total Connects',
+      'Calls Per Connect',              // 'Leads Generated',
+      'Voicemails Reached',             // 'Average Agent Wait Time',
     ]);
     suprevisor.verifyDashboardGraphElementsBox([
       'Calls Summary',
       'Responsiveness',
-      'Agents',
-      'Total Calls',
+      'Agent Analytics',                // 'Agents',
+      'Best Time to Call',              // 'Total Calls',
       'Call Results',
-      'Calls Locations',
-      'Average Call Duration',
+      'Campaign Analytics',             // 'Calls Locations',
+      'Avg. Agent Talk Time'            // 'Average Call Duration',
     ]);
   });
 
@@ -102,7 +103,7 @@ describe('SuperVisor Flow', () => {
   it('Verify the Reports SubMenu Items', () => {
     suprevisor.clickReportsMenu();
     suprevisor.verifyReportsHeaderElements([
-      'Live',
+      //'Live',
       'Recent Contacts',
       'Campaigns',
       'Agents',
@@ -112,7 +113,8 @@ describe('SuperVisor Flow', () => {
     ]);
   });
 
-  it('Verify the Live section Elements of Report', () => {
+  //rrport --> Live elements move to Dashboard page
+  it.skip('Verify the Live section Elements of Report', () => {
     suprevisor.clickReportsMenu();
     suprevisor.clickReportsHeader('Live');
     suprevisor.verifyReportLiveElements([

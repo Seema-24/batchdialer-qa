@@ -785,7 +785,7 @@ describe('Dashboard Elements', () => {
   it('Verify on Click of Home Button Admin should Redirect to Dashboard', () => {
     addCont.clickingOnContactOption();
     Dash.clickHomeButton();
-    Dash.verifyDashboardCalandar();
+    Dash.verifyDashboardLiveCalls();
   });
 
   it('Verify that Chat Box should open when click on Chat Icon', () => {

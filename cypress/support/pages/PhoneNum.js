@@ -66,7 +66,7 @@ const dncMenu = 'a[title="DNC"]';
 const dncCards = '.dnc.card';
 const uploadFileBtn = '//button[contains(text(),"Upload File")]';
 const addBtn = (title) =>
-  "//div[contains(@class,'card-title')][contains(.,'" + title + "')]//img";
+  "//div[contains(@class,'card-title')][contains(.,'" + title + "')]//img[@src='/img/icon-row-add.svg']";
 const numberField = '.modal-content input[type="text"]';
 const saveBtn = '//button[contains(text(),"SAVE")]';
 const addMoreBtn = '.modal-content img[src*="add"]';

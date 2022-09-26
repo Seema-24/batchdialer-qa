@@ -3,10 +3,11 @@ import { clickCallFunction, ignoreSpeedTestPopup } from "../Utils";
 const DashboardMenu = 'a[title="Dashboard"]';
 const CallSummery = 'Calls Summary';
 const Responsiveness = 'Responsiveness';
-const Agents = 'Agents';
-const TotalCalls = 'Total Calls';
+const AgentsAnalytics = 'Agent Analytics';
+const AgentTalktime = 'Avg. Agent Talk Time';
+const BestTimeToCall = 'Best Time to Call';
 const CallResults = 'Call Results';
-const CallLocations = 'Calls Locations';
+const CampaignAnalytics = 'Campaign Analytics';
 const AverageCallDuration = 'Average Call Duration';
 const ButtonLoginAs = '//div[@class="user__dropdown"][text()="Switch Account"]';
 const clientPlusIcon = '.group-client img';
@@ -241,6 +242,7 @@ const billingBtn = (btn) => `//button[@class="billing-button"][text()="${btn}"]`
 const successToastMsg = '.mytoast-bottom';
 const cardEditBtn = '.billing-user-info__payment__edit';
 const mainTab = '//div[@class="dashboard"]//li[text()="MAIN"]';
+const liveCalls = '//div[@class="title "][text()="Live Calls"]';
 
 export default class Dashboard {
   clickDashboard() {
@@ -363,11 +365,11 @@ export default class Dashboard {
   verifyDashboardElements() {
     cy.contains(CallSummery).should('be.visible');
     cy.contains(Responsiveness).should('be.visible');
-    cy.contains(Agents).should('be.visible');
-    cy.contains(TotalCalls).should('be.visible');
+    cy.contains(AgentsAnalytics).should('be.visible');
+    cy.contains(AgentTalktime).should('be.visible');
+    cy.contains(BestTimeToCall).should('be.visible');
     cy.contains(CallResults).should('be.visible');
-    cy.contains(CallLocations).should('be.visible');
-    cy.contains(AverageCallDuration).should('be.visible');
+    cy.contains(CampaignAnalytics).should('be.visible');
   }
 
   verifyDashboardHeaderElement() {
@@ -1700,5 +1702,9 @@ export default class Dashboard {
 
   clickOnMainTab() {
     cy.xpath(mainTab).click();
+  }
+
+  verifyDashboardLiveCalls() {
+    cy.xpath(liveCalls).should('be.visible')
   }
 }

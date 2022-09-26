@@ -48,12 +48,13 @@ const heatRangePicker = '.reports-heat__range-picker';
 const rangeSelectRadioBtn = (range) =>
   `//label[@class="radio_cstm"][text()="${range}"]//span[@class="checkmark"]`;
 const dashboardElementsBox = (elementName) =>
-  `//div[text()="${elementName}"]/ancestor::div[contains(@class,"col")]`;
+  `//div[text()="${elementName}"]/ancestor::div[contains(@class,"summary-card")]`;
 const dashboardGraphElements = (elementName) =>
   `//span[text()="${elementName}"]/ancestor::div[contains(@class,"col")]`;
 const addNewFloor = "//button[contains(text(),' Add New Floor')]";
 const filterButton = 'button.modal-filter-btn';
 const userDropdown =(option) => `//div[@class="user__dropdown" and text()="${option}"]`;
+const mainTab = '//div[@class="dashboard"]//li[text()="MAIN"]';
 
 export default class Suprevisor {
   clickingOnContactOption() {
@@ -292,5 +293,9 @@ export default class Suprevisor {
 
   clickFilterButton() {
     cy.get(filterButton).click();
+  }
+
+  clickOnMainTab() {
+    cy.xpath(mainTab).click();
   }
 }
