@@ -39,7 +39,8 @@ describe('Report Page', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('verify report live elements', () => {
+  //Report --> Live elements move to Dashboard page
+  it.skip('verify report live elements', () => {
     report.clickReportMenu();
     report.clickReportsHeader('Live');
     report.verifyReportLiveElements([
@@ -58,7 +59,8 @@ describe('Report Page', () => {
     ]);
   });
 
-  it('verify report table header element', () => {
+  //report--> live page also move to dashboard page
+  it.skip('verify report Live table header element', () => {
     report.verifyReportTableHeaderElements([
       'Agent',
       'Phone Number',

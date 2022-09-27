@@ -3,10 +3,11 @@ import { clickCallFunction, ignoreSpeedTestPopup } from "../Utils";
 const DashboardMenu = 'a[title="Dashboard"]';
 const CallSummery = 'Calls Summary';
 const Responsiveness = 'Responsiveness';
-const Agents = 'Agents';
-const TotalCalls = 'Total Calls';
+const AgentsAnalytics = 'Agent Analytics';
+const AgentTalktime = 'Avg. Agent Talk Time';
+const BestTimeToCall = 'Best Time to Call';
 const CallResults = 'Call Results';
-const CallLocations = 'Calls Locations';
+const CampaignAnalytics = 'Campaign Analytics';
 const AverageCallDuration = 'Average Call Duration';
 const ButtonLoginAs = '//div[@class="user__dropdown"][text()="Switch Account"]';
 const clientPlusIcon = '.group-client img';
@@ -141,7 +142,7 @@ const cardDefaultBtn = (last4Digit) =>
   `//div[@class='billing-payment-preview__card' and contains(.,"${last4Digit}")]//button[img[@alt='Star']]`;
 const cardDeleteToast =
   "//div[contains(@class,'mytoast') and text()='The card has been successfully removed']";
-const chaticon = 'div[id="fc_frame"]';
+const chaticon = 'svg.chat-wrapper__icon';
 const chatWindow = '.fc-conversation-view';
 const enterChat = '#app-conversation-editor p';
 const chatBoxInputEmail = '.email-input input';
@@ -240,7 +241,10 @@ const selectState = (state) => `//div[text() ="${state}"]/parent::div/child::div
 const billingBtn = (btn) => `//button[@class="billing-button"][text()="${btn}"]`;
 const successToastMsg = '.mytoast-bottom';
 const cardEditBtn = '.billing-user-info__payment__edit';
-
+const mainTab = '//div[@class="dashboard"]//li[text()="MAIN"]';
+const liveCalls = '//div[@class="title "][text()="Live Calls"]';
+const resourceCenterIcon = 'img[id*="pendo-image-badge"]';
+const customerChat = "//div[text()='Chat with us']";
 export default class Dashboard {
   clickDashboard() {
     cy.get(DashboardMenu).click({ force: true });
@@ -362,11 +366,11 @@ export default class Dashboard {
   verifyDashboardElements() {
     cy.contains(CallSummery).should('be.visible');
     cy.contains(Responsiveness).should('be.visible');
-    cy.contains(Agents).should('be.visible');
-    cy.contains(TotalCalls).should('be.visible');
+    cy.contains(AgentsAnalytics).should('be.visible');
+    cy.contains(AgentTalktime).should('be.visible');
+    cy.contains(BestTimeToCall).should('be.visible');
     cy.contains(CallResults).should('be.visible');
-    cy.contains(CallLocations).should('be.visible');
-    cy.contains(AverageCallDuration).should('be.visible');
+    cy.contains(CampaignAnalytics).should('be.visible');
   }
 
   verifyDashboardHeaderElement() {
@@ -472,7 +476,13 @@ export default class Dashboard {
   }
 
   clickDialer() {
-    cy.get(Dialer).click();
+    cy.get('body').then(($body) => {
+      if($body.find(DialPad).length){
+        cy.log("Dial Pad exist");
+      }else {
+        cy.get(Dialer).click();
+      }
+    })
   }
 
   verifyDialPad() {
@@ -1695,5 +1705,21 @@ export default class Dashboard {
 
   verifyState(state) {
     cy.xpath(selectState('Select State')).should('have.text', state);
+  }
+
+  clickOnMainTab() {
+    cy.xpath(mainTab).click();
+  }
+
+  verifyDashboardLiveCalls() {
+    cy.xpath(liveCalls).should('be.visible')
+  }
+
+  clickResourceCenterIcon() {
+    cy.get(resourceCenterIcon).click();
+  }
+
+  clickCustomerChat() {
+    cy.xpath(customerChat).click();
   }
 }

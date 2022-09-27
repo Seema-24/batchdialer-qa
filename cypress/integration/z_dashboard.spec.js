@@ -75,11 +75,12 @@ describe('Dashboard Elements', () => {
     Dash.clickMicTestStartButton();
     Dash.verifyMicTestCompletion();
     Dash.clickOnButton('Done');
+    Dash.clickCallGraphCloseBtn();
   });
 
   it('verify elements in Dashboard', () => {
-    Dash.clickCallGraphCloseBtn();
     Dash.clickDashboard();
+    Dash.clickOnMainTab();
     Dash.verifyDashboardElements();
   });
 
@@ -162,6 +163,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Verify user is able to make call using dialer button', () => {
+    Dash.clickDialer();
     Dash.dialNumber();
     Dash.clickCallButton();
     Dash.verifyCallStarted();
@@ -387,48 +389,29 @@ describe('Dashboard Elements', () => {
     Dash.clickClosePauseSubscriptionBox();
   });
 
-  it.skip('Pause Account while keeping the Phone Number', () => {
+  it('Pause Account while keeping the Phone Number', () => {
     Dash.clickUserProfile();
     Dash.clickBilling();
     Dash.clickPauseAccountBtn();
     cy.wait(2000);
     Dash.clickPutSubscriptionOnHold();
-    Dash.clickStartBtn();
+    //Dash.clickStartBtn();
     Dash.verifyAccountPauseMessage();
-  });
-
-  it.skip('Unpause account by choosing any Plan', () => {
-    Dash.clickUserProfile();
-    Dash.clickBilling();
-    Dash.choosePlan('Multi-Line Dialer'); // Single Line Dialer
-    Dash.clickContinueBtn();
+    Dash.clickBillingNotificationBtn('Renew Subscription');
     Dash.verifyPauseAccount();
   });
 
-  it.skip('Pause Account while not keeping the Phone Number', () => {
+  it('Pause Account while not keeping the Phone Number', () => {
     Dash.clickUserProfile();
     Dash.clickBilling();
     Dash.clickPauseAccountBtn();
     cy.wait(2000);
     Dash.clickKeepPhoneCheckbox();
     Dash.clickPutSubscriptionOnHold();
-    Dash.clickStartBtn();
+    //Dash.clickStartBtn();
     Dash.verifyAccountPauseMessage();
-  });
-
-  it.skip('Unpause account by choosing any Plan', () => {
-    Dash.clickUserProfile();
-    Dash.clickBilling();
-    Dash.choosePlan('Multi-Line Dialer'); // Single Line Dialer
-    Dash.clickContinueBtn();
+    Dash.clickBillingNotificationBtn('Renew Subscription');
     Dash.verifyPauseAccount();
-  });
-
-  it.skip('Upgrade the Plan', () => {
-    Dash.clickUserProfile();
-    Dash.clickBilling();
-    Dash.upgradePlan('Multi-Line Dialer'); // Single Line Dialer
-    Dash.clickContinueBtn();
   });
 
   it('Verify User settings Address Boook elements', () => {
@@ -668,7 +651,7 @@ describe('Dashboard Elements', () => {
     Dash.verifyDeletedRecording('TextSpeech' + randNum.toString());
   });
 
-  it.skip('Call feature should disable for admin if Agent Feature is Disable', () => {
+  it('Call feature should disable for admin if Agent Feature is Disable', () => {
     Dash.clickUserProfile();
     Dash.clickProfile();
     Dash.clickAgentFeatureDisable();
@@ -676,7 +659,7 @@ describe('Dashboard Elements', () => {
     Dash.verifyDialerNotVisible();
   });
 
-  it.skip('Call feature should enable for admin if Agent Feature is Enable', () => {
+  it('Call feature should enable for admin if Agent Feature is Enable', () => {
     Dash.clickUserProfile();
     Dash.clickProfile();
     Dash.clickAgentFeatureEnable();
@@ -684,6 +667,7 @@ describe('Dashboard Elements', () => {
     Dash.verifyDialerVisible();
   });
 
+  //In affiliate page changes has been done
   it.skip('Send Email to add a New Lead', () => {
     Dash.clickUserProfile();
     Dash.clickSettingsButton();
@@ -693,42 +677,29 @@ describe('Dashboard Elements', () => {
     Dash.VerifyLeadSendMessage();
   });
 
-  it.skip('Should open Contact Support Window when Cancelling Account', () => {
-    Dash.clickUserProfile();
-    Dash.clickBilling();
-    Dash.clickCancelAccount();
-    Dash.chooseCancelAccountReason('Not using it Currently');
-    Dash.EnterConfirmCancelAccount('DELETE');
-    Dash.clickProceedWithCancel();
-    Dash.clickCancelImmediately();
-    Dash.verifyContactSupportWindow(
-      'Your cancellation request has been successfully submitted. We will reach out to you within 24-48 hours for an update.'
-    );
-    Dash.clickDialogCloseButton();
-  });
-
   it('download invoice and Verify', () => {
     Dash.clickUserProfile();
     Dash.clickBilling();
     Dash.downloadAndVerifyInvoice();
   });
-  it.skip('Verify chat option should be visible', () => {
-    Dash.clickDashboard();
+  it('Verify chat option should be visible', () => {
+    Dash.clickDashboard();     //team chat box at top-left
     Dash.verifyChaticon();
   });
 
-  it.skip('Verify Chat icon should open chat window', () => {
-    Dash.clickChatIcon();
-    Dash.verifyChatPopUp();
+  it('Verify Chat icon should open chat window', () => {
+    Dash.clickResourceCenterIcon();
+    Dash.clickCustomerChat();
+    Dash.verifyChatPopUp();      //customer support window
   });
 
-  it.skip('Verify user is able to enter chat in chat box', () => {
+  it('Verify user is able to enter chat in chat box', () => {
     Dash.enterEmailInBox(testData.email, 'Hello');
     Dash.enterChatInBox('Hello');
     Dash.verifyMessageSent('Hello');
   });
 
-  it.skip('Verify chat pop up Elements', () => {
+  it('Verify chat pop up Elements', () => {
     Dash.verifyChatTitle();
     Dash.verifyAttachmentIcon();
     Dash.verifyEmojiIcon();
@@ -744,6 +715,7 @@ describe('Dashboard Elements', () => {
 
   it('Verify Calendar Month Left Arrow Functionality', () => {
     Dash.clickDashboard();
+    Dash.clickOnMainTab();
     Dash.clickDashboardCalendar();
     var month = Dash.getLastMonth();
     Dash.clickTaskLeftArrow();
@@ -783,7 +755,7 @@ describe('Dashboard Elements', () => {
   it('Verify on Click of Home Button Admin should Redirect to Dashboard', () => {
     addCont.clickingOnContactOption();
     Dash.clickHomeButton();
-    Dash.verifyDashboardCalandar();
+    Dash.verifyDashboardLiveCalls();
   });
 
   it('Verify that Chat Box should open when click on Chat Icon', () => {

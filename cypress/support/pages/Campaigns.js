@@ -152,11 +152,13 @@ const retryTimeplusIcon =
 const retryTimeDropdown =
   '//label[text()="Retry Time"]//following-sibling::div//div[contains(@class,"ss-select-control")]';
 const tooltip = '.question-tooltip';
+const recycleIcon = (recycleCamp)  => `//span[text()="${recycleCamp}"]/preceding-sibling::*[@class="recycle-icon-svg"]`;
+const recycleTooltip = '//div[@class="tooltip-inner"]//div[@class="text-left text-nowrap"]';
 
 const addUser = new User();
 export default class Campaign {
   clickCampaignMenu() {
-    cy.get(campaignsMenu).click({ force: true });
+    cy.get(campaignsMenu).first().click({ force: true });
   }
 
   clickAddNewCampaign() {
@@ -944,6 +946,10 @@ export default class Campaign {
       .should('have.value', name +' - '+ today);
   }
 
+  verifyDefaultRecycleCampaignName(val) {
+    cy.get(RecCampaignName).should('have.value', val);
+  }
+   
   createAgentViaCampaignCreation(name,email,phone,password) {
     const [agentFirstName, agentlastName] = name.split(' ');
 
@@ -978,4 +984,17 @@ export default class Campaign {
     cy.wait(2000);
     addUser.deleteAddedContact(agentFirstName,agentlastName);
   }
+
+  verifyRecycleIconWithCount(name, count) {
+    cy.xpath(recycleIcon(name)).should('be.visible');
+    cy.xpath(recycleIcon(name)+'/*[@class="recycle-icon-text"]').should('have.text', count);
+  }
+
+  verifySourceCampaign(srcCamp, recycleCamp) {
+    cy.xpath(recycleIcon(recycleCamp)).trigger('mouseover');
+    cy.xpath(recycleTooltip).first().should('have.text', srcCamp);
+    cy.get('[src*="arrow-forward"]').should('be.visible');
+    cy.xpath(recycleTooltip).last().should('contain', recycleCamp);
+  }
+
 }
