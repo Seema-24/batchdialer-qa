@@ -142,7 +142,7 @@ const cardDefaultBtn = (last4Digit) =>
   `//div[@class='billing-payment-preview__card' and contains(.,"${last4Digit}")]//button[img[@alt='Star']]`;
 const cardDeleteToast =
   "//div[contains(@class,'mytoast') and text()='The card has been successfully removed']";
-const chaticon = 'div[id="fc_frame"]';
+const chaticon = 'svg.chat-wrapper__icon';
 const chatWindow = '.fc-conversation-view';
 const enterChat = '#app-conversation-editor p';
 const chatBoxInputEmail = '.email-input input';
@@ -243,7 +243,8 @@ const successToastMsg = '.mytoast-bottom';
 const cardEditBtn = '.billing-user-info__payment__edit';
 const mainTab = '//div[@class="dashboard"]//li[text()="MAIN"]';
 const liveCalls = '//div[@class="title "][text()="Live Calls"]';
-
+const resourceCenterIcon = 'img[id*="pendo-image-badge"]';
+const customerChat = "//div[text()='Chat with us']";
 export default class Dashboard {
   clickDashboard() {
     cy.get(DashboardMenu).click({ force: true });
@@ -475,7 +476,13 @@ export default class Dashboard {
   }
 
   clickDialer() {
-    cy.get(Dialer).click();
+    cy.get('body').then(($body) => {
+      if($body.find(DialPad).length){
+        cy.log("Dial Pad exist");
+      }else {
+        cy.get(Dialer).click();
+      }
+    })
   }
 
   verifyDialPad() {
@@ -1706,5 +1713,13 @@ export default class Dashboard {
 
   verifyDashboardLiveCalls() {
     cy.xpath(liveCalls).should('be.visible')
+  }
+
+  clickResourceCenterIcon() {
+    cy.get(resourceCenterIcon).click();
+  }
+
+  clickCustomerChat() {
+    cy.xpath(customerChat).click();
   }
 }
