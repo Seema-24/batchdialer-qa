@@ -144,6 +144,7 @@ describe('Add Contact flow', () => {
   it('Should Add Contact using Create New option', () => {
     addCont.clickingOnContactOption();
     cy.wait(3000);
+    addCont.verifyContactExisting('9999999999');
     addCont.clickAddNewContactButton();
     addCont.selctCreateNewContactOption();
     addCont.enterFirstName(fixtureData.userFirstname);

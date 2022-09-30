@@ -499,6 +499,21 @@ describe('Add Campaign flow', () => {
     addCamp.clickOnButton('Save');
   });
 
+  it('Verify the tool tip for Start and end Date field in the Recycle campaign set up screen', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickEditCampaign(testData.campaign);
+    addCamp.clickRecycleOption();
+    addCamp.mouseOverOnQuestionToolTip('Start and End Date');
+    addCamp.verifyQuestionTooltipText('Campaign will only include the contacts that were called within this date range.');
+  });
+
+  it('Verify the default date range is set to All Time for start and end date field in the Recycled campaign setup screen.', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickEditCampaign(testData.campaign);
+    addCamp.clickRecycleOption();
+    addCamp.verifyDefaultDateRange('All Time')
+  });
+
   it('Verify the Auto generated Name of Recycled campaign for First Recycle of Initial campaign', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickEditCampaign(testData.campaign);
@@ -510,45 +525,44 @@ describe('Add Campaign flow', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickEditCampaign(testData.campaign);
     addCamp.clickRecycleOption();
-    addCamp.selectRecycleCallResult('Busy');
-    addCamp.enterNewCampaignName('RecycledCampaign');
+    // addCamp.selectRecycleCallResult('Busy');
+    // addCamp.enterNewCampaignName('RecycledCampaign');
     addCamp.removeCheckBox();
     addCamp.clickRecycleSaveCampaign();
     addCamp.verifyToast('Recycled campaign created');
-    addCamp.verifyAddedRecycleCampaign('RecycledCampaign');
+    addCamp.verifyAddedRecycleCampaign(testData.campaign + ' - 1');
   });
 
   it('Verify the Auto generated Name of Recycled campaign for Second Recycle of Initial campaign', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickEditCampaign(testData.campaign);
     addCamp.clickRecycleOption();
-    cy.wait(500);
-    addCamp.enterNewCampaignName('RecycledCampaign');
     addCamp.removeCheckBox();
+    addCamp.verifyDefaultRecycleCampaignName(testData.campaign + ' - 1');
     addCamp.clickRecycleSaveCampaign();
     addCamp.verifyToast('Duplicate campaign name');
   });
 
   it('Verify that when a campaign is recycled first time new campaign is having recycle icon is displayed in the campaign page.', () => {
     addCamp.clickCampaignMenu();
-    addCamp.verifyRecycleIconWithCount('RecycledCampaign', 1)
+    addCamp.verifyRecycleIconWithCount(testData.campaign + ' - 1', 1)
   });
 
   it('Verify that when hovering on the recycle icon tooltip is displayed indicating the source campaign.', () => {
     addCamp.clickCampaignMenu();
-    addCamp.verifySourceCampaign(testData.campaign, 'RecycledCampaign');
+    addCamp.verifySourceCampaign(testData.campaign, testData.campaign + ' - 1');
   });
 
   it('Verify that Change log for the Reycled campaign is updated', () => {
     addCamp.clickCampaignMenu();
-    addCamp.clickRecycleCampaignMenuBtn('RecycledCampaign');
+    addCamp.clickRecycleCampaignMenuBtn(testData.campaign + ' - 1');
     addCamp.clickDropdownItem('Changelog');
     addCamp.verifyDialogOpen();
     addCamp.verifyModalTitle(
-      `Change Log ${'RecycledCampaign'}`
+      `Change Log ${testData.campaign + ' - 1'}`
     );
     addCamp.verifyChangeLogItemsText(
-      `${'RecycledCampaign'} Recycled by ${
+      `${testData.campaign + ' - 1'} Recycled by ${
         testData.AdminName
       } based on ${
         testData.campaign
@@ -562,33 +576,58 @@ describe('Add Campaign flow', () => {
     addCamp.clickEditCampaign(testData.campaign);
     addCamp.clickRecycleOption();
     cy.wait(500);
-    addCamp.enterNewCampaignName('RecycledCampaign-1');
+    addCamp.enterNewCampaignName('RecycledCampaign'); 
     addCamp.removeCheckBox();
     addCamp.clickRecycleSaveCampaign();
     addCamp.verifyToast('Recycled campaign created');
-    addCamp.verifyAddedRecycleCampaign('RecycledCampaign-1');
-    addCamp.verifyRecycleIconWithCount('RecycledCampaign-1', 1)
+    addCamp.verifyAddedRecycleCampaign('RecycledCampaign');
+    addCamp.verifyRecycleIconWithCount('RecycledCampaign', 1)  //recycle count will be 1 for first recycle but name will be different
+    addCamp.archiveRecycledCampaign('RecycledCampaign');
   });
 
   it('Verify that REPORTS-->CAMPAIGN page is updated with the Recycled icon along with the counts', () => {
     report.clickReportMenu();  
     report.clickReportsHeader('Campaigns');
-    report.verifyRecycleIconWithCount('RecycledCampaign', 1)
+    report.clickCampaignCalanderDropdown();
+    report.clickDateBtnLinks('Today');
+    report.clickStatusDropdown();
+    report.selectCampaignStatus('Active')
+    report.verifyRecycleIconWithCount(testData.campaign + ' - 1', 1)
   });
 
   it('Verify the Auto generated Name of Recycled campaign for First Recycle of Recycled Campaign', () => {
+    addCamp.CallFromRecycleCampaign(testData.campaign + ' - 1');
     addCamp.clickCampaignMenu();
-    addCamp.clickRecycleCampaignMenuBtn('RecycledCampaign');
+    addCamp.clickRecycleCampaignMenuBtn(testData.campaign + ' - 1');
     addCamp.clickDropdownItem('Recycle');
-    addCamp.verifyDefaultRecycleCampaignName('RecycledCampaign - 2');
+    addCamp.verifyDefaultRecycleCampaignName(testData.campaign + ' - 2'); 
+    addCamp.clickRecycleSaveCampaign();
+    addCamp.verifyToast('Recycled campaign created');
+    addCamp.verifyAddedRecycleCampaign(testData.campaign + ' - 2');
+  });
+
+  it('Verify the Auto generated Name of Recycled campaign for Second Recycle of Recycled Campaign', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickRecycleCampaignMenuBtn(testData.campaign + ' - 1');
+    addCamp.clickDropdownItem('Recycle');
+    addCamp.verifyDefaultRecycleCampaignName(testData.campaign + ' - 2'); 
+    addCamp.clickRecycleSaveCampaign();
+    addCamp.verifyToast('Duplicate campaign name');
+  });
+
+  it('Verify the Auto generated Name of Recycled campaign for First Recycle of Recycled Recycled Campaign third Recycle', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickRecycleCampaignMenuBtn(testData.campaign + ' - 2');
+    addCamp.clickDropdownItem('Recycle');
+    addCamp.verifyDefaultRecycleCampaignName(testData.campaign + ' - 3'); 
   });
 
   it('Archieve the Created Recycle Campaign', () => {
     addCamp.clickCampaignMenu();
-    addCamp.clickRecycleCampaignMenuBtn('RecycledCampaign');
+    addCamp.clickRecycleCampaignMenuBtn(testData.campaign + ' - 1');
     addCamp.clickArchiveCampaignButton();
     addCamp.handleAlertForDelete();
-    addCamp.verifyArchivedCampaign('RecycledCampaign', 'not.exist');
+    addCamp.verifyArchivedCampaign(testData.campaign + ' - 1', 'not.exist');
   });
 
   it('Verify that default Campaign name should be in the format of (New Campaign - MM-DD-YY, unless changed)', () => {

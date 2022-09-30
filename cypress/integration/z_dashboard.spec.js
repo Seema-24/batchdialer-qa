@@ -1,5 +1,5 @@
 import Dashboard from '../support/pages/Dashboard';
-import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 import Contacts from '../support/pages/Contacts';
 
 const Dash = new Dashboard();
@@ -35,6 +35,7 @@ describe('Dashboard Elements', () => {
 
   beforeEach(() => {
     handlePoorConnectionPopup();
+    closeDialogBox();
   })
 
   after(() => {
@@ -69,7 +70,6 @@ describe('Dashboard Elements', () => {
   });
 
   it('Verify the Microphone test Functionality', () => {
-    ignoreSpeedTestPopup();
     Dash.clickOnButton('Test Microphone');
     Dash.verifyModalTitle('MICROPHONE TEST');
     Dash.clickMicTestStartButton();
@@ -340,8 +340,8 @@ describe('Dashboard Elements', () => {
         Dash.clickCardEditBtn();
         Dash.clickCardDefaultBtn(prodCardLast4Digit);
         Dash.verifyCardDefault(prodCardLast4Digit);
-        Dash.clickCardDefaultBtn('4257');
-        Dash.verifyCardDefault('4257');
+        Dash.clickCardDefaultBtn('3713');
+        Dash.verifyCardDefault('3713');
       } else {
         Dash.closeCreditCardPopup();
         Dash.clickCardEditBtn();
@@ -695,8 +695,8 @@ describe('Dashboard Elements', () => {
 
   it('Verify user is able to enter chat in chat box', () => {
     Dash.enterEmailInBox(testData.email, 'Hello');
-    Dash.enterChatInBox('Hello');
-    Dash.verifyMessageSent('Hello');
+    Dash.enterChatInBox('Hello, I am testing the application');
+    Dash.verifyMessageSent('Hello, I am testing the application');
   });
 
   it('Verify chat pop up Elements', () => {

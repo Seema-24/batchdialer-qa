@@ -961,4 +961,21 @@ export default class Contacts {
   verifyDownloadedFile(fielName) {
     cy.readFile(`cypress/fixtures/Download/${fielName}`).should('exist');
   }
+
+  verifyContactExisting(num) {
+    const number = '(' + num.substring(0,3)+ ') ' + num.substr(3,3) +'-'+ num.substr(-4);
+    cy.get('body').then(($body) => {
+      if($body.text().includes(number)) {
+        cy.xpath(
+          `//div[@class="phone-number"]//span[text()="${number}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]`
+          ).first()
+          .scrollIntoView()
+          .click();
+        cy.xpath(deletOption).click();
+        this.handleAlertForDelete();
+        this.verifyDeletedToast();
+      }
+    })
+    
+  }
 }
