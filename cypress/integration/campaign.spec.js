@@ -500,6 +500,8 @@ describe('Add Campaign flow', () => {
   });
 
   it('Verify the tool tip for Start and end Date field in the Recycle campaign set up screen', () => {
+    cy.reload();
+    ignoreSpeedTestPopup();
     addCamp.clickCampaignMenu();
     addCamp.clickEditCampaign(testData.campaign);
     addCamp.clickRecycleOption();
