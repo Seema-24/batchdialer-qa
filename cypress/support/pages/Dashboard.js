@@ -243,7 +243,7 @@ const successToastMsg = '.mytoast-bottom';
 const cardEditBtn = '.billing-user-info__payment__edit';
 const mainTab = '//div[@class="dashboard"]//li[text()="MAIN"]';
 const liveCalls = '//div[@class="title "][text()="Live Calls"]';
-const resourceCenterIcon = 'img[id*="pendo-image-badge"]';
+const resourceCenterIcon = '[id*="pendo-image-badge"]';
 const customerChat = "//div[text()='Chat with us']";
 export default class Dashboard {
   clickDashboard() {
@@ -422,7 +422,7 @@ export default class Dashboard {
   }
 
   clickAddNewLeadSheet() {
-    cy.xpath(addNewBtn).click();
+    cy.xpath(addNewBtn,{timeout:3000}).click();
   }
 
   selectAvailable(Status, campaign) {
@@ -980,8 +980,7 @@ export default class Dashboard {
   }
 
   verifyDialerVisible() {
-    cy.wait(5000);
-    cy.get(Dialer).should('be.visible');
+    cy.get(Dialer, {timeout:40000}).should('be.visible');
   }
 
   clickSaveButton() {

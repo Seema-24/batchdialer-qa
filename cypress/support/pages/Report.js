@@ -37,6 +37,8 @@ const addNewFloor = "//button[contains(text(),' Add New Floor')]";
 const filtersButton = '.modal-filter-btn';
 const rowsData = '.resizable-table .resizable-table-tbody .tr';
 const recycleIcon = (name) => `//div[text()="${name}"]/*[@class="recycle-icon-svg"]`
+const dropdownOptions = '.ss-select-group-items';
+const statusdropdown = 'All Statuses'
 
 export default class Report {
   clickReportMenu() {
@@ -234,5 +236,24 @@ export default class Report {
   verifyRecycleIconWithCount(name, count) {
     cy.xpath(recycleIcon(name)).should('be.visible');
     cy.xpath(recycleIcon(name)+'/*[@class="recycle-icon-text"]').first().should('have.text', count);
+  }
+
+  clickDateBtnLinks(dateBtn) {
+    cy.get('.links .btn.btn-link')
+      .contains(dateBtn)
+      .scrollIntoView()
+      .click();
+  }
+
+  clickStatusDropdown() {
+    cy.contains(statusdropdown).click();
+  }
+
+  selectCampaignStatus(status) {
+    cy.get(dropdownOptions)
+      .contains(status)
+      .then((option) => {
+        option[0].click();
+      });
   }
 }

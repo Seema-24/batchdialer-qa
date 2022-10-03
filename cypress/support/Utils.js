@@ -133,7 +133,8 @@ export function closeDialogBox() {
     } else if($body.text().includes('New User')) {
       cy.get('.close-button').click();
     } else if($body.text().includes('Start Calling')) {
-      cy.get('[alt="Logo"]').click();
+      cy.reload();
+      ignoreSpeedTestPopup();
     } else if($body.find('#pendo-guide-container').length) {
       cy.get('button').then((btns) => {
         for (let i = 0; i < btns.length; i++) {

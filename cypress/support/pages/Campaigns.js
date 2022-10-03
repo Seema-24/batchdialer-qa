@@ -1,4 +1,6 @@
 import { ignoreSpeedTestPopup } from '../Utils';
+import dashboard from './dashboard';
+import Dialer from './Dialer';
 import User from './User';
 
 const campaignsMenu = 'a[title="Campaigns"]';
@@ -154,8 +156,12 @@ const retryTimeDropdown =
 const tooltip = '.question-tooltip';
 const recycleIcon = (recycleCamp)  => `//span[text()="${recycleCamp}"]/preceding-sibling::*[@class="recycle-icon-svg"]`;
 const recycleTooltip = '//div[@class="tooltip-inner"]//div[@class="text-left text-nowrap"]';
+const campToolTip = (name) => `//label[text()="${name}"]/parent::div/child::span[@class="left question-tooltip"]`;
 
 const addUser = new User();
+const dial = new Dialer();
+const dash = new dashboard();
+
 export default class Campaign {
   clickCampaignMenu() {
     cy.get(campaignsMenu).first().click({ force: true });
@@ -697,11 +703,11 @@ export default class Campaign {
   }
 
   verifyToast(message) {
-    cy.get(toast,{timeout:60000}).should('contain.text', message);
+    cy.get(toast,{timeout:30000}).should('contain.text', message);
   }
 
   verifyAddedRecycleCampaign(campaignName) {
-    cy.get(campaignTable).should('contain.text', campaignName);
+    cy.get(campaignTable,{timeout:30000}).should('contain.text', campaignName);
   }
 
   verifyCallResultValues(value) {
@@ -995,6 +1001,41 @@ export default class Campaign {
     cy.xpath(recycleTooltip).first().should('have.text', srcCamp);
     cy.get('[src*="arrow-forward"]').should('be.visible');
     cy.xpath(recycleTooltip).last().should('contain', recycleCamp);
+  }
+
+  archiveRecycledCampaign(camp) {
+    this.clickRecycleCampaignMenuBtn(camp);
+    this.clickArchiveCampaignButton();
+    this.handleAlertForDelete();
+    this.verifyArchivedCampaign(camp, 'not.exist');
+  }
+
+  CallFromRecycleCampaign(RecycledCampaign) {
+    dial.selectStatus('Available');
+    dial.clickSelectCampaignDropdown();
+    dial.selectRecycledCampaign(RecycledCampaign);
+    dial.clickConfirmButton();
+    dash.dialNumber();
+    dash.clickCallButton();
+    dash.verifyCallStarted();
+    cy.wait(3000);
+    dash.clickCallButton();
+    dash.clickAnsweringMachine();
+    dash.clickOnDoneButton();
+    cy.wait(1000);
+    dash.clickCloseSoftphoneBtn();
+  }
+
+  mouseOverOnQuestionToolTip(name) {
+    cy.xpath(campToolTip(name)).trigger('mouseover')
+  }
+
+  verifyQuestionTooltipText(ToolTipText) {
+    cy.get('.tooltip-inner').should('have.text', ToolTipText)
+  }
+  
+  verifyDefaultDateRange(time) {
+    cy.get('a[href="#0"] div').should('have.text', time).should('be.visible')
   }
 
 }

@@ -256,7 +256,7 @@ describe('Add Phone Number flow', () => {
   });
 
   it('Verifies Elements and Add DNC Number', () => {
-    addNum.clickAddBtn('Numbers');
+    addNum.clickAddBtn('DNC NUMBERS');
     addNum.verifyNumberField();
     addNum.verifyAddMoreBtn();
     addNum.verifySaveBtn();
