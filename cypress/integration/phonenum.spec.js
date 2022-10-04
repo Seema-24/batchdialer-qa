@@ -243,7 +243,7 @@ describe('Add Phone Number flow', () => {
     addNum.clickPhoneNumberMenu();
     addNum.clickDncMenu();
     addNum.verifyDncCards();
-    addNum.verifyDncCardTitle(['Numbers', 'DNC Area Codes', 'DNC States']);
+    addNum.verifyDncCardTitle(['DNC NUMBERS', 'DNC Area Codes', 'DNC States']);
     addNum.verifySearchBox();
     addNum.verifyDncUploadFileBtn();
     addNum.verifyDncTableHeader([
@@ -268,7 +268,7 @@ describe('Add Phone Number flow', () => {
   });
 
   it('Delete Added DNC Number', () => {
-    addNum.clickDeleteDncValue('Numbers', '(999) 999-9999');
+    addNum.clickDeleteDncValue('DNC NUMBERS', '(999) 999-9999');
     addNum.handleAlertForDelete();
   });
 

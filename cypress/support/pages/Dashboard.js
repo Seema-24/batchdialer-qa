@@ -196,7 +196,7 @@ const searchedEmojiList = (emojiName) =>
   'div[data-name="Search"] + .emoji-mart-category-list li button[aria-label*="' +
   emojiName +
   '"]';
-const completedCheckbox = `//label[contains(@class,"radio_cstm")][text()="Completed"]//span[@class="checkmark"]`;
+const completedCheckbox = `//label[contains(@class,"radio_cstm")][text()="Completed"]`;
 const taskAddNewBtn = '//button[span[text()="ADD NEW"]]';
 const calendarEventTypesBox = '.calendar-event-types';
 const calendarMonthPicker = '.calendar-month-selector';
@@ -1387,11 +1387,15 @@ export default class Dashboard {
   }
 
   verifyCompletedCheckbox() {
-    cy.xpath(completedCheckbox).should('be.visible');
+    cy.xpath(completedCheckbox+'//span[@class="checkmark"]').should('be.visible');
+  }
+
+  verifyCompletedCheckboxChecked() {
+    cy.xpath(completedCheckbox+'//input[@type="checkbox"]').should('be.checked');
   }
 
   clickCompletedCheckbox() {
-    cy.xpath(completedCheckbox).click();
+    cy.xpath(completedCheckbox+'//span[@class="checkmark"]').click();
   }
 
   verifyTaskAddNewButton() {

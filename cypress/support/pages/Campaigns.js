@@ -1037,5 +1037,12 @@ export default class Campaign {
   verifyDefaultDateRange(time) {
     cy.get('a[href="#0"] div').should('have.text', time).should('be.visible')
   }
+  
+  verifyMaxAttemptWarningMsg(msg) {
+    msg
+    this.verifyDialogOpen();
+    this.verifyModalTitle('Warning');
+    cy.contains(msg).should('be.visible')
+  }
 
 }
