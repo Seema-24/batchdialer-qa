@@ -639,7 +639,22 @@ describe('Add Campaign flow', () => {
     addCamp.selectAgentToAssign(testData.AdminName);
     addCamp.selectPhoneNumberToAssign(testData.Number);
     addCamp.verifyDefaultCampaignName('New Campaign');
+    addCamp.clickOnButton('Cancel');
   });
+
+  it('Verify that warning message is displayed whenMax Attempts Per Record is set above the default value (3) for Campaign type preview dialer', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickAddNewCampaign();
+    addCamp.selectDialingMode('Preview');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.selectPhoneNumberToAssign(testData.Number);
+    addCamp.verifyDefaultCampaignName('New Campaign');
+    addCamp.clickAdvancedConfiguration();
+    addCamp.enterMaxAttempts(4);
+    addCamp.verifyMaxAttemptWarningMsg(
+      'Increasing the Max Attempts per record above 3 will result in lower connection rates due to increased phone number spam detection and blocking by carriers. The recommended setting is 3 attempts per record per day. Please refer to our help desk for more information.');
+  });
+
 
   it('Verify that User can Create agent from campaign creation page by clicking on (+ Create Agents)', () => {
     addCamp.clickCampaignMenu();

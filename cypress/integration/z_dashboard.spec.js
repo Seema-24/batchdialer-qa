@@ -245,6 +245,25 @@ describe('Dashboard Elements', () => {
     Dash.selectDropdownItemToClick('Delete Event');
   });
 
+  it('If TODAY,PAST,FUTURE and Completed are set by user,verify that those settings are kept throughout the current session', () => {
+    Dash.clickPastButton();
+    Dash.clickFutureButton();
+    Dash.clickCompletedCheckbox();
+    cy.reload();
+    ignoreSpeedTestPopup();
+    //verify current session should maintained
+    Dash.verifyTodayButton();
+    Dash.verifyPastButton();
+    Dash.verifyFutureButton();
+    Dash.verifyCompletedCheckboxChecked();
+  })
+
+  it('Verify that authorized user is able to Filter the events by Event types in the list view', () => {
+    Dash.clickAllEventTypesDropdown();
+    Dash.selectEventTypes('Follow Up Call');
+    Dash.verifyEventType('Follow Up Call');
+  })
+
   it('Verify on click user profile show options', () => {
     Dash.clickUserProfile();
     Dash.verifyUserProfileOptions();

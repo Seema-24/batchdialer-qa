@@ -196,7 +196,7 @@ const searchedEmojiList = (emojiName) =>
   'div[data-name="Search"] + .emoji-mart-category-list li button[aria-label*="' +
   emojiName +
   '"]';
-const completedCheckbox = `//label[contains(@class,"radio_cstm")][text()="Completed"]//span[@class="checkmark"]`;
+const completedCheckbox = `//label[contains(@class,"radio_cstm")][text()="Completed"]`;
 const taskAddNewBtn = '//button[span[text()="ADD NEW"]]';
 const calendarEventTypesBox = '.calendar-event-types';
 const calendarMonthPicker = '.calendar-month-selector';
@@ -245,6 +245,9 @@ const mainTab = '//div[@class="dashboard"]//li[text()="MAIN"]';
 const liveCalls = '//div[@class="title "][text()="Live Calls"]';
 const resourceCenterIcon = '[id*="pendo-image-badge"]';
 const customerChat = "//div[text()='Chat with us']";
+const allEventType = '.calendar-filter__select .ss-select-control';
+const TableHeaderEventType = 'tbody> tr> td:nth-of-type(2)> div';
+
 export default class Dashboard {
   clickDashboard() {
     cy.get(DashboardMenu).click({ force: true });
@@ -1387,11 +1390,15 @@ export default class Dashboard {
   }
 
   verifyCompletedCheckbox() {
-    cy.xpath(completedCheckbox).should('be.visible');
+    cy.xpath(completedCheckbox+'//span[@class="checkmark"]').should('be.visible');
+  }
+
+  verifyCompletedCheckboxChecked() {
+    cy.xpath(completedCheckbox+'//input[@type="checkbox"]').should('be.checked');
   }
 
   clickCompletedCheckbox() {
-    cy.xpath(completedCheckbox).click();
+    cy.xpath(completedCheckbox+'//span[@class="checkmark"]').click();
   }
 
   verifyTaskAddNewButton() {
@@ -1721,4 +1728,24 @@ export default class Dashboard {
   clickCustomerChat() {
     cy.xpath(customerChat).click();
   }
+
+  clickAllEventTypesDropdown(event) {
+    cy.get(allEventType).click();
+  }
+
+  selectEventTypes(event) {
+    cy.get('.ss-select-option').then((opt) => {
+      for (let i = 0; i < opt.length; i++) {
+        if(opt[i].textContent.trim() == event) {
+          cy.get(opt[i]).click();
+          break;
+        }
+      }
+    })
+  }
+
+  verifyEventType(event) {
+    cy.get(TableHeaderEventType).should('contain.text', event);
+  }
+
 }

@@ -1,5 +1,5 @@
 import { ignoreSpeedTestPopup } from '../Utils';
-import dashboard from './dashboard';
+import Dashboard from './Dashboard';
 import Dialer from './Dialer';
 import User from './User';
 
@@ -160,7 +160,7 @@ const campToolTip = (name) => `//label[text()="${name}"]/parent::div/child::span
 
 const addUser = new User();
 const dial = new Dialer();
-const dash = new dashboard();
+const dash = new Dashboard();
 
 export default class Campaign {
   clickCampaignMenu() {
@@ -1036,6 +1036,13 @@ export default class Campaign {
   
   verifyDefaultDateRange(time) {
     cy.get('a[href="#0"] div').should('have.text', time).should('be.visible')
+  }
+  
+  verifyMaxAttemptWarningMsg(msg) {
+    msg
+    this.verifyDialogOpen();
+    this.verifyModalTitle('Warning');
+    cy.contains(msg).should('be.visible')
   }
 
 }
