@@ -259,10 +259,10 @@ describe('Dashboard Elements', () => {
   })
 
   it('Verify that authorized user is able to Filter the events by Event types in the list view', () => {
-    
+    Dash.clickAllEventTypesDropdown();
+    Dash.selectEventTypes('Follow Up Call');
+    Dash.verifyEventType('Follow Up Call');
   })
-
-
 
   it('Verify on click user profile show options', () => {
     Dash.clickUserProfile();
