@@ -928,6 +928,7 @@ describe('Dashboard Elements', () => {
 
   it('Verify that State name is prefilled in the feedback form  If the state info is present in the Billing profile', () => {
     Dash.clickCancelAccount();
+    Dash.clickProceedWithCancel();
     Dash.chooseCancelAccountReason('It Costs Too Much');
     Dash.EnterConfirmCancelAccount('DELETE');
     Dash.verifyState('NY');
@@ -937,6 +938,7 @@ describe('Dashboard Elements', () => {
 
   it('Verify that the authorized user is able to cancel the account states other than CA, NY, OR', () => {
     Dash.clickCancelAccount();
+    Dash.clickProceedWithCancel();
     Dash.chooseCancelAccountReason('It Costs Too Much');
     Dash.EnterConfirmCancelAccount('DELETE');
     Dash.selectState('AZ');
@@ -952,6 +954,7 @@ describe('Dashboard Elements', () => {
 
   it('Verify that the authorized user is able to cancel the account states CA, NY OR', () => {
     Dash.clickCancelAccount();
+    Dash.clickProceedWithCancel()
     Dash.chooseCancelAccountReason('It Costs Too Much');
     Dash.EnterConfirmCancelAccount('DELETE');
     Dash.selectState('CA');  //NY OR

@@ -246,7 +246,7 @@ const liveCalls = '//div[@class="title "][text()="Live Calls"]';
 const resourceCenterIcon = '[id*="pendo-image-badge"]';
 const customerChat = "//div[text()='Chat with us']";
 const allEventType = '.calendar-filter__select .ss-select-control';
-const TableHeaderEventType = 'tbody> tr> td:nth-of-type(2)> div';
+const eventTableHeader = (col) => `tbody> tr> td:nth-of-type(${col})> div`;
 
 export default class Dashboard {
   clickDashboard() {
@@ -1745,7 +1745,10 @@ export default class Dashboard {
   }
 
   verifyEventType(event) {
-    cy.get(TableHeaderEventType).should('contain.text', event);
+    cy.get(eventTableHeader('2')).should('contain.text', event);
   }
 
+  verifyEventTitle(title) {
+    cy.get(eventTableHeader('3')).should('contain.text', title);
+  }
 }

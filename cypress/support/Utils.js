@@ -144,6 +144,9 @@ export function closeDialogBox() {
           }
         }
       });
+    } else if ($body.find('.call-disposition-title').length) {
+      cy.get('.disposition-cell .disposition').last().click();
+      cy.contains('Done').click();
     }
   })
 }

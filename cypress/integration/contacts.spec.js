@@ -362,6 +362,13 @@ describe('Add Contact flow', () => {
     addCont.clickCloseBtn();
   });
 
+  it('Verify that a Follow up call event created through Contacts page is reflected in TASKS page', () => {
+    dashboard.clickTaskButton();
+    dashboard.verifyEventTitle('Call Back to '+testData.Contact);
+    dashboard.clickEventThreeDotMenuBtn(testData.Contact);
+    dashboard.selectDropdownItemToClick('Delete Event');
+  });
+
   it('Verify Cancel button should close the notes window', () => {
     addCont.clickingOnContactOption();
     addCont.enterSearch(testData.Contact);

@@ -47,49 +47,38 @@ describe('Inbound Call Scenarios', () => {
     it('create new Predictive Dialer Campaign with Auto Answer Mode', () => {
       setup.assignNumberToAgent(testData.Number, testData.AdminName);
       Dial.clickOnMenu('Campaigns');
-      Dial.clickOnButton('CREATE NEW CAMPAIGN');
-      Dial.clickAdvanceSwitch();
-      Dial.enterCampaignName(campaignName);
+      Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
-      Dial.clickOnRadioButton('Individual Numbers');
-      Dial.clickNumbersDropdown();
+      Dial.selectAgentToAssign(testData.AdminName);
       Dial.selectPhoneNumber(testData.Number);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Auto Answer');
+      Dial.enterCampaignName(campaignName);
+    
+      //Dial.clickOnRadioButton('Individual Numbers');
+      //Dial.clickNumbersDropdown();
+      
+      //Dial.clickNextButton();
+      
       Dial.clickCallResultsDropdown();
       Dial.selectCallResults([
-        'Abandoned',
         'Answering Machine',
-        'Busy',
-        'Call Back',
-        'Disconnected Number',
-        'Do Not Call',
         'No Answer',
-        'Not Interested',
-        'Successful sale',
-        'Unknown',
-        'Voicemail',
+        'Successful sale'
       ]);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Individual Agents');
-      Dial.selectAgentToAssign(testData.AdminName);
-      Dial.clickOnButton('SAVE');
+      //Dial.clickNextButton();
+      //Dial.clickOnRadioButton('Individual Agents');
+      Dial.clickAdvanceConfiguration();
+      Dial.clickOnRadioButton('Automatic Answer');
+      Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
 
     it('Change status to Available', () => {
-      cy.url().then((url) => {
-        if (url.includes('app.batchdialer.com')) {
-          Dial.selectStatus('Available');
-          Dial.verifySelectCampaignBoxHeading();
-          Dial.clickSelectCampaignDropdown();
-          Dial.selectCampaign(campaignName);
-          Dial.clickConfirmButton();
-          Dial.verifySoftPhoneOpen();
-        } else {
-          cy.log('Inbound Calls not working in QA');
-        }
-      });
+      Dial.selectStatus('Available');
+      Dial.verifySelectCampaignBoxHeading();
+      Dial.clickSelectCampaignDropdown();
+      Dial.selectCampaign(campaignName);
+      Dial.clickConfirmButton();
+      Dial.verifySoftPhoneOpen();
     });
 
     it('Verify that calls are Auto Answering if Agent is Available', () => {
@@ -432,7 +421,7 @@ describe('Inbound Call Scenarios', () => {
   });
 });
 
-describe('Outbound Calling Scenarios', () => {
+describe.skip('Outbound Calling Scenarios', () => {
   describe('Preview Campaign Dialing', () => {
     const campaignName = 'Preview Campaign';
     let callNumber = '+1';

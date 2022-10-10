@@ -7,21 +7,21 @@ const selectCampaignDropdown = '.modal-content .select__campaign__select';
 const campaignNames = '.ss-select-option span + span';
 const confirmButton = '.modal-content button';
 const menu = (menuName) => `li:not(.subitem) a[title="${menuName}"]`;
-const advanceSwitch = '.campaign-wizard .switch';
+const advanceConfiguration = '.campaign-expander';
 const nameField = 'input[name="name"]';
 const radioButtons = (radioButtonName) =>
-  `//label[@class="radio_cstm"][contains(.,"${radioButtonName}")]//span[@class="checkmark"]`;
+  `//h2[@class="campaign-card__radio-block__title"][text()="${radioButtonName}"]/ancestor::label//span[@class="checkmark"]`;
 const nextButton = '.collapse.show button.circle';
 const numbersDropdown = `//label[text()="Caller ID"]/ancestor::div[contains(@class,"row")]//div[contains(@class,"ss-select-control")]`;
 const options = '.ss-select-option';
 const callingHours = `//label[text()="Calling Hours"]/following-sibling::div/div`;
 const countIncreasingFields = `//label[text()="Simultaneous Dials Per Agent"]/following-sibling::div//div[@class="input-group-append"]//span[text()="+"]`;
-const callResultsDropdown = '.row-calldisposition .ss-select-control';
+const callResultsDropdown = '//label[text()="Call Results"]/ancestor::div[@class="row"]//div[contains(@class,"ss-select-control")]';
 const agentsDropdown =
   '//div[contains(@class,"ss-select-control")]/span[contains(text(),"Agents")]';
 const successToastMessage = `.Toastify__toast-body`;
 const threeDotMenuBtn = (CampName) =>
-  `//tr[td[.="${CampName}"]]//div[contains(@class,"dropdown")]`;
+  `//span[text()="${CampName}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]`;
 const dropdownItems = '.show .dropdown-item';
 const warningTitle = '.warning__modal .modal-content .warning__modal-title';
 const warningGotItBtn = '.warning__modal .modal-content button';
@@ -92,6 +92,8 @@ const softphoneIcon = '.softphone-icon';
 const dialedNumberOptions = 'tbody tr:nth-of-type(1) td:nth-of-type(11) span';
 const tableRefreshBtn = 'span[title="Refresh"]';
 const phoneRingning = '.Phone.is-animating';
+const cardDropdowns = (cardName) =>
+  `//h2[@class="campaign-card__title"][text()="${cardName}"]/ancestor::div[contains(@class,"campaign-card")]//div[contains(@class,"ss-select-control")]`;
 
 export default class Dialer {
  
@@ -146,12 +148,12 @@ export default class Dialer {
     });
   }
 
-  clickAdvanceSwitch() {
-    cy.get(advanceSwitch).click();
+  clickAdvanceConfiguration() {
+    cy.get(advanceConfiguration).click({force:true});
   }
 
   enterCampaignName(name) {
-    cy.get(nameField).type(name);
+    cy.get(nameField).clear().type(name);
   }
 
   clickOnRadioButton(radioButtonName) {
@@ -167,15 +169,16 @@ export default class Dialer {
   }
 
   selectPhoneNumber(num) {
+    cy.xpath(cardDropdowns('Phone Numbers')).click({force:true});
     cy.get(options).then((number) => {
       for (let i = 0; i < number.length; i++) {
         if (number[i].textContent.trim() === num) {
-          cy.get(number[i]).click();
+          cy.get(number[i]).click({force:true});
           break;
         }
       }
     });
-    this.clickNumbersDropdown();
+    //this.clickNumbersDropdown();
   }
 
   clickCallingHours() {
@@ -183,7 +186,7 @@ export default class Dialer {
   }
 
   clickCallResultsDropdown() {
-    cy.get(callResultsDropdown).click();
+    cy.xpath(callResultsDropdown).click({force:true});
   }
 
   selectCallResults(callResults) {
@@ -214,7 +217,7 @@ export default class Dialer {
   }
 
   verifySuccessToastMessage(message) {
-    cy.get(successToastMessage)
+    cy.get(successToastMessage,{time:30000})
       .should('be.visible')
       .should('contain.text', message);
   }
