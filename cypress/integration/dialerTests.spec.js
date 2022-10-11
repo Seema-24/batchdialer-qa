@@ -52,20 +52,12 @@ describe('Inbound Call Scenarios', () => {
       Dial.selectAgentToAssign(testData.AdminName);
       Dial.selectPhoneNumber(testData.Number);
       Dial.enterCampaignName(campaignName);
-    
-      //Dial.clickOnRadioButton('Individual Numbers');
-      //Dial.clickNumbersDropdown();
-      
-      //Dial.clickNextButton();
-      
       Dial.clickCallResultsDropdown();
       Dial.selectCallResults([
         'Answering Machine',
         'No Answer',
         'Successful sale'
       ]);
-      //Dial.clickNextButton();
-      //Dial.clickOnRadioButton('Individual Agents');
       Dial.clickAdvanceConfiguration();
       Dial.clickOnRadioButton('Automatic Answer');
       Dial.clickOnButton('Save');
@@ -73,15 +65,21 @@ describe('Inbound Call Scenarios', () => {
     });
 
     it('Change status to Available', () => {
-      Dial.selectStatus('Available');
-      Dial.verifySelectCampaignBoxHeading();
-      Dial.clickSelectCampaignDropdown();
-      Dial.selectCampaign(campaignName);
-      Dial.clickConfirmButton();
-      Dial.verifySoftPhoneOpen();
+      cy.url().then((url) => {
+        if (url.includes('app.batchdialer.com')) {
+          Dial.selectStatus('Available');
+          Dial.verifySelectCampaignBoxHeading();
+          Dial.clickSelectCampaignDropdown();
+          Dial.selectCampaign(campaignName);
+          Dial.clickConfirmButton();
+          Dial.verifySoftPhoneOpen();
+        } else {
+          cy.log('Inbound Calls are not working in QA');
+        }
+      });
     });
 
-    it('Verify that calls are Auto Answering if Agent is Available', () => {
+    it('Verify that calls are Auto Answering if Agent is Unavailable', () => {
       cy.url().then((url) => {
         if (url.includes('app.batchdialer.com')) {
           call(callNumber, +15202010331);
@@ -148,37 +146,30 @@ describe('Inbound Call Scenarios', () => {
       ignoreSpeedTestPopup();
     });
 
-    it('create new Predictive Dialer Campaign with Auto Answer Mode', () => {
+    it('create new Predictive Dialer Campaign with Ringing Sound Mode', () => {
       Dial.clickOnMenu('Campaigns');
-      Dial.clickOnButton('CREATE NEW CAMPAIGN');
-      Dial.clickAdvanceSwitch();
-      Dial.enterCampaignName(campaignName);
+      Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
-      Dial.clickOnRadioButton('Individual Numbers');
-      Dial.clickNumbersDropdown();
+      //Dial.clickOnRadioButton('Individual Numbers');
+      //Dial.clickNumbersDropdown();
+      Dial.selectAgentToAssign(testData.AdminName);
       Dial.selectPhoneNumber(testData.Number);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Ringing Sound');
-      cy.wait(1000);
-      Dial.clickOnRadioButton('Ringing Sound');
+      // Dial.clickNextButton();
+      Dial.enterCampaignName(campaignName);
       Dial.clickCallResultsDropdown();
       Dial.selectCallResults([
-        'Abandoned',
         'Answering Machine',
         'Busy',
-        'Call Back',
         'Disconnected Number',
-        'Do Not Call',
-        'No Answer',
-        'Not Interested',
-        'Successful sale',
-        'Unknown',
-        'Voicemail',
+        'Successful sale'
       ]);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Individual Agents');
-      Dial.selectAgentToAssign(testData.AdminName);
-      Dial.clickOnButton('SAVE');
+      Dial.clickAdvanceConfiguration();
+      Dial.clickOnRadioButton('Manual Answer');
+      cy.wait(1000);
+      Dial.clickOnRadioButton('Ringing Sound');
+      // Dial.clickNextButton();
+      // Dial.clickOnRadioButton('Individual Agents');
+      Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
 

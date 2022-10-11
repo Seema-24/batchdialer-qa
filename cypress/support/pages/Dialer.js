@@ -10,7 +10,7 @@ const menu = (menuName) => `li:not(.subitem) a[title="${menuName}"]`;
 const advanceConfiguration = '.campaign-expander';
 const nameField = 'input[name="name"]';
 const radioButtons = (radioButtonName) =>
-  `//h2[@class="campaign-card__radio-block__title"][text()="${radioButtonName}"]/ancestor::label//span[@class="checkmark"]`;
+  `//h2[@class="campaign-card__radio-block__title"][contains(.,"${radioButtonName}")]/ancestor::label//span[@class="checkmark"]`;
 const nextButton = '.collapse.show button.circle';
 const numbersDropdown = `//label[text()="Caller ID"]/ancestor::div[contains(@class,"row")]//div[contains(@class,"ss-select-control")]`;
 const options = '.ss-select-option';

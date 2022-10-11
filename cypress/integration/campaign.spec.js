@@ -1,7 +1,7 @@
 import Campaign from '../support/pages/Campaigns';
 import Dialer from '../support/pages/Dialer';
 import Report from '../support/pages/Report';
-import { clickCallFunction, closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 
 let fixtureData;
 let testData;
@@ -307,7 +307,6 @@ describe('Add Campaign flow', () => {
   });
 
   it('Verify that it should give error on clicking Next Contact if there is no new lead', () => {
-    clickCallFunction();
     Dial.selectStatus('Available');
     Dial.verifySelectCampaignBoxHeading();
     Dial.clickSelectCampaignDropdown();

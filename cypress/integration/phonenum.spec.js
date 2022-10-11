@@ -1,8 +1,10 @@
 import promisify from 'cypress-promise';
 import Campaign from '../support/pages/Campaigns';
 import Contacts from '../support/pages/Contacts';
+import Dashboard from '../support/pages/Dashboard';
+import Dialer from '../support/pages/Dialer';
 import PhoneNum from '../support/pages/PhoneNum';
-import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 
 let fixtureData;
 let testData;
@@ -10,6 +12,9 @@ let num;
 let phone;
 const addNum = new PhoneNum();
 const addCont = new Contacts();
+const addCamp = new Campaign();
+const dashboard = new Dashboard();
+const Dial = new Dialer();
 let randNum = Math.floor(Math.random() * 100000);
 
 describe('Add Phone Number flow', () => {
@@ -29,6 +34,7 @@ describe('Add Phone Number flow', () => {
   beforeEach(() => {
     cy.fixture('constants').then((data) => (fixtureData = data));
     handlePoorConnectionPopup();
+    closeDialogBox();
   });
 
   after(() => {
@@ -372,7 +378,6 @@ describe('Add Phone Number flow', () => {
   });
 
   it('Verify that Created call result group is reflecting while creating new Campaign', () => {
-    const addCamp = new Campaign();
     addCamp.clickCampaignMenu();
     cy.wait(3000);
     addCamp.clickAddNewCampaign();
@@ -435,7 +440,7 @@ describe('Add Phone Number flow', () => {
     addNum.clickPhoneNumberMenu();
     addNum.clickCallResultMenu();
     addNum.clickAddNewCallResultBtn();
-    addNum.enterName('A demo test');
+    addNum.enterName('A CALL BACK');
     addNum.chooseActiveInactive('Active');
     addNum.selectCallResultCampaignDropdown(testData.campaign);
     addNum.clickAddNewRuleBtn();
@@ -445,11 +450,38 @@ describe('Add Phone Number flow', () => {
     cy.wait(1000);
   });
 
+  it('Change status to Available', () => {
+    Dial.selectStatus('Available');
+    Dial.verifySelectCampaignBoxHeading();
+    Dial.clickSelectCampaignDropdown();
+    Dial.selectCampaign(testData.campaign);
+    Dial.clickConfirmButton();
+    Dial.verifySoftPhoneOpen();
+  });
+
+  it('Verify that Events created through call result Schedule a call back is reflected in the TASKS page', () => {
+    addCont.dialPhoneNumber('8586515050');
+    addCont.clickDialerCallButton();
+    cy.wait(5000);
+    addCont.clickDialerCallButton();
+    addCont.selectCallResult('A CALL BACK'); 
+    addCont.clickContinueBtn();
+    dashboard.clickTaskButton();
+    dashboard.clickFutureButton();
+    dashboard.verifyEventType('Appointment');   
+    dashboard.verifyEventContact('Unknown Contact');
+    dashboard.verifyEventDate();
+    dashboard.verifyEventAssignedName(testData.AdminName);
+    dashboard.verifyEventTitle('Scheduled from call result');
+    dashboard.clickEventThreeDotMenuBtn('Unknown Contact');
+    dashboard.selectDropdownItemToClick('Delete Event');
+  });
+
   it('Remove the added New Rule from Call Result', () => {
     addNum.clickPhoneNumberMenu();
     addNum.clickCallResultMenu();
     addNum.clickOpenCallResultGroup('UNGROUPED');
-    addNum.clickCallResultEditBtn('A demo test');
+    addNum.clickCallResultEditBtn('A CALL BACK');
     addNum.clickDeleteRuleBtn();
     addNum.clickCallResultSaveBtn();
   });
