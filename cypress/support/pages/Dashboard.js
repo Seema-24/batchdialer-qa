@@ -1275,7 +1275,7 @@ export default class Dashboard {
   }
 
   verifyContactSupportWindow(msg) {
-    cy.get('.modal-content p').should('have.text', msg);
+    cy.get('.modal-content p').should('contain.text', msg);
   }
 
   clickDialogCloseButton() {
@@ -1754,8 +1754,16 @@ export default class Dashboard {
     cy.get(eventTableHeader('3')).should('contain.text', title);
   }
 
+  verifyEventTitleNotExist(title) {
+    cy.get(eventTableHeader('3')).should('not.exist', title);
+  }
+
   verifyEventContact(contact) {
     cy.get(eventTableHeader('4')).should('contain.text', contact);
+  }
+
+  verifyEventContactNotExist(contact) {
+    cy.get(eventTableHeader('4')).should('not.exist', contact);
   }
 
   verifyEventAssignedName(assigned) {

@@ -125,6 +125,7 @@ export function verifyRoleTitle() {
 }
 
 export function closeDialogBox() {
+  cy.wait(1000);
   cy.get('body').then(($body) => {
     if($body.text().includes('Edit User')) {
       cy.get('.close-button').click();

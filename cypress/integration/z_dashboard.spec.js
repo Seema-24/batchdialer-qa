@@ -961,7 +961,7 @@ describe('Dashboard Elements', () => {
     Dash.clickProceedWithCancel();
     Dash.clickCancelImmediately();
     Dash.verifyContactSupportWindow(
-      'Your request for cancellation has been submitted successfully. Your plan will be cancelled at the end of the current billing cycle.'
+      'Thank you for your feedback, your account has been set to cancel on'
     );
     Dash.clickDialogCloseButton();
   });
