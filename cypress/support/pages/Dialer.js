@@ -34,22 +34,22 @@ const acceptCallButton = '.stg-softphone-callbutton img[src*="phone-green"]';
 const callDispositionWindow = '.call-disposition-modal .modal-content';
 const callDispositions = '.disposition-cell .disposition';
 const campaignDialsCount = (campaignName) =>
-  `//tr[td[text()="${campaignName}"]]//td[3]`;
+  `(//div[contains(.,"${campaignName}")]/following-sibling::div)[2]`;
 const campaignAnsweredCount = (campaignName) =>
-  `//tr[td[text()="${campaignName}"]]//td[4]`;
+  `(//div[contains(.,"${campaignName}")]/following-sibling::div)[3]`;
 const reportsMenu = 'a[title="Reports"]';
 const subMenu = (subMenuName) => `.subitem a[title="${subMenuName}"]`;
 const softPhoneOpen = '.stg-softphone-wide';
-const inqueuePhoneNumber = `//div[@class="table-responsive"]//tr[td[text()="INQUEUE"]]//td[3]`;
-const callingHoursDropdown = `//label[text()="Calling Hours"]/following-sibling::div//div`;
-const timeFromDropdown = `(//div[text()="Sunday"]/following-sibling::div//div[contains(@class,"ss-select-control")])[1]`;
-const timeToDropdown = `(//div[text()="Sunday"]/following-sibling::div//div[contains(@class,"ss-select-control")])[2]`;
+const inqueuePhoneNumber = `(//span[text()="In Queue"]/parent::div/following-sibling::div)[3]`;
+const callingHoursDropdown = `//label[text()="Calling Hours"]/following-sibling::div`;
+const timeFromDropdown = `(//label[text()="Sunday"]/ancestor::div/following-sibling::div//div[contains(@class,"ss-select-control")])[1]`;
+const timeToDropdown = `(//label[text()="Sunday"]/ancestor::div/following-sibling::div//div[contains(@class,"ss-select-control")])[2]`;
 const applyToAllButton = `//span[text()="Apply to All"]`;
 const assignCampaignDropdown = `//span[text()="Select Campaign"]/parent::div[contains(@class,"ss-select-control")]`;
 const extensionsDropdown = `//span[text()="Select Extension"]/parent::div[contains(@class,"ss-select-control")]`;
 const assignAgentsDropdown = `//span[text()="Agents"]/parent::div[contains(@class,"ss-select-control")]`;
 const queueDeleteButton = (queueName) =>
-  `//tr[td[.="${queueName}"]]//td//img[contains(@src,"delete")]`;
+  `//div[contains(@class,"resizable-table-tbody")]//div[.="${queueName}"]/following-sibling::div//img[contains(@src,"delete")]`;
 const recentContactsDisposition = '.disposition';
 const contactName = (firstName, lastName) =>
   `//span[@class="contacts__name" and text()="${firstName}" and text()="${lastName}"]`;
@@ -94,6 +94,7 @@ const tableRefreshBtn = 'span[title="Refresh"]';
 const phoneRingning = '.Phone.is-animating';
 const cardDropdowns = (cardName) =>
   `//h2[@class="campaign-card__title"][text()="${cardName}"]/ancestor::div[contains(@class,"campaign-card")]//div[contains(@class,"ss-select-control")]`;
+const dashboard = 'a[title="Dashboard"]';
 
 export default class Dialer {
  
@@ -370,7 +371,7 @@ export default class Dialer {
   }
 
   verifyInqueueCall(num) {
-    cy.xpath(inqueuePhoneNumber, { timeout: 120000 }).then((phoneNumber) => {
+    cy.xpath(inqueuePhoneNumber, { timeout: 10000 }).then((phoneNumber) => {
       const number = covertNumberToNormal(phoneNumber.text());
       cy.log(number);
       expect(number).to.equal(num);
@@ -707,6 +708,10 @@ export default class Dialer {
         }
       }
     });
+  }
+
+  clickDashboardMenu() {
+    cy.get(dashboard).click({ force: true });
   }
   
 }

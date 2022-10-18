@@ -1755,7 +1755,7 @@ export default class Dashboard {
   }
 
   verifyEventTitleNotExist(title) {
-    cy.get(eventTableHeader('3')).should('not.exist', title);
+    cy.get(eventTableHeader('3')).contains(title).should('not.exist');
   }
 
   verifyEventContact(contact) {
@@ -1763,7 +1763,7 @@ export default class Dashboard {
   }
 
   verifyEventContactNotExist(contact) {
-    cy.get(eventTableHeader('4')).should('not.exist', contact);
+    cy.get(eventTableHeader('4')).contains(contact).should('not.exist');
   }
 
   verifyEventAssignedName(assigned) {
