@@ -11,6 +11,8 @@ const advanceConfiguration = '.campaign-expander';
 const nameField = 'input[name="name"]';
 const radioButtons = (radioButtonName) =>
   `//h2[@class="campaign-card__radio-block__title"][contains(.,"${radioButtonName}")]/ancestor::label//span[@class="checkmark"]`;
+const checkboxButtons = (checkboxButtonName) =>
+  `//h2[@class="campaign-card__checkbox-block__title"][contains(.,"${checkboxButtonName}")]/ancestor::label//span[@class="checkmark"]`;
 const nextButton = '.collapse.show button.circle';
 const numbersDropdown = `//label[text()="Caller ID"]/ancestor::div[contains(@class,"row")]//div[contains(@class,"ss-select-control")]`;
 const options = '.ss-select-option';
@@ -25,7 +27,7 @@ const threeDotMenuBtn = (CampName) =>
 const dropdownItems = '.show .dropdown-item';
 const warningTitle = '.warning__modal .modal-content .warning__modal-title';
 const warningGotItBtn = '.warning__modal .modal-content button';
-const simultaneousDialsPerAgent = `//label[text()="Simultaneous Dials Per Agent"]/parent::div//div[contains(@class,"number-editor")]//input[@type="text"]`;
+const simultaneousDialsPerAgent = `//label[text()="Simultaneous Dials p/Agent"]//following-sibling::div[contains(@class,"number-editor")]//input`;
 const questionToolTip = '.question-tooltip';
 const contactProfile = '.contact-view-wrapper';
 const softphone = '.stg-softphone-wrapper .stg-softphone';
@@ -61,22 +63,22 @@ const softphoneButton = '.softphone-icon';
 const mappingFields = (fieldName) =>
   `//div[input[@title="${fieldName}"]]/following-sibling::div/div[contains(@class,"ss-select")]`;
 const listThreeDotMenuBtn = (listName) =>
-  `//tr[td[text()="${listName}"]]//td//div[contains(@class,"dropdown")]`;
+  `//div[text()="${listName}"]/parent::div/child::div//img[@alt="Menu"]`;
 const modalTitle = '.modal-content .modal-title';
 const modalDropdown = '.modal-content .ss-select';
 const listDeleteBtn = (listName) =>
-  `//tr[td[text()="${listName}"]]//td//span/*[name()="svg"][@data-icon="trash-alt"]`;
+  `//div[text()="${listName}"]/parent::div/child::div//*[name()="svg"][@data-icon="trash-alt"]`;
 const softphoneLines = '.stg-softphone-line';
-const retryTime =
-  '//label[text()="Retry Time"]/parent::div/following-sibling::div//input';
+const retryTime = (editBtn) =>
+  `//label[text()="Retry Time"]//following-sibling::div//div[contains(@class,"number-editor")]//img[contains(@src,"${editBtn}")]`;
 const maxAttemptPerRecord =
   '//label[text()="Max Attempts Per Record"]/following-sibling::div//input';
 const contactThreeDotMenu = (firstName, lastName) =>
-  `//td[span[span[@class="contacts__name" and text()="${firstName}" and text()="${lastName}"]]]/parent::tr//td//img[contains(@src,"edit")]`;
+  `//span[@class="contacts__name" and text()="${firstName}" and text()="${lastName}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]`;
 const softphoneLineStatus = '.stg-softphone-line-status';
 const softphoneLineContactName = '.stg-softphone-line-contact';
 const ringTimeDuration = `//label[text()="Ring Time Duration"]/following-sibling::div//input`;
-const abandonmentTimeout = `//label[text()="Abandonment Timeout"]/following-sibling::div//input`;
+const abandonmentTimeout = `//label[text()="Abandonment Timeout, sec"]/following-sibling::div//input`;
 const callRecordingCheckbox = 'input[name="callrecording"]';
 const callRecordingIcon = (firstName, lastName) =>
   `//tr[td[text()="${firstName}" and text()="${lastName}"]]//img[contains(@src,"icon-listen")]`;
@@ -86,7 +88,7 @@ const playerControlButton = (no) =>
   `.contacts-player__controls svg:nth-of-type(${no})`;
 const playerCurrentTime = '.progress-bar__current-time';
 const playerCloseButton = '.modal-content .fa-times';
-const dailyConnectsLimit = `//label[text()="Daily Connects Limit"]/parent::div//input`;
+const dailyConnectsLimit = `//label[text()=" Max Calls per Day"]/parent::div//input`;
 const retryTimeDropdown = `//div[label[text()="Retry Time"]]/parent::div//div[contains(@class,"ss-select-control")]`;
 const softphoneIcon = '.softphone-icon';
 const dialedNumberOptions = 'tbody tr:nth-of-type(1) td:nth-of-type(11) span';
@@ -95,6 +97,7 @@ const phoneRingning = '.Phone.is-animating';
 const cardDropdowns = (cardName) =>
   `//h2[@class="campaign-card__title"][text()="${cardName}"]/ancestor::div[contains(@class,"campaign-card")]//div[contains(@class,"ss-select-control")]`;
 const dashboard = 'a[title="Dashboard"]';
+const closeSoftBtn = '.stg-softphone-right-close';
 
 export default class Dialer {
  
@@ -161,6 +164,10 @@ export default class Dialer {
     cy.xpath(radioButtons(radioButtonName)).click();
   }
 
+  clickOnCheckboxButton(checkboxButton) {
+    cy.xpath(checkboxButtons(checkboxButton)).click();
+  }
+
   clickNextButton() {
     cy.get(nextButton).click();
   }
@@ -224,6 +231,7 @@ export default class Dialer {
   }
 
   clickThreeDotMenuBtn(campName) {
+    this.closeSoftCloseBtn();
     cy.xpath(threeDotMenuBtn(campName)).click();
   }
 
@@ -541,7 +549,7 @@ export default class Dialer {
   }
 
   clickListDeleteButton(listName) {
-    cy.xpath(listDeleteBtn(listName)).click();
+    cy.xpath(listDeleteBtn(listName)).first().click();
   }
 
   verifySoftphoneLinesNumber(no) {
@@ -549,7 +557,11 @@ export default class Dialer {
   }
 
   enterRetryTime(time) {
-    cy.xpath(retryTime).clear().type(time);
+    for (let i = 0; i < time; i++) {
+      cy.xpath(retryTime('plus')).click();
+      this.clickOnButton('Got it');
+    }
+   
   }
 
   enterMaxAttemptPerRecord(attemptNo) {
@@ -601,8 +613,8 @@ export default class Dialer {
   verifyCallRecordingIcon(status) {
     cy.reload();
     ignoreSpeedTestPopup();
-    cy.wait(8000);
-    this.clickTableRefreshButton();
+    cy.wait(2000);
+    //this.clickTableRefreshButton();
     cy.wait(1000);
     cy.get('body').then(($body) => {
       if (status === true) {
@@ -712,6 +724,14 @@ export default class Dialer {
 
   clickDashboardMenu() {
     cy.get(dashboard).click({ force: true });
+  }
+
+  closeSoftCloseBtn() {
+    cy.get('body').then($body => {
+      if($body.find(softPhoneOpen).length) {
+        cy.get(closeSoftBtn).click();
+      }
+    })
   }
   
 }

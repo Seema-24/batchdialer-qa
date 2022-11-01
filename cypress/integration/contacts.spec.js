@@ -243,6 +243,10 @@ describe('Add Contact flow', () => {
     addCont.deleteAddedContacts('Automation', 'CSV1');
     addCont.handleAlertForDelete();
     addCont.verifyDeletedToast();
+    Dial.clickOnSubMenu('Contact Lists');
+    Dial.clickListDeleteButton('contact-sample.csv');
+    addCont.handleAlertForDelete();
+    Dial.verifySuccessToastMessage('List deleted');
   });
 
   it('Verify that if a contact is deleted all the Events created for that contact is removed from the Tasks', () => {
@@ -352,6 +356,14 @@ describe('Add Contact flow', () => {
     addCont.deleteAddedContacts('Automation', 'CSV1');
     addCont.handleAlertForDelete();
     addCont.verifyDeletedToast();
+  });
+
+  it('User is able to delete imported list from list section', () => {
+    Dial.clickOnMenu('Contacts');
+    Dial.clickOnSubMenu('Contact Lists');
+    Dial.clickListDeleteButton('contact-sample.csv');
+    addCont.handleAlertForDelete();
+    Dial.verifySuccessToastMessage('List deleted');
   });
 
   it('check validation on required fields of new contact', () => {
