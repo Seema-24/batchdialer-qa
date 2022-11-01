@@ -229,7 +229,7 @@ export default class PhoneNum {
   }
 
   SelectDestination(destination) {
-    cy.get(destinationDropdown).click();
+    cy.get(destinationDropdown).first().click();
     cy.wait(1000);
     cy.xpath(destinationOptions(destination)).click();
   }

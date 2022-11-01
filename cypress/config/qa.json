@@ -13,20 +13,5 @@
     "resellerPassword": "god",
     "firstPromoterUsername": "sandeepk@batchservice.com",
     "firstPromoterPassword": "Kumar@12345"
-  },
-  "testFiles": [
-    "0_setup.spec.js",
-    "1user.spec.js",
-    "agent.spec.js",
-    "campaign.spec.js",
-    "contacts.spec.js",
-    "login.spec.js",
-    "phonenum.spec.js",
-    "registration.spec.js",
-    "report.spec.js",
-    "reseller.spec.js",
-    "supervisor.spec.js",
-    "userPermission.spec.js",
-    "z_dashboard.spec.js"
-  ]
+  }
 }

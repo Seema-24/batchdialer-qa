@@ -928,6 +928,7 @@ describe('Dashboard Elements', () => {
 
   it('Verify that State name is prefilled in the feedback form  If the state info is present in the Billing profile', () => {
     Dash.clickCancelAccount();
+    Dash.clickProceedWithCancel();
     Dash.chooseCancelAccountReason('It Costs Too Much');
     Dash.EnterConfirmCancelAccount('DELETE');
     Dash.verifyState('NY');
@@ -937,6 +938,7 @@ describe('Dashboard Elements', () => {
 
   it('Verify that the authorized user is able to cancel the account states other than CA, NY, OR', () => {
     Dash.clickCancelAccount();
+    Dash.clickProceedWithCancel();
     Dash.chooseCancelAccountReason('It Costs Too Much');
     Dash.EnterConfirmCancelAccount('DELETE');
     Dash.selectState('AZ');
@@ -952,13 +954,14 @@ describe('Dashboard Elements', () => {
 
   it('Verify that the authorized user is able to cancel the account states CA, NY OR', () => {
     Dash.clickCancelAccount();
+    Dash.clickProceedWithCancel()
     Dash.chooseCancelAccountReason('It Costs Too Much');
     Dash.EnterConfirmCancelAccount('DELETE');
     Dash.selectState('CA');  //NY OR
     Dash.clickProceedWithCancel();
     Dash.clickCancelImmediately();
     Dash.verifyContactSupportWindow(
-      'Your request for cancellation has been submitted successfully. Your plan will be cancelled at the end of the current billing cycle.'
+      'Thank you for your feedback, your account has been set to cancel on'
     );
     Dash.clickDialogCloseButton();
   });

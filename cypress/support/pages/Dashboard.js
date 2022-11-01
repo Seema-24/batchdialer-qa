@@ -149,7 +149,7 @@ const chatBoxInputEmail = '.email-input input';
 const chatBoxEnterText = '.user-comment';
 const chatBoxSendMessage = '.send-message';
 const cancelAccountReason = (reason) =>
-  "//div[@class='radio'][contains(.,'" + reason + "')]";
+  "//div[contains(@class,'radio')][contains(.,'" + reason + "')]";
 const confirmDelete = '.security input';
 const dialogCloseBtn = '.modal-body svg[data-icon="times"]';
 const popUpHeader = '.modal-header';
@@ -237,7 +237,7 @@ const userTreeDropdown = 'div.dropdown-usertree.show';
 const billingCycle = '.billing-user-info__period__period';
 const billingInfoEditBtn = '.billing-user-info__wrapper .billing-user-info__edit.btn';
 const addDropdown = (add) => `//label[text() ="${add}"]/parent::div/child::div//span[@class="ss-select-value"]/span`;
-const selectState = (state) => `//div[text() ="${state}"]/parent::div/child::div//span[@class="ss-select-value-label single"]`;
+const selectState = (state) => `//span[text() ="${state}"]/ancestor::div[@class="row"]/following-sibling::div//span[@class="ss-select-value-label single"]`;
 const billingBtn = (btn) => `//button[@class="billing-button"][text()="${btn}"]`;
 const successToastMsg = '.mytoast-bottom';
 const cardEditBtn = '.billing-user-info__payment__edit';
@@ -246,7 +246,8 @@ const liveCalls = '//div[@class="title "][text()="Live Calls"]';
 const resourceCenterIcon = '[id*="pendo-image-badge"]';
 const customerChat = "//div[text()='Chat with us']";
 const allEventType = '.calendar-filter__select .ss-select-control';
-const TableHeaderEventType = 'tbody> tr> td:nth-of-type(2)> div';
+const eventTableHeader = (col) => `tbody> tr> td:nth-of-type(${col})> div`;
+const eventDateTableHeader = 'tbody> tr> td:nth-of-type(5) span:nth-of-type(1)';
 
 export default class Dashboard {
   clickDashboard() {
@@ -1251,6 +1252,7 @@ export default class Dashboard {
   }
 
   clickProceedWithCancel() {
+    cy.get('.cancellation').should('be.visible');
     cy.get('button').then((button) => {
       for (let i = 0; i < button.length; i++) {
         if (button[i].textContent.trim() === 'Proceed With Cancellation') {
@@ -1273,7 +1275,7 @@ export default class Dashboard {
   }
 
   verifyContactSupportWindow(msg) {
-    cy.get('.modal-content p').should('have.text', msg);
+    cy.get('.modal-content p').should('contain.text', msg);
   }
 
   clickDialogCloseButton() {
@@ -1745,7 +1747,38 @@ export default class Dashboard {
   }
 
   verifyEventType(event) {
-    cy.get(TableHeaderEventType).should('contain.text', event);
+    cy.get(eventTableHeader('2')).should('contain.text', event);
+  }
+
+  verifyEventTitle(title) {
+    cy.get(eventTableHeader('3')).should('contain.text', title);
+  }
+
+  verifyEventTitleNotExist(title) {
+    cy.get(eventTableHeader('3')).contains(title).should('not.exist');
+  }
+
+  verifyEventContact(contact) {
+    cy.get(eventTableHeader('4')).should('contain.text', contact);
+  }
+
+  verifyEventContactNotExist(contact) {
+    cy.get(eventTableHeader('4')).contains(contact).should('not.exist');
+  }
+
+  verifyEventAssignedName(assigned) {
+    cy.get(eventTableHeader('6')).should('contain.text', assigned);
+  }
+
+  verifyEventDate() {
+    var today = new Date();
+    today = String(today.getMonth() + 1).padStart(2,'0') 
+      + '/' +
+      String(today.getDate()).padStart(2,'0') 
+      + '/' + 
+      String(today.getFullYear());
+
+    cy.get(eventDateTableHeader).should('contain.text', today)
   }
 
 }

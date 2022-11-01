@@ -125,6 +125,7 @@ export function verifyRoleTitle() {
 }
 
 export function closeDialogBox() {
+  cy.wait(1000);
   cy.get('body').then(($body) => {
     if($body.text().includes('Edit User')) {
       cy.get('.close-button').click();
@@ -144,6 +145,9 @@ export function closeDialogBox() {
           }
         }
       });
+    } else if ($body.find('.call-disposition-title').length) {
+      cy.get('.disposition-cell .disposition').last().click();
+      cy.contains('Done').click();
     }
   })
 }

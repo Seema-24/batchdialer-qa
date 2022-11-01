@@ -225,11 +225,36 @@ describe('Add Contact flow', () => {
     addCont.verifyAddedContacts('Automation', 'CSV1');
   });
 
+  it('Verify that a Follow up call event created through Contacts page is reflected in TASKS page', () => {
+    addCont.clickContactName('Automation CSV1');
+    addCont.clickFollowUpCall();
+    addCont.selectDateForFollowUpCall();
+    addCont.clickSavebtn();
+    cy.wait(1000);
+    addCont.verifyFollowUpCall('Automation CSV1');
+    addCont.clickCloseBtn();
+    dashboard.clickTaskButton();
+    dashboard.verifyEventContact('Automation CSV1');
+    dashboard.verifyEventTitle('Call Back to Automation CSV1');
+  });
+
   it('Should delete the added Contact', () => {
     addCont.clickingOnContactOption();
     addCont.deleteAddedContacts('Automation', 'CSV1');
     addCont.handleAlertForDelete();
     addCont.verifyDeletedToast();
+    Dial.clickOnSubMenu('Contact Lists');
+    Dial.clickListDeleteButton('contact-sample.csv');
+    addCont.handleAlertForDelete();
+    Dial.verifySuccessToastMessage('List deleted');
+  });
+
+  it('Verify that if a contact is deleted all the Events created for that contact is removed from the Tasks', () => {
+    dashboard.clickTaskButton();
+    dashboard.clickPastButton();
+    dashboard.clickFutureButton();
+    dashboard.verifyEventContactNotExist('Automation CSV1');
+    dashboard.verifyEventTitleNotExist('Call Back to Automation CSV1');
   });
 
   it('Verify Dialed/Undialed Radio Button Functionality', () => {
@@ -331,6 +356,14 @@ describe('Add Contact flow', () => {
     addCont.deleteAddedContacts('Automation', 'CSV1');
     addCont.handleAlertForDelete();
     addCont.verifyDeletedToast();
+  });
+
+  it('User is able to delete imported list from list section', () => {
+    Dial.clickOnMenu('Contacts');
+    Dial.clickOnSubMenu('Contact Lists');
+    Dial.clickListDeleteButton('contact-sample.csv');
+    addCont.handleAlertForDelete();
+    Dial.verifySuccessToastMessage('List deleted');
   });
 
   it('check validation on required fields of new contact', () => {

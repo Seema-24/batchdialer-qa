@@ -1,10 +1,12 @@
 import Campaign from '../support/pages/Campaigns';
 import Contacts from '../support/pages/Contacts';
 import Dialer from '../support/pages/Dialer';
+import Report from '../support/pages/Report';
 import Setup from '../support/pages/Setup';
 import {
   call,
   callWithHangup,
+  closeDialogBox,
   covertNumberToNormal,
   handlePoorConnectionPopup,
   ignoreSpeedTestPopup,
@@ -16,8 +18,13 @@ const Dial = new Dialer();
 const setup = new Setup();
 const contact = new Contacts();
 const camp = new Campaign();
+const report = new Report();
 
 describe('Inbound Call Scenarios', () => {
+  beforeEach(() => {
+    closeDialogBox();
+    handlePoorConnectionPopup();
+  })
   describe('Inbound Calls with Call Connect type of Auto Answer mode', () => {
     const campaignName = 'Auto Answer Campaign';
     let callNumber = '+1';
@@ -47,33 +54,20 @@ describe('Inbound Call Scenarios', () => {
     it('create new Predictive Dialer Campaign with Auto Answer Mode', () => {
       setup.assignNumberToAgent(testData.Number, testData.AdminName);
       Dial.clickOnMenu('Campaigns');
-      Dial.clickOnButton('CREATE NEW CAMPAIGN');
-      Dial.clickAdvanceSwitch();
-      Dial.enterCampaignName(campaignName);
+      Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
-      Dial.clickOnRadioButton('Individual Numbers');
-      Dial.clickNumbersDropdown();
+      Dial.selectAgentToAssign(testData.AdminName);
       Dial.selectPhoneNumber(testData.Number);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Auto Answer');
+      Dial.enterCampaignName(campaignName);
       Dial.clickCallResultsDropdown();
       Dial.selectCallResults([
-        'Abandoned',
         'Answering Machine',
-        'Busy',
-        'Call Back',
-        'Disconnected Number',
-        'Do Not Call',
         'No Answer',
-        'Not Interested',
-        'Successful sale',
-        'Unknown',
-        'Voicemail',
+        'Successful sale'
       ]);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Individual Agents');
-      Dial.selectAgentToAssign(testData.AdminName);
-      Dial.clickOnButton('SAVE');
+      Dial.clickAdvanceConfiguration();
+      Dial.clickOnRadioButton('Automatic Answer');
+      Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
 
@@ -87,12 +81,12 @@ describe('Inbound Call Scenarios', () => {
           Dial.clickConfirmButton();
           Dial.verifySoftPhoneOpen();
         } else {
-          cy.log('Inbound Calls not working in QA');
+          cy.log('Inbound Calls are not working in QA');
         }
       });
     });
 
-    it('Verify that calls are Auto Answering if Agent is Available', () => {
+    it('Verify that calls are Auto Answering if Agent is Unavailable', () => {
       cy.url().then((url) => {
         if (url.includes('app.batchdialer.com')) {
           call(callNumber, +15202010331);
@@ -117,6 +111,10 @@ describe('Inbound Call Scenarios', () => {
           Dial.clickOnSubMenu('Campaigns');
           cy.reload();
           ignoreSpeedTestPopup();
+          report.clickCampaignCalanderDropdown();
+          report.clickDateBtnLinks('Today');
+          report.clickStatusDropdown();
+          report.selectCampaignStatus('Active')
           Dial.verifyCampaignDialsCount(campaignName, 1);
           Dial.verifyCampaignAnsweredCount(campaignName, 1);
         } else {
@@ -159,37 +157,27 @@ describe('Inbound Call Scenarios', () => {
       ignoreSpeedTestPopup();
     });
 
-    it('create new Predictive Dialer Campaign with Auto Answer Mode', () => {
+    it('create new Predictive Dialer Campaign with Ringing Sound Mode', () => {
       Dial.clickOnMenu('Campaigns');
-      Dial.clickOnButton('CREATE NEW CAMPAIGN');
-      Dial.clickAdvanceSwitch();
-      Dial.enterCampaignName(campaignName);
+      Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
-      Dial.clickOnRadioButton('Individual Numbers');
-      Dial.clickNumbersDropdown();
+      Dial.selectAgentToAssign(testData.AdminName);
       Dial.selectPhoneNumber(testData.Number);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Ringing Sound');
-      cy.wait(1000);
-      Dial.clickOnRadioButton('Ringing Sound');
+      Dial.enterCampaignName(campaignName);
       Dial.clickCallResultsDropdown();
       Dial.selectCallResults([
-        'Abandoned',
         'Answering Machine',
         'Busy',
-        'Call Back',
         'Disconnected Number',
-        'Do Not Call',
-        'No Answer',
-        'Not Interested',
-        'Successful sale',
-        'Unknown',
-        'Voicemail',
+        'Successful sale'
       ]);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Individual Agents');
-      Dial.selectAgentToAssign(testData.AdminName);
-      Dial.clickOnButton('SAVE');
+      Dial.clickAdvanceConfiguration();
+      Dial.clickOnRadioButton('Manual Answer');
+      cy.wait(1000);
+      Dial.clickOnRadioButton('Ringing Sound');
+      // Dial.clickNextButton();
+      // Dial.clickOnRadioButton('Individual Agents');
+      Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
 
@@ -240,6 +228,10 @@ describe('Inbound Call Scenarios', () => {
           Dial.clickOnSubMenu('Campaigns');
           cy.reload();
           ignoreSpeedTestPopup();
+          report.clickCampaignCalanderDropdown();
+          report.clickDateBtnLinks('Today');
+          report.clickStatusDropdown();
+          report.selectCampaignStatus('Active')
           Dial.verifyCampaignDialsCount(campaignName, 1);
           Dial.verifyCampaignAnsweredCount(campaignName, 1);
         } else {
@@ -285,38 +277,31 @@ describe('Inbound Call Scenarios', () => {
 
     it('Create a campaign for the Queue', () => {
       Dial.clickOnMenu('Campaigns');
-      Dial.clickOnButton('CREATE NEW CAMPAIGN');
-      Dial.clickAdvanceSwitch();
-      Dial.enterCampaignName(campaignName);
+      Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
-      Dial.clickOnRadioButton('Individual Numbers');
-      Dial.clickNumbersDropdown();
+      //Dial.clickOnRadioButton('Individual Numbers');
+      //Dial.clickNumbersDropdown();
+      Dial.selectAgentToAssign(testData.AdminName);
       Dial.selectPhoneNumber(testData.Number);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Auto Answer');
+      // Dial.clickNextButton();
+      Dial.enterCampaignName(campaignName);
+      Dial.clickCallResultsDropdown();
+      Dial.selectCallResults([
+        'Answering Machine',
+        'Busy',
+        'Disconnected Number',
+        'Successful sale'
+      ]);
+      Dial.clickAdvanceConfiguration();
+      Dial.clickOnRadioButton('Automatic Answer');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
-      Dial.clickCallResultsDropdown();
-      Dial.selectCallResults([
-        'Abandoned',
-        'Answering Machine',
-        'Busy',
-        'Call Back',
-        'Disconnected Number',
-        'Do Not Call',
-        'No Answer',
-        'Not Interested',
-        'Successful sale',
-        'Unknown',
-        'Voicemail',
-      ]);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Individual Agents');
-      Dial.selectAgentToAssign(testData.AdminName);
-      Dial.clickOnButton('SAVE');
+      //Dial.clickNextButton();
+      //Dial.clickOnRadioButton('Individual Agents');
+      Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
 
@@ -339,9 +324,9 @@ describe('Inbound Call Scenarios', () => {
         if (url.includes('app.batchdialer.com')) {
           selectAgentStatus('Offline');
           callWithHangup(callNumber, +15202010331);
-          Dial.clickOnMenu('Reports');
+          Dial.clickDashboardMenu();
           Dial.verifyInqueueCall('5202010331');
-          cy.wait(10000);
+          cy.wait(1000);
         } else {
           cy.log('Inbound calls are not working in QA');
         }
@@ -359,7 +344,6 @@ describe('Inbound Call Scenarios', () => {
           Dial.verifySoftPhoneOpen();
           cy.reload();
           ignoreSpeedTestPopup();
-          cy.wait(5000);
           call(callNumber, +15202010331);
           Dial.verifySoftphone();
           Dial.verifyContactViewPage();
@@ -424,15 +408,26 @@ describe('Inbound Call Scenarios', () => {
     });
 
     it('Verify if the Number is destinationed to Hangup then call should show as Abandoned in Recent Contacts', () => {
-      call(callNumber, +15202010331);
-      Dial.clickOnMenu('Reports');
-      Dial.clickOnSubMenu('Recent Contacts');
-      Dial.verifyRecentContactDisposition('Abandoned');
+      cy.url().then((url) => {
+        if(url.includes('app.bathdialer.com')) {
+          call(callNumber, +15202010331);
+          Dial.clickOnMenu('Reports');
+          Dial.clickOnSubMenu('Recent Contacts');
+          Dial.verifyRecentContactDisposition('Abandoned');
+        } else {
+          cy.log('Inbound calls are not working in QA');
+        }
+      })
     });
   });
 });
 
 describe('Outbound Calling Scenarios', () => {
+  beforeEach(() => {
+    closeDialogBox();
+    handlePoorConnectionPopup();
+  })
+
   describe('Preview Campaign Dialing', () => {
     const campaignName = 'Preview Campaign';
     let callNumber = '+1';
@@ -449,10 +444,6 @@ describe('Outbound Calling Scenarios', () => {
       });
     });
 
-    beforeEach(() => {
-      handlePoorConnectionPopup();
-    })
-
     after(() => {
       cy.reload();
       ignoreSpeedTestPopup();
@@ -467,39 +458,26 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create the New Preview Dialer', () => {
       Dial.clickOnMenu('Campaigns');
-      Dial.clickOnButton('CREATE NEW CAMPAIGN');
-      Dial.clickAdvanceSwitch();
-      Dial.enterCampaignName(campaignName);
+      Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Preview Dialer');
-      cy.wait(1000);
-      Dial.clickOnRadioButton('Preview Dialer');
-      Dial.clickOnRadioButton('Individual Numbers');
-      Dial.clickNumbersDropdown();
+      Dial.selectAgentToAssign(testData.AdminName);
       Dial.selectPhoneNumber(testData.Number);
-      Dial.clickNextButton();
+      Dial.enterCampaignName(campaignName);
+      
+      cy.wait(1000);
+      Dial.clickCallResultsDropdown();
+      Dial.selectCallResults([
+        'Answering Machine',
+        'No Answer',
+        'Successful sale'
+      ]);
+      Dial.clickAdvanceConfiguration();
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
-      Dial.clickCallResultsDropdown();
-      Dial.selectCallResults([
-        'Abandoned',
-        'Answering Machine',
-        'Busy',
-        'Call Back',
-        'Disconnected Number',
-        'Do Not Call',
-        'No Answer',
-        'Not Interested',
-        'Successful sale',
-        'Unknown',
-        'Voicemail',
-      ]);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Individual Agents');
-      Dial.selectAgentToAssign(testData.AdminName);
-      Dial.clickOnButton('SAVE');
+      Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
 
@@ -514,7 +492,7 @@ describe('Outbound Calling Scenarios', () => {
       contact.selectState('Arizona');
       contact.enterZipCode('85701');
       contact.enterEmail('test@test.com');
-      contact.enterPhoneNumber('5202010331');
+      contact.enterPhoneNumber('5703870000');
       contact.clickSaveButton();
       contact.verifySuccessToast();
     });
@@ -593,39 +571,27 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a new Predictive Campaign', () => {
       Dial.clickOnMenu('Campaigns');
-      Dial.clickOnButton('CREATE NEW CAMPAIGN');
-      Dial.clickAdvanceSwitch();
-      Dial.enterCampaignName(campaignName);
+      Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
-      Dial.clickOnRadioButton('Individual Numbers');
-      Dial.clickNumbersDropdown();
+      Dial.selectAgentToAssign(testData.AdminName);
       Dial.selectPhoneNumber(testData.Number);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Auto Answer');
+      Dial.enterCampaignName(campaignName);
+      cy.wait(1000);
+      Dial.clickCallResultsDropdown();
+      Dial.selectCallResults([
+        'Answering Machine',
+        'No Answer',
+        'Successful sale'
+      ]);
+      Dial.clickAdvanceConfiguration();
+      Dial.clickOnRadioButton('Automatic Answer');
+      Dial.enterSimultaneousDialsPerAgent('3');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
-      Dial.enterSimultaneousDialsPerAgent('3');
-      Dial.clickCallResultsDropdown();
-      Dial.selectCallResults([
-        'Abandoned',
-        'Answering Machine',
-        'Busy',
-        'Call Back',
-        'Disconnected Number',
-        'Do Not Call',
-        'No Answer',
-        'Not Interested',
-        'Successful sale',
-        'Unknown',
-        'Voicemail',
-      ]);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Individual Agents');
-      Dial.selectAgentToAssign(testData.AdminName);
-      Dial.clickOnButton('SAVE');
+      Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
 
@@ -670,15 +636,17 @@ describe('Outbound Calling Scenarios', () => {
       Dial.clickConfirmButton();
       Dial.verifySoftPhoneOpen();
       Dial.verifySoftphoneLinesNumber(3);
+      cy.wait(1000)
     });
 
     it('Verify that Agent status should be On Call and End the Call and select the Disposition', () => {
+      Dial.verifyPhoneRingingIcon();
+      // Dial.verifySoftphoneTitle([
+      //   'Test Number1',
+      //   'Test Number2',
+      //   'Test Number3',
+      // ]);
       Dial.verifyAgentStatus('On Call');
-      Dial.verifySoftphoneTitle([
-        'Test Number1',
-        'Test Number2',
-        'Test Number3',
-      ]);
       Dial.endCallAtTime('0:30');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
@@ -704,7 +672,7 @@ describe('Outbound Calling Scenarios', () => {
   describe('Predictive campaign with simultaneous dials per agent of 1', () => {
     const campaignName = 'Predictive Campaign';
     const listName = 'twilio.csv';
-    let callNumber = '+1';
+    let callNumber = '+1'; 
     before(() => {
       cy.visit('/');
       cy.readFile('cypress/fixtures/testData.json').then((data) => {
@@ -730,39 +698,27 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a new Predictive Campaign', () => {
       Dial.clickOnMenu('Campaigns');
-      Dial.clickOnButton('CREATE NEW CAMPAIGN');
-      Dial.clickAdvanceSwitch();
-      Dial.enterCampaignName(campaignName);
+      Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
-      Dial.clickOnRadioButton('Individual Numbers');
-      Dial.clickNumbersDropdown();
+      Dial.selectAgentToAssign(testData.AdminName);
       Dial.selectPhoneNumber(testData.Number);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Auto Answer');
+      Dial.enterCampaignName(campaignName);
+      cy.wait(1000);
+      Dial.clickCallResultsDropdown();
+      Dial.selectCallResults([
+        'Answering Machine',
+        'No Answer',
+        'Successful sale'
+      ]);
+      Dial.clickAdvanceConfiguration();
+      Dial.clickOnRadioButton('Automatic Answer');
+      Dial.enterSimultaneousDialsPerAgent('1');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
-      Dial.enterSimultaneousDialsPerAgent('1');
-      Dial.clickCallResultsDropdown();
-      Dial.selectCallResults([
-        'Abandoned',
-        'Answering Machine',
-        'Busy',
-        'Call Back',
-        'Disconnected Number',
-        'Do Not Call',
-        'No Answer',
-        'Not Interested',
-        'Successful sale',
-        'Unknown',
-        'Voicemail',
-      ]);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Individual Agents');
-      Dial.selectAgentToAssign(testData.AdminName);
-      Dial.clickOnButton('SAVE');
+      Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
 
@@ -799,7 +755,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.verifySuccessToastMessage('List has been assigned to the campaigns');
       cy.reload();
       ignoreSpeedTestPopup();
-      cy.wait(10000);
+      cy.wait(1000);
     });
 
     it('Change status to Available', () => {
@@ -814,13 +770,14 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Verify that Agent status should be On Call and End the Call and select the Disposition', () => {
+      Dial.verifyPhoneRingingIcon();
+      // Dial.verifySoftphoneTitle([
+      //   'Test Number1',
+      //   'Test Number2',
+      //   'Test Number3',
+      // ]);
       Dial.verifyAgentStatus('On Call');
-      Dial.verifySoftphoneTitle([
-        'Test Number1',
-        'Test Number2',
-        'Test Number3',
-      ]);
-      Dial.endCallAtTime('0:30');
+      Dial.endCallAtTime('0:10');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
       Dial.clickOnButton('Done');
@@ -871,42 +828,31 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a new Predictive Campaign', () => {
       Dial.clickOnMenu('Campaigns');
-      Dial.clickOnButton('CREATE NEW CAMPAIGN');
-      Dial.clickAdvanceSwitch();
-      Dial.enterCampaignName(campaignName);
+      Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
-      Dial.clickOnRadioButton('Individual Numbers');
-      Dial.clickNumbersDropdown();
+      Dial.selectAgentToAssign(testData.AdminName);
       Dial.selectPhoneNumber(testData.Number);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Auto Answer');
+      Dial.enterCampaignName(campaignName);
+      cy.wait(1000);
+      Dial.clickCallResultsDropdown();
+      Dial.selectCallResults([
+        'Answering Machine',
+        'No Answer',
+        'Successful sale'
+      ]);
+      Dial.clickAdvanceConfiguration();
+      Dial.clickOnRadioButton('Automatic Answer');
+      Dial.enterSimultaneousDialsPerAgent('1');
+      Dial.enterMaxAttemptPerRecord('3');
+      Dial.enterRetryTime('10');
+      Dial.selectRetryTimeDropdown('sec');
+      Dial.clickOnButton('Got it')
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
-      Dial.enterSimultaneousDialsPerAgent('1');
-      Dial.enterMaxAttemptPerRecord('3');
-      Dial.enterRetryTime('10');
-      Dial.selectRetryTimeDropdown('sec');
-      Dial.clickCallResultsDropdown();
-      Dial.selectCallResults([
-        'Abandoned',
-        'Answering Machine',
-        'Busy',
-        'Call Back',
-        'Disconnected Number',
-        'Do Not Call',
-        'No Answer',
-        'Not Interested',
-        'Successful sale',
-        'Unknown',
-        'Voicemail',
-      ]);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Individual Agents');
-      Dial.selectAgentToAssign(testData.AdminName);
-      Dial.clickOnButton('SAVE');
+      Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
 
@@ -950,15 +896,13 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Verify that Agent status should be On Call', () => {
-      for (let i = 0; i < 3; i++) {
-        Dial.clickOnMenu('Dashboard');
-        Dial.verifySimultaneousDial(
-          ['Twilio Test'],
+      Dial.clickOnMenu('Dashboard');
+      Dial.verifySimultaneousDial(
+        ['Twilio Test'],
           'On Call',
           '0:30',
           'No Answer'
-        );
-      }
+      );
     });
 
     it('Delete the Created Campaign', () => {
@@ -978,7 +922,7 @@ describe('Outbound Calling Scenarios', () => {
     });
   });
 
-  describe('Predictive Dialer with the Ring time duration of 15 seconds', () => {
+  describe.skip('Predictive Dialer with the Ring time duration of 15 seconds', () => {
     const campaignName = 'Predictive Dialer ring';
     const listName = 'twilio.csv';
     let callNumber = '+1';
@@ -1007,42 +951,30 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a new Predictive Campaign', () => {
       Dial.clickOnMenu('Campaigns');
-      Dial.clickOnButton('CREATE NEW CAMPAIGN');
-      Dial.clickAdvanceSwitch();
-      Dial.enterCampaignName(campaignName);
+      Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
-      Dial.clickOnRadioButton('Individual Numbers');
-      Dial.clickNumbersDropdown();
+      Dial.selectAgentToAssign(testData.AdminName);
       Dial.selectPhoneNumber(testData.Number);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Auto Answer');
+      Dial.enterCampaignName(campaignName);
+      cy.wait(1000);
+      Dial.clickCallResultsDropdown();
+      Dial.selectCallResults([
+        'Answering Machine',
+        'No Answer',
+        'Successful sale'
+      ]);
+      Dial.clickAdvanceConfiguration();
+      Dial.clickOnRadioButton('Automatic Answer');
+      Dial.enterSimultaneousDialsPerAgent('1');
+      Dial.enterMaxAttemptPerRecord('1');
+      Dial.enterRetryTime('1');
+      Dial.enterRingTimeDuration('15');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
-      Dial.enterSimultaneousDialsPerAgent('1');
-      Dial.enterMaxAttemptPerRecord('1');
-      Dial.enterRetryTime('1');
-      Dial.enterRingTimeDuration('15');
-      Dial.clickCallResultsDropdown();
-      Dial.selectCallResults([
-        'Abandoned',
-        'Answering Machine',
-        'Busy',
-        'Call Back',
-        'Disconnected Number',
-        'Do Not Call',
-        'No Answer',
-        'Not Interested',
-        'Successful sale',
-        'Unknown',
-        'Voicemail',
-      ]);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Individual Agents');
-      Dial.selectAgentToAssign(testData.AdminName);
-      Dial.clickOnButton('SAVE');
+      Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
 
@@ -1141,52 +1073,41 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Login To Application', () => {
       cy.Login(Cypress.env('username'), Cypress.env('password'));
+      ignoreSpeedTestPopup();
     });
 
     it('Create a new Predictive Campaign', () => {
-      ignoreSpeedTestPopup();
       Dial.clickOnMenu('Campaigns');
-      Dial.clickOnButton('CREATE NEW CAMPAIGN');
-      Dial.clickAdvanceSwitch();
-      Dial.enterCampaignName(campaignName);
+      Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
-      Dial.clickOnRadioButton('Individual Numbers');
-      Dial.clickNumbersDropdown();
+      Dial.selectAgentToAssign(testData.AdminName);
       Dial.selectPhoneNumber(testData.Number);
-      Dial.clickOnRadioButton('Answering Machine Detection');
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Ringing Sound');
+      Dial.enterCampaignName(campaignName);
+      cy.wait(1000);
+      Dial.clickCallResultsDropdown();
+      Dial.selectCallResults([
+        'Answering Machine',
+        'No Answer',
+        'Successful sale'
+      ]);
+      Dial.clickAdvanceConfiguration();
+      Dial.clickOnRadioButton('Manual Answer');
       cy.wait(1000);
       Dial.clickOnRadioButton('Ringing Sound');
+      Dial.clickOnCheckboxButton('Answering Machine Detection');
+      Dial.enterSimultaneousDialsPerAgent('1');
+      Dial.enterMaxAttemptPerRecord('3');
+      Dial.enterRetryTime('10');
+      Dial.selectRetryTimeDropdown('sec');
+      Dial.clickOnButton('Got it')
+      //Dial.enterRingTimeDuration('15');
+      Dial.enterAbandonmentDuration('15');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
-      Dial.enterSimultaneousDialsPerAgent('1');
-      Dial.enterMaxAttemptPerRecord('3');
-      Dial.enterRetryTime('10');
-      Dial.selectRetryTimeDropdown('sec');
-      Dial.enterRingTimeDuration('15');
-      Dial.enterAbandonmentDuration('15');
-      Dial.clickCallResultsDropdown();
-      Dial.selectCallResults([
-        'Abandoned',
-        'Answering Machine',
-        'Busy',
-        'Call Back',
-        'Disconnected Number',
-        'Do Not Call',
-        'No Answer',
-        'Not Interested',
-        'Successful sale',
-        'Unknown',
-        'Voicemail',
-      ]);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Individual Agents');
-      Dial.selectAgentToAssign(testData.AdminName);
-      Dial.clickOnButton('SAVE');
+      Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
 
@@ -1287,83 +1208,55 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Login To Application', () => {
       cy.Login(Cypress.env('username'), Cypress.env('password'));
+      ignoreSpeedTestPopup();
     });
 
     it('Create a new Preview Campaign with Call Recording Feature', () => {
-      ignoreSpeedTestPopup();
       Dial.clickOnMenu('Campaigns');
-      Dial.clickOnButton('CREATE NEW CAMPAIGN');
-      Dial.clickAdvanceSwitch();
-      Dial.enterCampaignName(campaignWithRecording);
+      Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Preview Dialer');
-      cy.wait(1000);
-      Dial.clickOnRadioButton('Preview Dialer');
-      Dial.clickOnRadioButton('Individual Numbers');
-      Dial.clickNumbersDropdown();
+      Dial.selectAgentToAssign(testData.AdminName);
       Dial.selectPhoneNumber(testData.Number);
-      Dial.clickNextButton();
+      Dial.enterCampaignName(campaignWithRecording);
+      Dial.clickCallResultsDropdown();
+      Dial.selectCallResults([
+        'Answering Machine',
+        'Busy',
+        'Disconnected Number',
+        'Successful sale'
+      ]);
+      Dial.clickAdvanceConfiguration();
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
-      Dial.clickCallResultsDropdown();
-      Dial.selectCallResults([
-        'Abandoned',
-        'Answering Machine',
-        'Busy',
-        'Call Back',
-        'Disconnected Number',
-        'Do Not Call',
-        'No Answer',
-        'Not Interested',
-        'Successful sale',
-        'Unknown',
-        'Voicemail',
-      ]);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Individual Agents');
-      Dial.selectAgentToAssign(testData.AdminName);
-      Dial.clickOnButton('SAVE');
+      Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
 
     it('Create a new Preview Campaign without the Call Recording Feature', () => {
       Dial.clickOnMenu('Campaigns');
-      Dial.clickOnButton('CREATE NEW CAMPAIGN');
-      Dial.clickAdvanceSwitch();
-      Dial.enterCampaignName(campaignWithoutRecording);
+      Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Preview Dialer');
-      cy.wait(1000);
-      Dial.clickOnRadioButton('Preview Dialer');
-      Dial.clickOnRadioButton('Individual Numbers');
-      Dial.clickNumbersDropdown();
+      Dial.selectAgentToAssign(testData.AdminName);
       Dial.selectPhoneNumber(testData.Number);
+      Dial.enterCampaignName(campaignWithoutRecording);
+      Dial.clickCallResultsDropdown();
+      Dial.selectCallResults([
+        'Answering Machine',
+        'Busy',
+        'Do Not Call',
+        'Successful sale'
+      ]);
+      Dial.clickAdvanceConfiguration();
       Dial.disableCallRecording();
-      Dial.clickNextButton();
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
-      Dial.clickCallResultsDropdown();
-      Dial.selectCallResults([
-        'Abandoned',
-        'Answering Machine',
-        'Busy',
-        'Call Back',
-        'Disconnected Number',
-        'Do Not Call',
-        'No Answer',
-        'Not Interested',
-        'Successful sale',
-        'Unknown',
-        'Voicemail',
-      ]);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Individual Agents');
-      Dial.selectAgentToAssign(testData.AdminName);
-      Dial.clickOnButton('SAVE');
+      Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
 
@@ -1378,7 +1271,7 @@ describe('Outbound Calling Scenarios', () => {
       contact.selectState('Arizona');
       contact.enterZipCode('85701');
       contact.enterEmail('test@test.com');
-      contact.enterPhoneNumber('5202010331');
+      contact.enterPhoneNumber('4158957519');//5202010331 //8586515050
       contact.clickSaveButton();
       contact.verifySuccessToast();
     });
@@ -1462,7 +1355,7 @@ describe('Outbound Calling Scenarios', () => {
     it('verify that Call recording should not be available in Recent Contacts', () => {
       Dial.clickOnMenu('Reports');
       Dial.clickOnSubMenu('Recent Contacts');
-      camp.clickTableRefreshBtn();
+      //camp.clickTableRefreshBtn();
       Dial.verifyCallRecordingIcon(false);
     });
 
@@ -1487,7 +1380,7 @@ describe('Outbound Calling Scenarios', () => {
     });
   });
 
-  describe('Predictive campaign with Daily Connects Limit of 1', () => {
+  describe.skip('Predictive campaign with Daily Connects Limit of 1', () => {
     const campaignName = 'Dialy Connect Campaign';
     const listName = 'twilio.csv';
     let callNumber = '+1';
@@ -1521,43 +1414,32 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a new Predictive Campaign', () => {
       Dial.clickOnMenu('Campaigns');
-      Dial.clickOnButton('CREATE NEW CAMPAIGN');
-      Dial.clickAdvanceSwitch();
-      Dial.enterCampaignName(campaignName);
+      Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
-      Dial.clickOnRadioButton('Individual Numbers');
-      Dial.clickNumbersDropdown();
+      Dial.selectAgentToAssign(testData.AdminName);
       Dial.selectPhoneNumber(testData.Number);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Auto Answer');
+      Dial.enterCampaignName(campaignName);
+      Dial.clickCallResultsDropdown();
+      Dial.selectCallResults([
+        'Answering Machine',
+        'Busy',
+        'No Answer',
+        'Successful sale'
+      ]);
+      Dial.clickAdvanceConfiguration();
+      Dial.clickOnRadioButton('Automatic Answer');
+      Dial.enterSimultaneousDialsPerAgent('3');
+      Dial.selectRetryTimeDropdown('sec');
+      Dial.clickOnButton('Got it')
+      Dial.enterRetryTime('10');
+      Dial.enterMaxAttemptPerRecord('5');
+      Dial.enterDailyConnectsLimit('1');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
-      Dial.enterSimultaneousDialsPerAgent('3');
-      Dial.selectRetryTimeDropdown('sec');
-      Dial.enterRetryTime('10');
-      Dial.enterMaxAttemptPerRecord('5');
-      Dial.enterDailyConnectsLimit('1');
-      Dial.clickCallResultsDropdown();
-      Dial.selectCallResults([
-        'Abandoned',
-        'Answering Machine',
-        'Busy',
-        'Call Back',
-        'Disconnected Number',
-        'Do Not Call',
-        'No Answer',
-        'Not Interested',
-        'Successful sale',
-        'Unknown',
-        'Voicemail',
-      ]);
-      Dial.clickNextButton();
-      Dial.clickOnRadioButton('Individual Agents');
-      Dial.selectAgentToAssign(testData.AdminName);
-      Dial.clickOnButton('SAVE');
+      Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
 
@@ -1622,7 +1504,7 @@ describe('Outbound Calling Scenarios', () => {
       cy.reload();
       ignoreSpeedTestPopup();
       cy.wait(8000);
-      camp.clickTableRefreshBtn();
+      //camp.clickTableRefreshBtn();
       camp.verifyCampaignStatus(campaignName, 'Connects Limit Reached');
     });
 
