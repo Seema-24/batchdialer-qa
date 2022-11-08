@@ -425,7 +425,6 @@ describe('Add Phone Number flow', () => {
   });
 
   it('Verify that the created call results is reflected in the create new campaign page Call Result', () => {
-    const addCamp = new Campaign();
     addCamp.clickCampaignMenu();
     cy.wait(3000);
     addCamp.clickAddNewCampaign();
@@ -466,6 +465,7 @@ describe('Add Phone Number flow', () => {
     addCont.clickDialerCallButton();
     addCont.selectCallResult('A CALL BACK'); 
     addCont.clickContinueBtn();
+    cy.wait(1000);
     dashboard.clickTaskButton();
     dashboard.clickFutureButton();
     dashboard.verifyEventType('Appointment');   

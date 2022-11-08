@@ -100,7 +100,7 @@ const callResultSaveBtn = '//button[contains(text(),"Save")]';
 const callResultCancelBtn = '//button[contains(text(),"Cancel")]';
 const callResultDeleteBtn = '.disposition-controls .fa-trash';
 const callResultEditBtn = (callResult) =>
-  `//li[div[text()="${callResult}"]]/ancestor::tbody/descendant::span[@class="disposition-pencil-icon"]`;
+  `//div[span[text()="${callResult}"]]/ancestor::tbody/descendant::span[@class="disposition-pencil-icon"]`;
 const addPhoneGroup = '.card-title img[src*="add"]';
 const destinationDropdown = '.modal-content .ss-select';
 const destinationOptions = (option) =>
@@ -662,7 +662,14 @@ export default class PhoneNum {
   selectCallResultCampaignDropdown(campaign) {
     cy.xpath(selectDropdown('Select Campaigns')).click();
     cy.wait(1000);
-    cy.get('.ss-select-group-items').contains(campaign).click();
+    cy.get('.ss-select-option').then((Names) => {
+      for (let i = 0; i < Names.length; i++) {
+        if (Names[i].textContent.trim() === campaign) {
+          cy.get(Names[i]).click({force:true});
+          break;
+        }
+      }
+    });
   }
 
   verifyRingStrategy(strategy) {

@@ -25,7 +25,6 @@ const DialPad = '.stg-softphone-wrapper';
 const DialpadNumber = (number) => `//div[@class="stg-softphone-keyboard-button"][text()='${number}']`;
 const DialpadCallButton = '.stg-softphone-callbutton';
 const CallTimerContactButton = '.stg-softphone-contact';
-const AnsweringMachine = "//div[text()='Busy']";
 const calander = '.calendar';
 const todayButton = 'button[value="today"]';
 const pastButton = 'button[value="past"]';
@@ -517,7 +516,7 @@ export default class Dashboard {
   }
 
   clickAnsweringMachine() {
-    cy.xpath(AnsweringMachine).click();
+    cy.contains('Busy').click();
   }
 
   verifyAddedLeadSheet(sheetName) {

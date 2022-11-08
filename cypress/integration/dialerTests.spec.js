@@ -484,6 +484,7 @@ describe('Outbound Calling Scenarios', () => {
     it('Add the New Contact for the Outbound call', () => {
       contact.clickingOnContactOption();
       contact.clickAddNewContactButton();
+      contact.verifyContactExisting('5703870000')
       contact.selctCreateNewContactOption();
       contact.enterFirstName('Twilio');
       contact.enterLastName('Test');
@@ -858,6 +859,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a New Contact for Campaign', () => {
       contact.clickingOnContactOption();
+      contact.verifyContactExisting('5202010331');
       contact.clickAddNewContactButton();
       contact.selctCreateNewContactOption();
       contact.enterFirstName('Twilio');
@@ -1113,6 +1115,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a New Contact for Campaign', () => {
       contact.clickingOnContactOption();
+      contact.verifyContactExisting('5202010331');
       contact.clickAddNewContactButton();
       contact.selctCreateNewContactOption();
       contact.enterFirstName('Twilio');
@@ -1262,6 +1265,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a New Contact for Campaign', () => {
       contact.clickingOnContactOption();
+      contact.verifyContactExisting('4158957519');
       contact.clickAddNewContactButton();
       contact.selctCreateNewContactOption();
       contact.enterFirstName('Twilio');
