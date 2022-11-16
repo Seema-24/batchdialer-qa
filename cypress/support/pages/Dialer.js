@@ -80,8 +80,8 @@ const softphoneLineContactName = '.stg-softphone-line-contact';
 const ringTimeDuration = `//label[text()="Ring Time Duration"]/following-sibling::div//input`;
 const abandonmentTimeout = `//label[text()="Abandonment Timeout, sec"]/following-sibling::div//input`;
 const callRecordingCheckbox = 'input[name="callrecording"]';
-const callRecordingIcon = (firstName, lastName) =>
-  `//tr[td[text()="${firstName}" and text()="${lastName}"]]//img[contains(@src,"icon-listen")]`;
+const callRecordingIcon = (firstName, lastName, camp) =>
+  `//div[div[text()="${firstName} ${lastName}"] and div[text()="${camp}"]]//img[contains(@src,"icon-listen")]`;
 const playerCampaignName = '.contacts-player__top-campaign';
 const playerWindow = '.contacts-player .modal-content';
 const playerControlButton = (no) =>
@@ -91,13 +91,14 @@ const playerCloseButton = '.modal-content .fa-times';
 const dailyConnectsLimit = `//label[text()=" Max Calls per Day"]/parent::div//input`;
 const retryTimeDropdown = `//div[label[text()="Retry Time"]]/parent::div//div[contains(@class,"ss-select-control")]`;
 const softphoneIcon = '.softphone-icon';
-const dialedNumberOptions = 'tbody tr:nth-of-type(1) td:nth-of-type(11) span';
+const listenIcon = (camp) => `//div[text()="${camp}"]/parent::div/child::div//img[@alt="Listen"]`;
 const tableRefreshBtn = 'span[title="Refresh"]';
 const phoneRingning = '.Phone.is-animating';
 const cardDropdowns = (cardName) =>
   `//h2[@class="campaign-card__title"][text()="${cardName}"]/ancestor::div[contains(@class,"campaign-card")]//div[contains(@class,"ss-select-control")]`;
 const dashboard = 'a[title="Dashboard"]';
 const closeSoftBtn = '.stg-softphone-right-close';
+const timeoutDestination = '//label[text()="Timeout Destination"]/ancestor::div[contains(@class,"form-group")]/descendant::span[contains(@class,"ss-select-value")][1]';
 
 export default class Dialer {
  
@@ -180,7 +181,7 @@ export default class Dialer {
     cy.xpath(cardDropdowns('Phone Numbers')).click({force:true});
     cy.get(options).then((number) => {
       for (let i = 0; i < number.length; i++) {
-        if (number[i].textContent.trim() === num) {
+        if (number[i].textContent.trim() === num || number[i].textContent.trim().includes(num)) {
           cy.get(number[i]).click({force:true});
           break;
         }
@@ -263,26 +264,27 @@ export default class Dialer {
   }
 
   verifyAbandonedCall() {
-    // this.verifyPhoneRingingIcon();
-    cy.wait(30000);
-    cy.get('body').then(($body) => {
-      if ($body.find(contactProfile).length) {
+    this.verifyPhoneRingingIcon();
+    cy.wait(5000);
+    cy.get(contactProfile,{timeout:60000}).should('be.visible');
+    // cy.get('body').then(($body) => {
+      // if ($body.find(contactProfile).length) {
         this.verifySoftphone();
-        cy.readFile('cypress/fixtures/testData.json').then((data) => {
-          data.flag = true;
-          cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
-        });
-      } else {
-        cy.reload();
-        ignoreSpeedTestPopup();
-        this.clickToOpenSoftphone();
-      }
-    });
+        // cy.readFile('cypress/fixtures/testData.json').then((data) => {
+        //   data.flag = true;
+        //   cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
+        // });
+      // } else {
+      //   cy.reload();
+      //   ignoreSpeedTestPopup();
+      //   this.clickToOpenSoftphone();
+      // }
+    //});
   }
 
   verifySimultaneousDial(names, status, time, disposition) {
     this.verifySoftphoneLineContactName(names);
-    cy.wait(15000);
+    cy.wait(5000);
     cy.get('body').then(($body) => {
       if ($body.find(contactProfile).length) {
         this.verifyAgentStatus(status);
@@ -291,7 +293,6 @@ export default class Dialer {
         this.verifyCallDispositionWindow();
         this.selectCallDisposition(disposition);
         this.clickOnButton('Done');
-        cy.wait(2000);
       } else {
         cy.reload();
         ignoreSpeedTestPopup();
@@ -610,23 +611,19 @@ export default class Dialer {
     cy.get(callRecordingCheckbox).uncheck({ force: true });
   }
 
-  verifyCallRecordingIcon(status) {
+  verifyCallRecordingIcon(campaignName, status) {
     cy.reload();
     ignoreSpeedTestPopup();
-    cy.wait(2000);
-    //this.clickTableRefreshButton();
     cy.wait(1000);
-    cy.get('body').then(($body) => {
-      if (status === true) {
-        expect($body.find(dialedNumberOptions).length).to.equal(2);
-      } else if (status === false) {
-        expect($body.find(dialedNumberOptions).length).to.equal(1);
-      }
-    });
+    if (status === true) {
+      cy.xpath(listenIcon(campaignName)).first().should('be.exist');
+    } else if (status === false) {
+      cy.xpath(listenIcon(campaignName)).should('not.exist');
+    }
   }
 
-  clickCallRecordingIcon(firstName, lastName) {
-    cy.xpath(callRecordingIcon(firstName, lastName)).first().click();
+  clickCallRecordingIcon(firstName, lastName, campaignName) {
+    cy.xpath(callRecordingIcon(firstName, lastName,campaignName)).first().click();
   }
 
   verifyPlayerCampaignName(campaignName) {
@@ -708,7 +705,14 @@ export default class Dialer {
   }
 
   verifyPhoneRingingIcon() {
-    cy.get(phoneRingning, { timeout: 30000 }).should('be.visible');
+    cy.wait(2000);
+    cy.get('body').then($body => {
+      if($body.find(callTime).length) {
+        cy.log('Call is started')
+      } else{
+        cy.get(phoneRingning, { timeout: 30000 }).should('be.visible');
+      }
+    })
   }
 
   selectRecycledCampaign(campaignName) {
@@ -732,6 +736,11 @@ export default class Dialer {
         cy.get(closeSoftBtn).click();
       }
     })
+  }
+
+  selectTimeoutDestination(destination) {
+    cy.xpath(timeoutDestination).click();
+    this.selectOption(destination);
   }
   
 }

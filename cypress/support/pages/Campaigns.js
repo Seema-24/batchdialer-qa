@@ -656,7 +656,10 @@ export default class Campaign {
   selectOptions(optionName) {
     cy.get(options).then((opt) => {
       for (let i = 0; i < opt.length; i++) {
-        if (opt[i].textContent.trim() === optionName) {
+        if (
+          (opt[i].textContent.trim() === optionName)
+        || (opt[i].textContent.trim().includes(optionName))
+        ) {
           cy.get(opt[i]).click({ force: true });
           break;
         }

@@ -90,7 +90,6 @@ const actionCampaign = '//a[text()="Add to Campaign"]';
 const selectCampaign = '//div[text()="FirstCampaign"]';
 const CampaignDropdown = '.modal-content .ss-select-value';
 const ContinueButton = '//button[text()="Continue"]';
-const toast = '.Toastify__toast-body';
 const contactCountSlider = '.slider-container';
 const listImportContactButton = '//button[text()="IMPORT CONTACTS"]';
 const listsTable = '.resizable-table-tbody';
@@ -160,6 +159,9 @@ const activityTab = '.userSedit.contact-edit-form-wrapper .activities';
 const campaignTab = '.userSedit.contact-edit-form-wrapper .contact-calls';
 const notesTab = '.userSedit.contact-edit-form-wrapper .block.card';
 const sampleUploadFile = '.down_doc';
+const listDeleteBtn = (listName) =>
+  `//div[text()="${listName}"]/parent::div/child::div//*[name()="svg"][@data-icon="trash-alt"]`;
+const ToastMessage = `.Toastify__toast-body`;
 
 export default class Contacts {
   clickingOnContactOption() {
@@ -208,7 +210,7 @@ export default class Contacts {
 
   enterZipCode(zip) {
     cy.xpath(fieldsEditBtn('Postal Code')).click();
-    cy.get(inputZip).type(zip, { force: true });
+    cy.get(inputZip).clear().type(zip, { force: true });
     cy.xpath(fieldsSaveBtn('Postal Code')).click();
   }
 
@@ -256,7 +258,7 @@ export default class Contacts {
 
   enterEmail(email) {
     cy.xpath(EmailEditBtn).click();
-    cy.get(inputEmail).type(email);
+    cy.get(inputEmail).clear().type(email);
     cy.xpath(emailSaveBtn).click();
   }
 
@@ -303,6 +305,18 @@ export default class Contacts {
 
   verifySuccessToast() {
     cy.xpath(contactSavedToast, { timeout: 7000 }).should('be.visible');
+  }
+
+  verifySuccessToastMessage(message) {
+    cy.get(ToastMessage,{time:30000})
+      .should('be.visible')
+      .should('contain.text', message);
+  }
+
+  verifyErrorToastMessage(message) {
+    cy.get(ToastMessage,{time:30000})
+      .should('be.visible')
+      .should('contain.text', message);
   }
 
   verifyAddedContacts(fstName, lstName) {
@@ -700,7 +714,7 @@ export default class Contacts {
   }
 
   verifyAddedCampaign() {
-    cy.get(toast).contains('Contacts added to campaign');
+    cy.get(ToastMessage).contains('Contacts added to campaign');
   }
 
   verifyContactCountSlider() {
@@ -964,6 +978,7 @@ export default class Contacts {
 
   verifyContactExisting(num) {
     const number = '(' + num.substring(0,3)+ ') ' + num.substr(3,3) +'-'+ num.substr(-4);
+    cy.wait(1000);
     cy.get('body').then(($body) => {
       if($body.text().includes(number)) {
         cy.xpath(
@@ -976,6 +991,28 @@ export default class Contacts {
         this.verifyDeletedToast();
       }
     })
-    
+  }
+
+  clickListDeleteButton(listName) {
+    cy.xpath(listDeleteBtn(listName)).first().click();
+  }
+
+  verifyListExisting(list) {
+    this.enterSearch(list);
+    cy.get('body').then(($body) => {
+      if($body.find('.resizable-table-nodata').length) {
+        cy.log(list+ " List is not available.");
+      } else {
+        cy.get('.resizable-table-tbody > div').then($list => {
+          for (let i = 0; i < $list.length; i++) {
+            cy.log($list.length)
+            this.clickListDeleteButton(list);
+            this.handleAlertForDelete();
+            this.verifySuccessToastMessage('List deleted');
+            cy.wait(1000);
+          }
+        })
+      }
+    })
   }
 }

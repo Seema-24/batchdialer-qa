@@ -107,6 +107,11 @@ describe('Add Campaign flow', () => {
     // addCamp.selectRetryTimeUnit('sec');
     // addCamp.clickOnButton('Got it');
     addCamp.enterMaxAttempts(2);
+    Dial.clickCallingHoursDropdown();
+    Dial.selectFromTime('12:00 am');
+    Dial.selectToTime('11:59 pm');
+    Dial.clickApplyToAllButton();
+    Dial.clickOnButton('APPLY');
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Created');
   });
@@ -406,19 +411,6 @@ describe('Add Campaign flow', () => {
     addCamp.clickToSelectStatus('Status');
     addCamp.clickActiveStatus();
     addCamp.verifyAddedCampaign(testData.campaign);
-  });
-
-  //old testcase, validation on req field not working
-  it.skip('Verify Validation on required field of new campaign page', () => {
-    addCamp.clickCampaignMenu();
-    addCamp.clickAddNewCampaign();
-    addCamp.enableAdvancedSwitchBar();
-    addCamp.clickNextCircleArrow();
-    addCamp.verifyErrorMessage('Enter Campaign Name');
-    addCamp.verifyCallerIdError();
-    addCamp.enterName(fixtureData.campaignName + randNum.toString());
-    addCamp.selectCallerId('Individual Numbers', testData.Number);
-    addCamp.clickNextCircleArrow();
   });
 
   it('It should open schedule window when user click on calling hours', () => {

@@ -313,6 +313,7 @@ describe('Inbound Call Scenarios', () => {
       Dial.chooseAssignCampaign(campaignName);
       Dial.chooseExtension(testData.Number);
       Dial.chooseAssignAgents(testData.AdminName);
+      Dial.selectTimeoutDestination('Queue');
       Dial.clickOnButton('CREATE QUEUE');
       Dial.verifySuccessToastMessage('Saved');
       cy.reload();
@@ -409,8 +410,9 @@ describe('Inbound Call Scenarios', () => {
 
     it('Verify if the Number is destinationed to Hangup then call should show as Abandoned in Recent Contacts', () => {
       cy.url().then((url) => {
-        if(url.includes('app.bathdialer.com')) {
+        if(url.includes('app.batchdialer.com')) {
           call(callNumber, +15202010331);
+          cy.wait(3000);
           Dial.clickOnMenu('Reports');
           Dial.clickOnSubMenu('Recent Contacts');
           Dial.verifyRecentContactDisposition('Abandoned');
@@ -484,6 +486,7 @@ describe('Outbound Calling Scenarios', () => {
     it('Add the New Contact for the Outbound call', () => {
       contact.clickingOnContactOption();
       contact.clickAddNewContactButton();
+      contact.verifyContactExisting('5703870000')
       contact.selctCreateNewContactOption();
       contact.enterFirstName('Twilio');
       contact.enterLastName('Test');
@@ -543,7 +546,7 @@ describe('Outbound Calling Scenarios', () => {
   });
 
   describe('Predictive Campaign Dialing', () => {
-    const campaignName = 'Predictive Campaign';
+    const campaignName = 'Predictive Campaign 1';
     const listName = 'twilio.csv';
     let callNumber = '+1';
     before(() => {
@@ -597,8 +600,9 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Upload the List of Contacts', () => {
       Dial.clickOnMenu('Contacts');
-      contact.clickAddNewContactButton();
-      contact.selectUploadFileOption();
+      Dial.clickOnSubMenu('Contact Lists');
+      contact.verifyListExisting(listName);
+      contact.clickImportContacts();
       contact.uploadFileForContact(listName);
       cy.wait(2000);
       Dial.selectMappingFields([
@@ -612,9 +616,11 @@ describe('Outbound Calling Scenarios', () => {
         'State',
         'City',
       ]);
+      cy.wait(1000)
       contact.clickNextButton();
       contact.clickSubmitButton();
       contact.verifyImportStartedToast();
+      cy.wait(1000)
       contact.verifyImportContactCompleteToast();
     });
 
@@ -641,12 +647,8 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Verify that Agent status should be On Call and End the Call and select the Disposition', () => {
       Dial.verifyPhoneRingingIcon();
-      // Dial.verifySoftphoneTitle([
-      //   'Test Number1',
-      //   'Test Number2',
-      //   'Test Number3',
-      // ]);
       Dial.verifyAgentStatus('On Call');
+      Dial.verifySoftphoneTitle(['Test Number1']);
       Dial.endCallAtTime('0:30');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
@@ -670,7 +672,7 @@ describe('Outbound Calling Scenarios', () => {
   });
 
   describe('Predictive campaign with simultaneous dials per agent of 1', () => {
-    const campaignName = 'Predictive Campaign';
+    const campaignName = 'Predictive Campaign 2';
     const listName = 'twilio.csv';
     let callNumber = '+1'; 
     before(() => {
@@ -724,8 +726,9 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Upload the List of Contacts', () => {
       Dial.clickOnMenu('Contacts');
-      contact.clickAddNewContactButton();
-      contact.selectUploadFileOption();
+      Dial.clickOnSubMenu('Contact Lists');
+      contact.verifyListExisting(listName);
+      contact.clickImportContacts();
       contact.uploadFileForContact(listName);
       cy.wait(2000);
       Dial.selectMappingFields([
@@ -739,6 +742,7 @@ describe('Outbound Calling Scenarios', () => {
         'State',
         'City',
       ]);
+      cy.wait(1000)
       contact.clickNextButton();
       contact.clickSubmitButton();
       contact.verifyImportStartedToast();
@@ -766,17 +770,12 @@ describe('Outbound Calling Scenarios', () => {
       Dial.clickConfirmButton();
       Dial.verifySoftPhoneOpen();
       Dial.verifySoftphoneLinesNumber(1);
-      cy.wait(10000);
     });
 
     it('Verify that Agent status should be On Call and End the Call and select the Disposition', () => {
       Dial.verifyPhoneRingingIcon();
-      // Dial.verifySoftphoneTitle([
-      //   'Test Number1',
-      //   'Test Number2',
-      //   'Test Number3',
-      // ]);
       Dial.verifyAgentStatus('On Call');
+      Dial.verifySoftphoneTitle(['Test Number1']);
       Dial.endCallAtTime('0:10');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
@@ -844,7 +843,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.clickOnRadioButton('Automatic Answer');
       Dial.enterSimultaneousDialsPerAgent('1');
       Dial.enterMaxAttemptPerRecord('3');
-      Dial.enterRetryTime('10');
+      Dial.enterRetryTime('4');
       Dial.selectRetryTimeDropdown('sec');
       Dial.clickOnButton('Got it')
       Dial.clickCallingHoursDropdown();
@@ -858,6 +857,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a New Contact for Campaign', () => {
       contact.clickingOnContactOption();
+      contact.verifyContactExisting('5103256012');
       contact.clickAddNewContactButton();
       contact.selctCreateNewContactOption();
       contact.enterFirstName('Twilio');
@@ -867,7 +867,7 @@ describe('Outbound Calling Scenarios', () => {
       contact.selectState('Arizona');
       contact.enterZipCode('85701');
       contact.enterEmail('test@test.com');
-      contact.enterPhoneNumber('5202010331');
+      contact.enterPhoneNumber('5103256012');
       contact.clickSaveButton();
       contact.verifySuccessToast();
     });
@@ -882,7 +882,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.verifySuccessToastMessage('Contacts added to campaign');
       cy.reload();
       ignoreSpeedTestPopup();
-      cy.wait(10000);
+      cy.wait(1000);
     });
 
     it('Change status to Available', () => {
@@ -1018,7 +1018,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Verify the ringing Time duration of 15 sec and call should be marked as No Answer', () => {
-      Dial.verifySoftphoneLineContactName(['Test Number']);
+      Dial.verifySoftphoneLineContactName(['Test Number1']);
       cy.wait(15000);
       Dial.verifySoftphoneLineStatus('OFF');
       contact.clickToCloseSoftphone();
@@ -1095,11 +1095,11 @@ describe('Outbound Calling Scenarios', () => {
       cy.wait(1000);
       Dial.clickOnRadioButton('Ringing Sound');
       Dial.clickOnCheckboxButton('Answering Machine Detection');
-      Dial.enterSimultaneousDialsPerAgent('1');
+      Dial.enterSimultaneousDialsPerAgent('3');
       Dial.enterMaxAttemptPerRecord('3');
-      Dial.enterRetryTime('10');
-      Dial.selectRetryTimeDropdown('sec');
-      Dial.clickOnButton('Got it')
+      // Dial.enterRetryTime('10');
+      // Dial.selectRetryTimeDropdown('sec');
+      // Dial.clickOnButton('Got it')
       //Dial.enterRingTimeDuration('15');
       Dial.enterAbandonmentDuration('15');
       Dial.clickCallingHoursDropdown();
@@ -1111,33 +1111,71 @@ describe('Outbound Calling Scenarios', () => {
       Dial.verifySuccessToastMessage('Campaign Created');
     });
 
-    it('Create a New Contact for Campaign', () => {
-      contact.clickingOnContactOption();
-      contact.clickAddNewContactButton();
-      contact.selctCreateNewContactOption();
-      contact.enterFirstName('Twilio');
-      contact.enterLastName('Number');
-      contact.enterAddress('anyAddress');
-      contact.enterCity('Tucson');
-      contact.selectState('Arizona');
-      contact.enterZipCode('85701');
-      contact.enterEmail('test@test.com');
-      contact.enterPhoneNumber('5202010331');
-      contact.clickSaveButton();
-      contact.verifySuccessToast();
+    // it('Create a New Contact for Campaign', () => {
+    //   contact.clickingOnContactOption();
+    //   contact.verifyContactExisting('5103256012'); 
+    //   contact.clickAddNewContactButton();
+    //   contact.selctCreateNewContactOption();
+    //   contact.enterFirstName('Twilio');
+    //   contact.enterLastName('Number');
+    //   contact.enterAddress('anyAddress');
+    //   contact.enterCity('Tucson');
+    //   contact.selectState('Arizona');
+    //   contact.enterZipCode('85701');
+    //   contact.enterEmail('test@test.com');
+    //   contact.enterPhoneNumber('5103256012'); //5103256012
+    //   contact.clickSaveButton();
+    //   contact.verifySuccessToast();
+    // });
+
+    // it('Assign the Added Contact to the Created Campaign', () => {
+    //   Dial.clickOnMenu('Contacts');
+    //   Dial.clickContactThreeDotMenu('Twilio', 'Number');
+    //   Dial.clickOnDropdownItem('Add to Campaign');
+    //   Dial.verifyModalTitle('Select campaign');
+    //   Dial.selectCampaignToAssign(campaignName);
+    //   Dial.clickOnButton('Continue');
+    //   Dial.verifySuccessToastMessage('Contacts added to campaign');
+    //   cy.reload();
+    //   ignoreSpeedTestPopup();
+    //   cy.wait(2000);
+    // });
+
+    it('Upload the List of Contacts', () => {
+      Dial.clickOnMenu('Contacts');
+      Dial.clickOnSubMenu('Contact Lists');
+      contact.verifyListExisting(listName);
+      contact.clickImportContacts();
+      contact.uploadFileForContact(listName);
+      cy.wait(2000);
+      Dial.selectMappingFields([
+        'Phone Number',
+        'First Name',
+        'Last Name',
+        'Email',
+        'Zip',
+        'Address',
+        'Country',
+        'State',
+        'City',
+      ]);
+      contact.clickNextButton();
+      contact.clickSubmitButton();
+      contact.verifyImportStartedToast();
+      contact.verifyImportContactCompleteToast();
     });
 
-    it('Assign the Added Contact to the Created Campaign', () => {
+    it('Assign the Imported List to the Created Campaign', () => {
       Dial.clickOnMenu('Contacts');
-      Dial.clickContactThreeDotMenu('Twilio', 'Number');
-      Dial.clickOnDropdownItem('Add to Campaign');
-      Dial.verifyModalTitle('Select campaign');
-      Dial.selectCampaignToAssign(campaignName);
+      Dial.clickOnSubMenu('Contact Lists');
+      Dial.clickListAssignToCampaign(listName);
+      Dial.verifyModalTitle('Assign To Campaign');
+      Dial.chooseCampaignToAssign(campaignName);
       Dial.clickOnButton('Continue');
-      Dial.verifySuccessToastMessage('Contacts added to campaign');
+      Dial.verifySuccessToastMessage('List has been assigned to the campaigns');
       cy.reload();
       ignoreSpeedTestPopup();
-      cy.wait(2000);
+      cy.wait(1000);
     });
 
     it('Change status to Available', () => {
@@ -1151,16 +1189,17 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Verify the Abandoned Time Out of 15 sec and call should be marked as Abandoned', () => {
-      for (let i = 0; i < 3; i++) {
-        cy.readFile('cypress/fixtures/testData.json').then((data) => {
-          if (data.flag === true) {
-            cy.log('Call Already Abandoned');
-          } else {
+      // for (let i = 0; i < 3; i++) {
+      //   cy.readFile('cypress/fixtures/testData.json').then((data) => {
+      //     if (data.flag === true) {
+      //       cy.log('Call Already Abandoned');
+      //     } else {
             Dial.verifyAbandonedCall();
-          }
-        });
-      }
+        //   }
+        // });
+     //}
       Dial.verifyAgentStatus('Auto Pause');
+      cy.wait(5000);
       Dial.clickOnMenu('Reports');
       Dial.clickOnSubMenu('Recent Contacts');
       Dial.verifyRecentContactDisposition('Abandoned');
@@ -1173,14 +1212,22 @@ describe('Outbound Calling Scenarios', () => {
       Dial.verifySuccessToastMessage('Campaign Archived');
     });
 
-    it('Should delete the added Contact', () => {
-      contact.clickToCloseSoftphone();
-      contact.clickingOnContactOption();
-      contact.deleteAddedContacts('Twilio', 'Number');
+    it('Delete the Uploaded List', () => {
+      Dial.clickOnMenu('Contacts');
+      Dial.clickOnSubMenu('Contact Lists');
+      Dial.clickListDeleteButton(listName);
       contact.handleAlertForDelete();
-      contact.verifyDeletedToast();
-      Dial.clickSoftphoneButton();
+      Dial.verifySuccessToastMessage('List deleted');
     });
+
+    // it('Should delete the added Contact', () => {
+    //   contact.clickToCloseSoftphone();
+    //   contact.clickingOnContactOption();
+    //   contact.deleteAddedContacts('Twilio', 'Number');
+    //   contact.handleAlertForDelete();
+    //   contact.verifyDeletedToast();
+    //   Dial.clickSoftphoneButton();
+    // });
   });
 
   describe('Campaign - Call Recording Feature', () => {
@@ -1262,6 +1309,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a New Contact for Campaign', () => {
       contact.clickingOnContactOption();
+      contact.verifyContactExisting('5103256012');
       contact.clickAddNewContactButton();
       contact.selctCreateNewContactOption();
       contact.enterFirstName('Twilio');
@@ -1271,7 +1319,7 @@ describe('Outbound Calling Scenarios', () => {
       contact.selectState('Arizona');
       contact.enterZipCode('85701');
       contact.enterEmail('test@test.com');
-      contact.enterPhoneNumber('4158957519');//5202010331 //8586515050
+      contact.enterPhoneNumber('5103256012');//5202010331 //8586515050
       contact.clickSaveButton();
       contact.verifySuccessToast();
     });
@@ -1307,11 +1355,11 @@ describe('Outbound Calling Scenarios', () => {
     it('verify that Call recording should be available in Recent Contacts', () => {
       Dial.clickOnMenu('Reports');
       Dial.clickOnSubMenu('Recent Contacts');
-      Dial.verifyCallRecordingIcon(true);
+      Dial.verifyCallRecordingIcon(campaignWithRecording,true);
     });
 
     it('Verify that costumer is able to play the recording', () => {
-      Dial.clickCallRecordingIcon('Twilio', 'Test');
+      Dial.clickCallRecordingIcon('Twilio', 'Test', campaignWithRecording);
       Dial.verifyRecordingPlayerWindow();
       Dial.verifyPlayerCampaignName(campaignWithRecording);
       Dial.clickPlayPauseButton();
@@ -1356,7 +1404,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.clickOnMenu('Reports');
       Dial.clickOnSubMenu('Recent Contacts');
       //camp.clickTableRefreshBtn();
-      Dial.verifyCallRecordingIcon(false);
+      Dial.verifyCallRecordingIcon(campaignWithoutRecording,false);
     });
 
     it('Delete the Created Campaign', () => {
@@ -1380,7 +1428,7 @@ describe('Outbound Calling Scenarios', () => {
     });
   });
 
-  describe.skip('Predictive campaign with Daily Connects Limit of 1', () => {
+  describe('Predictive campaign with Daily Connects Limit of 1', () => {
     const campaignName = 'Dialy Connect Campaign';
     const listName = 'twilio.csv';
     let callNumber = '+1';
@@ -1445,8 +1493,9 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Upload the List of Contacts', () => {
       Dial.clickOnMenu('Contacts');
-      contact.clickAddNewContactButton();
-      contact.selectUploadFileOption();
+      Dial.clickOnSubMenu('Contact Lists');
+      contact.verifyListExisting(listName);
+      contact.clickImportContacts();
       contact.uploadFileForContact(listName);
       cy.wait(2000);
       Dial.selectMappingFields([

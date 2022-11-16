@@ -59,13 +59,6 @@ describe('Agent Profile', function () {
     agent.verifyAverageCallDurationGraph();
     agent.verifyCallsLocationGraph();
   });
- 
-  //access denied msg not verified here, This testcase is in UserPermission page
-  it.skip('Agent should not access the edit/view Campaign page', () => {
-    agent.clickCampaignMenu();
-    agent.selectCampaignName(testData.campaign);
-    agent.verifyAccessDeniedMsg();
-  });
 
   it('Schedules Follow Up Call for a Contact', () => {
     agent.clickingOnContactOption();

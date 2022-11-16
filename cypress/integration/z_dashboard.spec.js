@@ -5,7 +5,7 @@ import Contacts from '../support/pages/Contacts';
 const Dash = new Dashboard();
 let fixtureData;
 let testData;
-let cardLast4Digit, prodCardLast4Digit;
+let cardLast4Digit;
 let randNum = Math.floor(Math.random() * 100000);
 const addCont = new Contacts();
 const message = (user) => `This is a testing message from ${user}`;
@@ -21,9 +21,6 @@ describe('Dashboard Elements', () => {
         cy.visit('/', { failOnStatusCode: false });
         cardLast4Digit = fixtureData.cardNumber.slice(
           fixtureData.cardNumber.length - 4
-        );
-        prodCardLast4Digit = fixtureData.prodCardNumber.slice(
-          fixtureData.prodCardNumber.length - 4
         );
       });
     Cypress.Cookies.defaults({
@@ -326,14 +323,18 @@ describe('Dashboard Elements', () => {
         Dash.clickBilling();
         Dash.clickCardEditBtn();
         Dash.clickAddNewCard();
-        Dash.enterCardName(fixtureData.cardHolderName);
-        Dash.enterCardNumber(fixtureData.prodCardNumber);
-        Dash.enterExpiryDate(fixtureData.cardExpiryDate);
-        Dash.enterCVC(fixtureData.cardCVC);
-        Dash.chooseCountry('United States');
-        Dash.enterBillingZip('43256');
+        Dash.enterCardName(Cypress.env('CardName'));
+        Dash.enterCardNumber(Cypress.env('CardNumber'));
+        Dash.enterExpiryDate(Cypress.env('ExpiryDate'));
+        Dash.enterCVC(Cypress.env('CVC'));
+        Dash.chooseCountry(Cypress.env('Country'));
+        Dash.enterBillingZip(Cypress.env('BillingZip'));
         Dash.clickContinue();
-        Dash.verifyAddedCard(prodCardLast4Digit);
+        Dash.verifyAddedCard(
+          Cypress.env('CardNumber')
+          .slice(Cypress.env('CardNumber')
+          .length - 4)
+        );
       } else {
         Dash.closeCreditCardPopup();
         Dash.clickUserProfile();
@@ -357,10 +358,18 @@ describe('Dashboard Elements', () => {
       if(url.includes('app.batchdialer.com')) {
         Dash.closeCreditCardPopup();
         Dash.clickCardEditBtn();
-        Dash.clickCardDefaultBtn(prodCardLast4Digit);
-        Dash.verifyCardDefault(prodCardLast4Digit);
-        Dash.clickCardDefaultBtn('3713');
-        Dash.verifyCardDefault('3713');
+        Dash.clickCardDefaultBtn(
+          Cypress.env('CardNumber')
+          .slice(Cypress.env('CardNumber')
+          .length - 4)
+        );
+        Dash.verifyCardDefault(
+          Cypress.env('CardNumber')
+          .slice(Cypress.env('CardNumber')
+          .length - 4)
+        );
+        Dash.clickCardDefaultBtn('8192');
+        Dash.verifyCardDefault('8192');
       } else {
         Dash.closeCreditCardPopup();
         Dash.clickCardEditBtn();
@@ -377,7 +386,11 @@ describe('Dashboard Elements', () => {
       if(url.includes('app.batchdialer.com')) {
         Dash.closeCreditCardPopup();
         Dash.clickCardEditBtn();
-        Dash.clickDeleteCardBtn(prodCardLast4Digit);
+        Dash.clickDeleteCardBtn(
+          Cypress.env('CardNumber')
+          .slice(Cypress.env('CardNumber')
+          .length - 4)
+        );
         Dash.verifyCardDelete();
       } else {
         Dash.closeCreditCardPopup();

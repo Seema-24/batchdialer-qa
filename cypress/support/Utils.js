@@ -29,7 +29,7 @@ export function skipTourGuidePopup() {
   cy.get('body').then(($body) => {
     if($body.find(quickStartGuidePopUp).length) {
       cy.contains('Skip Tour').click();
-    }else {
+    } else if ($body.find(speedTestPopup).length) {
       ignoreSpeedTestPopup();
     }
   })
@@ -129,14 +129,14 @@ export function closeDialogBox() {
   cy.get('body').then(($body) => {
     if($body.text().includes('Edit User')) {
       cy.get('.close-button').click();
-    } else if($body.text().includes('SPEED TEST')) {
+    } if($body.text().includes('SPEED TEST')) {
       ignoreSpeedTestPopup();
-    } else if($body.text().includes('New User')) {
+    } if($body.text().includes('New User')) {
       cy.get('.close-button').click();
-    } else if($body.text().includes('Start Calling')) {
+    } if($body.text().includes('Start Calling')) {
       cy.reload();
       ignoreSpeedTestPopup();
-    } else if($body.find('#pendo-guide-container').length) {
+    } if($body.find('#pendo-guide-container').length) {
       cy.get('button').then((btns) => {
         for (let i = 0; i < btns.length; i++) {
           if (btns[i].textContent.trim() === 'Dismiss') {
@@ -145,7 +145,7 @@ export function closeDialogBox() {
           }
         }
       });
-    } else if ($body.find('.call-disposition-title').length) {
+    } if($body.find('.call-disposition-title').length) {
       cy.get('.disposition-cell .disposition').last().click();
       cy.contains('Done').click();
     }

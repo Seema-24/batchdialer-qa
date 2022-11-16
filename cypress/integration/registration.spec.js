@@ -312,6 +312,7 @@ describe('Registration', () => {
         skipTourGuidePopup();
         dashboard.clickUserProfile();
         dashboard.clickBilling();
+        skipTourGuidePopup();
         register.clickCardEditBtn();
         dashboard.clickAddNewCard();
         dashboard.enterCardName(Cypress.env('CardName'));
