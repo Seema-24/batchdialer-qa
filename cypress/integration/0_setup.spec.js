@@ -83,7 +83,7 @@ describe('Setup Account for Testing', () => {
           'Voicemail',
         ],
         data.Number,
-        [data.AdminName, data.agent]
+        data.agent
       );
     });
     cy.wait(2000);

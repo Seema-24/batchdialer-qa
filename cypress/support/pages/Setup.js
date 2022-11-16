@@ -133,31 +133,12 @@ export default class Setup {
 
   createNewCampaign(name, callResults, phone, agentName) {
     campaign.clickAddNewCampaign();
-    //campaign.enableAdvancedSwitchBar();
-    //cy.wait(2000);
-    campaign.selectDialingModeOption('Predictive Dialer');
-    // campaign.clickNextCircleArrow();
-    // campaign.selectCallResultsOption(callResults);
-    // campaign.clickNextCircleArrow();
-    this.selectAgentsDrpdwn(agentName);
-    campaign.selectCallerId(phone);
-    campaign.enterName(name);
-    campaign.clickCreateCampButton();
-  }
-
-  selectAgentsDrpdwn(name) {
-    //cy.xpath(radioBtn(agentMode)).click();
-    cy.xpath(agentsDrpdwn).click();
-    cy.get(dropdownOptions).then((agent) => {
-      for (let i = 0; i < name.length; i++) {
-        for (let j = 0; j < agent.length; j++) {
-          if (agent[j].textContent.trim() === name[i]) {
-            agent[j].click({force:true});
-            break;
-          }
-        }
-      }
-    });
+    campaign.selectDialingMode('Predictive');
+    campaign.selectAgentToAssign(agentName);
+    campaign.selectPhoneNumberToAssign(phone);
+    campaign.enterCampaignName(name);
+    campaign.selectCallResults(callResults);
+    campaign.clickOnButton('Save');
   }
 
   getAdminName() {
@@ -327,7 +308,8 @@ export default class Setup {
         cy.xpath(saveBtn).click();
       } else {
         user.clickAddNewUserButton();
-        user.clickAddAdmin();
+        //user.clickAddAdmin();
+        user.chooseUserRole('Administrator');
         user.enterFirstName(firstName);
         user.enterLastName(lastName);
         user.enterEmail(email);

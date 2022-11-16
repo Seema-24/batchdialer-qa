@@ -205,6 +205,9 @@ describe('Add Contact flow', () => {
 
   it('Should add contact using upload file', () => {
     addCont.clickingOnContactOption();
+    Dial.clickOnSubMenu('Contact Lists');
+    addCont.verifyListExisting('contact-sample.csv');
+    Dial.clickOnSubMenu('Contacts');
     addCont.clickAddNewContactButton();
     addCont.selectUploadFileOption();
     addCont.uploadFileForContact('contact-sample.csv');
@@ -213,6 +216,7 @@ describe('Add Contact flow', () => {
     addCont.selectLastNameDropdown();
     addCont.selectEmailDropdown();
     addCont.selectPhoneDropdown();
+    cy.wait(2000);
     addCont.clickNextButton();
     addCont.clickSubmitButton();
     addCont.verifyImportStartedToast();
@@ -332,6 +336,7 @@ describe('Add Contact flow', () => {
   });
 
   it('User is able to import contact from list section', () => {
+    addCont.verifyListExisting('contact-sample.csv');
     addCont.clickImportContacts();
     addCont.uploadFileForContact('contact-sample.csv');
     cy.wait(2000);
@@ -373,6 +378,21 @@ describe('Add Contact flow', () => {
     addCont.enterLastName('test');
     addCont.clickSaveButton();
     addCont.verifyErrorMessage('Enter First Name');
+    addCont.enterFirstName('demo');
+    addCont.clickSaveButton();
+    addCont.verifyErrorToastMessage('Please enter at least one valid phone number');
+  });
+
+  it('verify error message on fields of new contact', () => {
+    addCont.enterZipCode('demo');
+    addCont.verifyErrorMessage('Enter Valid Postal Code');
+    addCont.enterZipCode('85306');
+    addCont.enterEmail('demo@test');
+    addCont.verifyErrorMessage('Enter Valid Email');
+    addCont.enterEmail('demo@test.com');
+    addCont.enterPhoneNumber('999999');
+    addCont.clickSaveButton();
+    addCont.verifyErrorToastMessage('Invalid phone number: Phone Number 1');
   });
 
   it('Download and Verify the Contact List', () => {
@@ -488,12 +508,16 @@ describe('Add Contact flow', () => {
   it('Verify that agent user is able to dial a valid phone number which is not in the contacts', () => {
     dashboard.clickDashboard();
     addCont.ClickToOpenSoftphone();
-    addCont.dialPhoneNumber('8586515050'); //8586515050 //7209834562
+    addCont.dialPhoneNumber('8586515050');  //7209834562
     addCont.clickDialerCallButton();
     cy.wait(10000);
     addCont.clickDialerCallButton();
-    addCont.selectCallResult('Successful Sale'); //Voicemail
+    addCont.selectCallResult('Successful Sale');
     addCont.clickContinueBtn();
+    addCont.clickingOnContactOption();
+    addCont.deleteAddedContacts('Unknown','Contact');
+    addCont.handleAlertForDelete();
+    addCont.verifyDeletedToast();
   });
 
   it('Verify the Assign to Campaign Option for Lists', () => {

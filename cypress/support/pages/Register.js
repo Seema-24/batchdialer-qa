@@ -436,7 +436,7 @@ export default class Register {
   }
 
   clickCardEditBtn() {
-    cy.get(cardEditBtn).click();
+    cy.get(cardEditBtn).click({force:true});
   }
 
   enterCity(name) {
