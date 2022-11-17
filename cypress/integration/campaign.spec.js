@@ -464,6 +464,7 @@ describe('Add Campaign flow', () => {
 
   it('Verify Campaign Setting Options', () => {
     addCamp.clickCampaignMenu();
+    addCamp.verifyRecycleCamapignDelete();
     addCamp.clickCampaignSetting();
     addCamp.verifyCampaignSettingOptions([
       'Edit Campaign',

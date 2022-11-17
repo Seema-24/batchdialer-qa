@@ -732,7 +732,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Verify chat pop up Elements', () => {
-    Dash.verifyChatTitle();
+    Dash.verifyChatTitle('BatchDialer');
     Dash.verifyAttachmentIcon();
     Dash.verifyEmojiIcon();
     Dash.verifyCloseButton();

@@ -466,12 +466,8 @@ export default class Dialer {
   }
 
   verifySoftphoneTitle(name) {
-    let Names = '';
-    for (let i = 0; i < name.length; i++) {
-      Names = Names + ' ' + name[i];
-    }
     cy.get(softphoneTitle).then((title) => {
-      expect(Names).to.contain(title.text());
+      expect(title.text()).to.contain(name);
     });
   }
 

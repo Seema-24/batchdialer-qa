@@ -518,7 +518,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Verify that Agent status should be On Call', () => {
       Dial.verifyAgentStatus('On Call');
-      Dial.verifySoftphoneTitle(['Twilio Test']);
+      Dial.verifySoftphoneTitle('Twilio Test');
     });
 
     it('End the Call and select the Disposition', () => {
@@ -648,7 +648,7 @@ describe('Outbound Calling Scenarios', () => {
     it('Verify that Agent status should be On Call and End the Call and select the Disposition', () => {
       Dial.verifyPhoneRingingIcon();
       Dial.verifyAgentStatus('On Call');
-      Dial.verifySoftphoneTitle(['Test Number1']);
+      Dial.verifySoftphoneTitle('Test Number');
       Dial.endCallAtTime('0:30');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
@@ -775,7 +775,7 @@ describe('Outbound Calling Scenarios', () => {
     it('Verify that Agent status should be On Call and End the Call and select the Disposition', () => {
       Dial.verifyPhoneRingingIcon();
       Dial.verifyAgentStatus('On Call');
-      Dial.verifySoftphoneTitle(['Test Number1']);
+      Dial.verifySoftphoneTitle('Test Number');
       Dial.endCallAtTime('0:10');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
@@ -1185,7 +1185,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectCampaign(campaignName);
       Dial.clickConfirmButton();
       Dial.verifySoftPhoneOpen();
-      Dial.verifySoftphoneLinesNumber(1);
+      Dial.verifySoftphoneLinesNumber(3);
     });
 
     it('Verify the Abandoned Time Out of 15 sec and call should be marked as Abandoned', () => {
@@ -1342,7 +1342,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Verify that Agent status should be On Call', () => {
       Dial.verifyAgentStatus('On Call');
-      Dial.verifySoftphoneTitle(['Twilio Test']);
+      Dial.verifySoftphoneTitle('Twilio Test');
     });
 
     it('End the Call and select the Disposition', () => {
@@ -1390,7 +1390,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Verify that Agent status should be On Call', () => {
       Dial.verifyAgentStatus('On Call');
-      Dial.verifySoftphoneTitle(['Twilio Test']);
+      Dial.verifySoftphoneTitle('Twilio Test');
     });
 
     it('End the Call and select the Disposition', () => {
