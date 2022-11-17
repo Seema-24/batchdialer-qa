@@ -410,7 +410,7 @@ export default class UserPermission {
   }
 
   verifyUserEditBtnNotExist() {
-    cy.get(userMenuBtn).first().click()
+    //cy.get(userMenuBtn).first().click()
     cy.xpath(userEditBtn).should('not.exist');
   }
 
