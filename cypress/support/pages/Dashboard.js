@@ -247,6 +247,7 @@ const customerChat = "//div[text()='Chat with us']";
 const allEventType = '.calendar-filter__select .ss-select-control';
 const eventTableHeader = (col) => `tbody> tr> td:nth-of-type(${col})> div`;
 const eventDateTableHeader = 'tbody> tr> td:nth-of-type(5) span:nth-of-type(1)';
+const closeTitle = '.close-button';
 
 export default class Dashboard {
   clickDashboard() {
@@ -751,6 +752,7 @@ export default class Dashboard {
   }
 
   clickAudioLibrary() {
+    this.closeModalTitle();
     cy.get(UserSettingOptions).contains('Audio Library').click();
   }
   verifyProfileAgentFeaturesDisable() {
@@ -1076,7 +1078,7 @@ export default class Dashboard {
   closeCreditCardPopup() {
     cy.get('body').then(($body) => {
       if($body.text().includes('Credit card management')) {
-        cy.get('.close-button').click();
+        cy.get(closeTitle).click();
       }
     })
   }
@@ -1177,10 +1179,10 @@ export default class Dashboard {
     this.getIframeBody().find('.fc-conversation-view').should('be.visible');
   }
 
-  verifyChatTitle() {
+  verifyChatTitle(title) {
     this.getIframeBody()
       .find('.channel-title')
-      .should('contain.text', 'Customer Support');
+      .should('contain.text', title);
   }
 
   verifyAttachmentIcon() {
@@ -1778,6 +1780,16 @@ export default class Dashboard {
       String(today.getFullYear());
 
     cy.get(eventDateTableHeader).should('contain.text', today)
+  }
+
+  closeModalTitle() {
+    cy.get('body').then($body => {
+      if($body.find('modalTitle').length){
+        if($body.text().includes('ADD RECORDING')) {
+          cy.get(closeTitle).click();
+        }
+      }
+    })
   }
 
 }

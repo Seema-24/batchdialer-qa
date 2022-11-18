@@ -999,6 +999,7 @@ export default class Contacts {
 
   verifyListExisting(list) {
     this.enterSearch(list);
+    cy.wait(2000)
     cy.get('body').then(($body) => {
       if($body.find('.resizable-table-nodata').length) {
         cy.log(list+ " List is not available.");

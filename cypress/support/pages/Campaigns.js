@@ -1048,4 +1048,18 @@ export default class Campaign {
     cy.contains(msg).should('be.visible')
   }
 
+  verifyRecycleCamapignDelete() {
+    cy.wait(1500);
+    cy.get('body').then(($ele) => {
+      if($ele.find('.recycle-icon-svg').length) {
+        cy.xpath(
+          '//*[name()="svg"][@class="recycle-icon-svg"]/ancestor::div[@class="tr"]//div[@class="dropdown"]'
+        )
+        .click();
+        this.clickArchiveCampaignButton();
+        this.handleAlertForDelete();
+        cy.get('.recycle-icon-svg').should('not.exist');
+      }
+    })
+  }
 }
