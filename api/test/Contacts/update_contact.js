@@ -72,7 +72,6 @@ describe('Update Contact Api', async function () {
     it('should add a contact to the campaign', async function () {
         //replacing values with dynamic data in contact.json
         contact_data.Addcontacts_withSingle_PhoneNumber.campaignid = new_campaignid;
-
         contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].phonenumber = get_phone_number();
         await sleep(10);
         contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].altphonenumber = get_phone_number();
@@ -81,19 +80,16 @@ describe('Update Contact Api', async function () {
         await sleep(10);
         contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].lastname = contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].lastname + randomNumber1;
         let testReqObj = contact_data.Addcontacts_withSingle_PhoneNumber;
-        console.log(testReqObj);
         const response = await add_contact(testReqObj, '/api/contacts');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
         new_contactid = body.ids[0];
-        console.log(new_contactid);
     });
 
     it('should return 200 status code and update contact', async function () {
         Updatecontact_data.UpdateContact_withoutlist.phonenumbers[0].phonenumber = get_phone_number();
         await sleep(10);
         let testReqObj = Updatecontact_data.UpdateContact_withoutlist;
-        console.log(testReqObj);
         const response = await valid_key(testReqObj, `/api/contact/${new_contactid}`);
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
@@ -142,9 +138,7 @@ describe('Update Contact Api', async function () {
         expect(body).to.have.property("status");  
         expect(body).to.have.property("datelasttouched");  
         expect(body).to.have.property("dialedcount");  
-        expect(body).to.have.property("federaldnc");  
-        expect(body).to.have.property("calldate");  
-        expect(body).to.have.property("disposition");  
+        expect(body).to.have.property("federaldnc");    
         expect(body).to.have.property("dateadded");  
         expect(body).to.have.property("datemodified");  
  
@@ -168,7 +162,6 @@ describe('Update Contact Api', async function () {
        Updatecontact_data.UpdateContact_with_multiplelist.phonenumbers[0].phonenumber = get_phone_number();
        await sleep(10);
         let testReqObj = Updatecontact_data.UpdateContact_with_multiplelist;
-        console.log(testReqObj);
         const response = await valid_key(testReqObj, `/api/contact/${new_contactid}`);
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
@@ -185,7 +178,6 @@ describe('Update Contact Api', async function () {
     
     it('should throw error for invaild contact id ', async function () {
         let testReqObj = Updatecontact_data.UpdateContact_with_nophonenumber;
-       // console.log(testReqObj);
         const response = await valid_key(testReqObj, '/api/contact/158461546}');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(404);
@@ -194,7 +186,6 @@ describe('Update Contact Api', async function () {
 
     it('should throw error without passing numberid ', async function () {
         let testReqObj = Updatecontact_data.emptynumber_and_numberidZero;
-       // console.log(testReqObj);
        const response = await valid_key(testReqObj, `/api/contact/${new_contactid}`);
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(400);
@@ -205,7 +196,6 @@ describe('Update Contact Api', async function () {
         Updatecontact_data.UpdateContact_with_singlelist.phonenumbers[0].phonenumber = get_phone_number();
         await sleep(10);
          let testReqObj = Updatecontact_data.UpdateContact_with_singlelist;
-         console.log(testReqObj);
          const response = await valid_key(testReqObj, `/api/contact/${new_contactid}`);
          body = JSON.parse(JSON.stringify(response.body));
          expect(response.status).to.equal(200);

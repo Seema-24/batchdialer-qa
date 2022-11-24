@@ -60,7 +60,6 @@ describe('should Add Comment to Contact', async function () {
     it('should create a new campaign to add contacts', async function () {
         //adding timestamp in the campaignname
         campaign_data.newCampaign.name = campaign_data.newCampaign.name + timestamp;
-
         let testReqObj = campaign_data.newCampaign;
         const response = await create_campaign(testReqObj, '/api/campaign');
         body = JSON.parse(JSON.stringify(response.body));

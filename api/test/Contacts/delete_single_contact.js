@@ -89,18 +89,15 @@ describe('Delete Contacts API tests', async function () {
         await sleep(10);
         contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].lastname = contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].lastname + randomNumber1;
         let testReqObj = contact_data.Addcontacts_withSingle_PhoneNumber;
-        console.log(testReqObj);
         const response = await add_contact(testReqObj, '/api/contacts');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
         new_contactid = body.ids[0];
-        console.log(new_contactid);
     });
   
     it('should delete contact created above', async function () {
         const response = await valid_key(`/api/contact/${new_contactid}`);
         body = JSON.parse(JSON.stringify(response.body));
-        console.log(body);
         expect(response.status).to.equal(200);
         expect(body).to.equal("OK");
     });
@@ -116,7 +113,7 @@ describe('Delete Contacts API tests', async function () {
         const response = await valid_key('/api/contact/158461546');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(404);
-        expect(body.msg).to.equal("Contact not found");
+        expect(body.msg).to.equal("Contact does not exist");
     });
     
 });

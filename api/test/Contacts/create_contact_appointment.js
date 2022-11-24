@@ -72,7 +72,6 @@ describe('Create Contact Appointment', async function () {
     it('should add a contact to the campaign', async function () {
         //replacing values with dynamic data in contact.json
         contact_data.Addcontacts_withSingle_PhoneNumber.campaignid = new_campaignid;
-
         contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].phonenumber = get_phone_number();
         await sleep(10);
         contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].altphonenumber = get_phone_number();
@@ -85,7 +84,7 @@ describe('Create Contact Appointment', async function () {
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
         new_contactid = body.ids[0];
-        console.log(new_contactid);
+     
     });
 
 

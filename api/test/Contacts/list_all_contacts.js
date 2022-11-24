@@ -73,8 +73,6 @@ describe('list all contacts API tests', async function () {
         expect(body[0]).to.have.property("datelasttouched");
         expect(body[0]).to.have.property("dialedcount");
         expect(body[0]).to.have.property("federaldnc");
-        expect(body[0]).to.have.property("calldate");
-        expect(body[0]).to.have.property("disposition");
         expect(body[0]).to.have.property("dateadded");
         expect(body[0]).to.have.property("datemodified");
     });
