@@ -179,6 +179,8 @@ const leadSaveBtn = 'button[type="submit"]';
 const leadItemsNameField = '.lead-edit__list .lead-edit__custom-input input';
 const leadSheetDeleteBtn = (sheetName) =>
   `//tr[td[text()="${sheetName}"]]//img[contains(@src,"delete")]`;
+const leadSheetEditBtn = (sheetName) =>
+  `//tr[td[text()="${sheetName}"]]//img[contains(@src,"edit")]`;
 const messageIcon = '.position-relative .chat-wrapper__icon';
 const chatBox = '.chat__container';
 const chatCloseButton = '.chat__close';
@@ -244,10 +246,12 @@ const mainTab = '//div[@class="dashboard"]//li[text()="MAIN"]';
 const liveCalls = '//div[@class="title "][text()="Live Calls"]';
 const resourceCenterIcon = '[id*="pendo-image-badge"]';
 const customerChat = "//div[text()='Chat with us']";
-const allEventType = '.calendar-filter__select .ss-select-control';
+const allEventType = 'All Event Types';
 const eventTableHeader = (col) => `tbody> tr> td:nth-of-type(${col})> div`;
 const eventDateTableHeader = 'tbody> tr> td:nth-of-type(5) span:nth-of-type(1)';
 const closeTitle = '.close-button';
+const callQualityChart = '.recharts-layer.recharts-area';
+const LeadsheetCheckbox = (label) => `//span[@class="custom-input__text disabled"][text()="${label}"]/ancestor::div[@class="lead-edit__list-item"]/descendant::div[@class="custom_checkbox"]//span[@class="checkmark"]`;
 
 export default class Dashboard {
   clickDashboard() {
@@ -528,6 +532,22 @@ export default class Dashboard {
     cy.xpath(leadSheetDeleteBtn(sheetName)).click();
   }
 
+  clickEditLeadSheet(sheetName) {
+    cy.xpath(leadSheetEditBtn(sheetName)).click();
+  }
+
+  verifyCustomLabel(label) {
+    for (let i = 0; i < label.length; i++) {
+      cy.get('.custom-input__text').then((element) => {
+        for (let j = 0; j < element.length; j++) {
+          if (element[j].textContent.trim() === label[i]) {
+            expect(element[j].textContent.trim())
+            .to.contains(label[i]);
+          }
+        }
+      }) 
+    }
+  }
   verifyDeletedLeadSheet(sheetName) {
     cy.xpath(leadSheetDeleteBtn(sheetName)).should('not.exist');
   }
@@ -1137,11 +1157,12 @@ export default class Dashboard {
               'cypress/fixtures/Download',
               'Invoice-' + invoiceName + '.pdf'
             );
-            cy.task('getPdfContent', 'Invoice-' + invoiceName + '.pdf').then(
-              (content) => {
-                expect(content.text).to.contains(invoiceName);
-              }
-            );
+            // cy.task('getPdfContent', 'Invoice-' + invoiceName + '.pdf').then(
+            //   (content) => {
+            //     expect(content.text).to.contains(invoiceName);
+            //   }
+            // );
+            cy.readFile(`cypress/fixtures/Download/Invoice-${invoiceName}.pdf`).should('exist');
           });
       });
   }
@@ -1473,7 +1494,7 @@ export default class Dashboard {
     cy.get(dropdownItems).then((items) => {
       for (let i = 0; i < items.length; i++) {
         if (items[i].textContent.trim() === menu) {
-          cy.get(items[i]).click();
+          cy.get(items[i]).click({force:true});
           break;
         }
       }
@@ -1523,7 +1544,7 @@ export default class Dashboard {
   }
 
   clickHardwareTestButton() {
-    cy.get(hardwareTestButton).should('be.visible').click();
+    cy.get(hardwareTestButton).first().should('be.visible').click();
   }
 
   verifyCallGraph() {
@@ -1731,9 +1752,12 @@ export default class Dashboard {
   clickCustomerChat() {
     cy.xpath(customerChat).click();
   }
+  clickBatchDialerSupport(support) {
+    this.getIframeBody().find('.channel-name').contains(support).click();
+  }
 
-  clickAllEventTypesDropdown(event) {
-    cy.get(allEventType).click();
+  clickAllEventTypesDropdown() {
+    cy.contains(allEventType).scrollIntoView().click();
   }
 
   selectEventTypes(event) {
@@ -1784,12 +1808,20 @@ export default class Dashboard {
 
   closeModalTitle() {
     cy.get('body').then($body => {
-      if($body.find('modalTitle').length){
-        if($body.text().includes('ADD RECORDING')) {
-          cy.get(closeTitle).click();
-        }
+      if($body.text().includes('ADD RECORDING')) {
+        cy.get(closeTitle).click();
+      }
+      if($body.text().includes('Address Book Contact')) {
+        this.clickCancelBtn();
       }
     })
   }
 
+  verifyCallQualityChart() {
+    cy.get(callQualityChart,).should('be.visible');
+  }
+
+  clickLeadsheetCheckbox(label) {
+    cy.xpath(LeadsheetCheckbox(label)).click();
+  }
 }

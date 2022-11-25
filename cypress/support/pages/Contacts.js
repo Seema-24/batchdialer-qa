@@ -129,6 +129,8 @@ const phoneSaveBtn = `//tr[td[input[contains(@class,"phone-input")]]]//td[@class
 const emailSaveBtn = `//tr[td[input[@name="email"]]]//td[@class="custom-input__buttons"]//*[name()="svg"][1]`;
 const fieldsSaveBtn = (fieldName) =>
   `//tr[td[contains(@class,"contact-field") and text()="${fieldName}"]]//td[@class="custom-input__buttons"]//*[name()="svg"][1]`;
+const leadsheetfieldEditbtn = (fieldName) => 
+  `//span[text()="${fieldName}"]/parent::span[@class="leads__row-input-value"]/following-sibling::span[@class="leads__row-input-edit"]`
 const contactsCampaign = '//button[text()="Campaigns"]';
 const recordingIcon = 'img[src*="listen"]';
 const listMenuIcon = 'img[src*="edit"]';
@@ -162,6 +164,7 @@ const sampleUploadFile = '.down_doc';
 const listDeleteBtn = (listName) =>
   `//div[text()="${listName}"]/parent::div/child::div//*[name()="svg"][@data-icon="trash-alt"]`;
 const ToastMessage = `.Toastify__toast-body`;
+const leadSheetSaveBtn = '.contact-leads__row-button';
 
 export default class Contacts {
   clickingOnContactOption() {
@@ -1016,4 +1019,33 @@ export default class Contacts {
       }
     })
   }
+
+  enterLeadSheetDetails(val1, val2, val3, val4) {
+    this.enterLeadSheetField('text',val1);
+    this.enterLeadSheetField('email',val2);
+    this.enterLeadSheetField('phone',val3)
+    this.starRating(val4);
+  }
+
+  clickLeadsheetSaveBtn() {
+    cy.get('.contact-leads__row-button').should('be.visible').click();
+  }
+
+  starRating(rate) {
+    if(rate<5) {
+      cy.get('.star__button').eq(rate).click();
+    }
+  }
+
+  enterLeadSheetField(field,value) {
+    cy.xpath(leadsheetfieldEditbtn(field)).click({force:true});
+    cy.get('.leads__row-input-input').type(value);
+    cy.get('.leads__row-input-save').click();
+  }
+
+  verifyErrorMsg(msg) {
+    cy.get('.custom-input__error').should('be.visible').and('have.text', msg);
+  }
+
+
 }
