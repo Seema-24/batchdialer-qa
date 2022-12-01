@@ -306,7 +306,7 @@ export default class Dialer {
   }
 
   clickEndCallButton() {
-    cy.get(endCallButton).click();
+    cy.get(endCallButton).click({force:true});
   }
 
   clickAcceptCallButton() {

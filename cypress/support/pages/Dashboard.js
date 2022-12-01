@@ -252,6 +252,9 @@ const eventDateTableHeader = 'tbody> tr> td:nth-of-type(5) span:nth-of-type(1)';
 const closeTitle = '.close-button';
 const callQualityChart = '.recharts-layer.recharts-area';
 const LeadsheetCheckbox = (label) => `//span[@class="custom-input__text disabled"][text()="${label}"]/ancestor::div[@class="lead-edit__list-item"]/descendant::div[@class="custom_checkbox"]//span[@class="checkmark"]`;
+const syncBtn = (sync) => `[data-integration="${sync}"]`;
+const ApiKey = '//tr[td[text()="API Key"]]//input';
+const ZapierIntegrate = (key) => `[title="${key}"]`;
 
 export default class Dashboard {
   clickDashboard() {
@@ -1532,10 +1535,13 @@ export default class Dashboard {
   }
 
   selectEventTime() {
+    const dayjs = require("dayjs");
+    const time = dayjs().format("h:30 A");
+
     cy.xpath(eventTimeDropdown).click();
     cy.get('.ss-select-option').then((opt) => {
       for (let i = 0; i < opt.length; i++) {
-        if (opt[i].textContent.trim() === '11:30 AM') {
+        if (opt[i].textContent.trim() === time) {
           opt[i].click();
           break;
         }
@@ -1824,4 +1830,58 @@ export default class Dashboard {
   clickLeadsheetCheckbox(label) {
     cy.xpath(LeadsheetCheckbox(label)).click();
   }
+
+  clickIntegrationsBtn() {
+    cy.get(UserSettingOptions).contains('Integrations').click({ force: true });
+  }
+
+  clickOnSyncBtn(sync){
+    cy.get(syncBtn(sync)).click();
+  }
+
+  clickOnRenewKey() {
+    cy.get(ZapierIntegrate('Renew API key')).click();
+  }
+
+  
+  clickOnRemoveIntegration() {
+    cy.get(ZapierIntegrate('Remove Integration')).click();
+  }
+
+  setupIntegration() {
+    cy.get(ZapierIntegrate('Setup Integration')).click();
+  }
+
+  handleAlertForDelete(msg) {
+    cy.on('	window:alert', (str) => {
+      expect(str).to.equal(msg);
+    });
+    cy.on('window:confirm', () => true);
+  }
+
+  verifyRenewAPIKey() {
+    let apiKey1,apiKey2;
+    cy.xpath(ApiKey).invoke('val').then((key) => {
+      apiKey1= key;
+    });
+    this.clickOnRenewKey();
+    cy.wait(1000);
+    cy.xpath(ApiKey).invoke('val').then((key) => {
+      apiKey2= key;
+      
+      expect(apiKey1).to.not.equal(apiKey2);
+    });
+  }
+
+  checkIntegrationSetup() {
+    cy.wait(1000);
+    cy.get('body').then((ele) => {
+      if(ele.find(ZapierIntegrate('Setup Integration')).length) {
+        this.setupIntegration();
+        this.verifySuccessMsg('Saved');
+      }
+    })
+  }
+  
+
 }

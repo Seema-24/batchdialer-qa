@@ -1,11 +1,12 @@
 import Dashboard from '../support/pages/Dashboard';
-import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { closeDialogBox, getDate, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 import Contacts from '../support/pages/Contacts';
 import Campaign from '../support/pages/Campaigns';
 
 const Dash = new Dashboard();
 const addCont = new Contacts();
 const camp = new Campaign();
+let date;
 let fixtureData;
 let testData;
 let cardLast4Digit;
@@ -24,7 +25,14 @@ describe('Dashboard Elements', () => {
         cardLast4Digit = fixtureData.cardNumber.slice(
           fixtureData.cardNumber.length - 4
         );
-      });
+    });
+    cy.url().then((url) => {
+      if(url.includes('app.batchdialer.com')) {
+        date = getDate(8);
+      } else{
+        date = getDate(19);
+      }
+    });
     Cypress.Cookies.defaults({
       preserve: (cookies) => {
         return true;
@@ -587,6 +595,9 @@ describe('Dashboard Elements', () => {
   });
 
   it('Verify that field marked as required is validated when agent filling the lead sheet form', () => {
+    Dash.clickStatusButton();
+    Dash.selectAvailable('Available', testData.campaign);
+    Dash.clickConfirmButton();
     camp.clickCampaignMenu(); 
     camp.clickEditCampaign(testData.campaign);
     camp.clickEditBtn();
@@ -1056,7 +1067,7 @@ describe('Dashboard Elements', () => {
     Dash.clickProceedWithCancel();
     Dash.clickCancelImmediately();
     Dash.verifyContactSupportWindow(
-      'Thank you for your feedback, your account has been set to cancel on'
+      'Thank you for your feedback, your account has been set to cancel on '+ date
     );
     Dash.clickDialogCloseButton();
   });
@@ -1073,4 +1084,22 @@ describe('Dashboard Elements', () => {
     Dash.clickBillingNotificationBtn('Renew Subscription');
     Dash.verifySuccessMsg('Your subscription has been renewed');
   });
+
+  it('Verify that authorized user is able to Renew the API key generated for Zapier integration.', () => {
+    Dash.clickIntegrationsBtn();
+    Dash.clickOnSyncBtn('zapier');
+    Dash.checkIntegrationSetup();
+    Dash.verifyRenewAPIKey();
+    Dash.clickOnButton('CLOSE');
+  })
+
+  it('Verify that authorized user is able to Remove the API integration for Zapier', () => {
+    Dash.clickIntegrationsBtn();
+    Dash.clickOnSyncBtn('zapier');
+    Dash.clickOnRemoveIntegration();
+    Dash.handleAlertForDelete('Delete API key?');
+    Dash.verifySuccessMsg('Deleted');
+  });
+
+
 });
