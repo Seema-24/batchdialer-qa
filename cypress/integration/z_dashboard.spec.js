@@ -6,7 +6,7 @@ import Campaign from '../support/pages/Campaigns';
 const Dash = new Dashboard();
 const addCont = new Contacts();
 const camp = new Campaign();
-let date;
+var date=[];
 let fixtureData;
 let testData;
 let cardLast4Digit;
@@ -1067,7 +1067,7 @@ describe('Dashboard Elements', () => {
     Dash.clickProceedWithCancel();
     Dash.clickCancelImmediately();
     Dash.verifyContactSupportWindow(
-      'Thank you for your feedback, your account has been set to cancel on '+ date
+      'Thank you for your feedback, your account has been set to cancel on '+ date[0]
     );
     Dash.clickDialogCloseButton();
   });
@@ -1084,6 +1084,20 @@ describe('Dashboard Elements', () => {
     Dash.clickBillingNotificationBtn('Renew Subscription');
     Dash.verifySuccessMsg('Your subscription has been renewed');
   });
+
+  it.only('Verify that authorized user is able to downgrade number of Seats', () => {
+    cy.wait(5000)
+    Dash.clickOnButton('Upgrade');
+    Dash.clickOnAgentPlusMinusIcon('-');
+    Dash.clickOnDowngradeBtn();
+    Dash.verifyDowngradeButton('Selected Plan');
+    Dash.clickOnButton('Continue');
+    cy.wait(1000);
+    Dash.clickOnButton('CONTINUE');
+    Dash.verifySuccessMsg('Scheduling the plan change, please wait');
+    Dash.verifyAlertNotification('1 Agent seat will be cancelled on '+ date[1]);
+    Dash.clickBillingNotificationBtn('Do Not Cancel');
+  })
 
   it('Verify that authorized user is able to Renew the API key generated for Zapier integration.', () => {
     Dash.clickIntegrationsBtn();

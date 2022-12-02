@@ -115,7 +115,7 @@ const basePrice = '.price span:nth-of-type(1)';
 const totalPrice = '.total .value';
 const pauseSubscriptionBox = '.modal-content';
 const pauseSubscriptionBoxCloseBtn = '.modal-content svg[data-icon="times"]';
-const pauseMessage = '.alert-warning';
+const alertMessage = '.alert-warning';
 const plans = (planName) => "//div[div[text()='" + planName + "']]//button";
 const continueBtn = '//button[contains(text(),"CONTINUE")]';
 const startBtn = "//button[contains(text(),'START')]";
@@ -255,6 +255,8 @@ const LeadsheetCheckbox = (label) => `//span[@class="custom-input__text disabled
 const syncBtn = (sync) => `[data-integration="${sync}"]`;
 const ApiKey = '//tr[td[text()="API Key"]]//input';
 const ZapierIntegrate = (key) => `[title="${key}"]`;
+const agentPlusMinusBtn = (btn) =>`img[src*="billing-editor-${btn}"]`;
+const downgradeBtn = '.billing-plan__button.downgrade';
 
 export default class Dashboard {
   clickDashboard() {
@@ -970,7 +972,7 @@ export default class Dashboard {
   }
 
   verifyAccountPauseMessage() {
-    cy.get(pauseMessage, { timeout: 20000 }).should('be.visible');
+    cy.get(alertMessage, { timeout: 20000 }).should('be.visible');
   }
 
   choosePlan(planName) {
@@ -1883,5 +1885,24 @@ export default class Dashboard {
     })
   }
   
+  clickOnAgentPlusMinusIcon(btn) {
+    if(btn === '+') {
+      cy.get(agentPlusMinusBtn('plus')).first().click()
+    } else {
+      cy.get(agentPlusMinusBtn('minus')).first().click()
+    }
+  }
+
+  clickOnDowngradeBtn() {
+    cy.get(downgradeBtn).last().click();
+  }
+
+  verifyDowngradeButton(btn) {
+    cy.get(downgradeBtn).last().should('have.text', btn);
+  }
+
+  verifyAlertNotification(msg) {
+    cy.get(alertMessage).should('contain.text',msg);
+  }
 
 }
