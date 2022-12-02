@@ -3,7 +3,6 @@ const expect = require('chai').expect;
 const mocha = require('mocha')
 const tv4 = require('tv4');
 const fs = require('fs');
-
 const d = new Date();
 let randomNumber = [d.getSeconds(), d.getMilliseconds()].join('');
 let randomNumber1 = [d.getSeconds(), d.getMilliseconds()].join('');
@@ -14,7 +13,6 @@ const campaign_data = JSON.parse(fs.readFileSync('./api/data/Campaigns/campaign.
 let new_campaignid = "";
 let new_contactid = "";
 const baseUrl = supertest(token.baseUrl);
-
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -37,7 +35,7 @@ const get_phone_number = function () {
     let phone_number = tStamp.substring(tStamp. length - 10, tStamp.length);
     return phone_number;
 }
-//prepare create new campaign API request
+//prepare create new campaign API requestsssscccv
 const create_campaign = async function (request_body, endpoint) {
     return baseUrl.post(endpoint)
         .set('Content-Type', 'application/json')
@@ -69,7 +67,6 @@ describe('Get Single Contact API tests', async function () {
     it('should add a contact to the campaign', async function () {
         //replacing values with dynamic data in contact.json
         contact_data.Addcontacts_withSingle_PhoneNumber.campaignid = new_campaignid;
-
         contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].phonenumber = get_phone_number();
         await sleep(10);
         contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].altphonenumber = get_phone_number();
@@ -78,12 +75,10 @@ describe('Get Single Contact API tests', async function () {
         await sleep(10);
         contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].lastname = contact_data.Addcontacts_withSingle_PhoneNumber.contacts[0].lastname + randomNumber1;
         let testReqObj = contact_data.Addcontacts_withSingle_PhoneNumber;
-        console.log(testReqObj);
         const response = await add_contact(testReqObj, '/api/contacts');
         body = JSON.parse(JSON.stringify(response.body));
         expect(response.status).to.equal(200);
         new_contactid = body.ids[0];
-        console.log(new_contactid);
     });
 
     it('should return status code 403 with invalid key', async function () {
@@ -112,7 +107,7 @@ describe('Get Single Contact API tests', async function () {
         expect(body.lists[0]).to.have.property("default");
         expect(body.lists[0]).to.have.property("daterecycled");
         expect(body.lists[0]).to.have.property("dateadded");
-        expect(body).to.have.property("vendorcontactid");
+        expect(body.lists[0]).to.have.property("uploadlog");
         expect(body.phonenumbers[0]).to.have.property("id");
         expect(body.phonenumbers[0]).to.have.property("clientid");
         expect(body.phonenumbers[0]).to.have.property("contactid");
@@ -155,13 +150,7 @@ describe('Get Single Contact API tests', async function () {
         expect(body).to.have.property("datelasttouched");
         expect(body).to.have.property("dialedcount");
         expect(body).to.have.property("federaldnc");
-        expect(body).to.have.property("calldate");
-        expect(body).to.have.property("disposition");
         expect(body).to.have.property("dateadded");
         expect(body).to.have.property("datemodified");
-        expect(body).to.have.property("phonenumber1");
-        expect(body).to.have.property("stats");
-        expect(body.stats).to.have.property("answered");
-        expect(body.stats).to.have.property("voicemail");
     });
 });

@@ -24,7 +24,7 @@ describe('Get Recent Calls API tests', async function () {
     it('should return status code 200 with valid key', async function () {
         const response = await valid_key('/api/cdrs');
         body = JSON.parse(JSON.stringify(response.body));
-        expect(response.status).to.equal(200); 
+        expect(response.status).to.equal(200);
         expect(body.items[0]).to.have.property("id");
         expect(body.items[0]).to.have.property("direction");   
         expect(body.items[0]).to.have.property("callStartTime");  
@@ -36,9 +36,6 @@ describe('Get Recent Calls API tests', async function () {
         expect(body.items[0]).to.have.property("duration"); 
         expect(body.items[0]).to.have.property("status");
         expect(body.items[0]).to.have.property("agent");
-        expect(body.items[0].agent).to.have.property("id");
-        expect(body.items[0].agent).to.have.property("firstname");
-        expect(body.items[0].agent).to.have.property("lastname");
         expect(body.items[0]).to.have.property("contact"); 
         expect(body.items[0].contact).to.have.property("id");  
         expect(body.items[0].contact).to.have.property("firstname");

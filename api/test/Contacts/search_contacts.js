@@ -28,8 +28,6 @@ describe('Search Contacts Api', async function () {
         let testReqObj = SearchContacts_data.search_contacts;
         const response = await valid_key(testReqObj, '/api/contacts/search');
         body = JSON.parse(JSON.stringify(response.body));
-        //console.log(testReqObj); 
-        //console.log(body);
         expect(response.status).to.equal(200);
         expect(body[0]).to.have.property("id");
         expect(body[0]).to.have.property("vendorcontactid");
@@ -75,8 +73,6 @@ describe('Search Contacts Api', async function () {
         expect(body[0]).to.have.property("datelasttouched");
         expect(body[0]).to.have.property("dialedcount");
         expect(body[0]).to.have.property("federaldnc");
-        expect(body[0]).to.have.property("calldate");
-        expect(body[0]).to.have.property("disposition");
         expect(body[0]).to.have.property("dateadded");
         expect(body[0]).to.have.property("datemodified");
         expect(body[0]).to.have.property("lists");
@@ -94,10 +90,9 @@ describe('Search Contacts Api', async function () {
     it('should throw error for empty search field', async function () {
         let testReqObj = SearchContacts_data.empty_searchfield_phonenumbers;
         const response = await valid_key(testReqObj, '/api/contacts/search');
-        console.log(testReqObj); 
         body = JSON.parse(JSON.stringify(response.body));
-        expect(response.status).to.equal(500);
-        expect(body.msg).to.equal("Internal Server Error");
+        expect(response.status).to.equal(400);
+      
 
     });
 

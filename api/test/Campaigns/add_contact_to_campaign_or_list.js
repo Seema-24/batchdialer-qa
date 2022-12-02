@@ -62,7 +62,6 @@ describe('Add contact to campaign or list API tests', async function () {
     it('should create a new campaign to add contacts', async function () {
         //adding timestamp in the campaignname
         campaign_data.newCampaign.name = campaign_data.newCampaign.name + timestamp;
-
         let testReqObj = campaign_data.newCampaign;
         const response = await create_campaign(testReqObj, '/api/campaign');
         body = JSON.parse(JSON.stringify(response.body));
@@ -102,10 +101,8 @@ describe('Add contact to campaign or list API tests', async function () {
         contact_data.singlecontact_with_All_Phone_Numbers.contacts[0].phonenumber9 = get_phone_number();
         await sleep(10);
         contact_data.singlecontact_with_All_Phone_Numbers.contacts[0].phonenumber10 = get_phone_number();
-        console.log(testReqObj);
         const response = await add_contact(testReqObj, '/api/contacts');
         body = JSON.parse(JSON.stringify(response.body));
-        console.log(body);
         expect(response.status).to.equal(200);
         expect(body.ids).to.have.lengthOf(1);
     });
@@ -125,10 +122,8 @@ describe('Add contact to campaign or list API tests', async function () {
         contact_data.multiple_contact.contacts[1].firstname = contact_data.multiple_contact.contacts[0].firstname + randomNumber;
         contact_data.multiple_contact.contacts[0].lastname = contact_data.multiple_contact.contacts[0].lastname + randomNumber1;
         let testReqObj = contact_data.multiple_contact;
-        console.log(testReqObj);
         const response = await add_contact(testReqObj, '/api/contacts');
         body = JSON.parse(JSON.stringify(response.body));
-        console.log(body);
         expect(response.status).to.equal(200);
         expect(body.ids).to.have.lengthOf(2);
     });
@@ -169,7 +164,6 @@ describe('Add contact to campaign or list API tests', async function () {
         let testReqObj = contact_data.no_camp_or_list;
         const response = await valid_key(testReqObj, '/api/contacts');
         body = JSON.parse(JSON.stringify(response.body));
-        //console.log(body);
         expect(response.status).to.equal(400);
         expect(body.msg).to.equal("listid, campaignid or campaignids field is required");
 
@@ -180,9 +174,9 @@ describe('Add contact to campaign or list API tests', async function () {
         let testReqObj = contact_data.no_phonenumber;
         const response = await valid_key(testReqObj, '/api/contacts');
         body = JSON.parse(JSON.stringify(response.body));
-        //console.log(body);
         expect(response.status).to.equal(200);
-        expect(body.warnings).to.equal("Contact 0: all contact's phone numbers are used by another contacts from the batch, skipping");
+        expect(body.warnings[0]).to.equal("Contact 0: all contact's phone numbers are used by another contacts from the batch, skipping");
+        expect(body.success).to.equal(false);
 
     });
 });

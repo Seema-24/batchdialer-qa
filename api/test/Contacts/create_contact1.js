@@ -70,7 +70,6 @@ describe('Create Contacts API tests', async function () {
         body = JSON.parse(JSON.stringify(response.body));
         //extracting newly created campaign Id to be used in next test cases
         new_campaignid = body.id;
-        console.log(body);
         expect(response.status).to.equal(200);
     });
 
@@ -81,10 +80,8 @@ describe('Create Contacts API tests', async function () {
         createcontact_data.Create_Contact_Camp.campaignid= new_campaignid;
         await sleep(10);
         let testReqObj = createcontact_data.Create_Contact_Camp;
-        //console.log(testReqObj);
         const response = await valid_key(testReqObj, '/api/contact');
         body = JSON.parse(JSON.stringify(response.body));
-        console.log(body); 
         expect(response.status).to.equal(200);
     });
 
