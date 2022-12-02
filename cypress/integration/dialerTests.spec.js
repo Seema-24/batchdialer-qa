@@ -522,7 +522,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('End the Call and select the Disposition', () => {
-      Dial.endCallAtTime('0:30');
+      Dial.endCallAtTime('0:10');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
       Dial.clickOnButton('Done');
@@ -649,7 +649,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.verifyPhoneRingingIcon();
       Dial.verifyAgentStatus('On Call');
       Dial.verifySoftphoneTitle('Test Number');
-      Dial.endCallAtTime('0:30');
+      Dial.endCallAtTime('0:10');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
       Dial.clickOnButton('Done');
@@ -900,7 +900,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.verifySimultaneousDial(
         ['Twilio Test'],
           'On Call',
-          '0:30',
+          '0:10',
           'No Answer'
       );
     });
@@ -1346,7 +1346,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('End the Call and select the Disposition', () => {
-      Dial.endCallAtTime('0:30');
+      Dial.endCallAtTime('0:10');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
       Dial.clickOnButton('Done');
@@ -1394,7 +1394,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('End the Call and select the Disposition', () => {
-      Dial.endCallAtTime('0:25');
+      Dial.endCallAtTime('0:15');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
       Dial.clickOnButton('Done');
@@ -1542,7 +1542,7 @@ describe('Outbound Calling Scenarios', () => {
     it('Attempting to Call the imported numbers and marking it as Successful sale', () => {
       Dial.verifyCallConnectForCampaign(
         ['Test Number1', 'Test Number2', 'Test Number3'],
-        '0:30',
+        '0:10',
         'Successful Sale',
         5
       );

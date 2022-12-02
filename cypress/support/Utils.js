@@ -168,3 +168,18 @@ export function verifyCloseApp() {
     }
   })
 }
+
+export function getDate(cycleDate) {
+  let date=[];
+  const dayjs = require("dayjs");
+  const currentDate = dayjs().format("D");
+
+  if(currentDate >= cycleDate) {
+    date[0] = dayjs().add(1,"months").format("MMM "+ cycleDate + ", YYYY");
+    date[1]= dayjs().add(1,"months").format("M/"+ cycleDate + "/YYYY");
+  } else {
+    date[0] = dayjs().format("MMM "+ cycleDate + ", YYYY");
+    date[1] = dayjs().format("MM/"+ cycleDate + "/YYYY");
+  }
+  return date;
+}

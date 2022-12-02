@@ -245,4 +245,19 @@ describe('Report Page', () => {
     report.clickReportsHeader('Floor Map');
     report.verifyAddNewFloorButton();
   });
+
+  it('Verify that authorized user is able to view the Floor map by selecting the Floor Name', () => {
+    report.clickReportMenu();
+    report.clickReportsHeader('Floor Map');
+    report.selectFloorViewDropdown('Test Floor');
+    report.verifyFloorMapItem(2);
+  });
+
+  it('Verify that Floor map with duplicate name can not be created.', () => {
+    report.clickOnButton('Add New Floor');
+    report.enterFloorMap('Test Floor');
+    report.clickOnButton('Save');
+    report.verifyErrorMsg('Floor Map with the same name already exists');
+  });
+
 });

@@ -115,7 +115,7 @@ const basePrice = '.price span:nth-of-type(1)';
 const totalPrice = '.total .value';
 const pauseSubscriptionBox = '.modal-content';
 const pauseSubscriptionBoxCloseBtn = '.modal-content svg[data-icon="times"]';
-const pauseMessage = '.alert-warning';
+const alertMessage = '.alert-warning';
 const plans = (planName) => "//div[div[text()='" + planName + "']]//button";
 const continueBtn = '//button[contains(text(),"CONTINUE")]';
 const startBtn = "//button[contains(text(),'START')]";
@@ -179,6 +179,8 @@ const leadSaveBtn = 'button[type="submit"]';
 const leadItemsNameField = '.lead-edit__list .lead-edit__custom-input input';
 const leadSheetDeleteBtn = (sheetName) =>
   `//tr[td[text()="${sheetName}"]]//img[contains(@src,"delete")]`;
+const leadSheetEditBtn = (sheetName) =>
+  `//tr[td[text()="${sheetName}"]]//img[contains(@src,"edit")]`;
 const messageIcon = '.position-relative .chat-wrapper__icon';
 const chatBox = '.chat__container';
 const chatCloseButton = '.chat__close';
@@ -244,10 +246,17 @@ const mainTab = '//div[@class="dashboard"]//li[text()="MAIN"]';
 const liveCalls = '//div[@class="title "][text()="Live Calls"]';
 const resourceCenterIcon = '[id*="pendo-image-badge"]';
 const customerChat = "//div[text()='Chat with us']";
-const allEventType = '.calendar-filter__select .ss-select-control';
+const allEventType = 'All Event Types';
 const eventTableHeader = (col) => `tbody> tr> td:nth-of-type(${col})> div`;
 const eventDateTableHeader = 'tbody> tr> td:nth-of-type(5) span:nth-of-type(1)';
 const closeTitle = '.close-button';
+const callQualityChart = '.recharts-layer.recharts-area';
+const LeadsheetCheckbox = (label) => `//span[@class="custom-input__text disabled"][text()="${label}"]/ancestor::div[@class="lead-edit__list-item"]/descendant::div[@class="custom_checkbox"]//span[@class="checkmark"]`;
+const syncBtn = (sync) => `[data-integration="${sync}"]`;
+const ApiKey = '//tr[td[text()="API Key"]]//input';
+const ZapierIntegrate = (key) => `[title="${key}"]`;
+const agentPlusMinusBtn = (btn) =>`img[src*="billing-editor-${btn}"]`;
+const downgradeBtn = '.billing-plan__button.downgrade';
 
 export default class Dashboard {
   clickDashboard() {
@@ -528,6 +537,22 @@ export default class Dashboard {
     cy.xpath(leadSheetDeleteBtn(sheetName)).click();
   }
 
+  clickEditLeadSheet(sheetName) {
+    cy.xpath(leadSheetEditBtn(sheetName)).click();
+  }
+
+  verifyCustomLabel(label) {
+    for (let i = 0; i < label.length; i++) {
+      cy.get('.custom-input__text').then((element) => {
+        for (let j = 0; j < element.length; j++) {
+          if (element[j].textContent.trim() === label[i]) {
+            expect(element[j].textContent.trim())
+            .to.contains(label[i]);
+          }
+        }
+      }) 
+    }
+  }
   verifyDeletedLeadSheet(sheetName) {
     cy.xpath(leadSheetDeleteBtn(sheetName)).should('not.exist');
   }
@@ -947,7 +972,7 @@ export default class Dashboard {
   }
 
   verifyAccountPauseMessage() {
-    cy.get(pauseMessage, { timeout: 20000 }).should('be.visible');
+    cy.get(alertMessage, { timeout: 20000 }).should('be.visible');
   }
 
   choosePlan(planName) {
@@ -1137,11 +1162,12 @@ export default class Dashboard {
               'cypress/fixtures/Download',
               'Invoice-' + invoiceName + '.pdf'
             );
-            cy.task('getPdfContent', 'Invoice-' + invoiceName + '.pdf').then(
-              (content) => {
-                expect(content.text).to.contains(invoiceName);
-              }
-            );
+            // cy.task('getPdfContent', 'Invoice-' + invoiceName + '.pdf').then(
+            //   (content) => {
+            //     expect(content.text).to.contains(invoiceName);
+            //   }
+            // );
+            cy.readFile(`cypress/fixtures/Download/Invoice-${invoiceName}.pdf`).should('exist');
           });
       });
   }
@@ -1473,7 +1499,7 @@ export default class Dashboard {
     cy.get(dropdownItems).then((items) => {
       for (let i = 0; i < items.length; i++) {
         if (items[i].textContent.trim() === menu) {
-          cy.get(items[i]).click();
+          cy.get(items[i]).click({force:true});
           break;
         }
       }
@@ -1511,10 +1537,13 @@ export default class Dashboard {
   }
 
   selectEventTime() {
+    const dayjs = require("dayjs");
+    const time = dayjs().format("h:30 A");
+
     cy.xpath(eventTimeDropdown).click();
     cy.get('.ss-select-option').then((opt) => {
       for (let i = 0; i < opt.length; i++) {
-        if (opt[i].textContent.trim() === '11:30 AM') {
+        if (opt[i].textContent.trim() === time) {
           opt[i].click();
           break;
         }
@@ -1523,7 +1552,7 @@ export default class Dashboard {
   }
 
   clickHardwareTestButton() {
-    cy.get(hardwareTestButton).should('be.visible').click();
+    cy.get(hardwareTestButton).first().should('be.visible').click();
   }
 
   verifyCallGraph() {
@@ -1731,9 +1760,12 @@ export default class Dashboard {
   clickCustomerChat() {
     cy.xpath(customerChat).click();
   }
+  clickBatchDialerSupport(support) {
+    this.getIframeBody().find('.channel-name').contains(support).click();
+  }
 
-  clickAllEventTypesDropdown(event) {
-    cy.get(allEventType).click();
+  clickAllEventTypesDropdown() {
+    cy.contains(allEventType).scrollIntoView().click();
   }
 
   selectEventTypes(event) {
@@ -1784,12 +1816,93 @@ export default class Dashboard {
 
   closeModalTitle() {
     cy.get('body').then($body => {
-      if($body.find('modalTitle').length){
-        if($body.text().includes('ADD RECORDING')) {
-          cy.get(closeTitle).click();
-        }
+      if($body.text().includes('ADD RECORDING')) {
+        cy.get(closeTitle).click();
+      }
+      if($body.text().includes('Address Book Contact')) {
+        this.clickCancelBtn();
       }
     })
+  }
+
+  verifyCallQualityChart() {
+    cy.get(callQualityChart,).should('be.visible');
+  }
+
+  clickLeadsheetCheckbox(label) {
+    cy.xpath(LeadsheetCheckbox(label)).click();
+  }
+
+  clickIntegrationsBtn() {
+    cy.get(UserSettingOptions).contains('Integrations').click({ force: true });
+  }
+
+  clickOnSyncBtn(sync){
+    cy.get(syncBtn(sync)).click();
+  }
+
+  clickOnRenewKey() {
+    cy.get(ZapierIntegrate('Renew API key')).click();
+  }
+
+  
+  clickOnRemoveIntegration() {
+    cy.get(ZapierIntegrate('Remove Integration')).click();
+  }
+
+  setupIntegration() {
+    cy.get(ZapierIntegrate('Setup Integration')).click();
+  }
+
+  handleAlertForDelete(msg) {
+    cy.on('	window:alert', (str) => {
+      expect(str).to.equal(msg);
+    });
+    cy.on('window:confirm', () => true);
+  }
+
+  verifyRenewAPIKey() {
+    let apiKey1,apiKey2;
+    cy.xpath(ApiKey).invoke('val').then((key) => {
+      apiKey1= key;
+    });
+    this.clickOnRenewKey();
+    cy.wait(1000);
+    cy.xpath(ApiKey).invoke('val').then((key) => {
+      apiKey2= key;
+      
+      expect(apiKey1).to.not.equal(apiKey2);
+    });
+  }
+
+  checkIntegrationSetup() {
+    cy.wait(1000);
+    cy.get('body').then((ele) => {
+      if(ele.find(ZapierIntegrate('Setup Integration')).length) {
+        this.setupIntegration();
+        this.verifySuccessMsg('Saved');
+      }
+    })
+  }
+  
+  clickOnAgentPlusMinusIcon(btn) {
+    if(btn === '+') {
+      cy.get(agentPlusMinusBtn('plus')).first().click()
+    } else {
+      cy.get(agentPlusMinusBtn('minus')).first().click()
+    }
+  }
+
+  clickOnDowngradeBtn() {
+    cy.get(downgradeBtn).last().click();
+  }
+
+  verifyDowngradeButton(btn) {
+    cy.get(downgradeBtn).last().should('have.text', btn);
+  }
+
+  verifyAlertNotification(msg) {
+    cy.get(alertMessage).should('contain.text',msg);
   }
 
 }

@@ -650,7 +650,11 @@ export default class Campaign {
   verifyCampaignChange(mode) {
     cy.xpath(campaignChange, {timeout:60000}).trigger('mouseover');
     cy.xpath(`//div[@class="tooltip-inner"][text()="${mode}"]`).should('be.visible');
-    
+  }
+
+  selectLeadSheetDropdown(leadsheet) {
+    cy.xpath(cardDropdowns('Lead Sheet')).scrollIntoView().click({force:true});
+    this.selectOptions(leadsheet);
   }
 
   selectOptions(optionName) {

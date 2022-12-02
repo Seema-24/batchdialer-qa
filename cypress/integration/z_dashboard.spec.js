@@ -1,13 +1,16 @@
 import Dashboard from '../support/pages/Dashboard';
-import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { closeDialogBox, getDate, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
 import Contacts from '../support/pages/Contacts';
+import Campaign from '../support/pages/Campaigns';
 
 const Dash = new Dashboard();
+const addCont = new Contacts();
+const camp = new Campaign();
+var date=[];
 let fixtureData;
 let testData;
 let cardLast4Digit;
 let randNum = Math.floor(Math.random() * 100000);
-const addCont = new Contacts();
 const message = (user) => `This is a testing message from ${user}`;
 
 describe('Dashboard Elements', () => {
@@ -22,7 +25,14 @@ describe('Dashboard Elements', () => {
         cardLast4Digit = fixtureData.cardNumber.slice(
           fixtureData.cardNumber.length - 4
         );
-      });
+    });
+    cy.url().then((url) => {
+      if(url.includes('app.batchdialer.com')) {
+        date = getDate(8);
+      } else{
+        date = getDate(19);
+      }
+    });
     Cypress.Cookies.defaults({
       preserve: (cookies) => {
         return true;
@@ -159,7 +169,20 @@ describe('Dashboard Elements', () => {
     Dash.verifyDialPad();
   });
 
+  it('Verify that call quality chart is being plotted when an agent is on a call', () => {
+    addCont.dialPhoneNumber('8586515050');
+    addCont.clickDialerCallButton();
+    Dash.verifyCallStarted();
+    cy.wait(8000);
+    Dash.clickHardwareTestButton();
+    Dash.verifyCallQualityChart();
+    addCont.clickDialerCallButton();
+    addCont.selectCallResult('No Answer');
+    addCont.clickContinueBtn();
+  })
+
   it('Verify user is able to make call using dialer button', () => {
+    Dash.clickCallGraphCloseBtn();
     Dash.clickDialer();
     Dash.dialNumber();
     Dash.clickCallButton();
@@ -245,7 +268,7 @@ describe('Dashboard Elements', () => {
   it('If TODAY,PAST,FUTURE and Completed are set by user,verify that those settings are kept throughout the current session', () => {
     Dash.clickPastButton();
     Dash.clickFutureButton();
-    Dash.clickCompletedCheckbox();
+    cy.wait(1000);
     cy.reload();
     ignoreSpeedTestPopup();
     //verify current session should maintained
@@ -461,6 +484,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Add a New Contact', () => {
+    Dash.closeModalTitle();
     Dash.clickAddressBook();
     Dash.clickAddNewContact();
     Dash.enterContactName('Testing');
@@ -471,6 +495,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Fails to Add a Duplicate Contact', () => {
+    Dash.closeModalTitle();
     Dash.clickAddressBook();
     Dash.clickAddNewContact();
     Dash.enterContactName('Testing');
@@ -482,6 +507,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Edit the Existing contact', () => {
+    Dash.closeModalTitle();
     Dash.clickAddressBook();
     Dash.clickEditBtn('Testing');
     Dash.enterContactName('DemoTesting');
@@ -492,6 +518,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Delete the Contact', () => {
+    Dash.closeModalTitle();
     Dash.clickAddressBook();
     Dash.clickDeletebtn('DemoTesting');
     Dash.verifyContactDelete('DemoTesting');
@@ -548,6 +575,71 @@ describe('Dashboard Elements', () => {
     Dash.clickDeleteLeadSheet('Testing');
     Dash.verifyDeletedLeadSheet('Testing');
   });
+
+  it('Verify that default label is maintained if no lable name is provided when creating a new  leadsheet', () => {
+    Dash.clickAddNewLeadSheet();
+    Dash.clickLeadSheetName();
+    cy.wait(1000);
+    Dash.enterLeadSheetName('TestingLeadSheet');
+    Dash.clickSaveFieldBtn();
+    Dash.selectLeadItem('Text');
+    Dash.selectLeadItem('Email');
+    Dash.selectLeadItem('Phone');
+    Dash.selectLeadItem('Rating');
+    Dash.clickLeadsheetCheckbox('email');
+    Dash.clickLeadSaveBtn();
+    Dash.verifySuccessMsg('Saved');
+    Dash.clickEditLeadSheet('TestingLeadSheet');
+    Dash.verifyCustomLabel(['Text','Email','Phone','Rating']);
+    Dash.clickCancelBtn();
+  });
+
+  it('Verify that field marked as required is validated when agent filling the lead sheet form', () => {
+    Dash.clickStatusButton();
+    Dash.selectAvailable('Available', testData.campaign);
+    Dash.clickConfirmButton();
+    camp.clickCampaignMenu(); 
+    camp.clickEditCampaign(testData.campaign);
+    camp.clickEditBtn();
+    camp.clickAdvancedConfiguration();
+    cy.wait(3000)
+    camp.selectLeadSheetDropdown('TestingLeadSheet');
+    camp.clickOnButton('Save');
+    camp.verifyToast('Campaign Saved');
+    addCont.clickingOnContactOption();
+    addCont.enterSearch(testData.Contact);
+    addCont.clickContactName(testData.Contact);
+    addCont.verifyContactViewPageVisible();
+    addCont.clickOnButton('Lead Sheets');
+    addCont.clickLeadsheetSaveBtn();
+    addCont.verifyErrorMsg('This field is required');
+  });
+
+  it('Verify that email field is getting validated when agent filling the lead sheet form', () => {
+    addCont.clickingOnContactOption();
+    addCont.enterSearch(testData.Contact);
+    addCont.clickContactName(testData.Contact);
+    addCont.verifyContactViewPageVisible();
+    addCont.clickOnButton('Lead Sheets');
+    addCont.enterLeadSheetField('email','abcd');
+    addCont.verifyErrorMsg('Enter valid email');
+  })
+
+  it('Verify that agent user is able to fill the lead sheet in the View contact-->Leadsheet tab', () => {
+    addCont.clickingOnContactOption();
+    addCont.enterSearch(testData.Contact);
+    addCont.clickContactName(testData.Contact);
+    addCont.verifyContactViewPageVisible();
+    addCont.clickOnButton('Lead Sheets');
+    addCont.enterLeadSheetDetails('Hello!','abc@tezt.com','9999999999',3);
+    addCont.clickLeadsheetSaveBtn();
+    addCont.verifySuccessToastMessage('Success');
+    Dash.clickUserProfile();
+    Dash.clickSettingsButton();
+    Dash.clickLeadSheets();
+    Dash.clickDeleteLeadSheet('TestingLeadSheet');
+    Dash.verifyDeletedLeadSheet('TestingLeadSheet');
+  })
 
   it('Verify User Setting Voicemail Elements', () => {
     Dash.clickVoicemail();
@@ -722,6 +814,7 @@ describe('Dashboard Elements', () => {
   it('Verify Chat icon should open chat window', () => {
     Dash.clickResourceCenterIcon();
     Dash.clickCustomerChat();
+    Dash.clickBatchDialerSupport('BatchDialer');
     Dash.verifyChatPopUp();      //customer support window
   });
 
@@ -974,7 +1067,7 @@ describe('Dashboard Elements', () => {
     Dash.clickProceedWithCancel();
     Dash.clickCancelImmediately();
     Dash.verifyContactSupportWindow(
-      'Thank you for your feedback, your account has been set to cancel on'
+      'Thank you for your feedback, your account has been set to cancel on '+ date[0]
     );
     Dash.clickDialogCloseButton();
   });
@@ -991,4 +1084,36 @@ describe('Dashboard Elements', () => {
     Dash.clickBillingNotificationBtn('Renew Subscription');
     Dash.verifySuccessMsg('Your subscription has been renewed');
   });
+
+  it.only('Verify that authorized user is able to downgrade number of Seats', () => {
+    cy.wait(5000)
+    Dash.clickOnButton('Upgrade');
+    Dash.clickOnAgentPlusMinusIcon('-');
+    Dash.clickOnDowngradeBtn();
+    Dash.verifyDowngradeButton('Selected Plan');
+    Dash.clickOnButton('Continue');
+    cy.wait(1000);
+    Dash.clickOnButton('CONTINUE');
+    Dash.verifySuccessMsg('Scheduling the plan change, please wait');
+    Dash.verifyAlertNotification('1 Agent seat will be cancelled on '+ date[1]);
+    Dash.clickBillingNotificationBtn('Do Not Cancel');
+  })
+
+  it('Verify that authorized user is able to Renew the API key generated for Zapier integration.', () => {
+    Dash.clickIntegrationsBtn();
+    Dash.clickOnSyncBtn('zapier');
+    Dash.checkIntegrationSetup();
+    Dash.verifyRenewAPIKey();
+    Dash.clickOnButton('CLOSE');
+  })
+
+  it('Verify that authorized user is able to Remove the API integration for Zapier', () => {
+    Dash.clickIntegrationsBtn();
+    Dash.clickOnSyncBtn('zapier');
+    Dash.clickOnRemoveIntegration();
+    Dash.handleAlertForDelete('Delete API key?');
+    Dash.verifySuccessMsg('Deleted');
+  });
+
+
 });

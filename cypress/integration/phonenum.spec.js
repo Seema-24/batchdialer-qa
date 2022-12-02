@@ -591,6 +591,8 @@ describe('Add Phone Number flow', () => {
     addNum.clickDncMenu();
     cy.wait(1000);
     addNum.verifyAddedDNCNumber(phone);
+    addNum.clickDeleteDncValue('DNC NUMBERS', phone);
+    addNum.handleAlertForDelete();
   });
   it('Search phone number using search box', () => {
     addNum.clickPhoneNumberMenu();

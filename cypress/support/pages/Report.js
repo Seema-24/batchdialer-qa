@@ -38,7 +38,10 @@ const filtersButton = '.modal-filter-btn';
 const rowsData = '.resizable-table .resizable-table-tbody .tr';
 const recycleIcon = (name) => `//div[text()="${name}"]/*[@class="recycle-icon-svg"]`
 const dropdownOptions = '.ss-select-group-items';
-const statusdropdown = 'All Statuses'
+const statusdropdown = 'All Statuses';
+const floorView = '.dropdown-toggle.btn.btn-default';
+const userStatus = (name,presence) => 
+  `//div[@class="employee-name text-capitalize"][contains(.,"${name}")]/ancestor::div[@class="floor-map--item-bg d-flex"]/descendant::div[contains(@class,"${presence}")]`;
 
 export default class Report {
   clickReportMenu() {
@@ -256,4 +259,52 @@ export default class Report {
         option[0].click();
       });
   }
+
+  clickFloorViewDropdown() {
+    cy.get(floorView).click();
+  }
+
+  selectFloorViewDropdown(floor) {
+    this.clickFloorViewDropdown();
+    cy.get('.dropdown-item').then(el => {
+      for (let i = 0; i < el.length; i++) {
+        if(el[i].textContent.trim() === floor) {
+          el[i].click();
+          break;
+        }
+      }
+    })
+  }
+
+  verifyFloorMapItem(item) {
+    cy.get('.floor-map--item').should('have.length', item);
+  }
+
+  verifyUserStatus(name,status) {
+    cy.xpath(userStatus(name,'employee-presence')).should('have.text',status)
+  }
+
+  verifyUserPresenceTime(name) {
+    cy.xpath(userStatus(name,'employee-last-presence')).should('be.visible');
+  }
+
+  clickOnButton(Btn) {
+    cy.get('button').then((btn) => {
+      for (let i = 0; i < btn.length; i++) {
+        if (btn[i].textContent.trim() === Btn) {
+          cy.get(btn[i]).click();
+          break;
+        }
+      }
+    });
+  }
+
+  enterFloorMap(name) {
+    cy.get('.form-control').type(name);
+  }
+
+  verifyErrorMsg(msg) {
+    cy.get('.Toastify__toast-body').should('contain.text', msg)
+  }
+
 }

@@ -233,6 +233,7 @@ describe('Add Contact flow', () => {
     addCont.clickContactName('Automation CSV1');
     addCont.clickFollowUpCall();
     addCont.selectDateForFollowUpCall();
+    dashboard.selectEventTime();
     addCont.clickSavebtn();
     cy.wait(1000);
     addCont.verifyFollowUpCall('Automation CSV1');
@@ -409,6 +410,7 @@ describe('Add Contact flow', () => {
     addCont.clickContactName(testData.Contact);
     addCont.clickFollowUpCall();
     addCont.selectDateForFollowUpCall();
+    dashboard.selectEventTime();
     addCont.clickSavebtn();
     cy.wait(1000);
     addCont.verifyFollowUpCall(testData.Contact);
