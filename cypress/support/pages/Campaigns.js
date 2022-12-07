@@ -157,6 +157,8 @@ const tooltip = '.question-tooltip';
 const recycleIcon = (recycleCamp)  => `//span[text()="${recycleCamp}"]/preceding-sibling::*[@class="recycle-icon-svg"]`;
 const recycleTooltip = '//div[@class="tooltip-inner"]//div[@class="text-left text-nowrap"]';
 const campToolTip = (name) => `//label[text()="${name}"]/parent::div/child::span[@class="left question-tooltip"]`;
+const campBehviorDropdown = (dropdown) => `//div[label[text()="${dropdown}"]]/parent::div//div[contains(@class,"ss-select-control")]`;
+const queueCheckbox = (checkbox) => `//div[label[text()="${checkbox}"]]/parent::div//span[@class="checkmark"]`;
 
 const addUser = new User();
 const dial = new Dialer();
@@ -1065,5 +1067,14 @@ export default class Campaign {
         cy.get('.recycle-icon-svg').should('not.exist');
       }
     })
+  }
+
+  selectQueueCallMusicDropdown(music) {
+    cy.xpath(campBehviorDropdown('In Queue Call Music')).click();
+    this.selectOptions(music);
+  }
+
+  clickQueueCheckbox() {
+    cy.xpath(queueCheckbox('In Queue Call Music')).click();
   }
 }

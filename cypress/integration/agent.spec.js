@@ -539,6 +539,8 @@ describe('Agent Profile', function () {
       'Busy',
       'Call Back'
     ]);
+    addCamp.clickAdvancedConfiguration();
+    addCamp.selectQueueCallMusicDropdown('None');
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Created');
     cy.Logout();

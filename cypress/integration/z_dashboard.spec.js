@@ -1085,7 +1085,7 @@ describe('Dashboard Elements', () => {
     Dash.verifySuccessMsg('Your subscription has been renewed');
   });
 
-  it.only('Verify that authorized user is able to downgrade number of Seats', () => {
+  it('Verify that authorized user is able to downgrade number of Seats', () => {
     cy.wait(5000)
     Dash.clickOnButton('Upgrade');
     Dash.clickOnAgentPlusMinusIcon('-');
