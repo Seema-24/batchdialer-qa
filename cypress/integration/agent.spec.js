@@ -28,8 +28,7 @@ describe('Agent Profile', function () {
 
   beforeEach(() => {
     handlePoorConnectionPopup();
-    closeDialogBox();
-  })
+  });
 
   after(() => {
     cy.reload();
@@ -483,12 +482,16 @@ describe('Agent Profile', function () {
     agent.clickEndCallBtn();
     agent.verifyDispositionWindowVisible();
     agent.verifyDispositionNoteText('Testing');
-    agent.selectCallResult('No Answer');
+    //agent.selectCallResult('No Answer');
     agent.enterDispositionNote('testing note');
     agent.selectMood('neutral'); // good and bad
-    agent.clickContinueBtn();
-    agent.ChooseCallResult('No Answer');
+    // agent.clickContinueBtn();
+    // agent.ChooseCallResult('No Answer');
   });
+
+  it('Verify that Disposition can be set by double tap on the disposition in the call result window', () => {
+    agent.doubleTapOnDisposition('No Answer');
+  })
 
   it('Verify that note added in the Call Results window is reflected in the CONTACTS--Notes Section', () => {
     agent.ChooseCallResult('No Answer');
@@ -521,6 +524,16 @@ describe('Agent Profile', function () {
   it('Verify that Call mood added is reflected in Reports--Recent Contacts', () => {
     dialer.clickOnMenu('Recent Contacts');
     agent.verifySelectedMood('neutral');
+  });
+
+  it('Verify set disposition by double tap in Recent contacts Edit call results', () => {
+    agent.clickEditRecentContact();
+    agent.verifyCallResultWindow();
+    cy.wait(2000);
+    agent.doubleTapOnDisposition('Busy');
+    //agent.selectCallResult('Busy')
+    cy.wait(2000);
+    agent.verifyCallResult('Busy');
     cy.Logout();
   });
 

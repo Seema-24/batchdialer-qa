@@ -54,6 +54,7 @@ const billingInfoEditBtn = '.billing-user-info__wrapper .billing-user-info__edit
 const selectAdd = (key) => `//label[text() ="${key}"]/parent::div/child::div//span[@class="ss-select-value-label single"]`;
 const userDropdown =(option) => `//div[@class="user__dropdown" and text()="${option}"]`;
 const statusIcon = '.tr .td:nth-of-type(4)';
+const billingButton = '.billing-user-info__balance .btn-default';
 
 export default class Reseller {
   clickUserTreeDropdown(option) {
@@ -325,5 +326,9 @@ export default class Reseller {
         cy.contains('CANCEL').click();
       }
     })
+  }
+
+  verifyBillingBtn(btn) {
+    cy.get(billingButton).should('be.visible').and('have.text', btn);
   }
 }

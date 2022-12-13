@@ -1057,13 +1057,17 @@ export default class Campaign {
   verifyRecycleCamapignDelete() {
     cy.wait(1500);
     cy.get('body').then(($ele) => {
-      if($ele.find('.recycle-icon-svg').length) {
-        cy.xpath(
-          '//*[name()="svg"][@class="recycle-icon-svg"]/ancestor::div[@class="tr"]//div[@class="dropdown"]'
-        )
-        .click();
-        this.clickArchiveCampaignButton();
-        this.handleAlertForDelete();
+      const recyCamp = $ele.find('.recycle-icon-svg').length;
+      if(recyCamp) {
+        for (let i = 0; i < recyCamp; i++) {
+          cy.xpath(
+            '//*[name()="svg"][@class="recycle-icon-svg"]/ancestor::div[@class="tr"]//div[@class="dropdown"]'
+          )
+          .eq(i).click();
+          this.clickArchiveCampaignButton();
+          this.handleAlertForDelete();
+          cy.wait(1000);
+        }
         cy.get('.recycle-icon-svg').should('not.exist');
       }
     })
