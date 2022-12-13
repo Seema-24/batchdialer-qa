@@ -1,3 +1,4 @@
+import Dashboard from '../support/pages/Dashboard';
 import Login from '../support/pages/Login';
 import Register from '../support/pages/Register';
 import Reseller from '../support/pages/ResellerAdmin';
@@ -6,6 +7,7 @@ import { covertNumberToNormal, handlePoorConnectionPopup, ignoreSpeedTestPopup }
 const reseller = new Reseller();
 const login = new Login();
 const register = new Register();
+const Dash = new Dashboard();
 let fixtureData;
 let testData;
 const randomNumber = Math.floor(Math.random() * 100000);
@@ -368,6 +370,27 @@ describe('Reseller Admin', () => {
       }
     });
   });
+
+  it('Verify that ADJUST button is present when Reseller admin Login as the client account', () => {
+    cy.url().then((url) => {
+      if (url.includes('app.batchdialer.com')) {
+        cy.log('Not performing Account Reactivation on Production');
+      } else {
+        reseller.clickUserTreeDropdown('Switch Account');
+        Dash.enterUserToSearch(email);
+        Dash.clickUserRoleEmail(email);
+        reseller.handleAlertWindow();
+        cy.wait(1000);
+        ignoreSpeedTestPopup();
+        login.verifySuccessfullLogin();
+        Dash.clickUserProfile();
+        Dash.clickBilling();
+        reseller.verifyBillingBtn('Adjust');
+        Dash.clickBackToAdmin();
+        Dash.verifyUserDashboardName('First Tenant Reseller 1');
+      }
+    });
+  })
 
   it('Verify that Reseller admin is able to delete an existing client account', () => {
     cy.url().then((url) => {

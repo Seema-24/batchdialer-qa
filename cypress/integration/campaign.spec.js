@@ -102,11 +102,14 @@ describe('Add Campaign flow', () => {
     addCamp.selectCallConnectType('Automatic Answer'); //Manual Answer
     addCamp.enterSimultaneousDials(3);
     // addCamp.enterRingTimeDuration(15);
-    addCamp.enterAbandonedTimeout(15);
+    
     addCamp.enterRetryTime(5);
     // addCamp.selectRetryTimeUnit('sec');
     // addCamp.clickOnButton('Got it');
     addCamp.enterMaxAttempts(2);
+    addCamp.selectQueueCallMusicDropdown('Music 1');
+    addCamp.clickQueueCheckbox();
+    addCamp.enterAbandonedTimeout(15);
     Dial.clickCallingHoursDropdown();
     Dial.selectFromTime('12:00 am');
     Dial.selectToTime('11:59 pm');
@@ -293,6 +296,7 @@ describe('Add Campaign flow', () => {
     // addCamp.enterRingTimeDuration(15);
     addCamp.enterRetryTime(10);
     addCamp.enterMaxAttempts(2);
+    addCamp.selectQueueCallMusicDropdown("Music 1");
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Created');
   });
@@ -377,6 +381,7 @@ describe('Add Campaign flow', () => {
     addCamp.verifyCallConnectType();
     addCamp.verifySimultaneousDialsField();
     // addCamp.verifyRingTimeDuration();
+    addCamp.clickQueueCheckbox();
     addCamp.verifyAbandonedTimeout();
     addCamp.verifyRetryTime();
     addCamp.verifyRetryTimeUnitDropdown();
@@ -591,6 +596,8 @@ describe('Add Campaign flow', () => {
 
   it('Verify the Auto generated Name of Recycled campaign for First Recycle of Recycled Campaign', () => {
     addCamp.CallFromRecycleCampaign(testData.campaign + ' - 1');
+    cy.reload();
+    ignoreSpeedTestPopup();
     addCamp.clickCampaignMenu();
     addCamp.clickRecycleCampaignMenuBtn(testData.campaign + ' - 1');
     addCamp.clickDropdownItem('Recycle');

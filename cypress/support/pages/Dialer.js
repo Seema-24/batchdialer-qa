@@ -89,7 +89,7 @@ const playerControlButton = (no) =>
 const playerCurrentTime = '.progress-bar__current-time';
 const playerCloseButton = '.modal-content .fa-times';
 const dailyConnectsLimit = `//label[text()=" Max Calls per Day"]/parent::div//input`;
-const retryTimeDropdown = `//div[label[text()="Retry Time"]]/parent::div//div[contains(@class,"ss-select-control")]`;
+const campBehviorDropdown = (dropdown) => `//div[label[text()="${dropdown}"]]/parent::div//div[contains(@class,"ss-select-control")]`;
 const softphoneIcon = '.softphone-icon';
 const listenIcon = (camp) => `//div[text()="${camp}"]/parent::div/child::div//img[@alt="Listen"]`;
 const tableRefreshBtn = 'span[title="Refresh"]';
@@ -99,6 +99,7 @@ const cardDropdowns = (cardName) =>
 const dashboard = 'a[title="Dashboard"]';
 const closeSoftBtn = '.stg-softphone-right-close';
 const timeoutDestination = '//label[text()="Timeout Destination"]/ancestor::div[contains(@class,"form-group")]/descendant::span[contains(@class,"ss-select-value")][1]';
+const queueCheckbox = (checkbox) => `//div[label[text()="${checkbox}"]]/parent::div//span[@class="checkmark"]`;
 
 export default class Dialer {
  
@@ -162,7 +163,10 @@ export default class Dialer {
   }
 
   clickOnRadioButton(radioButtonName) {
-    cy.xpath(radioButtons(radioButtonName)).click();
+    cy.xpath(radioButtons(radioButtonName))
+    .wait(5000)
+    .should('be.visible')
+    .click();
   }
 
   clickOnCheckboxButton(checkboxButton) {
@@ -264,16 +268,15 @@ export default class Dialer {
   }
 
   verifyAbandonedCall() {
-    this.verifyPhoneRingingIcon();
-    cy.wait(5000);
+    //this.verifyPhoneRingingIcon();
     cy.get(contactProfile,{timeout:60000}).should('be.visible');
     // cy.get('body').then(($body) => {
       // if ($body.find(contactProfile).length) {
         this.verifySoftphone();
-        // cy.readFile('cypress/fixtures/testData.json').then((data) => {
-        //   data.flag = true;
-        //   cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
-        // });
+        cy.readFile('cypress/fixtures/testData.json').then((data) => {
+          data.flag = false;
+          cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
+        });
       // } else {
       //   cy.reload();
       //   ignoreSpeedTestPopup();
@@ -446,11 +449,17 @@ export default class Dialer {
   }
 
   verifyRecentContactDisposition(disposition) {
-    cy.get(recentContactsDisposition)
-      .first()
-      .then((dispositionName) => {
+    cy.get(recentContactsDisposition).first().then((dispositionName) => {
+      if(dispositionName.text().includes(disposition)) {
         expect(dispositionName.text()).to.equal(disposition);
-      });
+        cy.readFile('cypress/fixtures/testData.json').then((data) => {
+          data.flag = true;
+          cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
+        });
+      }
+      
+    });
+  
   }
 
   clickContactName(firstName, lastName) {
@@ -655,7 +664,7 @@ export default class Dialer {
   }
 
   selectRetryTimeDropdown(unit) {
-    cy.xpath(retryTimeDropdown).click();
+    cy.xpath(campBehviorDropdown('Retry Time')).click();
     this.selectOption(unit);
   }
 
@@ -701,12 +710,14 @@ export default class Dialer {
   }
 
   verifyPhoneRingingIcon() {
-    cy.wait(2000);
+    cy.wait(5000);
     cy.get('body').then($body => {
       if($body.find(callTime).length) {
         cy.log('Call is started')
-      } else{
-        cy.get(phoneRingning, { timeout: 30000 }).should('be.visible');
+      } else if($body.find('audio[src*="/audio/incoming.mp3"]').length) {
+        cy.log('Call is in ringing mode');
+      } else if($body.text().includes('DIALING...')){
+          cy.get(phoneRingning, { timeout: 30000 }).should('be.visible');
       }
     })
   }
@@ -737,6 +748,15 @@ export default class Dialer {
   selectTimeoutDestination(destination) {
     cy.xpath(timeoutDestination).click();
     this.selectOption(destination);
+  }
+
+  selectQueueCallMusicDropdown(music) {
+    cy.xpath(campBehviorDropdown('In Queue Call Music')).click();
+    this.selectOption(music);
+  }
+
+  clickQueueCheckbox() {
+    cy.xpath(queueCheckbox('In Queue Call Music')).click();
   }
   
 }

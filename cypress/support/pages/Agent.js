@@ -802,4 +802,15 @@ export default class Agent {
       );
     });
   }
+
+  doubleTapOnDisposition(result) {
+    cy.get(callResults, { timeout: 40000 }).then(($el) => {
+      for (let i = 0; i < $el.length; i++) {
+        if ($el[i].textContent === result) {
+          cy.contains(result).dblclick();
+          break;
+        }
+      }
+    });
+  }
 }

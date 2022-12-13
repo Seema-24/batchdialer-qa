@@ -257,6 +257,7 @@ const ApiKey = '//tr[td[text()="API Key"]]//input';
 const ZapierIntegrate = (key) => `[title="${key}"]`;
 const agentPlusMinusBtn = (btn) =>`img[src*="billing-editor-${btn}"]`;
 const downgradeBtn = '.billing-plan__button.downgrade';
+const userRoleEmail = '.group-row-role .group-row-role__left__email';
 
 export default class Dashboard {
   clickDashboard() {
@@ -1903,6 +1904,10 @@ export default class Dashboard {
 
   verifyAlertNotification(msg) {
     cy.get(alertMessage).should('contain.text',msg);
+  }
+
+  clickUserRoleEmail(email) {
+    cy.get(userRoleEmail).contains(email).click();
   }
 
 }
