@@ -538,6 +538,14 @@ export default class Dashboard {
     cy.xpath(leadSheetDeleteBtn(sheetName)).click();
   }
 
+  verifyLeadSheetExistOrNot(sheetName) {
+    cy.get('tbody td').then((body) => {
+      if(body.text().includes(sheetName)) {
+        this.clickDeleteLeadSheet(sheetName);
+      }
+    })
+  }
+
   clickEditLeadSheet(sheetName) {
     cy.xpath(leadSheetEditBtn(sheetName)).click();
   }
@@ -936,6 +944,7 @@ export default class Dashboard {
   }
 
   clickCloseSoftphoneBtn() {
+    cy.wait(2000);
     cy.get('body').then(($body) => {
       if ($body.find(softphoneCloseBtn).length) {
         cy.get(softphoneCloseBtn).click({ force: true });
@@ -1539,8 +1548,14 @@ export default class Dashboard {
 
   selectEventTime() {
     const dayjs = require("dayjs");
-    const time = dayjs().format("h:30 A");
+    let time = dayjs().format("m");
 
+    if(time>30){
+      time = dayjs().format("h:30 A");
+    } else {
+      time = dayjs().format("h:00 A");
+    }
+    cy.log(time)
     cy.xpath(eventTimeDropdown).click();
     cy.get('.ss-select-option').then((opt) => {
       for (let i = 0; i < opt.length; i++) {

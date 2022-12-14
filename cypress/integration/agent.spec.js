@@ -529,9 +529,7 @@ describe('Agent Profile', function () {
   it('Verify set disposition by double tap in Recent contacts Edit call results', () => {
     agent.clickEditRecentContact();
     agent.verifyCallResultWindow();
-    cy.wait(2000);
     agent.doubleTapOnDisposition('Busy');
-    //agent.selectCallResult('Busy')
     cy.wait(2000);
     agent.verifyCallResult('Busy');
     cy.Logout();
