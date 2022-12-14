@@ -10,7 +10,8 @@ const phone = new PhoneNum();
 const login = new Login();
 let fixtureData;
 let testData;
-const randomNumber = Math.floor(Math.random() * 10000);
+const randomNumber = Math.floor(Math.random() * 1000);
+const email = 'testingUser' + randomNumber + '@test.com';
 describe('Registration', () => {
   beforeEach(() => {
     cy.fixture('constants').then((data) => (fixtureData = data));
@@ -54,7 +55,7 @@ describe('Registration', () => {
     register.enterFirstName('Demo');
     register.enterLastName('testing');
     register.enterPhoneNumber('9999999999');
-    register.enterEmail('test+' + randomNumber + '@email.com');
+    register.enterEmail(email);
     register.enterPassword('Fleek@2016');
     register.enterConfirmPassword('Fleek@2016');
     register.clickContinueToPlanBtn();
@@ -66,7 +67,7 @@ describe('Registration', () => {
     register.enterFirstName('Demo');
     register.enterLastName('testing');
     register.enterPhoneNumber('9999999999');
-    register.enterEmail('test+' + randomNumber + '@email.com');
+    register.enterEmail(email);
     register.enterPassword('Fleek@2016');
     register.enterConfirmPassword('Fleek@2016');
     register.clickContinueToPlanBtn();
@@ -80,7 +81,7 @@ describe('Registration', () => {
     register.enterFirstName('Demo');
     register.enterLastName('testing');
     register.enterPhoneNumber('9999999999');
-    register.enterEmail('test+' + randomNumber + '@email.com');
+    register.enterEmail(email);
     register.enterPassword('Fleek@2016');
     register.enterConfirmPassword('Fleek@2016');
     register.clickContinueToPlanBtn();
@@ -106,7 +107,7 @@ describe('Registration', () => {
     register.enterCompanyName('Fleek+5');
     register.selectIndustry('Other');
     register.enterPhoneNumber('9999999999');
-    register.enterEmail('test+' + randomNumber + '@email.com');
+    register.enterEmail(email);
     register.enterPassword('test12');
     register.enterConfirmPassword('test12');
     register.clickContinueToPlanBtn();
@@ -122,7 +123,7 @@ describe('Registration', () => {
     register.enterCompanyName('Fleek+5');
     register.selectIndustry('Other');
     register.enterPhoneNumber('9999999999');
-    register.enterEmail('test+' + randomNumber + '@email.com');
+    register.enterEmail(email);
     register.enterPassword('Test1');
     register.enterConfirmPassword('Test1');
     register.clickContinueToPlanBtn();
@@ -144,7 +145,7 @@ describe('Registration', () => {
     register.enterCompanyName('Fleek+5');
     register.selectIndustry('Other');
     register.enterPhoneNumber('9999999');
-    register.enterEmail('test+' + randomNumber + '@email.com');
+    register.enterEmail(email);
     register.enterPassword('Fleek@2016');
     register.enterConfirmPassword('Fleek@2016');
     register.clickContinueToPlanBtn();
@@ -195,7 +196,7 @@ describe('Registration', () => {
     register.enterCompanyName('Fleek+' + randomNumber + '');
     register.selectIndustry('Other');
     register.enterPhoneNumber('9999999999');
-    register.enterEmail('testing+' + randomNumber + '@test.com');
+    register.enterEmail(email);
     register.enterPassword('Fleek@2016');
     register.enterConfirmPassword('Fleek@2016');
     register.clickContinueToPlanBtn();
@@ -212,7 +213,7 @@ describe('Registration', () => {
     register.enterCompanyName('Fleek+' + randomNumber + '');
     register.selectIndustry('Other');
     register.enterPhoneNumber('9999999999');
-    register.enterEmail('testing+' + randomNumber + '@test.com');
+    register.enterEmail(email);
     register.enterPassword('Fleek@2016');
     register.enterConfirmPassword('Fleek@2016');
     register.clickContinueToPlanBtn();
@@ -246,7 +247,7 @@ describe('Registration', () => {
         register.enterCompanyName('Fleek+' + randomNumber + '');
         register.selectIndustry('Other');
         register.enterPhoneNumber('9999999999');
-        register.enterEmail('testing+' + randomNumber + '@test.com');
+        register.enterEmail(email);
         register.enterPassword('Fleek@2016');
         register.enterConfirmPassword('Fleek@2016');
         register.clickContinueToPlanBtn();
@@ -283,7 +284,7 @@ describe('Registration', () => {
         cy.log('Not Registering user on Prod');
       } else {
         login.verifyCloseApp();
-        cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
+        cy.Login(email, 'Fleek@2016');
         skipTourGuidePopup();
         phone.clickPhoneNumberMenu();
         phone.clickCallResultMenu();
@@ -307,7 +308,7 @@ describe('Registration', () => {
         cy.log('Not Registering user on Prod');
       } else {
         login.verifyCloseApp();
-        cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
+        cy.Login(email, 'Fleek@2016');
         cy.reload();
         skipTourGuidePopup();
         dashboard.clickUserProfile();
@@ -334,11 +335,12 @@ describe('Registration', () => {
         cy.log('Not Registering user on Prod');
       } else {
         login.verifyCloseApp();
-        cy.Login('testing+' + randomNumber + '@test.com', 'Fleek@2016');
+        cy.Login(email, 'Fleek@2016');
         cy.reload();
         skipTourGuidePopup();
         dashboard.clickUserProfile();
         dashboard.clickProfile();
+        skipTourGuidePopup();
         register.verifyFirstNameField();
         register.clickOnChangePasswordBtn();
         register.enterPassword('Test@123');
@@ -355,7 +357,7 @@ describe('Registration', () => {
         cy.log('Not Registering user on Prod');
       } else {
         login.verifyCloseApp();
-        cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
+        cy.Login(email, 'Test@123');
         cy.reload();
         skipTourGuidePopup();
         dashboard.clickUserProfile();
@@ -377,7 +379,7 @@ describe('Registration', () => {
         cy.log('Not Registering user on Prod');
       } else {
         login.verifyCloseApp();
-        cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
+        cy.Login(email, 'Test@123');
         cy.reload();
         ignoreSpeedTestPopup();
         cy.Logout();
@@ -392,7 +394,7 @@ describe('Registration', () => {
         cy.log('Not Registering user on Prod');
       } else {
         login.verifyCloseApp();
-        cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
+        cy.Login(email, 'Test@123');
         cy.reload();
         skipTourGuidePopup();
         dashboard.clickUserProfile();
@@ -419,7 +421,7 @@ describe('Registration', () => {
         cy.log('Not Registering user on Prod');
       } else {
         login.verifyCloseApp();
-        cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
+        cy.Login(email, 'Test@123');
         cy.reload();
         ignoreSpeedTestPopup();
         dashboard.clickUserProfile();
@@ -438,7 +440,7 @@ describe('Registration', () => {
         cy.log('Not Registering user on Prod');
       } else {
         login.verifyCloseApp();
-        cy.Login('testing+' + randomNumber + '@test.com', 'Test@123');
+        cy.Login(email, 'Test@123');
         cy.reload();
         ignoreSpeedTestPopup();
         dashboard.clickUserProfile();
@@ -467,6 +469,12 @@ describe('Registration', () => {
         register.handleAlertWindow();
         register.clickClientsMenu();
         register.enterUserToSearch('testing@test.com');
+        register.clickDeleteUserButton();
+        register.clickCancelNowRadioBtn();
+        register.clickOnButton('Continue');
+        
+        // registered account also cancel
+        register.enterUserToSearch(email);
         register.clickDeleteUserButton();
         register.clickCancelNowRadioBtn();
         register.clickOnButton('Continue');

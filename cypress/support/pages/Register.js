@@ -318,7 +318,7 @@ export default class Register {
   }
 
   enterUserToSearch(user) {
-    cy.get(searchBox).type(user);
+    cy.get(searchBox).clear().type(user);
     cy.wait(1000);
   }
 
@@ -436,7 +436,7 @@ export default class Register {
   }
 
   clickCardEditBtn() {
-    cy.get(cardEditBtn).click({force:true});
+    cy.get(cardEditBtn).click();
   }
 
   enterCity(name) {
