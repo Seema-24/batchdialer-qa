@@ -577,6 +577,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Verify that default label is maintained if no lable name is provided when creating a new  leadsheet', () => {
+    Dash.verifyLeadSheetExistOrNot('TestingLeadSheet');
     Dash.clickAddNewLeadSheet();
     Dash.clickLeadSheetName();
     cy.wait(1000);
@@ -599,6 +600,7 @@ describe('Dashboard Elements', () => {
     Dash.selectAvailable('Available', testData.campaign);
     Dash.clickConfirmButton();
     camp.clickCampaignMenu(); 
+    Dash.clickCloseSoftphoneBtn();
     camp.clickEditCampaign(testData.campaign);
     camp.clickEditBtn();
     camp.clickAdvancedConfiguration();

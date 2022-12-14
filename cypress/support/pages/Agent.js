@@ -807,7 +807,7 @@ export default class Agent {
     cy.get(callResults, { timeout: 40000 }).then(($el) => {
       for (let i = 0; i < $el.length; i++) {
         if ($el[i].textContent === result) {
-          cy.contains(result).dblclick();
+          cy.get(callResults).contains(result).dblclick()
           break;
         }
       }
