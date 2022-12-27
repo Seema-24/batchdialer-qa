@@ -173,16 +173,16 @@ describe('Dashboard Elements', () => {
     addCont.dialPhoneNumber('8586515050');
     addCont.clickDialerCallButton();
     Dash.verifyCallStarted();
-    cy.wait(8000);
+    cy.wait(3000);
     Dash.clickHardwareTestButton();
     Dash.verifyCallQualityChart();
     addCont.clickDialerCallButton();
     addCont.selectCallResult('No Answer');
     addCont.clickContinueBtn();
+    Dash.clickCallGraphCloseBtn();
   })
 
   it('Verify user is able to make call using dialer button', () => {
-    Dash.clickCallGraphCloseBtn();
     Dash.clickDialer();
     Dash.dialNumber();
     Dash.clickCallButton();

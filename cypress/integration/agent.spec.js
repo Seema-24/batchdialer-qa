@@ -564,6 +564,7 @@ describe('Agent Profile', function () {
     cy.wait(1000);
     cy.visit('/', { failOnStatusCode: false });
     cy.Login(Cypress.env('username'), Cypress.env('password'));
+    ignoreSpeedTestPopup();
     addCamp.clickCampaignMenu();
     addCamp.clickEditCampaign(fixtureData.campaignName + randNum.toString());
     addCamp.clickArchiveCampaignButton();

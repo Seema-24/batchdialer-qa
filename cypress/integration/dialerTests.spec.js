@@ -1360,7 +1360,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('End the Call and select the Disposition', () => {
-      Dial.endCallAtTime('0:10');
+      Dial.endCallAtTime('0:25');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
       Dial.clickOnButton('Done');
@@ -1443,7 +1443,7 @@ describe('Outbound Calling Scenarios', () => {
   });
 
   describe('Predictive campaign with Daily Connects Limit of 1', () => {
-    const campaignName = 'Dialy Connect Campaign';
+    const campaignName = 'Daily Connect Campaign';
     const listName = 'twilio.csv';
     let callNumber = '+1';
     before(() => {
@@ -1494,7 +1494,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectRetryTimeDropdown('sec');
       Dial.clickOnButton('Got it')
       Dial.enterRetryTime('10');
-      Dial.enterMaxAttemptPerRecord('5');
+      Dial.enterMaxAttemptPerRecord('3');
       Dial.enterDailyConnectsLimit('1');
       Dial.selectQueueCallMusicDropdown('Music 1');
       Dial.clickCallingHoursDropdown();
@@ -1540,7 +1540,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.verifySuccessToastMessage('List has been assigned to the campaigns');
       cy.reload();
       ignoreSpeedTestPopup();
-      cy.wait(10000);
+      cy.wait(1000);
     });
 
     it('Change status to Available', () => {
@@ -1551,23 +1551,24 @@ describe('Outbound Calling Scenarios', () => {
       Dial.clickConfirmButton();
       Dial.verifySoftPhoneOpen();
       Dial.verifySoftphoneLinesNumber(3);
-      cy.wait(5000);
+      cy.wait(2000);
     });
 
     it('Attempting to Call the imported numbers and marking it as Successful sale', () => {
       Dial.verifyCallConnectForCampaign(
-        ['Test Number1', 'Test Number2', 'Test Number3'],
-        '0:10',
-        'Successful Sale',
-        5
+        ['Test Number1'],
+        '0:30',
+        'Successful Sale'
       );
+      cy.wait(4000);
     });
 
     it('Verifying that the campaign status should be Connects Limit Reached', () => {
-      Dial.clickOnMenu('Campaigns');
+      Dial.clickOnMenu('Dashboard');
       cy.reload();
       ignoreSpeedTestPopup();
-      cy.wait(8000);
+      cy.wait(2000);
+      Dial.clickOnMenu('Campaigns');
       //camp.clickTableRefreshBtn();
       camp.verifyCampaignStatus(campaignName, 'Connects Limit Reached');
     });

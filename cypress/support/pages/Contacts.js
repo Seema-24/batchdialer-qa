@@ -165,6 +165,8 @@ const listDeleteBtn = (listName) =>
   `//div[text()="${listName}"]/parent::div/child::div//*[name()="svg"][@data-icon="trash-alt"]`;
 const ToastMessage = `.Toastify__toast-body`;
 const leadSheetSaveBtn = '.contact-leads__row-button';
+const notesIcon = (status) => `img[src*="notes_${status}"]`;
+const focusBtn = '.contact-view-buttons .btn-primary';
 
 export default class Contacts {
   clickingOnContactOption() {
@@ -1047,5 +1049,34 @@ export default class Contacts {
     cy.get('.custom-input__error').should('be.visible').and('have.text', msg);
   }
 
+  clickNotesImg() {
+    cy.get(notesIcon('active')).first().click();
+  }
+
+  verifyNotesImg(status) {
+    cy.get(notesIcon(status)).should('be.visible');
+  }
+
+  verifyNotesCount(status) {
+    let notecount ; 
+    if(status == 'disable') {
+      notecount = '.notes_count_disable';
+    } else {
+      notecount = '.notes_count';
+    }
+
+    cy.get(notecount).first().then((count) => {
+      const actualCount = parseInt(count.text());
+      if(actualCount === 0) {
+        expect(0).to.equal(actualCount);
+      } else {
+        expect(actualCount).greaterThan(0);
+      }
+    })
+  }
+
+  verifyTab(tab) {
+    cy.get(focusBtn).should('have.text', tab)
+  }
 
 }

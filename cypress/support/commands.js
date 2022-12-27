@@ -40,7 +40,7 @@ Cypress.Commands.add('Login', (username, password) => {
 
 Cypress.Commands.add('Logout', () => {
   login.logout();
-  cy.wait(1500)
+  cy.wait(3500)
     .get('body')
     .then(($body) => {
       if ($body.find('.main_sec').length) {

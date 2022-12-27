@@ -88,7 +88,7 @@ const playerControlButton = (no) =>
   `.contacts-player__controls svg:nth-of-type(${no})`;
 const playerCurrentTime = '.progress-bar__current-time';
 const playerCloseButton = '.modal-content .fa-times';
-const dailyConnectsLimit = `//label[text()=" Max Calls per Day"]/parent::div//input`;
+const dailyConnectsLimit = `//label[text()="Max Calls per Day"]/parent::div//input`;
 const campBehviorDropdown = (dropdown) => `//div[label[text()="${dropdown}"]]/parent::div//div[contains(@class,"ss-select-control")]`;
 const softphoneIcon = '.softphone-icon';
 const listenIcon = (camp) => `//div[text()="${camp}"]/parent::div/child::div//img[@alt="Listen"]`;
@@ -668,14 +668,14 @@ export default class Dialer {
     this.selectOption(unit);
   }
 
-  verifyCallConnectForCampaign(names, time, disposition, loopCount) {
-    for (let i = 0; i < loopCount; i++) {
+  verifyCallConnectForCampaign(names, time, disposition) {
+    for (let i = 0; i < 3; i++) {
       cy.readFile('cypress/fixtures/testData.json').then((data) => {
         if (data.flag === true) {
           cy.log('Completed');
         } else {
           this.verifySoftphoneLineContactName(names);
-          cy.wait(20000);
+          cy.wait(5000)
           cy.get('body').then((body) => {
             if (body.find(contactProfile).length) {
               this.endCallAtTime(time);
@@ -751,12 +751,19 @@ export default class Dialer {
   }
 
   selectQueueCallMusicDropdown(music) {
-    cy.xpath(campBehviorDropdown('In Queue Call Music')).click();
-    this.selectOption(music);
+    cy.get('body').then(($body) => {
+      if($body.text().includes('In Queue Call Music')) {
+        cy.xpath(campBehviorDropdown('In Queue Call Music')).click();
+        this.selectOption(music);
+      }
+    }) 
   }
 
   clickQueueCheckbox() {
-    cy.xpath(queueCheckbox('In Queue Call Music')).click();
+    cy.get('body').then(($body) => {
+      if($body.text().includes('In Queue Call Music')) {
+        cy.xpath(queueCheckbox('In Queue Call Music')).click();
+      }
+    })
   }
-  
 }

@@ -1,7 +1,7 @@
 import Campaign from '../support/pages/Campaigns';
 import Dialer from '../support/pages/Dialer';
 import Report from '../support/pages/Report';
-import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus, verifyCloseApp } from '../support/Utils';
 
 let fixtureData;
 let testData;
@@ -42,6 +42,7 @@ describe('Add Campaign flow', () => {
   });
 
   it('Should Login', () => {
+    verifyCloseApp();
     cy.Login(Cypress.env('username'), Cypress.env('password'));
     cy.reload();
     ignoreSpeedTestPopup();
@@ -484,8 +485,10 @@ describe('Add Campaign flow', () => {
 
   it('Verify functionality of edit Campaign button', () => {
     addCamp.clickCampaignMenu();
-    addCamp.clickFirstCampaignMenuButton();
-    addCamp.clickEditCampaignNew();
+    // addCamp.clickFirstCampaignMenuButton();
+    // addCamp.clickEditCampaignNew();
+    addCamp.clickOnCampName(testData.campaign);
+    cy.wait(5000)
     addCamp.selectDialingMode('Predictive');
     cy.wait(1000);
     addCamp.clickOnButton('Save');
@@ -632,12 +635,54 @@ describe('Add Campaign flow', () => {
   });
 
   it('Verify that default Campaign name should be in the format of (New Campaign - MM-DD-YY, unless changed)', () => {
+    addCamp.getProfileTimezone();
     addCamp.clickCampaignMenu();
     addCamp.clickAddNewCampaign();
     addCamp.selectDialingMode('Predictive');
     addCamp.selectAgentToAssign(testData.AdminName);
     addCamp.selectPhoneNumberToAssign(testData.Number);
     addCamp.verifyDefaultCampaignName('New Campaign');
+  });
+
+  it('Verify default value in all fields in Create New Campaign page', () => {
+    addCamp.verifyDefaultCampaignName('New Campaign');
+    cy.url().then((url) => {
+      if(url.includes('app.batchdialer.com')) {
+        addCamp.verifyCallResultsOption([
+          'Abandoned',
+          'Answering Machine',
+          'Call Back',
+          'Do Not Call',
+          'No Answer',
+          'Not Interested',
+          'Successful Sale',
+          'Voicemail',
+        ]);
+      } else {
+        addCamp.verifyCallResultsOption([
+          'Abandoned',
+          'Busy',
+          'Default 1',
+          'Do Not Call',
+          'No Answer',
+          'Successful Sale',
+          'Voicemail',
+        ]);
+      }
+    });
+    addCamp.verifyDefaultValue('Agent Script', 'Default');
+    addCamp.clickAdvancedConfiguration();
+     //addCamp.VerifyDefaultRadioAndCheckbox('Call Order','Adaptive');
+    addCamp.VerifyDefaultRadioBtn('Call Connect Type','Automatic Answer');
+    addCamp.verifyDialingBehavior('Max Calls per Day', 0);
+    addCamp.verifyDialingBehavior('Max Attempts Per Record', 3);
+    addCamp.verifyDialingBehavior('Simultaneous Dials p/Agent', 2);
+    addCamp.verifyDefaultCheckbox('Call Recording');
+    addCamp.verifyDefaultCheckbox('Suppress System Do Not Contact');
+    addCamp.verifyDefaultCheckbox('Answering Machine Detection','disable');
+    addCamp.verifyDefaultCheckbox('Suppress Federal Do Not Call', 'disable');
+    addCamp.verifyDefaultValue('Calling Hours', 'Sun-Sat: 8:00 am-9:00 pm');
+    addCamp.verifyDefaultValue('Time Zone', testData.timeZone);
     addCamp.clickOnButton('Cancel');
   });
 
