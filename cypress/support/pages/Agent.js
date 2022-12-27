@@ -634,6 +634,7 @@ export default class Agent {
   }
 
   getTotalCallsCount() {
+    cy.wait(2000);
     cy.xpath(totalCallsCount).then((count) => {
       cy.readFile('cypress/fixtures/testData.json').then((data) => {
         data.TotalCallsCount = count.text().trim();
@@ -643,6 +644,7 @@ export default class Agent {
   }
 
   verifyTotalCallsCount(count) {
+    cy.wait(2000);
     cy.xpath(totalCallsCount).then((el) => {
       expect(parseInt(el.text().trim())).greaterThan(parseInt(count));
     });

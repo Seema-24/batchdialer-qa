@@ -44,7 +44,7 @@ const ProfileZip = "input[name='zip']";
 const ProfilePhone = "input[name='phone']";
 const ProfilePhone2 = "input[name='phone2']";
 const ProfileState = "//span[text()='State']";
-const ProfileTimezone = "//div[label[text()='Timezone']]/div";
+const ProfileTimezone = '//div[label[text()="Timezone"]]/div//span[contains(@class,"ss-select-value-label")]';
 const ProfilePasswordChangeButton = "//div[label[text()='Password']]/button";
 const ProfileAgentFeaturesEnable =
   "//div[label[text()='Agent Features']]//label[text()='Enable']";
@@ -1590,6 +1590,7 @@ export default class Dashboard {
   }
 
   clickOnButton(buttonName) {
+    cy.wait(1000);
     cy.get('button').then((Btn) => {
       for (let i = 0; i < Btn.length; i++) {
         if (Btn[i].textContent.trim() === buttonName) {
@@ -1742,7 +1743,7 @@ export default class Dashboard {
   }
 
   ClickSubscriptionOnHoldBtn() {
-    cy.wait(500);
+    cy.wait(1000);
     cy.get('button').then((button) => {
       for (let i = 0; i < button.length; i++) {
         if (button[i].textContent.trim() === 'Put Subscription On Hold') {
@@ -1924,5 +1925,19 @@ export default class Dashboard {
   clickUserRoleEmail(email) {
     cy.get(userRoleEmail).contains(email).click();
   }
+
+  getTimeZone() {
+    cy.xpath(ProfileTimezone).then((zone) => {
+      cy.readFile('cypress/fixtures/testData.json', (err) => {
+        if (err) {
+          return console.error(err);
+        }
+      }).then((data) => {
+        data.timeZone = zone.text().trim();
+        cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
+      });
+    })
+  }
+
 
 }

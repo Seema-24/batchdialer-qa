@@ -159,6 +159,10 @@ const recycleTooltip = '//div[@class="tooltip-inner"]//div[@class="text-left tex
 const campToolTip = (name) => `//label[text()="${name}"]/parent::div/child::span[@class="left question-tooltip"]`;
 const campBehviorDropdown = (dropdown) => `//div[label[text()="${dropdown}"]]/parent::div//div[contains(@class,"ss-select-control")]`;
 const queueCheckbox = (checkbox) => `//div[label[text()="${checkbox}"]]/parent::div//span[@class="checkmark"]`;
+const LabelDropdown = (label) => `//label[text()="${label}"]/following-sibling::div//span`;
+const campaignCardRadioBtn = (campCard,radioBtn) => `//div[h2[@class="campaign-card__title"][text()="${campCard}"]]//div[h2[text()="${radioBtn}"]]/following-sibling::span`;
+const campaignCardCheckbox = (campCard) => `//div[h2[@class="campaign-card__checkbox-block__title"][text()="${campCard}"]]/following-sibling::span`;
+const campaignName = (name) => `//span[@class="campaign-name-table"][text()="${name}"]`;
 
 const addUser = new User();
 const dial = new Dialer();
@@ -695,7 +699,7 @@ export default class Campaign {
   }
 
   enterNewCampaignName(name) {
-    cy.get(newCampaignName).clear().type(name);
+    cy.get(newCampaignName).wait(1000).clear().type(name);
   }
 
   removeCheckBox() {
@@ -1074,11 +1078,82 @@ export default class Campaign {
   }
 
   selectQueueCallMusicDropdown(music) {
-    cy.xpath(campBehviorDropdown('In Queue Call Music')).click();
-    this.selectOptions(music);
+    cy.get('body').then($body => {
+      if($body.text().includes('In Queue Call Music')) {
+        cy.xpath(campBehviorDropdown('In Queue Call Music')).click();
+        this.selectOptions(music);
+      }
+    })
   }
 
   clickQueueCheckbox() {
-    cy.xpath(queueCheckbox('In Queue Call Music')).click();
+    cy.get('body').then($body => {
+      if($body.text().includes('In Queue Call Music')) {
+        cy.xpath(queueCheckbox('In Queue Call Music')).click();
+      }
+    })
   }
+
+  verifyCallResultsOption(callRslts) {
+    cy.get('.ss-select-value-label.multiple span').then((option) => {
+      for (let i = 0; i < callRslts.length; i++) {
+        for (let j = 0; j < option.length; j++) {
+          if (option[j].textContent.trim() === callRslts[i]) {
+            expect(option[j].textContent).to.equal(callRslts[i]);
+            break;
+          }
+        }
+      }
+    });
+  }
+
+  verifyDefaultValue(label, value) {
+    if(label=='Agent Script') {
+      cy.xpath('//div[label[text()="Agent Script"]]/following-sibling::div//span[contains(@class,"value-label")]')
+        .should('have.text', value)
+    } else{
+      cy.xpath(LabelDropdown(label)).should('contain.text', value)
+    } 
+    
+  }
+
+  getProfileTimezone() {
+    dash.clickUserProfile();
+    dash.clickProfile();
+    dash.getTimeZone();
+  }
+
+  verifyDialingBehavior(behavior,expectVal) {
+    cy.xpath(dialingBehaviour(behavior)).invoke('val').then((ActualVal) => {
+      expect(expectVal).to.equal(parseInt(ActualVal));
+    })
+  }
+
+  VerifyDefaultRadioBtn(campCard, type) {
+    cy.xpath(campaignCardRadioBtn(campCard, type))
+    .scrollIntoView()
+    .then(($el) => {
+      cy.window().then((win) => {
+        let before = win.getComputedStyle($el[0], '::after')
+        const bgColor = before.getPropertyValue('background-color');
+    
+        expect(bgColor).to.equal('rgb(54, 131, 188)');
+      })
+    })
+  }
+
+  verifyDefaultCheckbox(campCard, checkbox) {
+    if(checkbox == 'disable') {
+      cy.xpath(campaignCardCheckbox(campCard))
+        .should('have.css', 'background-color', 'rgb(228, 234, 240)'); // white or disable
+    } else {
+      cy.xpath(campaignCardCheckbox(campCard))
+        .should('have.css', 'background-color', 'rgb(54, 131, 188)');  //blue color or enable
+    }
+  }
+
+  clickOnCampName(name) {
+    cy.xpath(campaignName(name)).click();
+  }
+
 }

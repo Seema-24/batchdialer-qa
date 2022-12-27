@@ -171,16 +171,18 @@ export function verifyCloseApp() {
 }
 
 export function getDate(cycleDate) {
+  const cyclePadstart = String(cycleDate).padStart(2, '0');
   let date=[];
   const dayjs = require("dayjs");
   const currentDate = dayjs().format("D");
 
   if(currentDate >= cycleDate) {
     date[0] = dayjs().add(1,"months").format("MMM "+ cycleDate + ", YYYY");
-    date[1]= dayjs().add(1,"months").format("M/"+ cycleDate + "/YYYY");
+    date[1]= dayjs().add(1,"months").format("MM/"+ cyclePadstart + "/YYYY");
   } else {
     date[0] = dayjs().format("MMM "+ cycleDate + ", YYYY");
-    date[1] = dayjs().format("MM/"+ cycleDate + "/YYYY");
+    date[1] = dayjs().format("MM/"+ cyclePadstart + "/YYYY");
   }
+
   return date;
 }

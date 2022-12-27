@@ -74,6 +74,7 @@ describe('Add Contact flow', () => {
       'Created',
       'Address',
       'Email',
+      'Notes'         //BAT-T1069
     ]);
   });
 
@@ -535,5 +536,24 @@ describe('Add Contact flow', () => {
   it('Verify the Cancel button when Assign to Campaign Window', () => {
     addCont.clickOnButton('Cancel');
     addCont.verifyModalClose();
+  });
+
+  it('Verify that when click on the Notes icon Notes Tab should be opened', () => {
+    addCont.clickingOnContactOption();
+    cy.wait(1000);
+    addCont.clickNotesImg();
+    addCont.verifyTab('Notes');
+  });
+
+  it('Verify the Notes icon if there is no Notes present', () => {
+    addCont.clickingOnContactOption();
+    addCont.verifyNotesImg('disable');
+    addCont.verifyNotesCount('disable');
+  });
+
+  it('Verify the Notes icon if there are Notes present', () => {
+    addCont.clickingOnContactOption();
+    addCont.verifyNotesImg('active');
+    addCont.verifyNotesCount();
   });
 });
