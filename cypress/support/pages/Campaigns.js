@@ -663,6 +663,18 @@ export default class Campaign {
     this.selectOptions(leadsheet);
   }
 
+  verifyLeadSheets(optionName) {
+    cy.xpath(cardDropdowns('Lead Sheet')).scrollIntoView().click({force:true});
+    cy.get(options).then((opt) => {
+      for (let i = 0; i < opt.length; i++) {
+        if ((opt[i].textContent.trim() === optionName)) {
+          expect((opt[i].textContent.trim())).to.equal(optionName);
+          break;
+        }
+      }
+    });
+  }
+
   selectOptions(optionName) {
     cy.get(options).then((opt) => {
       for (let i = 0; i < opt.length; i++) {
@@ -1108,12 +1120,14 @@ export default class Campaign {
   }
 
   verifyDefaultValue(label, value) {
-    if(label=='Agent Script') {
+    if(label == 'Agent Script') {
       cy.xpath('//div[label[text()="Agent Script"]]/following-sibling::div//span[contains(@class,"value-label")]')
         .should('have.text', value)
-    } else{
-      cy.xpath(LabelDropdown(label)).should('contain.text', value)
-    } 
+    } else if(label == 'Time Zone') {
+      cy.xpath(LabelDropdown(label)+'[@class="ss-select-value-label single"]').should('have.text', value)
+    } else {
+      cy.xpath(LabelDropdown(label)).should('have.text', value)
+    }
     
   }
 

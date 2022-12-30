@@ -595,6 +595,16 @@ describe('Dashboard Elements', () => {
     Dash.clickCancelBtn();
   });
 
+  it('Verify that lead sheet created is reflected in the create campaign page', () => {
+    camp.clickCampaignMenu(); 
+    camp.clickAddNewCampaign();
+    camp.selectDialingMode('Predictive');
+    camp.selectAgentToAssign(testData.AdminName);
+    camp.selectPhoneNumberToAssign(testData.Number);
+    camp.clickAdvancedConfiguration();
+    camp.verifyLeadSheets('TestingLeadSheet');
+  });
+
   it('Verify that field marked as required is validated when agent filling the lead sheet form', () => {
     Dash.clickStatusButton();
     Dash.selectAvailable('Available', testData.campaign);
@@ -1053,7 +1063,7 @@ describe('Dashboard Elements', () => {
     Dash.clickProceedWithCancel();
     Dash.clickCancelImmediately();
     Dash.verifyContactSupportWindow(
-      'Your Cancellation Request has been successfully submitted. Please reach out to your Account Manager to finalize request.'
+      'Your Cancellation Request has been successfully submitted. Please reach out to your Account Manager to finalize request'
     );
     Dash.clickDialogCloseButton();
     Dash.clickBillingNotificationBtn('Renew Subscription');
@@ -1074,7 +1084,7 @@ describe('Dashboard Elements', () => {
     Dash.clickDialogCloseButton();
   });
 
-  it('Verify the functionality of PAUSE INSTEAD button in the Cancelled notification.', () => {
+  it('Verify the functionality of PAUSE INSTEAD button in the Cancelled notification', () => {
     Dash.clickBillingNotificationBtn('Pause Instead');
     Dash.ClickSubscriptionOnHoldBtn();
     Dash.verifySuccessMsg('Your account pause has been scheduled');
@@ -1098,10 +1108,20 @@ describe('Dashboard Elements', () => {
     Dash.clickOnButton('CONTINUE');
     Dash.verifySuccessMsg('Scheduling the plan change, please wait');
     Dash.verifyAlertNotification('1 Agent seat will be cancelled on '+ date[1]);
+  });
+
+  it('Verify the functionality of DO NOT CANCEL in the Downgrade notification', () => {
     Dash.clickBillingNotificationBtn('Do Not Cancel');
+    Dash.verifySuccessMsg('Your seats cancelation stopped');
+    Dash.verifyAlertMsgNotExist();
+  });
+
+  it('Verify that number of seats cannot be downgraded to a number that is lower, than the number of current agents', () => {
+    Dash.verifyDowngradeAgentSeatCount();
+    Dash.verifyAlertNotification('You cannot downgrade to a lower number seat unless agent is removed'); 
   })
 
-  it('Verify that authorized user is able to Renew the API key generated for Zapier integration.', () => {
+  it('Verify that authorized user is able to Renew the API key generated for Zapier integration', () => {
     Dash.clickIntegrationsBtn();
     Dash.clickOnSyncBtn('zapier');
     Dash.checkIntegrationSetup();
