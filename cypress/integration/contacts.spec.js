@@ -263,7 +263,7 @@ describe('Add Contact flow', () => {
     dashboard.verifyEventTitleNotExist('Call Back to Automation CSV1');
   });
 
-  it('Verify Dialed/Undialed Radio Button Functionality', () => {
+  it('Verify Dialed Undialed Radio Button Functionality', () => {
     addCont.clickingOnContactOption();
     addCont.clickFilterButton();
     addCont.clickDialedUndialedButton('Dialed');
@@ -521,6 +521,7 @@ describe('Add Contact flow', () => {
     addCont.deleteAddedContacts('Unknown','Contact');
     addCont.handleAlertForDelete();
     addCont.verifyDeletedToast();
+    addCont.clickToCloseSoftphone();
   });
 
   it('Verify the Assign to Campaign Option for Lists', () => {
@@ -540,6 +541,7 @@ describe('Add Contact flow', () => {
 
   it('Verify that when click on the Notes icon Notes Tab should be opened', () => {
     addCont.clickingOnContactOption();
+    addCont.enterSearch(testData.Contact);
     cy.wait(1000);
     addCont.clickNotesImg();
     addCont.verifyTab('Notes');
@@ -553,6 +555,7 @@ describe('Add Contact flow', () => {
 
   it('Verify the Notes icon if there are Notes present', () => {
     addCont.clickingOnContactOption();
+    addCont.enterSearch(testData.Contact);
     addCont.verifyNotesImg('active');
     addCont.verifyNotesCount();
   });

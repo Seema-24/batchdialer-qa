@@ -258,6 +258,7 @@ const ZapierIntegrate = (key) => `[title="${key}"]`;
 const agentPlusMinusBtn = (btn) =>`img[src*="billing-editor-${btn}"]`;
 const downgradeBtn = '.billing-plan__button.downgrade';
 const userRoleEmail = '.group-row-role .group-row-role__left__email';
+const activeAgentCount = '(//div[text()="Agents"]/parent::div/child::div/span)[1]';
 
 export default class Dashboard {
   clickDashboard() {
@@ -1939,5 +1940,25 @@ export default class Dashboard {
     })
   }
 
+  verifyAlertMsgNotExist() {
+    cy.get(alertMessage).should('not.exist');
+  }
+
+  verifyDowngradeAgentSeatCount() {
+    let agentNo;
+    cy.xpath(activeAgentCount).then((val) => {
+      agentNo = val.text();
+    });
+
+    this.clickOnButton('Upgrade');
+    for (let i = 0; i < 5; i++) {
+      this.clickOnAgentPlusMinusIcon('-');
+    }
+    
+    cy.get('.billing-number-editor__value').first()
+      .invoke('val').then(txt => {
+      expect(agentNo).to.equal(txt);
+    })
+  }
 
 }

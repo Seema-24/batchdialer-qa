@@ -672,7 +672,7 @@ describe('Add Campaign flow', () => {
     });
     addCamp.verifyDefaultValue('Agent Script', 'Default');
     addCamp.clickAdvancedConfiguration();
-     //addCamp.VerifyDefaultRadioAndCheckbox('Call Order','Adaptive');
+    //addCamp.VerifyDefaultRadioBtn('Random Dialing','Enable');
     addCamp.VerifyDefaultRadioBtn('Call Connect Type','Automatic Answer');
     addCamp.verifyDialingBehavior('Max Calls per Day', 0);
     addCamp.verifyDialingBehavior('Max Attempts Per Record', 3);
