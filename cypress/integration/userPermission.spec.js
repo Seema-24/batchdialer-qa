@@ -9,6 +9,7 @@ const setup = new Setup();
 let testData;
 let agentFirstName, agentLastName;
 let supervisorFirstName, supervisorLastName;
+let adminFirstName, adminLastName;
 
 describe('User Permission Costumization Flow for Agent Role', () => {
   before(() => {
@@ -1690,6 +1691,7 @@ describe('User Permission Costumization Flow for Admin Role', () => {
   before(() => {
     cy.fixture('testData').then((data) => {
       testData = data;
+      [adminFirstName, adminLastName] = data.adminWithoutCalling.split(' ');
       [supervisorFirstName, supervisorLastName] = data.supervisor.split(' ');
       [agentFirstName, agentLastName] = data.agent.split(' ');
     });
@@ -1705,6 +1707,11 @@ describe('User Permission Costumization Flow for Admin Role', () => {
     handlePoorConnectionPopup();
     closeDialogBox();
   })
+
+  after(() => {
+    selectAgentStatus('Offline');
+    cy.Logout();
+  });
 
   it('Should Login', () => {
     cy.Login(Cypress.env('username'), Cypress.env('password'));
@@ -1807,6 +1814,45 @@ describe('User Permission Costumization Flow for Admin Role', () => {
     permission.checkUncheckFirstPermission();
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
-    cy.Logout();
+  });
+
+  it('Verify that for Admin User By default all 3 permissions are enabled', () => {
+    user.clickingOnUserOption();
+    user.searchUser(testData.adminWithoutCalling);
+    cy.wait(4000);
+    user.clickUserEditButton(adminFirstName, adminLastName);
+    permission.clickUserPermissionExpander();
+    permission.verifyDefaultPermissions([
+      'Listening',
+      'Whispering',
+      'Barge-in'
+    ]);
+  });
+
+  it('verify that for supervisor users All 3 permissions are optional', () => {
+    user.clickingOnUserOption();
+    user.searchUser(testData.supervisor);
+    cy.wait(4000);
+    user.clickUserEditButton(supervisorFirstName, supervisorLastName);
+    permission.clickUserPermissionExpander();
+    permission.verifyDefaultPermissions([
+      'Listening',
+      'Whispering',
+      'Barge-in'
+    ]);
+  });
+
+  it('verify that Agent user All 3 permissions to be disabled', () => {
+    user.clickingOnUserOption();
+    user.searchUser(testData.agent);
+    cy.wait(4000);
+    user.clickUserEditButton(agentFirstName, agentLastName);
+    permission.clickUserPermissionExpander();
+    permission.verifyNoAccessPermissions([
+      'Listening',
+      'Whispering',
+      'Barge-in'
+    ]);
+    user.clickOnButton('CANCEL');
   });
 });

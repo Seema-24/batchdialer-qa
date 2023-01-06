@@ -682,7 +682,9 @@ describe('Add Campaign flow', () => {
     addCamp.verifyDefaultCheckbox('Answering Machine Detection','disable');
     addCamp.verifyDefaultCheckbox('Suppress Federal Do Not Call', 'disable');
     addCamp.verifyDefaultValue('Calling Hours', 'Sun-Sat: 8:00 am-9:00 pm');
-    addCamp.verifyDefaultValue('Time Zone', testData.timeZone);
+    cy.readFile('cypress/fixtures/testData.json').then((data) => 
+      addCamp.verifyDefaultValue('Time Zone', data.timeZone)
+    );
     addCamp.clickOnButton('Cancel');
   });
 

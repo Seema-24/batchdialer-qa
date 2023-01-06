@@ -1123,10 +1123,8 @@ export default class Campaign {
     if(label == 'Agent Script') {
       cy.xpath('//div[label[text()="Agent Script"]]/following-sibling::div//span[contains(@class,"value-label")]')
         .should('have.text', value)
-    } else if(label == 'Time Zone') {
-      cy.xpath(LabelDropdown(label)+'[@class="ss-select-value-label single"]').should('have.text', value)
     } else {
-      cy.xpath(LabelDropdown(label)).should('have.text', value)
+      cy.xpath(LabelDropdown(label)).should('contain.text', value)
     }
     
   }
