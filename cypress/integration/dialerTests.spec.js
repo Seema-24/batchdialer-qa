@@ -11,6 +11,7 @@ import {
   handlePoorConnectionPopup,
   ignoreSpeedTestPopup,
   selectAgentStatus,
+  verifyCloseApp,
 } from '../support/Utils';
 
 let testData;
@@ -47,6 +48,7 @@ describe('Inbound Call Scenarios', () => {
     });
 
     it('Login To Application', () => {
+      verifyCloseApp();
       cy.Login(Cypress.env('username'), Cypress.env('password'));
       ignoreSpeedTestPopup();
     });
@@ -154,6 +156,7 @@ describe('Inbound Call Scenarios', () => {
     });
 
     it('Login To Application', () => {
+      verifyCloseApp();
       cy.Login(Cypress.env('username'), Cypress.env('password'));
       ignoreSpeedTestPopup();
     });
@@ -273,6 +276,7 @@ describe('Inbound Call Scenarios', () => {
     });
 
     it('Login To Application', () => {
+      verifyCloseApp();
       cy.Login(Cypress.env('username'), Cypress.env('password'));
       ignoreSpeedTestPopup();
     });
@@ -399,6 +403,7 @@ describe('Inbound Call Scenarios', () => {
     });
 
     it('Login To Application', () => {
+      verifyCloseApp();
       cy.Login(Cypress.env('username'), Cypress.env('password'));
       ignoreSpeedTestPopup();
     });
@@ -457,6 +462,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Login To Application', () => {
+      verifyCloseApp();
       cy.Login(Cypress.env('username'), Cypress.env('password'));
       ignoreSpeedTestPopup();
     });
@@ -572,6 +578,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Login To Application', () => {
+      verifyCloseApp();
       cy.Login(Cypress.env('username'), Cypress.env('password'));
       ignoreSpeedTestPopup();
     });
@@ -699,6 +706,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Login To Application', () => {
+      verifyCloseApp();
       cy.Login(Cypress.env('username'), Cypress.env('password'));
       ignoreSpeedTestPopup();
     });
@@ -827,6 +835,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Login To Application', () => {
+      verifyCloseApp();
       cy.Login(Cypress.env('username'), Cypress.env('password'));
       ignoreSpeedTestPopup();
     });
@@ -1079,6 +1088,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Login To Application', () => {
+      verifyCloseApp();
       cy.Login(Cypress.env('username'), Cypress.env('password'));
       ignoreSpeedTestPopup();
     });
@@ -1266,6 +1276,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Login To Application', () => {
+      verifyCloseApp();
       cy.Login(Cypress.env('username'), Cypress.env('password'));
       ignoreSpeedTestPopup();
     });
@@ -1469,6 +1480,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Login To Application', () => {
+      verifyCloseApp();
       cy.Login(Cypress.env('username'), Cypress.env('password'));
       cy.reload();
       ignoreSpeedTestPopup();

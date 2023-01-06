@@ -600,4 +600,17 @@ describe('Add Phone Number flow', () => {
     addNum.verifySearchedNumber(testData.Number);
     addNum.verifyNumberNotVisible();
   });
+
+  it('Verify All the Elements on Phone Purchase', () => {
+    addNum.clickPhoneNumberMenu();
+    addNum.clickBuyDidButton();
+    addNum.verifyModalWindowOpen();
+    addNum.verifySelectStateField();
+    addNum.verifyAreaCodeField();
+    addNum.selectStateModeOption('Colorado');
+    // addNum.selectPhoneNumberCheckbox(3);
+    // addNum.verifySelectedCount('3/');
+
+
+  });
 });

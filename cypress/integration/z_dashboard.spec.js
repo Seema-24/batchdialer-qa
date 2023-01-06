@@ -539,6 +539,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Add a New Lead sheets', () => {
+    Dash.closeModalTitle();
     Dash.clickAddNewLeadSheet();
     Dash.clickLeadSheetName();
     cy.wait(1000);
@@ -553,6 +554,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Give error when enter the Duplicate Leadsheet name', () => {
+    Dash.closeModalTitle();
     Dash.clickAddNewLeadSheet();
     Dash.clickLeadSheetName();
     Dash.enterLeadSheetName('Testing');
@@ -567,6 +569,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Verify the search functionality for LeadSheet', () => {
+    Dash.closeModalTitle();
     Dash.enterNameToSearch('Testing');
     Dash.verifyAddedLeadSheet('Testing');
   });
@@ -665,6 +668,36 @@ describe('Dashboard Elements', () => {
     ]);
   });
 
+  it('Verify that user is able to add Voicemail', () => {
+    Dash.closeModalTitle();
+    Dash.clickVoicemail();
+    Dash.clickOnButton('NEW VOICEMAIL');
+    Dash.enterRecordingName('Testing');
+    Dash.enterEmailForDelivery(testData.email);
+    Dash.selectRecording('Recording');
+    Dash.clickOnButton('Save');
+    Dash.verifySearchResult('Testing');
+  });
+
+  it('Verify that user can edit the Voicemail', () => {
+    Dash.closeModalTitle();
+    Dash.clickVoicemail();
+    Dash.clickEditBtn('Testing');
+    Dash.enterRecordingName('DemoTesting');
+    Dash.enterEmailForDelivery(testData.AgentEmail);
+    Dash.clickOnButton('Save');
+    Dash.verifySearchResult('DemoTesting');
+    Dash.verifySearchResult(testData.AgentEmail);
+  });
+
+  it('User is able to delete the Voicemail', () => {
+    Dash.closeModalTitle();
+    Dash.clickVoicemail();
+    Dash.clickDeleteRecordingBtn('DemoTesting');
+    Dash.verifyDeletedRecording('DemoTesting');
+    Dash.verifySuccessMsg('Mailbox deleted');
+  });
+
   it('Verify User Setting Lead Score elements', () => {
     Dash.clickLeadScore();
     Dash.verifyLeadScoreHeading();
@@ -722,10 +755,30 @@ describe('Dashboard Elements', () => {
     Dash.verifyEditScript('DemoTesting');
   });
 
+  it('verify that user is able to add tags', () => {
+    Dash.clickAgentScripts();
+    Dash.clickEditBtn('DemoTesting');
+    Dash.clickEditorTag(['First Name','Last Name','Address','Email']);
+    Dash.verifyScriptTag(['First Name','Last Name','Address','Email']);
+  });
+
+  it('verify that user is able to select the element on toolbar', () => {
+    Dash.verifyToolbar();
+    Dash.verifyToolbarListOrder();
+  });
+
   it('Remove the Added Agent Script', () => {
     Dash.clickAgentScripts();
     Dash.clickDeletebtn('DemoTesting');
     Dash.verifyScriptDelete('DemoTesting');
+  });
+
+  it('verify that user should not be able to save agent Script without entering Script name and Script Text', () => {
+    Dash.clickAgentScripts();
+    Dash.clickNewAgentScriptBtn();
+    Dash.clickOnButton('SAVE');
+    Dash.verifyErrorMsg(['Enter script name','Enter script text']);
+    Dash.clickCancelBtn();
   });
 
   it('Verify User Setting Audio Library Elements', () => {
@@ -1119,7 +1172,7 @@ describe('Dashboard Elements', () => {
   it('Verify that number of seats cannot be downgraded to a number that is lower, than the number of current agents', () => {
     Dash.verifyDowngradeAgentSeatCount();
     Dash.verifyAlertNotification('You cannot downgrade to a lower number seat unless agent is removed'); 
-  })
+  });
 
   it('Verify that authorized user is able to Renew the API key generated for Zapier integration', () => {
     Dash.clickIntegrationsBtn();

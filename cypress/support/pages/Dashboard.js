@@ -259,6 +259,8 @@ const agentPlusMinusBtn = (btn) =>`img[src*="billing-editor-${btn}"]`;
 const downgradeBtn = '.billing-plan__button.downgrade';
 const userRoleEmail = '.group-row-role .group-row-role__left__email';
 const activeAgentCount = '(//div[text()="Agents"]/parent::div/child::div/span)[1]';
+const scriptTag = '.prose-mirror-editor-tags div';
+const scriptToolbar = (type) => `div:nth-of-type(${type}).prosemirror-toolbar-group button`;
 
 export default class Dashboard {
   clickDashboard() {
@@ -1558,9 +1560,13 @@ export default class Dashboard {
     }
     cy.log(time)
     cy.xpath(eventTimeDropdown).click();
+    this.selectOption(time);
+  }
+
+  selectOption(option) {
     cy.get('.ss-select-option').then((opt) => {
-      for (let i = 0; i < opt.length; i++) {
-        if (opt[i].textContent.trim() === time) {
+      for (let i = 0; i < opt.length; i++) { 
+        if (opt[i].textContent.trim() === option) {
           opt[i].click();
           break;
         }
@@ -1729,9 +1735,13 @@ export default class Dashboard {
 
   selectState(state) {
     cy.xpath(selectState('Select State')).click();
+    this.selectOptions(state);
+  }
+
+  selectOptions(option) {
     cy.get('.ss-select-option').then((el) => {
       for (let i = 0; i < el.length; i++) {
-        if (el[i].textContent.trim() === state) {
+        if (el[i].textContent.trim() === option) {
           cy.get(el[i]).scrollIntoView().click({ force: true });
           break;
         }
@@ -1836,9 +1846,12 @@ export default class Dashboard {
     cy.get('body').then($body => {
       if($body.text().includes('ADD RECORDING')) {
         cy.get(closeTitle).click();
-      }
-      if($body.text().includes('Address Book Contact')) {
+      } else if($body.text().includes('Address Book Contact')) {
         this.clickCancelBtn();
+      } else if($body.find('.profile-content-wide.lead-form').length) {
+        this.clickCancelBtn();
+      } else if($body.text().includes('ADD VOICEMAIL')) {
+        cy.get(closeTitle).click();
       }
     })
   }
@@ -1960,5 +1973,58 @@ export default class Dashboard {
       expect(agentNo).to.equal(txt);
     })
   }
+
+  clickEditorTag(tags) {
+    cy.get(scriptText).clear();
+    for (let i = 0; i < tags.length ; i++) {
+      cy.get(scriptTag).then((tagOpt) => {
+        for (let j = 0; j < tagOpt.length; j++) {
+          cy.log(tagOpt[j].textContent )
+          if(tagOpt[j].textContent.trim() === tags[i]) { 
+            tagOpt[j].click(); 
+            break;
+          }
+        } 
+      })
+    }
+  }
+
+  verifyScriptTag(tags) {
+    for (let i = 0; i < tags.length; i++) {
+      cy.get(scriptText).should('contain.text',tags[i]);
+    }
+  }
+
+  verifyToolbar() {
+    for (let i = 0; i < 3; i++) {
+      cy.get(scriptToolbar(1))
+        .eq(i).should('have.attr','data-active', 'false')
+        .click().and('have.attr','data-active', 'true');
+    }
+  }
+
+  verifyToolbarListOrder() {
+    for (let i = 0; i < 2; i++) {
+      cy.get(scriptToolbar(2))
+        .eq(i).should('not.be.disabled')
+        .click().and('be.disabled')
+    }
+  }
+
+  verifyErrorMsg(msg) {
+    for (let i = 0; i < msg.length; i++) {
+      cy.get('.error-msg').should('contain.text', msg[i]);
+    }
+  }
+
+  enterEmailForDelivery(Email) {
+    cy.get(ProfileEmail).clear().type(Email);
+  }
+
+  selectRecording(record) {
+    cy.xpath('//span[text() ="Select from Library"]').click();
+    this.selectOption(record);
+  }
+
 
 }

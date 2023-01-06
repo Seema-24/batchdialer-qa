@@ -983,4 +983,14 @@ export default class PhoneNum {
       }
     });
   }
+
+  verifySelectStateField() {
+    cy.xpath(stateDrpdwn).should('be.visible');
+  }
+
+  verifyAreaCodeField() {
+    cy.get(areaCode).should('be.visible');
+  }
+
+
 }

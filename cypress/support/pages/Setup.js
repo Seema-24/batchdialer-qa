@@ -558,6 +558,13 @@ export default class Setup {
       .click({ force: true });
     cy.get(disabledPermissions)
       .parents(permissionHeading)
+      .contains('Upload Contacts Lists')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
       .contains('Listen Audio')
       .children('div')
       .children(disabledPermissions)
@@ -600,7 +607,21 @@ export default class Setup {
       .click({ force: true });
     cy.get(disabledPermissions)
       .parents(permissionHeading)
-      .contains('Upload Contacts Lists')
+      .contains('Listening')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('Whispering')
+      .children('div')
+      .children(disabledPermissions)
+      .scrollIntoView()
+      .click({ force: true });
+    cy.get(disabledPermissions)
+      .parents(permissionHeading)
+      .contains('Barge-in')
       .children('div')
       .children(disabledPermissions)
       .scrollIntoView()
