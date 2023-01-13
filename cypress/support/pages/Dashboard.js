@@ -1332,27 +1332,14 @@ export default class Dashboard {
   }
 
   getLastMonth() {
-    var month = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    const today = new Date();
-    const lastMonth = month[today.getMonth() - 1];
+    const dayjs = require("dayjs");
+    const lastMonth = dayjs().subtract(1,"month").format("MMM YYYY");
+    
     return lastMonth;
   }
 
   verifyMonth(month) {
-    cy.get(CalenderMonth).should('contain.text', month);
+    cy.get(CalenderMonth).should('have.text', month);
   }
 
   clickDashboardCalendar() {
@@ -1766,7 +1753,7 @@ export default class Dashboard {
   }
 
   verifySuccessMsg(msg) {
-    cy.get(successToastMsg).should('have.text',msg);
+    cy.get(successToastMsg,{timeout:30000}).should('have.text',msg);
   }
 
   verifyState(state) {
@@ -1851,6 +1838,8 @@ export default class Dashboard {
       } else if($body.find('.profile-content-wide.lead-form').length) {
         this.clickCancelBtn();
       } else if($body.text().includes('ADD VOICEMAIL')) {
+        cy.get(closeTitle).click();
+      } else if($body.find('.modal-header').length) {
         cy.get(closeTitle).click();
       }
     })

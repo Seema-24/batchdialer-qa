@@ -67,7 +67,22 @@ describe('Add Phone Number flow', () => {
     });
   });
 
-  it('Should Buy Phone number successfully', () => {
+  it('Verify All the Elements on Phone Purchase', () => {
+    addNum.clickPhoneNumberMenu();
+    addNum.clickBuyDidButton();
+    addNum.verifyModalWindowOpen();
+    addNum.verifySelectStateField();
+    addNum.verifyAreaCodeField();
+    addNum.selectStateModeOption('Colorado');
+    addNum.selectNumberOneByOne(3);
+    addNum.selectNumberUsingDropdown();
+    addNum.clickSelectAllCheckbox(); 
+    addNum.verifyAssignNumbersRadioBtn();
+    addNum.verifyOrderNowBtn();
+    addNum.clickOnButton('Cancel');
+  });
+
+  it('Should Buy Phone number successfully', () => { //BAT-650,652
     addNum.clickPhoneNumberMenu();
     addNum.clickBuyDidButton();
     addNum.selectStateModeOption('Colorado');
@@ -101,11 +116,24 @@ describe('Add Phone Number flow', () => {
   it('Search Contact through the Area Code', () => {
     addNum.clickPhoneNumberMenu();
     addNum.clickBuyDidButton();
-    addNum.enterAreaCode('520');
+    addNum.enterAreaCode('303');
     // addNum.clickSearchButton();
-    addNum.verifySearchNumber('520');
-    addNum.closingDialog();
+    addNum.verifySearchNumber('303');
   });
+
+  it('Purchase Phone Number Using Area Code', () => { //BAT-651,653
+    addNum.selectPhoneNumber();
+    addNum.assignNumberToNumberGroup();
+    addNum.getFirstPhoneNumber();
+    addNum.clickOrderNowButton();
+    dashboard.verifySuccessMsg('Ordering started, please wait');
+    addNum.closingDialog();
+    cy.readFile('cypress/fixtures/testData.json').then((data) => {
+      addNum.deleteAddedPhoneNumber(data.BuyNumber);
+      addNum.handleAlertForDelete();
+    });
+    addNum.verifyDeletedToast();
+  })
 
   it('Verifies IVR Elements', () => {
     addNum.clickPhoneNumberMenu();
@@ -232,7 +260,19 @@ describe('Add Phone Number flow', () => {
     addNum.verifySaved();
   });
 
+  it('Verify that Number is assign in Call Queue', () => { 
+    addNum.clickPhoneNumberMenu();
+    addNum.clickBuyDidButton();
+    addNum.selectStateModeOption('Colorado')
+    addNum.selectPhoneNumber();
+    addNum.assignNumberToCallQueue();
+    addNum.verifyOrderNowBtn('enable');
+    addNum.clickOnButton('Cancel');
+  });
+
   it('Edit the Existing Queue', () => {
+    addNum.clickPhoneNumberMenu();
+    addNum.clickInboundCallMenu();
     addNum.clickeditQueue('Demotesting');
     addNum.verifyEditQueuePage();
     addNum.enterName('-edited');
@@ -594,6 +634,7 @@ describe('Add Phone Number flow', () => {
     addNum.clickDeleteDncValue('DNC NUMBERS', phone);
     addNum.handleAlertForDelete();
   });
+
   it('Search phone number using search box', () => {
     addNum.clickPhoneNumberMenu();
     addNum.enterPhoneToSearchKeyword(testData.Number);
@@ -601,16 +642,40 @@ describe('Add Phone Number flow', () => {
     addNum.verifyNumberNotVisible();
   });
 
-  it('Verify All the Elements on Phone Purchase', () => {
+  it('Verify that Upon selection of phone numbers Assign Numbers options are displayed', () => {
     addNum.clickPhoneNumberMenu();
     addNum.clickBuyDidButton();
-    addNum.verifyModalWindowOpen();
-    addNum.verifySelectStateField();
-    addNum.verifyAreaCodeField();
     addNum.selectStateModeOption('Colorado');
-    // addNum.selectPhoneNumberCheckbox(3);
-    // addNum.verifySelectedCount('3/');
-
-
+    addNum.selectPhoneNumber();
+    addNum.verifyAssignNumberLabel('exist');
+    addNum.verifyAssignNumbersRadioBtn();
+    addNum.selectPhoneNumber(); // for uncheck
+    addNum.verifyAssignNumberLabel('not exist');
   });
+
+  it('Verify that SELECTED numbers count is displayed at the top of the table view', () => {
+    addNum.selectPhoneNumber();
+    addNum.verifySelectedAndTotalCount(1);
+  });
+
+  it('Verify that If Search is modified cart is not reset', () => {
+    addNum.getFirstPhoneNumber();
+    cy.readFile('cypress/fixtures/testData.json').then((data) => {
+      addNum.verifyAddedPhoneNum(data.BuyNumber);
+    });
+    addNum.verifyOrderAmt();
+  });
+
+  it('Verify that When numbers are selected they are grouped by type in the cart', () => {
+    addNum.verifyItemTypes('Local Numbers');
+  });
+
+  it('Verify Bulk selection by dropdown by using Select numbers drop down', () => {
+    addNum.clickPhoneNumberMenu();
+    addNum.clickBuyDidButton();
+    addNum.selectStateModeOption('Colorado');
+    addNum.selectNumberDropdownAndVerifyCount();
+  });
+
+
 });

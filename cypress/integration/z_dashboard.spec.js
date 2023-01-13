@@ -728,6 +728,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Add a New Agent Script', () => {
+    Dash.closeModalTitle();
     Dash.clickAgentScripts();
     Dash.clickNewAgentScriptBtn();
     Dash.enterScriptName('Testing');
@@ -737,6 +738,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Add a New Agent Script with duplicate name', () => {
+    Dash.closeModalTitle();
     Dash.clickAgentScripts();
     Dash.clickNewAgentScriptBtn();
     Dash.enterScriptName('Testing');
@@ -747,6 +749,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Edit the Agent Script', () => {
+    Dash.closeModalTitle();
     Dash.clickAgentScripts();
     Dash.clickEditBtn('Testing');
     Dash.enterScriptName('DemoTesting');
@@ -756,6 +759,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('verify that user is able to add tags', () => {
+    Dash.closeModalTitle();
     Dash.clickAgentScripts();
     Dash.clickEditBtn('DemoTesting');
     Dash.clickEditorTag(['First Name','Last Name','Address','Email']);
@@ -768,12 +772,14 @@ describe('Dashboard Elements', () => {
   });
 
   it('Remove the Added Agent Script', () => {
+    Dash.closeModalTitle();
     Dash.clickAgentScripts();
     Dash.clickDeletebtn('DemoTesting');
     Dash.verifyScriptDelete('DemoTesting');
   });
 
   it('verify that user should not be able to save agent Script without entering Script name and Script Text', () => {
+     Dash.closeModalTitle();
     Dash.clickAgentScripts();
     Dash.clickNewAgentScriptBtn();
     Dash.clickOnButton('SAVE');
