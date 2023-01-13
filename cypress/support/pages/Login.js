@@ -1,7 +1,7 @@
 const emailInputField = 'input[name="email"]';
 const passwordInputField = 'input[name="password"]';
 const termsCheckBox = '.terms-row input';
-const signinButton = '.full_width_input .save';
+const signinButton = '.full_width_input [type="submit"]';
 const dashboardProfilePic = '.profile_pic';
 const logoutBtn = 'span[href*="logout"] div';
 const forgetPassword = '.login-forgot-link';

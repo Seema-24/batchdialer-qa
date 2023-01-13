@@ -1,5 +1,5 @@
 const phoneNumMenu = 'a[title="Phone System"]';
-const buyDidbtn = '//button[text()="BUY NUMBER"]';
+const buyDidbtn = (btn) =>  `//button[text()="${btn}"]`;
 const stateDrpdwn =
   '//div[@class="modal-body"]//div[contains(@class,"ss-select")]//span[contains(text(),"Select state")]';
 const searchBtn = '.modal-body button svg[data-icon="search"]';
@@ -15,9 +15,9 @@ const closeButton = '//button[contains(text(),"Close")]';
 const toast = '.Toastify__toast-body';
 const deleteToast =
   '//div[@class="Toastify__toast-body"]//div[contains(text(),"The number has been deleted")]';
-const agentRadioBtn = 'input[value="agent"]';
-const assignToDrpdwn =
-  '//div[@class="modal-content"]//div[span[contains(text(),"Agent")]]';
+const assignNumberRadioBtn = (radioBtn) => `input[value="${radioBtn}"]`;
+const assignToDrpdwn = (dropdown) => 
+  `//div[@class="modal-content"]//div[span[contains(text(),"${dropdown}")]]`;
 const ivrAttendent = 'a[title="IVR/Auto Attendant"]';
 const newIvr = '//button[text()=" NEW IVR"]';
 const Name = 'input[name="name"]';
@@ -154,15 +154,16 @@ const showOnCampaignPage = `//label[contains(@class,"radio_cstm")][text()="Displ
 const ungroupedCallResults = '.group-row.noedit + .group-inner .disposition';
 const dropdownItems = '.show .dropdown-item';
 const phoneNumberCheckbox = (checkboxCount) =>
-  `(//div[@class="tr"]//div[@class="td"]//span[@class="checkmark"])[${checkboxCount}]`;
+  `(//div[@class="td"]//span[@class="checkmark"])[${checkboxCount}]`;
 const actionsDropdown = '.dids-selected .dropdown button';
-const selectedCount = '.dids-selected .dids-selected-text span';
+const selectedCount = '.dids-selected .dids-selected-text span.bat-blue';
 const selectAllCheckbox =
   '//div[contains(@class,"resizable-table-thead")]//span[@class="checkmark"]';
 const totalNumbers = '.resizable-table-tbody .tr';
 const modalWindow = '.modal-content';
 const modalContentDropdown = '.modal-content .ss-select-control';
 const callResultName = '.disposition';
+const itemType = '.table-order-tbody__td';
 
 export default class PhoneNum {
   clickCallResultDeleteBtn() {
@@ -385,7 +386,7 @@ export default class PhoneNum {
   }
 
   clickBuyDidButton() {
-    cy.xpath(buyDidbtn).click();
+    cy.xpath(buyDidbtn('BUY NUMBER')).click();
   }
 
   selectStateModeOption(state) {
@@ -434,7 +435,7 @@ export default class PhoneNum {
 
   verifyAddedPhoneNum(num) {
     cy.xpath(
-      `//div[contains(@class,"resizable-table-tbody")]//div[@class="td"][text()="${num}"]`,
+      `//div[contains(@class,"resizable-table-tbody")]//div[contains(@class,"td")][text()="${num}"]`,
       { timeout: 10000 }
     ).should('be.visible');
   }
@@ -478,8 +479,8 @@ export default class PhoneNum {
   }
 
   assignAgentUser(usrName) {
-    cy.get(agentRadioBtn).check({ force: true });
-    cy.xpath(assignToDrpdwn).first().click();
+    cy.get(assignNumberRadioBtn('agent')).check({ force: true });
+    cy.xpath(assignToDrpdwn('Agent')).first().click();
     cy.get(dropdownOptions)
       .contains(usrName)
       .then((option) => {
@@ -946,11 +947,11 @@ export default class PhoneNum {
   }
 
   verifySelectedCount(count) {
-    cy.get(selectedCount).should('contain.text', count);
+    cy.get(selectedCount).last().should('contain.text', count);
   }
 
   clickSelectAllCheckbox() {
-    cy.xpath(selectAllCheckbox).click();
+    cy.xpath(selectAllCheckbox).last().click();
   }
 
   getTotalNumbersAvailable() {
@@ -992,5 +993,130 @@ export default class PhoneNum {
     cy.get(areaCode).should('be.visible');
   }
 
+  selectNumberOneByOne(number) {
+    for (let i = 1; i <= number; i++) {
+      cy.get(firstNumberChkBx, { timeout: 30000 }).eq(i).click();
+    }
+  }
+
+  selectNumberUsingDropdown() {
+    cy.get('.ss-select-placeholder').click();
+    cy.get('.ss-select-option').then((opt) => {
+      for (let i = 0; i < opt.length; i++) {
+        let elemnt = opt[i].textContent.trim();
+        cy.contains(elemnt).click({force:true});
+
+        if(elemnt !== 'Unselect All') { 
+          cy.get('.ss-select-value-label').then(($ele) => {
+            if($ele.text().includes('Select All')) {
+              elemnt= 'Select All';
+            }
+            cy.get(`[title*="${elemnt}"]`).click({force:true});
+          });
+        }
+      }
+    });
+  }
+
+  verifyOrderNowBtn(status) {
+    if(status === 'disable') {
+      cy.xpath(buyDidbtn(' Order Now')).should('be.disabled')
+    } else {
+      cy.xpath(buyDidbtn(' Order Now')).should('be.enabled')
+    }
+  }
+
+  checkAssignNumberToAgent() {
+    cy.get(assignNumberRadioBtn('agent')).check();
+    cy.xpath(assignToDrpdwn('Agent')).should('be.visible');
+  }
+
+  checkAssignNumberToGroup() {
+    cy.get(assignNumberRadioBtn('group')).check();
+    cy.xpath(assignToDrpdwn('Number Group')).should('be.visible');
+  }
+
+  checkAssignNumberToCallQueue() {
+    cy.get(assignNumberRadioBtn('queue')).check();
+    cy.xpath(assignToDrpdwn('Call Queue')).should('be.visible');
+  }
+
+  checkAssignNumberToVoicemail() {
+    cy.get(assignNumberRadioBtn('voicemail')).check();
+    cy.xpath('//span[text()="Default"]').should('be.visible');
+  }
+
+  verifyAssignNumbersRadioBtn() {
+    this.checkAssignNumberToAgent();
+    this.checkAssignNumberToGroup();
+    this.checkAssignNumberToCallQueue();
+    this.checkAssignNumberToVoicemail();
+  }
+
+  assignNumberToNumberGroup() {
+    this.checkAssignNumberToGroup();
+    cy.xpath(assignToDrpdwn('Number Group')).first().click();
+    cy.get(options).first().click();
+  }
+
+  assignNumberToCallQueue() {
+    this.checkAssignNumberToCallQueue();
+    cy.xpath(assignToDrpdwn('Call Queue')).first().click();
+    cy.get(options).first().click();
+  }
+
+  verifyAssignNumberLabel(status) {
+    if(status === 'exist') {
+      cy.get('.dids-order-label').should('be.visible');
+    } else {
+      cy.get('.dids-order-label').should('not.exist');
+    }
+  }
+
+  verifySelectedAndTotalCount(num) {
+    cy.get('.ss-select-placeholder').click();
+    cy.contains('Select All').then(txt => {
+      let val= txt.text().match(/\d+/g)
+      this.verifySelectedCount(num+'/'+val);
+    });
+  }
+
+  verifyOrderAmt() {
+    cy.get('.table-order-amount').should('be.visible')
+  }
+
+  verifyItemTypes(type) {
+    cy.get(itemType).should('contain.text', type)
+  }
+
+
+  verifyBulkPhoneNumber() {
+    this.verifySelectedCount('0/');
+    this.clickSelectAllCheckbox();
+    this.verifySelectedAndTotalCount();
+  }
+
+  selectNumberDropdownAndVerifyCount() {
+    cy.get('.ss-select-placeholder',{timeout:30000}).click();
+    cy.get('.ss-select-option').then((opt) => {
+      for (let i = 0; i < opt.length; i++) {
+        let elemnt = opt[i].textContent.trim();
+        cy.contains(elemnt).click({force:true});
+
+        if(elemnt !== 'Unselect All') { 
+          cy.get('.ss-select-value-label').then(($ele) => {
+            if($ele.text().includes('Select All')) {
+              elemnt= 'Select All';
+            }
+            cy.get(`[title*="${elemnt}"]`).then(txt => {
+              let value= txt.text().match(/\d+/g);
+              this.verifySelectedCount(value+'/');
+            });
+            cy.get(`[title*="${elemnt}"]`).click({force:true});
+          });
+        }
+      }
+    });
+  }
 
 }
