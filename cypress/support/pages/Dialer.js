@@ -41,7 +41,7 @@ const campaignAnsweredCount = (campaignName) =>
   `(//div[contains(.,"${campaignName}")]/following-sibling::div)[3]`;
 const reportsMenu = 'a[title="Reports"]';
 const subMenu = (subMenuName) => `.subitem a[title="${subMenuName}"]`;
-const softPhoneOpen = '.stg-softphone-wide';
+const softPhoneOpen = '.stg-softphone-wrapper';
 const inqueuePhoneNumber = `(//span[text()="In Queue"]/parent::div/following-sibling::div)[3]`;
 const callingHoursDropdown = `//label[text()="Calling Hours"]/following-sibling::div`;
 const timeFromDropdown = `(//label[text()="Sunday"]/ancestor::div/following-sibling::div//div[contains(@class,"ss-select-control")])[1]`;
@@ -738,6 +738,7 @@ export default class Dialer {
   }
 
   closeSoftCloseBtn() {
+    cy.wait(1000);
     cy.get('body').then($body => {
       if($body.find(softPhoneOpen).length) {
         cy.get(closeSoftBtn).click();

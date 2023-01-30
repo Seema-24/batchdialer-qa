@@ -59,7 +59,7 @@ const statusOptions = '.ss-select-option span';
 const toast = '.Toastify__toast-body';
 const contactEditAccess = `input[name="contacteditaccess"] + span.checkmark`;
 const userThreeDotMenu = (firstName, lastName) =>
-  `//div[@class="tr"][div[@class="td"][text()="${firstName} ${lastName}"]]//div[@class="dropdown"]`;
+  `//div[@class="tr"][div[@class="td"][text()="${firstName} ${lastName}"]]//div[@class="dropdown"]//img[@alt="Menu"]`;
 const dropdownItems = '.show .dropdown-item';
 const searchedUser = (fstName, lstName) =>
   `//div[contains(@class,"resizable-table-tbody")]//div[@class="tr"]//div[@class="td"][text()="${fstName} ${lstName}"]`;
@@ -91,7 +91,7 @@ export default class User {
   }
 
   clickAddNewUserButton() {
-    cy.xpath(addNewUser).click();
+    cy.xpath(addNewUser).click({force:true});
   }
 
   chooseUserRole(role) {
@@ -147,15 +147,12 @@ export default class User {
   }
 
   deleteAddedContact(fstaName, lstName) {
-    cy.xpath(userThreeDotMenu(fstaName, lstName))
-      .first()
-      .scrollIntoView()
-      .click();
+   this.clickUserThreeDotMenu(fstaName, lstName);
     this.clickOnDropdownItem('Delete');
   }
 
   clickUserThreeDotMenu(firstName, lastName) {
-    cy.xpath(userThreeDotMenu(firstName, lastName)).first().click();
+    cy.xpath(userThreeDotMenu(firstName, lastName)).first().click({force:true});
   }
 
   clickOnDropdownItem(itemName) {
@@ -210,7 +207,7 @@ export default class User {
 
   clickRoleDropdown() {
     this.clearSearch();
-    cy.get(rolesDropdown).click();
+    cy.get(rolesDropdown).click({force:true});
   }
 
   clickAdminstratorRole(role) {
@@ -240,7 +237,7 @@ export default class User {
   }
 
   clickAgentStatusHeading() {
-    cy.xpath(AgentStatuses).scrollIntoView().click();
+    cy.xpath(AgentStatuses).scrollIntoView().click({force:true});
   }
 
   verifyAgentStatusesType(statuses) {
@@ -312,7 +309,7 @@ export default class User {
   verifyUserEditButton() {
     cy.reload();
     ignoreSpeedTestPopup();
-    cy.get('.resizable-table-tbody .dropdown').first().click();
+    cy.get('.resizable-table-tbody .dropdown img').first().click({force:true});
     cy.xpath(userEditButton).should('be.visible');
   }
 
@@ -321,7 +318,7 @@ export default class User {
   }
 
   clickAddAgentStatus() {
-    cy.xpath(addAgentStatus, { timeout: 5000 }).click();
+    cy.xpath(addAgentStatus, { timeout: 5000 }).click({force:true});
   }
 
   enterAgentStatusName(name) {
@@ -491,12 +488,12 @@ export default class User {
   }
 
   verifyChangePresenceVisible(firstName, lastName) {
-    cy.xpath(userThreeDotMenu(firstName, lastName)).first().click();
+    this.clickUserThreeDotMenu(firstName, lastName);
     cy.xpath(changePresenceIcon).should('be.visible');
   }
 
   clickUserLogoutIcon(firstName, lastName) {
-    cy.xpath(userThreeDotMenu(firstName, lastName)).first().click();
+    this.clickUserThreeDotMenu(firstName, lastName);
     cy.xpath(userLogoutIcon).click();
   }
 
@@ -551,9 +548,7 @@ export default class User {
   }
 
   clickUserEditButton(userFirstName, userLastName) {
-    cy.xpath(userThreeDotMenu(userFirstName, userLastName))
-      .scrollIntoView()
-      .click();
+    this.clickUserThreeDotMenu(userFirstName, userLastName);
     this.clickOnDropdownItem('Edit');
   }
 

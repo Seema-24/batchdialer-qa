@@ -116,9 +116,9 @@ describe('Add Phone Number flow', () => {
   it('Search Contact through the Area Code', () => {
     addNum.clickPhoneNumberMenu();
     addNum.clickBuyDidButton();
-    addNum.enterAreaCode('303');
+    addNum.enterAreaCode('720');
     // addNum.clickSearchButton();
-    addNum.verifySearchNumber('303');
+    addNum.verifySearchNumber('720');
   });
 
   it('Purchase Phone Number Using Area Code', () => { //BAT-651,653
@@ -309,9 +309,24 @@ describe('Add Phone Number flow', () => {
     addNum.verifyCancelBtn();
     addNum.enterDncNumber('9999999999');
     addNum.clickSaveBtn();
+  });
+
+  it('verify that user is Able to view all DNC numbers', () => {
     cy.wait(1000);
     addNum.verifyAddedValue('(999) 999-9999');
   });
+
+  it('verify that user is able to search DNC Numbers', () => {
+    addNum.enterDncValue('DNC NUMBERS','9999999999');
+    addNum.verifyAddedValue('(999) 999-9999');
+    addNum.verifyDncValueLength('DNC NUMBERS',1);
+  });
+
+  // it('verify that user is export DNC Numbers in csv format', () => {
+  //   addNum.clickExportBtn();
+  //   cy.wait(1000)
+  //   addNum.verifyDownloadFile('dnc-export.csv');
+  // });
 
   it('Delete Added DNC Number', () => {
     addNum.clickDeleteDncValue('DNC NUMBERS', '(999) 999-9999');

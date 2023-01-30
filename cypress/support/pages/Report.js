@@ -16,7 +16,7 @@ const table = '.resizable-table';
 const campaignStatusDropdown =
   "//span[text()='All Statuses']/ancestor::div[contains(@class,'inverted')]";
 const campaignCalander = '.dropdown-menu';
-const campCalanderDropdown = '.date-picker';
+const campCalanderDropdown = '.date-picker .fakeinput__overflow';
 const campCalanderTimeline = '.links';
 const calenderMonthDropdown = '.DayPicker-Caption';
 const calenderDays = '.DayPicker-Weekdays';
@@ -143,7 +143,7 @@ export default class Report {
   }
 
   clickCampaignCalanderDropdown() {
-    cy.get(campCalanderDropdown).click();
+    cy.get(campCalanderDropdown).click({force:true});
   }
 
   verifyCalender() {
@@ -249,7 +249,7 @@ export default class Report {
   }
 
   clickStatusDropdown() {
-    cy.contains(statusdropdown).click();
+    cy.contains(statusdropdown).click({force:true});
   }
 
   selectCampaignStatus(status) {

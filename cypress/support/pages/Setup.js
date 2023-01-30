@@ -13,7 +13,7 @@ const radioBtn = (mode) =>
   mode +
   "')]//span[@class='checkmark']";
 const userEditBtn = (firstName, lastName) =>
-  `//div[@class="tr"][div[@class="td"][text()="${firstName} ${lastName}"]]//div[@class="dropdown"]`;
+  `//div[@class="tr"][div[@class="td"][text()="${firstName} ${lastName}"]]//div[@class="dropdown"]//img[@alt="Menu"]`;
 const emailField = 'input[name="email"]';
 const cancelBtn = '//button[contains(text(),"CANCEL")]';
 const passwordChangeBtn = '.changebt';
@@ -287,7 +287,7 @@ export default class Setup {
       ) {
         cy.log('Admin already exist');
         handlePoorConnectionPopup();
-        cy.xpath(userEditBtn(firstName, lastName)).click();
+        cy.xpath(userEditBtn(firstName, lastName)).click({force:true});
         this.clickDropdownItem('Edit');
         cy.get(emailField).then((el) => {
           const value = el.val();

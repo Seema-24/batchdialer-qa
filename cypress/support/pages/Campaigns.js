@@ -84,7 +84,7 @@ const scheduleTable = '.schedule-table';
 const scheduleCancelButton =
   "//div[@class='modal-footer']//button[text()=' CANCEL']";
 const scheduleCheckmark = `//label[text()="Sunday"]//span[@class="checkmark"]`;
-const schedule = `//label[text()='Sunday']/ancestor::div[contains(@class,"form-group")]//div[contains(@class,'ss-select') and not(contains(@class,'fakeinput'))]`;
+const schedule = `//label[text()='Sunday']/ancestor::div[contains(@class,"row")]//div[contains(@class,'ss-select') and not(contains(@class,'fakeinput'))]`;
 const checkSelectAll =
   "//div[@class='schedule-table']//div[contains(@class,'ss-select') and not(contains(@class,'fakeinput'))]";
 const selectAllCheckbox =
@@ -126,7 +126,7 @@ const leadSheetDropdown = `//div[label[@class="form-label" and text()="Lead Shee
 const tableRefreshBtn = 'span[title="Refresh"]';
 const campaignStatus = (campaignName) =>
   `//span[text()="${campaignName}"]//ancestor::div[@class="tr"]//div[contains(@class,"progress-status")]/following-sibling::span`;
-const softphoneNextLead = '.stg-softphone-next-lead';
+const softphoneNextLead = '.stg-softphone-next-lead' //'Next Lead';
 const softphoneIcon = '.nav-item .softphone-icon';
 const dropdownItem = '.show.dropdown-menu .dropdown-item';
 const modalTitle = '.modal-content .modal-title';
@@ -396,7 +396,7 @@ export default class Campaign {
   }
 
   searchCampaign(campname) {
-    cy.get(searchBox).type(campname);
+    cy.get(searchBox).clear({force:true}).type(campname);
   }
 
   verifyCampaignNameField() {
@@ -711,7 +711,7 @@ export default class Campaign {
   }
 
   enterNewCampaignName(name) {
-    cy.get(newCampaignName).wait(1000).clear().type(name);
+    cy.get(newCampaignName).wait(1000).clear({force:true}).type(name);
   }
 
   removeCheckBox() {
@@ -766,6 +766,7 @@ export default class Campaign {
   }
 
   clickSoftphoneNextLead() {
+    //cy.get('.btn-primary').contains(softphoneNextLead).click();
     cy.get(softphoneNextLead).click();
   }
 
@@ -807,7 +808,8 @@ export default class Campaign {
   }
 
   selectDialingMode(modeName) {
-    cy.xpath(dialingMode(modeName)).click();
+    cy.get('object.loader').should('not.exist');
+    cy.xpath(dialingMode(modeName)).click({force:true});
   }
 
   verifyDialingMode() {
@@ -880,7 +882,7 @@ export default class Campaign {
   }
 
   selectCallConnectType(type) {
-    cy.xpath(callConnectType(type)).click();
+    cy.xpath(callConnectType(type)).click({force:true});
   }
 
   verifyCallConnectType() {
@@ -889,7 +891,7 @@ export default class Campaign {
   }
 
   enterSimultaneousDials(no) {
-    cy.xpath(dialingBehaviour('Simultaneous Dials p/Agent')).clear().type(no);
+    cy.xpath(dialingBehaviour('Simultaneous Dials p/Agent')).clear({force:true}).type(no);
   }
 
   verifySimultaneousDialsField() {
@@ -907,7 +909,7 @@ export default class Campaign {
   }
 
   enterAbandonedTimeout(time) {
-    cy.xpath(dialingBehaviour('Abandonment Timeout, sec')).clear().type(time);
+    cy.xpath(dialingBehaviour('Abandonment Timeout, sec')).clear({force:true}).type(time);
   }
 
   verifyAbandonedTimeout() {
@@ -923,7 +925,7 @@ export default class Campaign {
   }
 
   enterMaxAttempts(no) {
-    cy.xpath(dialingBehaviour('Max Attempts Per Record')).clear().type(no);
+    cy.xpath(dialingBehaviour('Max Attempts Per Record')).clear({force:true}).type(no);
   }
 
   verifyMaxAttempts() {
@@ -932,7 +934,7 @@ export default class Campaign {
 
   enterRetryTime(duration) {
     for (let i = 0; i < duration; i++) {
-      cy.xpath(retryTimeplusIcon).click();
+      cy.xpath(retryTimeplusIcon).click({force:true});
       this.clickOnButton('Got it');
     }
   }
@@ -1004,7 +1006,7 @@ export default class Campaign {
   }
 
   verifyCreatedAgentsInField(agent) {
-    cy.xpath(cardDropdowns('Agents')+'//span[@class="ss-select-value-label multiple"]').should('have.text',agent);
+    cy.xpath(cardDropdowns('Agents')+'//span[contains(@class,"multiple")]').should('have.text',agent);
   }
 
   deleteAgent(agent) {
@@ -1092,7 +1094,7 @@ export default class Campaign {
   selectQueueCallMusicDropdown(music) {
     cy.get('body').then($body => {
       if($body.text().includes('In Queue Call Music')) {
-        cy.xpath(campBehviorDropdown('In Queue Call Music')).click();
+        cy.xpath(campBehviorDropdown('In Queue Call Music')).click({force:true});
         this.selectOptions(music);
       }
     })
@@ -1101,7 +1103,7 @@ export default class Campaign {
   clickQueueCheckbox() {
     cy.get('body').then($body => {
       if($body.text().includes('In Queue Call Music')) {
-        cy.xpath(queueCheckbox('In Queue Call Music')).click();
+        cy.xpath(queueCheckbox('In Queue Call Music')).click({force:true});
       }
     })
   }

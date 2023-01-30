@@ -6,7 +6,7 @@ import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, select
 let fixtureData;
 let testData;
 let randNum = Math.floor(Math.random() * 1000);
-let AgentName = 'demoTest automation';
+let AgentName = 'demo Agent';
 const addCamp = new Campaign();
 const Dial = new Dialer();
 const report = new Report();

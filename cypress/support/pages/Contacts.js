@@ -49,7 +49,7 @@ const importCmpltToast =
   '//div[@class="Toastify__toast-body"]//div[contains(text(),"Import complete")]';
 const searchBox = '.search-box';
 const allList = '.form-group .ss-select-control';
-const newContactBtn = '.create_col button';
+const newContactBtn = '.button-dropdown button';
 const saleMadeCheckbox = 'input[name="salemade"]';
 const appointmentMadeCheckbox = 'input[name="appointmentmade"]';
 const selectionCountCheckbox =
@@ -174,7 +174,7 @@ export default class Contacts {
   }
 
   clickAddNewContactButton() {
-    cy.xpath(addNewContact).click();
+    cy.xpath(addNewContact).click({force:true});
   }
 
   selctCreateNewContactOption() {
@@ -232,7 +232,7 @@ export default class Contacts {
   }
 
   clickFilterButton() {
-    cy.get(filterButton).first().click();
+    cy.get(filterButton).first().click({force:true});
   }
 
   selectCallResult(result) {
@@ -646,7 +646,7 @@ export default class Contacts {
   }
 
   enterKeywordToSearch(search) {
-    cy.get(searchBox).type(search);
+    cy.get(searchBox).type(search,{force:true});
   }
 
   verifySearchResult(result) {

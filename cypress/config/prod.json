@@ -19,5 +19,8 @@
     "twilioAuthToken": "fd1a59ccfcfb68bfc7f8ed068034c2e0",
     "firstPromoterUsername": "sandeepk@batchservice.com",
     "firstPromoterPassword": "Kumar@12345"
-  }
+  },
+  "testFiles" : [
+    "z_prod_highPriority.spec.js"
+  ]
 }
