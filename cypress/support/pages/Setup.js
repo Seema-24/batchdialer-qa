@@ -380,7 +380,7 @@ export default class Setup {
 
   clickPhoneEditButton(number) {
     handlePoorConnectionPopup();
-    cy.xpath(phoneEditButton(number)).click({force:true});
+    cy.xpath(phoneEditButton(number)).click();
     this.clickDropdownItem('Edit Number');
   }
 
