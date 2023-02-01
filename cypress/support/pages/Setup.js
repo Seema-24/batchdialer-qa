@@ -171,7 +171,7 @@ export default class Setup {
       ) {
         cy.log('Agent already exist');
         handlePoorConnectionPopup();
-        cy.xpath(userEditBtn(firstName, lastName)).click();
+        cy.xpath(userEditBtn(firstName, lastName)).click({force:true});
         this.clickDropdownItem('Edit');
         cy.get(emailField).then((el) => {
           const value = el.val();
@@ -229,7 +229,7 @@ export default class Setup {
       ) {
         cy.log('Supervisor already exist');
         handlePoorConnectionPopup();
-        cy.xpath(userEditBtn(firstName, lastName)).click();
+        cy.xpath(userEditBtn(firstName, lastName)).click({force:true});
         this.clickDropdownItem('Edit');
         cy.get(emailField).then((el) => {
           const value = el.val();
@@ -380,7 +380,7 @@ export default class Setup {
 
   clickPhoneEditButton(number) {
     handlePoorConnectionPopup();
-    cy.xpath(phoneEditButton(number)).click();
+    cy.xpath(phoneEditButton(number)).click({force:true});
     this.clickDropdownItem('Edit Number');
   }
 
