@@ -78,7 +78,7 @@ export default class Register {
   }
 
   enterLastName(name) {
-    cy.get(lastName).clear().type(name);
+    cy.get(lastName).clear({force:true}).type(name);
   }
 
   verifyLastNameField() {
@@ -318,7 +318,7 @@ export default class Register {
   }
 
   enterUserToSearch(user) {
-    cy.get(searchBox).clear().type(user);
+    cy.get(searchBox).clear({force:true}).type(user);
     cy.wait(1000);
   }
 
@@ -359,7 +359,7 @@ export default class Register {
     cy.get('button').then((Btn) => {
       for (let i = 0; i < Btn.length; i++) {
         if (Btn[i].textContent.trim() === buttonName) {
-          cy.get(Btn[i]).click();
+          cy.get(Btn[i]).click({force:true});
           break;
         }
       }

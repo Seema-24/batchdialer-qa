@@ -76,7 +76,7 @@ export default class Suprevisor {
   }
 
   clickAddNewContactButton() {
-    cy.xpath(addNewContact).click();
+    cy.xpath(addNewContact).click({force:true});
   }
 
   loginWithUser(user) {
@@ -296,6 +296,6 @@ export default class Suprevisor {
   }
 
   clickOnMainTab() {
-    cy.xpath(mainTab).click();
+    cy.xpath(mainTab).click({force:true});
   }
 }

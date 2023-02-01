@@ -261,6 +261,7 @@ const userRoleEmail = '.group-row-role .group-row-role__left__email';
 const activeAgentCount = '(//div[text()="Agents"]/parent::div/child::div/span)[1]';
 const scriptTag = '.prose-mirror-editor-tags div';
 const scriptToolbar = (type) => `div:nth-of-type(${type}).prosemirror-toolbar-group button`;
+const changeCampaign = '.user__dropdown-icon.campaign-icon';
 
 export default class Dashboard {
   clickDashboard() {
@@ -448,6 +449,15 @@ export default class Dashboard {
       .then((option) => {
         option[0].click();
       });
+    cy.wait(1000);
+    cy.get('body').then($body => {
+      if($body.find('.modal-body .ss-select').length) {
+        cy.log('Select the campaign');
+      } else {
+        this.clickUserProfile();
+        this.clickOnChangeCampaign();
+      }
+    })
     // cy.contains('FirstCampaign').click();
     cy.get('.modal-body .ss-select').click();
     cy.get('.ss-select-option', { timeout: 5000 }).then((el) => {
@@ -2013,6 +2023,10 @@ export default class Dashboard {
   selectRecording(record) {
     cy.xpath('//span[text() ="Select from Library"]').click();
     this.selectOption(record);
+  }
+
+  clickOnChangeCampaign() {
+    cy.get(changeCampaign).click();
   }
 
 

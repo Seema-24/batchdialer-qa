@@ -32,6 +32,7 @@ export function skipTourGuidePopup() {
       cy.wait(1000);
     } else if ($body.find(speedTestPopup).length) {
       ignoreSpeedTestPopup();
+      skipTourGuidePopup();
     }
   })
 }

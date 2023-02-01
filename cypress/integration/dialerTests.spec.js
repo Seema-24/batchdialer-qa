@@ -1112,7 +1112,7 @@ describe('Outbound Calling Scenarios', () => {
       cy.wait(1000);
       Dial.clickOnRadioButton('Ringing Sound');
       Dial.clickOnCheckboxButton('Answering Machine Detection');
-      Dial.enterSimultaneousDialsPerAgent('1');
+      Dial.enterSimultaneousDialsPerAgent('3');
       Dial.enterMaxAttemptPerRecord('3');
       Dial.enterRetryTime('1');
       Dial.selectRetryTimeDropdown('min');
@@ -1129,73 +1129,73 @@ describe('Outbound Calling Scenarios', () => {
       Dial.verifySuccessToastMessage('Campaign Created');
     });
 
-    it('Create a New Contact for Campaign', () => {
-      contact.clickingOnContactOption();
-      contact.verifyContactExisting('6029227636'); 
-      contact.clickAddNewContactButton();
-      contact.selctCreateNewContactOption();
-      contact.enterFirstName('Twilio');
-      contact.enterLastName('Number');
-      contact.enterAddress('anyAddress');
-      contact.enterCity('Tucson');
-      contact.selectState('Arizona');
-      contact.enterZipCode('85701');
-      contact.enterEmail('test@test.com');
-      contact.enterPhoneNumber('6029227636'); //5103256012
-      contact.clickSaveButton();
-      contact.verifySuccessToast();
-    });
-
-    it('Assign the Added Contact to the Created Campaign', () => {
-      Dial.clickOnMenu('Contacts');
-      Dial.clickContactThreeDotMenu('Twilio', 'Number');
-      Dial.clickOnDropdownItem('Add to Campaign');
-      Dial.verifyModalTitle('Select campaign');
-      Dial.selectCampaignToAssign(campaignName);
-      Dial.clickOnButton('Continue');
-      Dial.verifySuccessToastMessage('Contacts added to campaign');
-      cy.reload();
-      ignoreSpeedTestPopup();
-      cy.wait(2000);
-    });
-
-    // it('Upload the List of Contacts', () => {
-    //   Dial.clickOnMenu('Contacts');
-    //   Dial.clickOnSubMenu('Contact Lists');
-    //   contact.verifyListExisting(listName);
-    //   contact.clickImportContacts();
-    //   contact.uploadFileForContact(listName);
-    //   cy.wait(2000);
-    //   Dial.selectMappingFields([
-    //     'Phone Number',
-    //     'First Name',
-    //     'Last Name',
-    //     'Email',
-    //     'Zip',
-    //     'Address',
-    //     'Country',
-    //     'State',
-    //     'City',
-    //   ]);
-    //   cy.wait(2000)
-    //   contact.clickNextButton();
-    //   contact.clickSubmitButton();
-    //   contact.verifyImportStartedToast();
-    //   contact.verifyImportContactCompleteToast();
+    // it('Create a New Contact for Campaign', () => {
+    //   contact.clickingOnContactOption();
+    //   contact.verifyContactExisting('6029227636'); 
+    //   contact.clickAddNewContactButton();
+    //   contact.selctCreateNewContactOption();
+    //   contact.enterFirstName('Twilio');
+    //   contact.enterLastName('Number');
+    //   contact.enterAddress('anyAddress');
+    //   contact.enterCity('Tucson');
+    //   contact.selectState('Arizona');
+    //   contact.enterZipCode('85701');
+    //   contact.enterEmail('test@test.com');
+    //   contact.enterPhoneNumber('6029227636'); //5103256012
+    //   contact.clickSaveButton();
+    //   contact.verifySuccessToast();
     // });
 
-   // it('Assign the Imported List to the Created Campaign', () => {
+    // it('Assign the Added Contact to the Created Campaign', () => {
     //   Dial.clickOnMenu('Contacts');
-    //   Dial.clickOnSubMenu('Contact Lists');
-    //   Dial.clickListAssignToCampaign(listName);
-    //   Dial.verifyModalTitle('Assign To Campaign');
-    //   Dial.chooseCampaignToAssign(campaignName);
+    //   Dial.clickContactThreeDotMenu('Twilio', 'Number');
+    //   Dial.clickOnDropdownItem('Add to Campaign');
+    //   Dial.verifyModalTitle('Select campaign');
+    //   Dial.selectCampaignToAssign(campaignName);
     //   Dial.clickOnButton('Continue');
-    //   Dial.verifySuccessToastMessage('List has been assigned to the campaigns');
+    //   Dial.verifySuccessToastMessage('Contacts added to campaign');
     //   cy.reload();
     //   ignoreSpeedTestPopup();
-    //   cy.wait(1000);
+    //   cy.wait(2000);
     // });
+
+    it('Upload the List of Contacts', () => {
+      Dial.clickOnMenu('Contacts');
+      Dial.clickOnSubMenu('Contact Lists');
+      contact.verifyListExisting(listName);
+      contact.clickImportContacts();
+      contact.uploadFileForContact(listName);
+      cy.wait(2000);
+      Dial.selectMappingFields([
+        'Phone Number',
+        'First Name',
+        'Last Name',
+        'Email',
+        'Zip',
+        'Address',
+        'Country',
+        'State',
+        'City',
+      ]);
+      cy.wait(2000)
+      contact.clickNextButton();
+      contact.clickSubmitButton();
+      contact.verifyImportStartedToast();
+      contact.verifyImportContactCompleteToast();
+    });
+
+   it('Assign the Imported List to the Created Campaign', () => {
+      Dial.clickOnMenu('Contacts');
+      Dial.clickOnSubMenu('Contact Lists');
+      Dial.clickListAssignToCampaign(listName);
+      Dial.verifyModalTitle('Assign To Campaign');
+      Dial.chooseCampaignToAssign(campaignName);
+      Dial.clickOnButton('Continue');
+      Dial.verifySuccessToastMessage('List has been assigned to the campaigns');
+      cy.reload();
+      ignoreSpeedTestPopup();
+      cy.wait(1000);
+    });
 
     it('Change status to Available', () => {
       Dial.selectStatus('Available');
@@ -1204,7 +1204,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectCampaign(campaignName);
       Dial.clickConfirmButton();
       Dial.verifySoftPhoneOpen();
-      Dial.verifySoftphoneLinesNumber(1);
+      Dial.verifySoftphoneLinesNumber(3);
     });
 
     it('Verify the Abandoned Time Out of 15 sec and call should be marked as Abandoned', () => {
@@ -1234,22 +1234,22 @@ describe('Outbound Calling Scenarios', () => {
       Dial.verifySuccessToastMessage('Campaign Archived');
     });
 
-    // it('Delete the Uploaded List', () => {
-    //   Dial.clickOnMenu('Contacts');
-    //   Dial.clickOnSubMenu('Contact Lists');
-    //   Dial.clickListDeleteButton(listName);
-    //   contact.handleAlertForDelete();
-    //   Dial.verifySuccessToastMessage('List deleted');
-    // });
-
-    it('Should delete the added Contact', () => {
-      contact.clickToCloseSoftphone();
-      contact.clickingOnContactOption();
-      contact.deleteAddedContacts('Twilio', 'Number');
+    it('Delete the Uploaded List', () => {
+      Dial.clickOnMenu('Contacts');
+      Dial.clickOnSubMenu('Contact Lists');
+      Dial.clickListDeleteButton(listName);
       contact.handleAlertForDelete();
-      contact.verifyDeletedToast();
-      Dial.clickSoftphoneButton();
+      Dial.verifySuccessToastMessage('List deleted');
     });
+
+    // it('Should delete the added Contact', () => {
+    //   contact.clickToCloseSoftphone();
+    //   contact.clickingOnContactOption();
+    //   contact.deleteAddedContacts('Twilio', 'Number');
+    //   contact.handleAlertForDelete();
+    //   contact.verifyDeletedToast();
+    //   Dial.clickSoftphoneButton();
+    // });
   });
 
   describe('Campaign - Call Recording Feature', () => {

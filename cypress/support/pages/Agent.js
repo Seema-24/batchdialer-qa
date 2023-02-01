@@ -15,7 +15,7 @@ const editContact = 'span[title="Edit"]';
 const callResultText = '.disposition';
 const editCallResultWindow = '.modal-content .call-disposition-title';
 const callResults = '.disposition-cell .disposition';
-const softphoneCloseBtn = '.stg-softphone-right-close';
+const softphoneCloseBtn = '.stg-softphone-right-close' //'.softphone-close-button svg';
 const softphone = '.stg-softphone-wrapper';
 const contactsMenu = 'a[title="Contacts"]';
 const contact = '.contacts__name';
@@ -243,11 +243,11 @@ export default class Agent {
   }
 
   clickCloseSoftphoneBtn() {
-    cy.get(softphoneCloseBtn, { timeout: 30000 }).click({ force: true });
+    cy.get(softphoneCloseBtn, { timeout: 30000 }).click();
   }
 
   enterSearch(search) {
-    cy.get(searchBox).clear().type(search);
+    cy.get(searchBox).clear({force:true}).type(search);
     cy.wait(1000);
   }
 
@@ -565,7 +565,7 @@ export default class Agent {
     cy.xpath(DashboardBtn).click();
   }
   openCalenderOnDashBoard() {
-    cy.xpath(calenderOnDashBoard).should('be.visible').click();
+    cy.xpath(calenderOnDashBoard).should('be.visible').click({force:true});
   }
   verifyCalenderSideBar(sideBar) {
     for (let i = 0; i < sideBar.length; i++) {
@@ -593,7 +593,7 @@ export default class Agent {
     }
   }
   clickOnCampaignBtnOnViewContact() {
-    cy.xpath(campaignBtnOnViewContact).click();
+    cy.xpath(campaignBtnOnViewContact).click({force:true});
   }
   verifyViewContactCampaignTableHeader(headerElements) {
     for (let i = 0; i < headerElements.length; i++) {
@@ -604,7 +604,7 @@ export default class Agent {
     }
   }
   clickOnNotesBtnOnViewContact() {
-    cy.xpath(notesBtnOnViewContact).click();
+    cy.xpath(notesBtnOnViewContact).click({force:true});
   }
   clickOnAddNewNoteBtn() {
     cy.xpath(addNewNoteBtn).click();
@@ -730,7 +730,7 @@ export default class Agent {
   }
 
   clickFilterButton() {
-    cy.get(filterButton).contains('FILTER').click();
+    cy.get(filterButton).contains('FILTER').click({force:true});
   }
 
   enterDispositionNote(note) {

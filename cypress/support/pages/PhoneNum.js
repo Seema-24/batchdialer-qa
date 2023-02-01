@@ -1,12 +1,11 @@
 const phoneNumMenu = 'a[title="Phone System"]';
-const buyDidbtn = (btn) =>  `//button[text()="${btn}"]`;
+const buyDidbtn = (btn) =>  `//button[contains(.,"${btn}")]`;
 const stateDrpdwn =
   '//div[@class="modal-body"]//div[contains(@class,"ss-select")]//span[contains(text(),"Select state")]';
 const searchBtn = '.modal-body button svg[data-icon="search"]';
 const firstNum = '.number';
 const firstNumberChkBx = '.resizable-table-tbody .tr-dids .td span';
 const orderNow = '.btn svg[data-icon="shopping-cart"]';
-// const orderNow = '//button[contains(text(),"Order Now")]';
 const dropdownOptions = '.ss-select-group-items';
 const searchToast =
   '//div[@class="Toastify__toast-body"]//div[contains(text(),"Search started")]';
@@ -87,7 +86,7 @@ const newDigitBtn = '//button[contains(text(),"NEW DIGIT")]';
 const addNewBtn = '//button[contains(text(),"ADD NEW")]';
 const addNewCallResult = '//button[contains(text(),"New Call Result")]';
 const newGroupBtn = '//button[contains(text(),"New Group")]';
-const tableBody = '.group-inner .disposition';
+const tableBody = '.group-inner .dispositions-sortable span';
 const callResultMenu = 'a[title="Call Results"]';
 const customRadioBtn = (x) =>
   "//label[contains(@class,'radio_cstm')][contains(.,'" + x + "')]";
@@ -124,6 +123,7 @@ const removeNewDigit = (val) =>
   "//div[contains(@class,'number-editor')][input[@value='" +
   val +
   "']]/ancestor::div[contains(@class,'form-group')]//img[contains(@src,'remove')]";
+  //"']]/ancestor::div[@class='row']//img[contains(@src,'remove')]";
 const contactName = '.custom_checkbox + td span:not(.fakelink)';
 const phone = '.phone-number';
 const nextPage = 'img[title="Next Page"]';
@@ -151,7 +151,7 @@ const deleteCallResultGroupIcon = (groupName) =>
 const editCallResultGroupIcon = (groupName) =>
   `//td[@class="group-title" and text()="${groupName}"]/parent::tr[@class="group-row"]//span/*[name()="svg"][contains(@class,"fa-pencil")]`;
 const showOnCampaignPage = `//label[contains(@class,"radio_cstm")][text()="Display on New Campaign Page"]//span[@class="checkmark"]`;
-const ungroupedCallResults = '.group-row.noedit + .group-inner .disposition';
+const ungroupedCallResults = '.group-row.noedit + .group-inner .dispositions-sortable span';
 const dropdownItems = '.show .dropdown-item';
 const phoneNumberCheckbox = (checkboxCount) =>
   `(//div[@class="td"]//span[@class="checkmark"])[${checkboxCount}]`;
@@ -162,8 +162,10 @@ const selectAllCheckbox =
 const totalNumbers = '.resizable-table-tbody .tr';
 const modalWindow = '.modal-content';
 const modalContentDropdown = '.modal-content .ss-select-control';
-const callResultName = '.disposition';
+const callResultName = '.dispositions-sortable span';
 const itemType = '.table-order-tbody__td';
+const dncSearchBox = (dncBox) =>`//span[contains(.,'${dncBox}')]/parent::div/child::span//div[@class="search-box__wrapper"]/input`
+const dncValue = (val) => `//div[@class="card-body"][contains(.,"${val}")]//div[@class="item"]`;
 
 export default class PhoneNum {
   clickCallResultDeleteBtn() {
@@ -386,7 +388,7 @@ export default class PhoneNum {
   }
 
   clickBuyDidButton() {
-    cy.xpath(buyDidbtn('BUY NUMBER')).click();
+    cy.xpath(buyDidbtn('BUY NUMBER')).click({force:true});
   }
 
   selectStateModeOption(state) {
@@ -497,11 +499,11 @@ export default class PhoneNum {
   }
 
   enterName(name) {
-    cy.get(Name).type(name);
+    cy.get(Name).type(name, {force:true});
   }
 
   enterDescription(desc) {
-    cy.get(description).type(desc);
+    cy.get(description).type(desc,{force:true});
   }
 
   selectCampaign() {
@@ -624,7 +626,7 @@ export default class PhoneNum {
       .click({ force: true })
       .type(agent)
       .type('{enter}');
-    cy.get("img[src*='question']").first().click();
+    cy.get("img[src*='question']").first().click({force:true});
   }
 
   verifyAssignCampaignDropdown(name) {
@@ -633,7 +635,7 @@ export default class PhoneNum {
 
   selectAssignCampaignDropdown(name, campaign) {
     cy.wait(1000);
-    cy.xpath(selectDropdown(name)).click();
+    cy.xpath(selectDropdown(name)).click({force:true});
     cy.wait(1000);
     this.selectDropdownOption(campaign);
   }
@@ -728,7 +730,7 @@ export default class PhoneNum {
   }
 
   clickDeleteBtn(user) {
-    cy.xpath(deleteBtn(user)).click();
+    cy.xpath(deleteBtn(user)).click({force:true});
   }
 
   clickDncMenu() {
@@ -760,7 +762,7 @@ export default class PhoneNum {
   }
 
   clickAddBtn(title) {
-    cy.xpath(addBtn(title)).click();
+    cy.xpath(addBtn(title)).click({force:true});
   }
 
   verifyNumberField() {
@@ -788,7 +790,7 @@ export default class PhoneNum {
   }
 
   clickDeleteDncValue(title, number) {
-    cy.xpath(deleteAddedDncValue(title, number)).click();
+    cy.xpath(deleteAddedDncValue(title, number)).click({force:true});
   }
 
   verifySelectStateDropdown() {
@@ -938,7 +940,7 @@ export default class PhoneNum {
 
   selectPhoneNumberCheckbox(count) {
     for (let i = 1; i <= count; i++) {
-      cy.xpath(phoneNumberCheckbox(i)).click();
+      cy.xpath(phoneNumberCheckbox(i)).click({force:true});
     }
   }
 
@@ -1117,6 +1119,32 @@ export default class PhoneNum {
         }
       }
     });
+  }
+
+  enterDncValue(field, val) {
+    cy.xpath(dncSearchBox(field)).type(val)
+  }
+
+  verifyDncValueLength(field, leng) {
+    cy.xpath(dncValue(field)).should('have.length', leng);
+  }
+  
+  clickExportBtn() {
+    cy.get('[src*="icon-export"]')
+    cy.downloadFile('/img/icon-export-button.svg')
+    
+    // cy.get('[src*="icon-export"]').then
+    // .readFile("cypress/downloads/dnc-export.csv")
+    //   .then(function() {
+    //      // Do something with the file.
+    //   });
+    // cy.reload()
+  }
+
+  verifyDownloadFile(file) {
+    cy.readFile(`cypress/downloads/${file}`).should('exist');
+    cy.exec('del /q "cypress\\downloads\\*.*"', { log: true, failOnNonZeroExit: false })
+    cy.exec('rm cypress/downloads/*', { log: true, failOnNonZeroExit: false })
   }
 
 }
