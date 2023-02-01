@@ -7,6 +7,7 @@ import Login from "../support/pages/Login";
 import PhoneNum from "../support/pages/PhoneNum";
 import Register from "../support/pages/Register";
 import Report from "../support/pages/Report";
+import Setup from "../support/pages/Setup";
 import Suprevisor from "../support/pages/Supervisor";
 import User from "../support/pages/User";
 import { closeDialogBox, getDate, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus, verifyCloseApp } from "../support/Utils";
@@ -14,6 +15,10 @@ import { closeDialogBox, getDate, handlePoorConnectionPopup, ignoreSpeedTestPopu
 let fixtureData,testData,count;
 const randomNumber = Math.floor(Math.random() * 1000);
 const email = 'testingUser' + randomNumber + '@test.com';
+const agentEmail = 'random' + randomNumber + '@email.com';
+const supervisorEmail = 'random' + randomNumber + 1 + '@email.com';
+const adminWithoutCallingEmail = 'random' + randomNumber + 2 + '@test.com';
+
 const login = new Login();
 const register = new Register();
 const addUser = new User();
@@ -25,6 +30,7 @@ const dial = new Dialer();
 const addNum = new PhoneNum();
 const report = new Report();
 const suprevisor = new Suprevisor();
+const setup = new Setup();
 
 describe('Registration & Login Flow', () => {
     beforeEach(() => {
@@ -296,11 +302,73 @@ describe('Registration & Login Flow', () => {
       });
     
       it('SuccessFully Login', () => {
+        verifyCloseApp();
         login.enterEmailtoSignin(Cypress.env('username'));
         login.enterPasswordToSignin(Cypress.env('password'));
         login.clickTermsCheckBox();
         login.clickSigninButton();
         login.verifySuccessfullLogin();
+      });
+
+      it('Setup Account', () => {
+        const [agentFirstName, agentlastName] = testData.agent.split(' ');
+        const [supervisorFirstName, supervisorlastName] =
+          testData.supervisor.split(' ');
+        const [contactFirstName, contactlastName] = testData.Contact.split(' ');
+        const [adminFirstName, adminlastName] =
+          testData.adminWithoutCalling.split(' ');
+    
+        setup.addNewAgent(
+          agentFirstName,
+          agentlastName,
+          agentEmail,
+          testData.password,
+          '0123456789'
+        );
+        setup.addNewSupervisor(
+          supervisorFirstName,
+          supervisorlastName,
+          supervisorEmail,
+          testData.password,
+          '0123456789'
+        );
+        setup.addNewAdminWithoutCalling(
+          adminFirstName,
+          adminlastName,
+          adminWithoutCallingEmail,
+          testData.password,
+          '9999999999'
+        );
+        setup.getAdminName();
+        cy.readFile('cypress/fixtures/testData.json').then((data) => {
+          setup.BuyNewPhoneNumber(data.AdminName);
+        });
+        setup.getPhoneNumber();
+        cy.readFile('cypress/fixtures/testData.json').then((data) => {
+          setup.assignNumberToAgent(data.Number, data.AdminName);
+        });
+        cy.readFile('cypress/fixtures/testData.json').then((data) => {
+          setup.createCampaign(
+            testData.campaign,
+            [
+              'Abandoned',
+              'Answering Machine',
+              'Busy',
+              'Call Back',
+              'Disconnected Number',
+              'Do Not Call',
+              'No Answer',
+              'Not Interested',
+              'Successful sale',
+              'Unknown',
+              'Voicemail',
+            ],
+            data.Number,
+            data.agent
+          );
+        });
+        cy.wait(2000);
+        setup.addNewContact(contactFirstName, contactlastName);
       });
 }); 
 
@@ -1807,6 +1875,7 @@ describe('SuperVisor Flow', () => {
     });
   
     it('Supervisor Should Login Successfully', () => {
+      verifyCloseApp();
       cy.Login(testData.SupervisorEmail, testData.password);
       cy.reload();
     });
