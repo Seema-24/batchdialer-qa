@@ -1,4 +1,5 @@
 import { covertNumberToNormal, ignoreSpeedTestPopup, clickCallFunction } from '../Utils';
+import Dashboard from './Dashboard';
 
 const statusDropdown = '.nav-item.auth__agent-presence .ss-select';
 const statusNames = `.ss-select-group-items .ss-select-option .agent__presence-name`;
@@ -101,6 +102,7 @@ const closeSoftBtn = '.stg-softphone-right-close';
 const timeoutDestination = '//label[text()="Timeout Destination"]/ancestor::div[contains(@class,"form-group")]/descendant::span[contains(@class,"ss-select-value")][1]';
 const queueCheckbox = (checkbox) => `//div[label[text()="${checkbox}"]]/parent::div//span[@class="checkmark"]`;
 
+const dash = new Dashboard();
 export default class Dialer {
  
   selectStatus(statusName) {
@@ -117,7 +119,17 @@ export default class Dialer {
   }
 
   verifySelectCampaignBoxHeading() {
-    cy.get(selectCampaignHeading).should('have.text', 'Start Calling');
+    const calling = 'Start Calling';
+    cy.get('body').then($body => {
+      if($body.text().includes(calling)) {
+        cy.get(selectCampaignHeading).should('have.text', calling);
+      }else{
+        dash.clickUserProfile();
+        dash.clickOnChangeCampaign();
+        cy.get(selectCampaignHeading).should('have.text', calling);
+      }
+    })
+    
   }
 
   clickSelectCampaignDropdown() {
