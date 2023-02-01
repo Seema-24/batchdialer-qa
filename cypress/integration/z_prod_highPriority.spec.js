@@ -35,6 +35,12 @@ const setup = new Setup();
 describe('Registration & Login Flow', () => {
     beforeEach(() => {
       cy.visit('/');
+      cy.fixture('testData').then((data) => (testData = data));
+      Cypress.Cookies.defaults({
+        preserve: (cookies) => {
+          return true;
+        },
+      });
     });
 
     after(() => {
