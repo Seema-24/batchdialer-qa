@@ -1063,7 +1063,6 @@ describe('Add Contact flow', () => {
     dial.selectCampaign(testData.campaign);
     dial.clickConfirmButton();
     dial.verifySoftPhoneOpen();
-    contact.ClickToOpenSoftphone();
     contact.dialPhoneNumber('8586515050');  //7209834562
     contact.clickDialerCallButton();
     cy.wait(10000);
@@ -1071,6 +1070,7 @@ describe('Add Contact flow', () => {
     contact.selectCallResult('Successful Sale');
     contact.clickContinueBtn();
     contact.clickingOnContactOption();
+    dashboard.closeUserProfile();
     contact.deleteAddedContacts('Unknown','Contact');
     contact.handleAlertForDelete();
     contact.verifyDeletedToast();

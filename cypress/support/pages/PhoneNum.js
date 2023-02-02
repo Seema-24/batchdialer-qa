@@ -1122,7 +1122,7 @@ export default class PhoneNum {
   }
 
   enterDncValue(field, val) {
-    cy.xpath(dncSearchBox(field)).type(val)
+    cy.xpath(dncSearchBox(field)).type(val,{force:true})
   }
 
   verifyDncValueLength(field, leng) {
@@ -1130,8 +1130,8 @@ export default class PhoneNum {
   }
   
   clickExportBtn() {
-    cy.get('[src*="icon-export"]')
-    cy.downloadFile('/img/icon-export-button.svg')
+    cy.get('[src*="icon-export"]').click({force:true});
+    // cy.downloadFile('/img/icon-export-button.svg')
     
     // cy.get('[src*="icon-export"]').then
     // .readFile("cypress/downloads/dnc-export.csv")

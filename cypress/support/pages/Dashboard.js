@@ -2029,5 +2029,13 @@ export default class Dashboard {
     cy.get(changeCampaign).click();
   }
 
+  closeUserProfile() {
+    cy.get('body').then($body => {
+      if($body.find('.dropdown-menu.show').length) {
+        this.clickUserProfile();
+      }
+    })
+  }
+
 
 }
