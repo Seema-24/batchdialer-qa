@@ -1,3 +1,4 @@
+import Dashboard from "./pages/Dashboard";
 import UserPermission from "./pages/UserPermission";
 
 const statusDropdown = '.nav-item .ss-select';
@@ -8,6 +9,7 @@ const authToken = Cypress.env('twilioAuthToken');
 const quickStartGuidePopUp = '#pendo-guide-container';
 const callFunction = 'Takeover Call Functions';
 const permit = new UserPermission();
+const dash = new Dashboard();
 
 export function selectAgentStatus(status) {
   handlePoorConnectionPopup();
@@ -150,6 +152,8 @@ export function closeDialogBox() {
     } if($body.find('.call-disposition-title').length) {
       cy.get('.disposition-cell .disposition').last().click();
       cy.contains('Done').click();
+    } if($body.find('.dropdown-menu.show').length) {
+        dash.clickUserProfile();
     }
   })
 }

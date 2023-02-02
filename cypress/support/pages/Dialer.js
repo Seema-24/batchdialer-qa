@@ -120,12 +120,14 @@ export default class Dialer {
 
   verifySelectCampaignBoxHeading() {
     const calling = 'Start Calling';
+    cy.wait(1000);
     cy.get('body').then($body => {
       if($body.text().includes(calling)) {
         cy.get(selectCampaignHeading).should('have.text', calling);
       }else{
         dash.clickUserProfile();
-        dash.clickOnChangeCampaign();
+        cy.wait(2000)
+        //dash.clickOnChangeCampaign();
         cy.get(selectCampaignHeading).should('have.text', calling);
       }
     })
