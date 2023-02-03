@@ -2031,7 +2031,7 @@ export default class Dashboard {
 
   closeUserProfile() {
     cy.get('body').then($body => {
-      if($body.find('.dropdown-menu.show').length) {
+      if($body.find('.user__dropdown-menu.dropdown-menu.show').length) {
         this.clickUserProfile();
       }
     })

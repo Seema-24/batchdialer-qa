@@ -152,7 +152,7 @@ export function closeDialogBox() {
     } if($body.find('.call-disposition-title').length) {
       cy.get('.disposition-cell .disposition').last().click();
       cy.contains('Done').click();
-    } if($body.find('.dropdown-menu.show').length) {
+    } if($body.find('.user__dropdown-menu.dropdown-menu.show').length) {
         dash.clickUserProfile();
     }
   })
