@@ -42,7 +42,7 @@ const campaignAnsweredCount = (campaignName) =>
   `(//div[contains(.,"${campaignName}")]/following-sibling::div)[3]`;
 const reportsMenu = 'a[title="Reports"]';
 const subMenu = (subMenuName) => `.subitem a[title="${subMenuName}"]`;
-const softPhoneOpen = '.stg-softphone-wrapper';
+const softPhoneOpen = '.stg-softphone-wrapper .stg-softphone';
 const inqueuePhoneNumber = `(//span[text()="In Queue"]/parent::div/following-sibling::div)[3]`;
 const callingHoursDropdown = `//label[text()="Calling Hours"]/following-sibling::div`;
 const timeFromDropdown = `(//label[text()="Sunday"]/ancestor::div/following-sibling::div//div[contains(@class,"ss-select-control")])[1]`;
@@ -724,16 +724,7 @@ export default class Dialer {
   }
 
   verifyPhoneRingingIcon() {
-    cy.wait(5000);
-    cy.get('body').then($body => {
-      if($body.find(callTime).length) {
-        cy.log('Call is started')
-      } else if($body.find('audio[src*="/audio/incoming.mp3"]').length) {
-        cy.log('Call is in ringing mode');
-      } else if($body.text().includes('DIALING...')){
-          cy.get(phoneRingning, { timeout: 30000 }).should('be.visible');
-      }
-    })
+    cy.get(phoneRingning, { timeout: 30000 }).should('be.visible');
   }
 
   selectRecycledCampaign(campaignName) {
