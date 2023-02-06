@@ -1454,7 +1454,6 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
 
   describe('Predictive campaign with simultaneous dials per agent of 1 and max attempt per record of 3', () => {
     const campaignName = 'Predictive Dialer Campaign';
-    const listName = 'twilio.csv';
     before(() => {
       cy.visit('/');
       cy.readFile('cypress/fixtures/testData.json').then((data) => {
@@ -1562,6 +1561,202 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
     it('Delete the Created Campaign', () => {
       dial.clickOnMenu('Campaigns');
       dial.clickThreeDotMenuBtn(campaignName);
+      dial.clickOnDropdownItem('Archive');
+      dial.verifySuccessToastMessage('Campaign Archived');
+    });
+
+    it('Should delete the added Contact', () => {
+      contact.clickToCloseSoftphone();
+      contact.clickingOnContactOption();
+      contact.deleteAddedContacts('Twilio', 'Test');
+      contact.handleAlertForDelete();
+      contact.verifyDeletedToast();
+      dial.clickSoftphoneButton();
+    });
+  });
+
+  describe('Campaign - Call Recording Feature', () => {
+    const campaignWithRecording = 'Campaign with call recording';
+    const campaignWithoutRecording = 'Campaign without Call Recording';
+    before(() => {
+      cy.visit('/');
+      cy.readFile('cypress/fixtures/testData.json').then((data) => {
+        testData = data;
+      });
+      Cypress.Cookies.defaults({
+        preserve: (cookies) => {
+          return true;
+        },
+      });
+    });
+
+    after(() => {
+      selectAgentStatus('Offline');
+      cy.Logout();
+    });
+
+    it('Login To Application', () => {
+      verifyCloseApp();
+      cy.Login(Cypress.env('username'), Cypress.env('password'));
+      ignoreSpeedTestPopup();
+    });
+
+    it('Create a new Preview Campaign with Call Recording Feature', () => {
+      dial.clickOnMenu('Campaigns');
+      dial.clickOnButton('NEW CAMPAIGN');
+      dial.clickOnRadioButton('Preview Dialer');
+      dial.selectAgentToAssign(testData.AdminName);
+      dial.selectPhoneNumber(testData.Number);
+      dial.enterCampaignName(campaignWithRecording);
+      dial.clickCallResultsDropdown();
+      dial.selectCallResults([
+        'Answering Machine',
+        'Busy',
+        'Disconnected Number',
+        'Successful sale'
+      ]);
+      dial.clickAdvanceConfiguration();
+      dial.selectQueueCallMusicDropdown('Music 1');
+      dial.clickCallingHoursDropdown();
+      dial.selectFromTime('12:00 am');
+      dial.selectToTime('11:30 pm');
+      dial.clickApplyToAllButton();
+      dial.clickOnButton('APPLY');
+      dial.clickOnButton('Save');
+      dial.verifySuccessToastMessage('Campaign Created');
+    });
+
+    it('Create a new Preview Campaign without the Call Recording Feature', () => {
+      dial.clickOnMenu('Campaigns');
+      dial.clickOnButton('NEW CAMPAIGN');
+      dial.clickOnRadioButton('Preview Dialer');
+      dial.selectAgentToAssign(testData.AdminName);
+      dial.selectPhoneNumber(testData.Number);
+      dial.enterCampaignName(campaignWithoutRecording);
+      dial.clickCallResultsDropdown();
+      dial.selectCallResults([
+        'Answering Machine',
+        'Busy',
+        'Do Not Call',
+        'Successful sale'
+      ]);
+      dial.clickAdvanceConfiguration();
+      dial.selectQueueCallMusicDropdown('Music 1');
+      dial.disableCallRecording();
+      dial.clickCallingHoursDropdown();
+      dial.selectFromTime('12:00 am');
+      dial.selectToTime('11:30 pm');
+      dial.clickApplyToAllButton();
+      dial.clickOnButton('APPLY');
+      dial.clickOnButton('Save');
+      dial.verifySuccessToastMessage('Campaign Created');
+    });
+
+    it('Create a New Contact for Campaign', () => {
+      contact.clickingOnContactOption();
+      contact.verifyContactExisting('5103256012');
+      contact.clickAddNewContactButton();
+      contact.selctCreateNewContactOption();
+      contact.enterFirstName('Twilio');
+      contact.enterLastName('Test');
+      contact.enterAddress('anyAddress');
+      contact.enterCity('Tucson');
+      contact.selectState('Arizona');
+      contact.enterZipCode('85701');
+      contact.enterEmail('test@test.com');
+      contact.enterPhoneNumber('5103256012');//5202010331 //8586515050
+      contact.clickSaveButton();
+      contact.verifySuccessToast();
+    });
+
+    it('Change status to Available', () => {
+      dial.selectStatus('Available');
+      dial.verifySelectCampaignBoxHeading();
+      dial.clickSelectCampaignDropdown();
+      dial.selectCampaign(campaignWithRecording);
+      dial.clickConfirmButton();
+      dial.verifySoftPhoneOpen();
+    });
+
+    it('Dial the Added Number', () => {
+      dial.clickOnMenu('Contacts');
+      dial.clickContactName('Twilio', 'Test');
+      dial.clickContactPhoneNumber();
+      dial.clickAcceptCallButton();
+    });
+
+    it('Verify that Agent status should be On Call', () => {
+      dial.verifyAgentStatus('On Call');
+      dial.verifySoftphoneTitle('Twilio Test');
+    });
+
+    it('End the Call and select the Disposition', () => {
+      dial.endCallAtTime('0:25');
+      dial.verifyCallDispositionWindow();
+      dial.selectCallDisposition('No Answer');
+      dial.clickOnButton('Done');
+    });
+
+    it('verify that Call recording should be available in Recent Contacts', () => {
+      dial.clickOnMenu('Reports');
+      dial.clickOnSubMenu('Recent Contacts');
+      dial.verifyCallRecordingIcon(campaignWithRecording,true);
+    });
+
+    it('Verify that costumer is able to play the recording', () => {
+      dial.clickCallRecordingIcon('Twilio', 'Test', campaignWithRecording);
+      dial.verifyRecordingPlayerWindow();
+      dial.verifyPlayerCampaignName(campaignWithRecording);
+      dial.clickPlayPauseButton();
+      dial.verifyPlayerCurrentTime('0:05');
+      dial.clickPlayPauseButton();
+      dial.clickForwardButton();
+      dial.verifyPlayerCurrentTime('0:15');
+      dial.clickBackwardButton();
+      dial.verifyPlayerCurrentTime('0:05');
+      dial.clickPlayerCloseButton();
+    });
+
+    it('Change status to Available', () => {
+      dial.selectStatus('Available');
+      dial.verifySelectCampaignBoxHeading();
+      dial.clickSelectCampaignDropdown();
+      dial.selectCampaign(campaignWithoutRecording);
+      dial.clickConfirmButton();
+      dial.verifySoftPhoneOpen();
+    });
+
+    it('Dial the Added Number', () => {
+      dial.clickOnMenu('Contacts');
+      dial.clickContactName('Twilio', 'Test');
+      dial.clickContactPhoneNumber();
+      dial.clickAcceptCallButton();
+    });
+
+    it('Verify that Agent status should be On Call', () => {
+      dial.verifyAgentStatus('On Call');
+      dial.verifySoftphoneTitle('Twilio Test');
+    });
+
+    it('End the Call and select the Disposition', () => {
+      dial.endCallAtTime('0:15');
+      dial.verifyCallDispositionWindow();
+      dial.selectCallDisposition('No Answer');
+      dial.clickOnButton('Done');
+    });
+
+    it('verify that Call recording should not be available in Recent Contacts', () => {
+      dial.clickOnMenu('Reports');
+      dial.clickOnSubMenu('Recent Contacts');
+      dial.verifyCallRecordingIcon(campaignWithoutRecording,false);
+    });
+
+    it('Delete the Created Campaign', () => {
+      dial.clickOnMenu('Campaigns');
+      dial.clickThreeDotMenuBtn(campaignWithRecording);
+      dial.clickOnDropdownItem('Archive');
+      dial.verifySuccessToastMessage('Campaign Archived');
+      dial.clickThreeDotMenuBtn(campaignWithoutRecording);
       dial.clickOnDropdownItem('Archive');
       dial.verifySuccessToastMessage('Campaign Archived');
     });

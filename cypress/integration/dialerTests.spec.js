@@ -654,11 +654,13 @@ describe('Outbound Calling Scenarios', () => {
       Dial.clickConfirmButton();
       Dial.verifySoftPhoneOpen();
       Dial.verifySoftphoneLinesNumber(3);
-      cy.wait(1000)
     });
 
+    it('​Verify the ringing icon animation when system start dialing', () => {
+      Dial.verifyPhoneRingingIcon();
+    })
+
     it('Verify that Agent status should be On Call and End the Call and select the Disposition', () => {
-      //Dial.verifyPhoneRingingIcon();
       Dial.verifyAgentStatus('On Call');
       Dial.verifySoftphoneTitle('Test Number');
       Dial.endCallAtTime('0:10');
@@ -787,7 +789,6 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Verify that Agent status should be On Call and End the Call and select the Disposition', () => {
-      //Dial.verifyPhoneRingingIcon();
       Dial.verifyAgentStatus('On Call');
       Dial.verifySoftphoneTitle('Test Number');
       Dial.endCallAtTime('0:10');
@@ -1428,12 +1429,10 @@ describe('Outbound Calling Scenarios', () => {
     it('verify that Call recording should not be available in Recent Contacts', () => {
       Dial.clickOnMenu('Reports');
       Dial.clickOnSubMenu('Recent Contacts');
-      //camp.clickTableRefreshBtn();
       Dial.verifyCallRecordingIcon(campaignWithoutRecording,false);
     });
 
     it('Delete the Created Campaign', () => {
-      // contact.clickToCloseSoftphone();
       Dial.clickOnMenu('Campaigns');
       Dial.clickThreeDotMenuBtn(campaignWithRecording);
       Dial.clickOnDropdownItem('Archive');
@@ -1581,7 +1580,6 @@ describe('Outbound Calling Scenarios', () => {
       ignoreSpeedTestPopup();
       cy.wait(2000);
       Dial.clickOnMenu('Campaigns');
-      //camp.clickTableRefreshBtn();
       camp.verifyCampaignStatus(campaignName, 'Connects Limit Reached');
     });
 
