@@ -42,7 +42,7 @@ const campaignAnsweredCount = (campaignName) =>
   `(//div[contains(.,"${campaignName}")]/following-sibling::div)[3]`;
 const reportsMenu = 'a[title="Reports"]';
 const subMenu = (subMenuName) => `.subitem a[title="${subMenuName}"]`;
-const softPhoneOpen = '.stg-softphone-wrapper .stg-softphone';
+const softPhoneOpen = '.stg-softphone-wrapper .stg-softphone-wide';
 const inqueuePhoneNumber = `(//span[text()="In Queue"]/parent::div/following-sibling::div)[3]`;
 const callingHoursDropdown = `//label[text()="Calling Hours"]/following-sibling::div`;
 const timeFromDropdown = `(//label[text()="Sunday"]/ancestor::div/following-sibling::div//div[contains(@class,"ss-select-control")])[1]`;
@@ -126,8 +126,7 @@ export default class Dialer {
         cy.get(selectCampaignHeading).should('have.text', calling);
       }else{
         dash.clickUserProfile();
-        cy.wait(2000)
-        //dash.clickOnChangeCampaign();
+        dash.clickOnChangeCampaign();
         cy.get(selectCampaignHeading).should('have.text', calling);
       }
     })
@@ -769,6 +768,14 @@ export default class Dialer {
     cy.get('body').then(($body) => {
       if($body.text().includes('In Queue Call Music')) {
         cy.xpath(queueCheckbox('In Queue Call Music')).click();
+      }
+    })
+  }
+
+  closeRecordingDialog() {
+    cy.get('body').then(($body) => {
+      if($body.find(playerCampaignName).length) {
+        this.clickPlayerCloseButton();
       }
     })
   }

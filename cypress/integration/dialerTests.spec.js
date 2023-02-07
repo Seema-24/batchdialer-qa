@@ -1385,6 +1385,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Verify that costumer is able to play the recording', () => {
+      Dial.closeRecordingDialog();
       Dial.clickCallRecordingIcon('Twilio', 'Test', campaignWithRecording);
       Dial.verifyRecordingPlayerWindow();
       Dial.verifyPlayerCampaignName(campaignWithRecording);
@@ -1399,6 +1400,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Change status to Available', () => {
+      Dial.closeRecordingDialog();
       Dial.selectStatus('Available');
       Dial.verifySelectCampaignBoxHeading();
       Dial.clickSelectCampaignDropdown();

@@ -363,6 +363,7 @@ export default class Contacts {
   }
 
   clickToCloseSoftphone() {
+    cy.wait(1000);
     cy.get('body').then((body) => {
       if (body.find('.stg-softphone-wrapper .stg-softphone-wide').length) {
         cy.get(softphoneIcon).click();
