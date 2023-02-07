@@ -1664,7 +1664,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       contact.selectState('Arizona');
       contact.enterZipCode('85701');
       contact.enterEmail('test@test.com');
-      contact.enterPhoneNumber('5103256012');//5202010331 //8586515050
+      contact.enterPhoneNumber('5103256012');
       contact.clickSaveButton();
       contact.verifySuccessToast();
     });
@@ -1691,7 +1691,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
     });
 
     it('End the Call and select the Disposition', () => {
-      dial.endCallAtTime('0:25');
+      dial.endCallAtTime('0:30');
       dial.verifyCallDispositionWindow();
       dial.selectCallDisposition('No Answer');
       dial.clickOnButton('Done');
@@ -1700,6 +1700,8 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
     it('verify that Call recording should be available in Recent Contacts', () => {
       dial.clickOnMenu('Reports');
       dial.clickOnSubMenu('Recent Contacts');
+      cy.reload();
+      ignoreSpeedTestPopup();
       dial.verifyCallRecordingIcon(campaignWithRecording,true);
     });
 
