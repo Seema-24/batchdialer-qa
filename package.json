@@ -21,7 +21,9 @@
     "precy:firstPromoter": "rm -r -f cypress/screenshots/* cypress/results/* cypress/ProdReports/*",
     "cy:firstPromoter": "node cypress/integration/cy_runner.js",
     "report:firstPromoter": "npm run cy:firstPromoter ; npm run report:merge ; npm run report:generate:prod ; npm run report:copyScreenshots:prod",
-    "apitest": "mocha ./api/test/**/*.js --timeout 600000 --reporter mochawesome --reporter-options reportDir=reports/dialer-api,reportFilename=output || exit 0"
+    "apitest": "mocha ./api/test/**/*.js --timeout 600000 --reporter mochawesome --reporter-options reportDir=reports/dialer-api,reportFilename=output || exit 0",
+    "sanity:prod": "npx cypress run --headless --config video=false --spec cypress/integration/z_prod_highPriority.spec.js --env configFile=prod",
+    "sanityReport:prod": "npm run sanity:prod ; npm run report:merge ; npm run report:generate ; npm run report:copyScreenshots"
   },
   "keywords": [],
   "author": "Anil",
