@@ -771,4 +771,12 @@ export default class Dialer {
       }
     })
   }
+
+  closeRecordingDialog() {
+    cy.get('body').then(($body) => {
+      if($body.find(playerCampaignName).length) {
+        this.clickPlayerCloseButton();
+      }
+    })
+  }
 }

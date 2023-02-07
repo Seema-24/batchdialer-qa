@@ -154,6 +154,8 @@ export function closeDialogBox() {
       cy.contains('Done').click();
     } if($body.find('.user__dropdown-menu.dropdown-menu.show').length) {
         dash.clickUserProfile();
+    } if($body.find('.modal-dialog #callresult').length) {
+        cy.contains('Cancel').click();
     }
   })
 }
