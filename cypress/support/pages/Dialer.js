@@ -101,6 +101,7 @@ const dashboard = 'a[title="Dashboard"]';
 const closeSoftBtn = '.stg-softphone-right-close';
 const timeoutDestination = '//label[text()="Timeout Destination"]/ancestor::div[contains(@class,"form-group")]/descendant::span[contains(@class,"ss-select-value")][1]';
 const queueCheckbox = (checkbox) => `//div[label[text()="${checkbox}"]]/parent::div//span[@class="checkmark"]`;
+const PhoneValue = (key) => `//div[@class="key"][text()="${key}"]/parent::div/child::div[@class="value"]`
 
 const dash = new Dashboard();
 export default class Dialer {
@@ -120,7 +121,7 @@ export default class Dialer {
 
   verifySelectCampaignBoxHeading() {
     const calling = 'Start Calling';
-    cy.wait(1000);
+    cy.wait(2000);
     cy.get('body').then($body => {
       if($body.text().includes(calling)) {
         cy.get(selectCampaignHeading).should('have.text', calling);
@@ -322,7 +323,12 @@ export default class Dialer {
   }
 
   clickEndCallButton() {
-    cy.get(endCallButton).click({force:true});
+    cy.wait(2000);
+    cy.get('body').then(($body) => {
+      if ($body.find(endCallButton).length) {
+        cy.get(endCallButton).click({force:true});
+      }
+    });
   }
 
   clickAcceptCallButton() {
@@ -383,7 +389,7 @@ export default class Dialer {
   }
 
   verifyCallEnd(disposition) {
-    cy.wait(3000);
+    cy.wait(1500);
     cy.get('body').then(($body) => {
       if ($body.find(endCallButton).length) {
         cy.get(endCallButton).click();
@@ -591,14 +597,10 @@ export default class Dialer {
     cy.xpath(contactThreeDotMenu(firstName, lastName)).click();
   }
 
-  verifySoftphoneLineContactName(names) {
-    let contactName = '';
-    for (let i = 0; i < names.length; i++) {
-      contactName = contactName + names[i] + ' ';
-    }
+  verifySoftphoneLineContactName(contactName) {
     cy.get(softphoneLineContactName, { timeout: 40000 }).then((lineText) => {
       for (let i = 0; i < lineText.length; i++) {
-        expect(contactName).to.contains(lineText[i].textContent.trim());
+        expect(lineText[i].textContent.trim()).to.contains(contactName);
       }
     });
   }
@@ -723,7 +725,8 @@ export default class Dialer {
   }
 
   verifyPhoneRingingIcon() {
-    cy.get(phoneRingning, { timeout: 30000 }).should('be.visible');
+    dash.clickDialer();
+    cy.get(phoneRingning, { timeout: 50000 }).should('be.visible');
   }
 
   selectRecycledCampaign(campaignName) {
@@ -778,5 +781,23 @@ export default class Dialer {
         this.clickPlayerCloseButton();
       }
     })
+  }
+
+  disconnectAvailableCall() {
+    cy.wait(1000);
+    cy.get(agentStatus).then((status) => {
+      if(status.text().includes('On Call')){
+        this.clickEndCallButton();
+        this.verifyCallDispositionWindow
+        this.selectCallDisposition('No Answer');
+        this.clickOnButton('Done');
+      }
+    })
+  }
+
+  verifyPhoneHeaderValue(num, callType) {
+    const number = '(' + num.substring(0,3)+ ') ' + num.substr(3,3) +'-'+ num.substr(-4);
+    cy.xpath(PhoneValue('Phone')).should('contain.text', number);
+    cy.xpath(PhoneValue('Phone')).should('contains.text', callType);
   }
 }

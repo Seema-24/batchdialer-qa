@@ -163,6 +163,7 @@ const LabelDropdown = (label) => `//label[text()="${label}"]/following-sibling::
 const campaignCardRadioBtn = (campCard,radioBtn) => `//div[h2[@class="campaign-card__title"][text()="${campCard}"]]//div[h2[text()="${radioBtn}"]]/following-sibling::span`;
 const campaignCardCheckbox = (campCard) => `//div[h2[@class="campaign-card__checkbox-block__title"][text()="${campCard}"]]/following-sibling::span`;
 const campaignName = (name) => `//span[@class="campaign-name-table"][text()="${name}"]`;
+const dialPadNumber = '.stg-softphone-number-digits';
 
 const addUser = new User();
 const dial = new Dialer();
@@ -759,7 +760,7 @@ export default class Campaign {
   }
 
   verifyCampaignStatus(campaignName, status) {
-    cy.xpath(campaignStatus(campaignName), { timeout: 50000 }).should(
+    cy.xpath(campaignStatus(campaignName), { timeout: 10000 }).should(
       'contain.text',
       status
     );
@@ -837,9 +838,9 @@ export default class Campaign {
 
   selectContactLists(listName) {
     cy.xpath(cardDropdowns('Contact Lists')).click();
-    cy.get('body').type('{enter}');
-    cy.xpath(cardDropdowns('Contact Lists')).click();
-    // this.selectOptions(listName);
+    //cy.get('body').type('{enter}');
+    //cy.xpath(cardDropdowns('Contact Lists')).click();
+    this.selectOptions(listName);
   }
 
   verifyContactListDropdown() {
@@ -1039,13 +1040,14 @@ export default class Campaign {
 
   CallFromRecycleCampaign(RecycledCampaign) {
     dial.selectStatus('Available');
+    dial.verifySelectCampaignBoxHeading();
     dial.clickSelectCampaignDropdown();
     dial.selectRecycledCampaign(RecycledCampaign);
     dial.clickConfirmButton();
-    dash.dialNumber();
+    this.clickSoftphoneNextLead();
     dash.clickCallButton();
     dash.verifyCallStarted();
-    cy.wait(3000);
+    cy.wait(5000);
     dash.clickCallButton();
     dash.clickAnsweringMachine();
     dash.clickOnDoneButton();
@@ -1168,6 +1170,21 @@ export default class Campaign {
 
   clickOnCampName(name) {
     cy.xpath(campaignName(name)).click();
+  }
+
+  verifyDialPadNumber(val) {
+    if('Number' == val) {
+      cy.get(dialPadNumber).then(value => {
+        let number = value.text().split(' ').join('')
+        expect(10).to.equal(number.length);
+        cy.readFile('cypress/fixtures/testData.json').then(data => {
+          data.dialNumber = number;
+          cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
+        });
+      });
+    } else {
+      cy.get(dialPadNumber).should('have.text', 'Enter Phone Number');
+    }
   }
 
 }

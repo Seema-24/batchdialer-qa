@@ -191,13 +191,13 @@ export default class Contacts {
 
   enterFirstName(fstName) {
     cy.xpath(fieldsEditBtn('First name')).click();
-    cy.get(firstName).type(fstName);
+    cy.get(firstName).clear().type(fstName);
     cy.xpath(fieldsSaveBtn('First name')).click();
   }
 
   enterLastName(lstName) {
     cy.xpath(fieldsEditBtn('Last name')).click();
-    cy.get(lastName).type(lstName);
+    cy.get(lastName).clear().type(lstName);
     cy.xpath(fieldsSaveBtn('Last name')).click();
   }
 
@@ -296,7 +296,7 @@ export default class Contacts {
   selectState(state) {
     cy.xpath(stateDropdown).click();
     cy.xpath(
-      '//div[@class="ss-select-dropdown"]//span/div[text()="' + state + '"]'
+      '//div[contains(@class,"ss-select-dropdown")]//span/div[text()="' + state + '"]'
     ).click();
   }
 
@@ -655,11 +655,11 @@ export default class Contacts {
   }
 
   clickDialedUndialedButton(button) {
-    cy.xpath("//label[text()='" + button + "']/span").click();
+    cy.xpath("//label[text()='" + button + "']/span").click({force:true});
   }
 
   enterSearch(search) {
-    cy.get(searchBox).clear().type(search);
+    cy.get(searchBox).clear({force:true}).type(search);
     cy.wait(1000);
   }
 
@@ -686,7 +686,7 @@ export default class Contacts {
   clickContactCheckbox(number) {
     cy.wait(3000);
     for (let i = 0; i < number.length; i++) {
-      cy.xpath(contactCheckbox(number[i])).click();
+      cy.xpath(contactCheckbox(number[i])).click({force:true});
     }
   }
 
@@ -817,7 +817,7 @@ export default class Contacts {
 
   clickContactName(name) {
     const firstLastName = name.split(' ');
-    cy.xpath(contact(firstLastName[0], firstLastName[1])).click();
+    cy.xpath(contact(firstLastName[0], firstLastName[1])).click({force:true});
   }
 
   selectDateForFollowUpCall() {

@@ -252,9 +252,8 @@ const eventDateTableHeader = 'tbody> tr> td:nth-of-type(5) span:nth-of-type(1)';
 const closeTitle = '.close-button';
 const callQualityChart = '.recharts-layer.recharts-area';
 const LeadsheetCheckbox = (label) => `//span[@class="custom-input__text disabled"][text()="${label}"]/ancestor::div[@class="lead-edit__list-item"]/descendant::div[@class="custom_checkbox"]//span[@class="checkmark"]`;
-const syncBtn = (sync) => `[data-integration="${sync}"]`;
-const ApiKey = '//tr[td[text()="API Key"]]//input';
-const ZapierIntegrate = (key) => `[title="${key}"]`;
+const integrationTab = '.dashboard-view-Nav';
+const addIntegrationBtn = '.addnew.btn-primary';
 const agentPlusMinusBtn = (btn) =>`img[src*="billing-editor-${btn}"]`;
 const downgradeBtn = '.billing-plan__button.downgrade';
 const userRoleEmail = '.group-row-role .group-row-role__left__email';
@@ -262,6 +261,12 @@ const activeAgentCount = '(//div[text()="Agents"]/parent::div/child::div/span)[1
 const scriptTag = '.prose-mirror-editor-tags div';
 const scriptToolbar = (type) => `div:nth-of-type(${type}).prosemirror-toolbar-group button`;
 const changeCampaign = '.user__dropdown-icon.campaign-icon';
+const icon = (icon) => `[src*="icon-${icon}"]`;
+const tableData = (field) => `//div[@class="tr"]/div[text()="${field}"]`
+const apiKeyField = '.integrations-keys-edit-key-field';
+const integrationIcon = (name,icon) => `//div[text()="${name}"]/parent::div/child::div/img[contains(@src,"${icon}")]`;
+const ApiKeyText = (name) => `(//div[text()="${name}"]/parent::div/child::div)[2]`;
+const integrationTableData = (index) => `.resizable-table-tbody> div> div:nth-of-type(${index})`;
 
 export default class Dashboard {
   clickDashboard() {
@@ -1079,6 +1084,10 @@ export default class Dashboard {
     cy.get(enterName).clear().type(name);
   }
 
+  enterName(name){
+    cy.get(enterName).clear().type(name);
+  }
+
   Iframe() {
     return cy
       .get('iframe[title*="Secure card number"]')
@@ -1421,11 +1430,11 @@ export default class Dashboard {
   }
 
   clickPastButton() {
-    cy.get(pastButton).click();
+    cy.get(pastButton).click({force:true});
   }
 
   clickFutureButton() {
-    cy.get(futureButton).click();
+    cy.get(futureButton).click({force:true});
   }
 
   verifyCompletedCheckbox() {
@@ -1867,21 +1876,65 @@ export default class Dashboard {
     cy.get(UserSettingOptions).contains('Integrations').click({ force: true });
   }
 
-  clickOnSyncBtn(sync){
-    cy.get(syncBtn(sync)).click();
+  clickIntegrationsTab(tab){
+    cy.get(integrationTab).contains(tab).click();
   }
 
-  clickOnRenewKey() {
-    cy.get(ZapierIntegrate('Renew API key')).click();
+  verifyIntegrationTitle() {
+    cy.get('.heading').should('contain.text', 'Manage INTEGRATION Keys');
   }
 
-  
-  clickOnRemoveIntegration() {
-    cy.get(ZapierIntegrate('Remove Integration')).click();
+  verifyAlertMsg(msg) {
+    cy.get('.alert-info').should('contain.text', msg)
   }
 
-  setupIntegration() {
-    cy.get(ZapierIntegrate('Setup Integration')).click();
+  verifyIntegrationKeyBtn() {
+    cy.get(addIntegrationBtn).should('be.visible');
+  }
+
+  clickAddIntegrationKeyBtn() {
+    cy.get(addIntegrationBtn).click();
+  }
+
+  verifyTableHeadings(heading) {
+    for (let i = 0; i < heading.length; i++) {
+      cy.get('.resizable-table-thead .th.can-resize').should('contain.text', heading[i]);
+    }
+  }
+
+  verifyIconVisible(img) {
+    cy.get(icon(img)).should('be.visible');
+  }
+
+  verifyAddedData(name) {
+    cy.xpath(tableData(name)).should('be.visible')
+  }
+
+  verifyApiKeyField() {
+    cy.get(apiKeyField).should('be.visible');
+  }
+
+  clickOnIconBtn(name, icon) {
+    cy.xpath(integrationIcon(name,icon)).click();
+  }
+
+  clickOnEyeBtn() {
+    cy.wait(500);
+    cy.get('body').then($ele => {
+      if($ele.find('[src*="view_gray"]').length) {
+        cy.get('[src*="view_gray"]').first().click();
+        this.clickOnEyeBtn();
+      }
+    });   
+  }
+
+  verifyApiKeyVisibility(name,value) {
+    if(value == '****') {
+      cy.xpath(ApiKeyText(name)).should('contain.text', value);
+    } else {
+      cy.xpath(ApiKeyText(name)).should('not.contain.text', '****');
+    }
+    
   }
 
   handleAlertForDelete(msg) {
@@ -1889,30 +1942,6 @@ export default class Dashboard {
       expect(str).to.equal(msg);
     });
     cy.on('window:confirm', () => true);
-  }
-
-  verifyRenewAPIKey() {
-    let apiKey1,apiKey2;
-    cy.xpath(ApiKey).invoke('val').then((key) => {
-      apiKey1= key;
-    });
-    this.clickOnRenewKey();
-    cy.wait(1000);
-    cy.xpath(ApiKey).invoke('val').then((key) => {
-      apiKey2= key;
-      
-      expect(apiKey1).to.not.equal(apiKey2);
-    });
-  }
-
-  checkIntegrationSetup() {
-    cy.wait(1000);
-    cy.get('body').then((ele) => {
-      if(ele.find(ZapierIntegrate('Setup Integration')).length) {
-        this.setupIntegration();
-        this.verifySuccessMsg('Saved');
-      }
-    })
   }
   
   clickOnAgentPlusMinusIcon(btn) {
@@ -2037,5 +2066,24 @@ export default class Dashboard {
     })
   }
 
+  clickTableHeaderSort(header) {
+    cy.get(`[field="${header}"] [data-icon="sort"]`).click();
+  }
+
+  verifySorting(number) {
+    let flag;
+    cy.wait(1000);
+    cy.get(integrationTableData(number)).then(($ele) => {
+      const tableData = Array.from($ele, el => el.innerText);
+      for (let i = 0; i < tableData.length-1; i++) {
+        if(tableData[i] <= tableData[i+1]) {
+          flag = true;
+        } else {
+          flag =false;
+        }
+        expect(flag).to.equal(true)
+      }
+    });
+  }
 
 }
