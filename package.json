@@ -6,6 +6,7 @@
   "scripts": {
     "precy:run": "rm -r -f cypress/screenshots/* cypress/results/* cypress/QAreports/*",
     "precypress:run": "rm -r -f cypress/screenshots/* cypress/results/* cypress/ProdReports/*",
+    "precypress:run:smoke": "rm -r -f cypress/screenshots/* cypress/results/* cypress/SmokeProdReports/*",
     "report-t": "npm run report:merge & npm run report:generate",
     "cy:run": "npx cypress run --headless --config video=false --env configFile=qa",
     "cypress:run": "npx cypress run --headless --config video=false --env configFile=prod",
@@ -24,7 +25,7 @@
     "report:firstPromoter": "npm run cy:firstPromoter ; npm run report:merge ; npm run report:generate:prod ; npm run report:copyScreenshots:prod",
     "apitest": "mocha ./api/test/**/*.js --timeout 600000 --reporter mochawesome --reporter-options reportDir=reports/dialer-api,reportFilename=output || exit 0",
     "cy:smoke:prod": "npx cypress run --headless --config video=false --spec cypress/integration/z_prod_highPriority.spec.js --env configFile=prod",
-    "smokeReport:prod": "npm run cy:smoke:prod ; npm run report:merge ; npm run report:generate:smoke ; npm run report:copyScreenshots"
+    "report:prod:smoke": "npm run cy:smoke:prod ; npm run report:merge ; npm run report:generate:smoke ; npm run report:copyScreenshots"
   },
   "keywords": [],
   "author": "Anil",
