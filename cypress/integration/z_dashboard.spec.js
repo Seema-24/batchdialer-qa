@@ -1122,7 +1122,8 @@ describe('Dashboard Elements', () => {
     Dash.clickProceedWithCancel();
     Dash.clickCancelImmediately();
     Dash.verifyContactSupportWindow(
-      'Your Cancellation Request has been successfully submitted. Please reach out to your Account Manager to finalize request'
+      'Your Cancellation Request has been successfully submitted.If you have additional questions or would like to revert your cancellation, please call (844) 933-3984.After '+ date[0] + 
+      ', you will no longer be able to access your saved data and account.'
     );
     Dash.clickDialogCloseButton();
     Dash.clickBillingNotificationBtn('Renew Subscription');
@@ -1138,7 +1139,8 @@ describe('Dashboard Elements', () => {
     Dash.clickProceedWithCancel();
     Dash.clickCancelImmediately();
     Dash.verifyContactSupportWindow(
-      'Thank you for your feedback, your account has been set to cancel on '+ date[0]
+      'Thank you for your feedback, your account has been set to cancel on ' + date[0] + '.If you have additional questions or would like to revert your cancellation, please call (844) 933-3984.After '
+      + date[0] + ', you will no longer be able to access your saved data and account.'
     );
     Dash.clickDialogCloseButton();
   });
@@ -1180,21 +1182,83 @@ describe('Dashboard Elements', () => {
     Dash.verifyAlertNotification('You cannot downgrade to a lower number seat unless agent is removed'); 
   });
 
-  it('Verify that authorized user is able to Renew the API key generated for Zapier integration', () => {
+  it('Verify the elements in the INTEGRATIONS page', () => {
     Dash.clickIntegrationsBtn();
-    Dash.clickOnSyncBtn('zapier');
-    Dash.checkIntegrationSetup();
-    Dash.verifyRenewAPIKey();
-    Dash.clickOnButton('CLOSE');
-  })
-
-  it('Verify that authorized user is able to Remove the API integration for Zapier', () => {
-    Dash.clickIntegrationsBtn();
-    Dash.clickOnSyncBtn('zapier');
-    Dash.clickOnRemoveIntegration();
-    Dash.handleAlertForDelete('Delete API key?');
-    Dash.verifySuccessMsg('Deleted');
+    Dash.clickIntegrationsTab('Integration Keys');
+    Dash.verifyIntegrationTitle();
+    Dash.verifyAlertMsg('Separate API key should be used per each integration to avoid leads to be missing');
+    Dash.verifyIntegrationKeyBtn();
+    Dash.verifyTableHeadings(['Name','Key','Created By','Last Updated']);
+    Dash.verifyIconVisible('edit');
+    Dash.verifyIconVisible('delete');
   });
+
+  it('Verify that authorized user is able to generate API key', () => {
+    Dash.clickAddIntegrationKeyBtn();
+    Dash.verifyModalTitle('Add New Integration Key');
+    Dash.verifyApiKeyField();
+  });
+
+  it('Verify user is able to ADD new integration key', () => {
+    Dash.enterName('Testing');
+    Dash.clickSaveButton();
+    Dash.verifySuccessMsg('Created Successfully');
+    Dash.verifyAddedData('Testing');
+  });
+
+  it('Verify user unable to create duplicate integration key with same Name', () => {
+    Dash.clickAddIntegrationKeyBtn();
+    Dash.enterName('Testing');
+    Dash.clickSaveButton();
+    Dash.verifyToastMessage('Create Failed');
+  });
+
+  it('verify that user is click on cancel tab', () => {
+    Dash.clickOnButton('Cancel');
+  });
+
+  it('Verify user is able to EDIT integration key', ()  => {
+    Dash.clickOnIconBtn('Testing', 'edit');
+    Dash.enterName('Testing-edited');
+    Dash.clickSaveButton();
+    Dash.verifySuccessMsg('Updated Successfully');
+    Dash.verifyAddedData('Testing-edited');
+  });
+
+  it('Verify user is able to click on EYE_ICON', () => {
+    Dash.verifyApiKeyVisibility('Testing-edited', '****');
+    Dash.clickOnIconBtn('Testing-edited','view_gray');
+    Dash.verifyApiKeyVisibility('Testing-edited');
+  });
+
+  it('Verify user is able to copy API KEY', () => {
+    Dash.clickOnIconBtn('Testing-edited', 'copy');
+    Dash.verifySuccessMsg('Copied Successfully');
+  });
+
+  it('Verify user is able to click on sorting tab', ()  => {
+    Dash.clickTableHeaderSort('name');
+    Dash.verifySorting(1);
+    Dash.clickOnEyeBtn();
+    Dash.clickTableHeaderSort('credentials');
+    Dash.verifySorting(2);
+    Dash.clickTableHeaderSort('createdby');
+    Dash.verifySorting(4); 
+  });
+
+  it('Verify user is able to DELETE integration key', () => {
+    Dash.clickOnIconBtn('Testing-edited', 'delete');
+    Dash.verifyModalTitle('Delete Integration Key');
+    Dash.clickOnButton('Delete');
+    Dash.verifySuccessMsg('Deleted Successfully');
+  });
+
+  it('Verify that when user enter the space in name of an API then the error message should be shown', () => {
+    Dash.clickAddIntegrationKeyBtn();
+    Dash.enterName(' ');
+    camp.verifyQuestionTooltipText('This field is required');
+  });
+
 
 
 });
