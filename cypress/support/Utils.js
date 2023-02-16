@@ -1,4 +1,3 @@
-import Dashboard from "./pages/Dashboard";
 import UserPermission from "./pages/UserPermission";
 
 const statusDropdown = '.nav-item .ss-select';
@@ -9,7 +8,6 @@ const authToken = Cypress.env('twilioAuthToken');
 const quickStartGuidePopUp = '#pendo-guide-container';
 const callFunction = 'Takeover Call Functions';
 const permit = new UserPermission();
-const dash = new Dashboard();
 
 export function selectAgentStatus(status) {
   handlePoorConnectionPopup();
@@ -133,14 +131,14 @@ export function closeDialogBox() {
   cy.get('body').then(($body) => {
     if($body.text().includes('Edit User')) {
       cy.get('.close-button').click();
-    } if($body.text().includes('SPEED TEST')) {
+    }if($body.text().includes('SPEED TEST')) {
       ignoreSpeedTestPopup();
-    } if($body.text().includes('New User')) {
+    }if($body.text().includes('New User')) {
       cy.get('.close-button').click();
-    } if($body.text().includes('Start Calling')) {
+    }if($body.text().includes('Start Calling')) {
       cy.reload();
       ignoreSpeedTestPopup();
-    } if($body.find('#pendo-guide-container').length) {
+    }if($body.find('#pendo-guide-container').length) {
       cy.get('button').then((btns) => {
         for (let i = 0; i < btns.length; i++) {
           if (btns[i].textContent.trim() === 'Dismiss') {
@@ -149,15 +147,15 @@ export function closeDialogBox() {
           }
         }
       });
-    } if($body.find('.call-disposition-title').length) {
+    }if($body.find('.call-disposition-title').length) {
       cy.get('.disposition-cell .disposition').last().click();
       cy.contains('Done').click();
-    } if($body.find('.user__dropdown-menu.dropdown-menu.show').length) {
-        dash.clickUserProfile();
-    } if($body.find('.modal-dialog #callresult').length) {
-        cy.contains('Cancel').click();
+    }if($body.find('.user__dropdown-menu.dropdown-menu.show').length) {
+      cy.get('.profile_name').click({force:true});
+    }if($body.find('.modal-dialog #callresult').length) {
+      cy.contains('Cancel').click();
     }
-  })
+  });
 }
 
 export function verifyReactivateAccount() {
