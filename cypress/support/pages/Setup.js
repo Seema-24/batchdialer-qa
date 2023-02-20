@@ -30,7 +30,7 @@ const options = '.ss-select-option';
 const destinationDropdown = `//div[label[text()="Destination"]]/following-sibling::div[1]//div[contains(@class,"ss-select-control")]`;
 const assignDropdown = `//div[label[text()="Destination"]]/following-sibling::div[2]//div[contains(@class,"ss-select-control")]`;
 const dropdownItems = '.show .dropdown-item';
-const userPermissionExpander = '.user-permissions-expander';
+const userPermissionExpander = '.user-permissions-expander img';
 const disabledPermissions = '.user-permission-checkbox[alt="Disabled"]';
 const enabledPermissions = '.user-permission-checkbox[alt="Enabled"]';
 const permissionHeading = '.user-permission-col';
