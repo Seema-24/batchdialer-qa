@@ -253,11 +253,37 @@ describe('Report Page', () => {
     report.verifyFloorMapItem(2);
   });
 
-  it('Verify that Floor map with duplicate name can not be created.', () => {
+  it('​Verify that Timer,Profile Pic ,Status color,Status,Agent Name is displayed for each element in the floor map for logged in users', () => {
+    report.verifyFloorMapProfilePic();
+    report.verifyFloorMapAgentName(testData.AdminName);
+    report.verifyFloorMapStatus();
+    report.verifyFloorMapStatusTimer();
+    report.verifyFloorMapStatusColor();
+  });
+
+  it('Verify that Floor map with duplicate name can not be created', () => {
     report.clickOnButton('Add New Floor');
     report.enterFloorMap('Test Floor');
     report.clickOnButton('Save');
     report.verifyErrorMsg('Floor Map with the same name already exists');
+    report.clickOnButton('Cancel');
+  });
+
+  it('Verify the User groups drop down in Create or Edit Floor map', () => {
+    report.clickOnButton('Add New Floor');
+    report.verifyAgentGroupName([
+      testData.adminWithoutCalling,
+      testData.AdminName,
+      testData.agent
+    ]);
+    report.dragAndDropAgentCard();
+    report.verifyFloorMapAgentName(testData.adminWithoutCalling);
+  });
+
+  it('Verify the Clear All button in Create or Edit page', () => {
+    report.verifyFloorMapItem(1);
+    report.clickOnButton('Clear All');
+    report.verifyFloorMapItem(0);
   });
 
 });

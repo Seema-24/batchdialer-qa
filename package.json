@@ -38,7 +38,8 @@
     "mochawesome-merge": "^4.2.1",
     "mochawesome-report-generator": "^6.0.1",
     "chai": "^4.3.4",
-    "supertest": "^6.1.5"
+    "supertest": "^6.1.5",
+    "@4tw/cypress-drag-drop": "^2.2.3"
   },
   "dependencies": {
     "cypress-downloadfile": "^1.2.0",
