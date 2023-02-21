@@ -448,7 +448,7 @@ export default class PhoneNum {
     ).should('not.be.visible');
   }
 
-  deleteAddedPhoneNumber(num) {
+  clickPhoneMenuDropdown(num) {
     cy.xpath(
       `//div[@class="tr"][div[@class="td"][text()="${num}"]]//div[@class="dropdown"]`,
       { timeout: 5000 }
@@ -456,6 +456,10 @@ export default class PhoneNum {
       .first()
       .scrollIntoView()
       .click();
+  }
+
+  deleteAddedPhoneNumber(num) {
+    this.clickPhoneMenuDropdown(num);
     this.clickDropdownItem('Delete Number');
   }
 
@@ -1145,6 +1149,11 @@ export default class PhoneNum {
     cy.readFile(`cypress/downloads/${file}`).should('exist');
     cy.exec('del /q "cypress\\downloads\\*.*"', { log: true, failOnNonZeroExit: false })
     cy.exec('rm cypress/downloads/*', { log: true, failOnNonZeroExit: false })
+  }
+
+  clickReplacePhoneNumber(num) {
+    this.clickPhoneMenuDropdown(num);
+    this.clickDropdownItem('Replace Number');
   }
 
 }
