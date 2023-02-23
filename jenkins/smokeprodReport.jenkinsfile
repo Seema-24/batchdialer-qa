@@ -1,0 +1,41 @@
+pipeline {
+  agent { label 'qa' }
+  
+  options {
+    timeout(time: 7, unit: 'HOURS') 
+    ansiColor('xterm')
+    disableConcurrentBuilds()
+  }
+    
+  tools {
+    nodejs "Node14"
+  }
+    
+  stages {
+    stage("Install dependencies") {
+      steps {
+        sh """
+          npm install
+        """
+      }
+    }
+
+    stage("Build") {
+      steps {
+        sh """
+          npm run report:prod:smoke
+        """
+      }
+    }  
+
+    stage ("Upload report") {
+      steps {
+        s3Upload bucket: 'batch-qa-automation', 
+                  path: 'SmokeProdReports',
+                  workingDir: 'cypress/SmokeProdReports/html',
+                  includePathPattern: '**'
+        cleanWs()
+      }
+    }
+  }
+}
