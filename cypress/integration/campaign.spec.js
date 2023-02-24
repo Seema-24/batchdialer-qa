@@ -464,7 +464,7 @@ describe('Add Campaign flow', () => {
   });
 
   it('Verify contact list dropdown should show lists dropdown', () => {
-    addCamp.clickContactListDropdown();
+    addCamp.clickListDropdown('Contact Lists');
     addCamp.verifyContactListDropdown();
   });
 
@@ -712,8 +712,43 @@ describe('Add Campaign flow', () => {
       '1234567890', 
       'Fleek@2016'
     );
-    addCamp.verifyCreatedAgentsInField(AgentName);
+    addCamp.verifyCreatedCampCardInField('Agents',AgentName);
     addCamp.deleteAgent(AgentName);
+  });
+
+  it('Verify that User can select the Contact lists from the contact list dropdown in campaign creation page', () => {
+    addCamp.getContactList();
+    addCamp.clickCampaignMenu();
+    addCamp.clickAddNewCampaign();
+    addCamp.selectDialingMode('Predictive');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.selectPhoneNumberToAssign(testData.Number);
+    addCamp.clickListDropdown('Contact Lists');
+    addCamp.verifyListInCampDropdown('Contact Lists');
+  });
+  
+  it('Verify that user can upload contact list from campaign creation page by clicking on "+upload contacts"', () => {
+    addCamp.uploadContactViaCampaignCreation('contact-sample.csv');
+    addCamp.verifyCreatedCampCardInField('Contact Lists', 'contact-sample.csv');
+    addCamp.verifyFileInContactList('contact-sample.csv');
+  });
+
+  it('Verify that User can select the phone number from phone number dropdown in campaign creation page', () => {
+    addCamp.getPhoneNumberList();
+    addCamp.clickCampaignMenu();
+    addCamp.clickAddNewCampaign();
+    addCamp.selectDialingMode('Predictive');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.clickListDropdown('Phone Numbers');
+    addCamp.verifyListInCampDropdown('Phone Numbers');
+  });
+
+  it('Verify that User can Buy phone number from campaign creation page by clicking on "Buy Phone Numbers " button', () => {
+    addCamp.buyPhoneNumberViaCampaignCreation();
+    cy.readFile('cypress/fixtures/testData.json').then((data) => {
+      addCamp.verifyCreatedCampCardInField('Phone Numbers', data.BuyNumber);
+      addCamp.deletePhoneNumber(data.BuyNumber);
+    });
   });
 
 });

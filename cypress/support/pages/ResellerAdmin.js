@@ -39,19 +39,19 @@ const cancelAccountNowRadioBtn =
   '//label[text()="Cancel the account now (fraud etc.)"]//span[@class="checkmark"]';
 const cancelAccountAtEndRadioBtn =
   '//label[text()="Cancel the account in the end of current billing cycle"]//span[@class="checkmark"]';
-const trialButton = '//span[@class="badge"]';
+const trialButton = '.resizable-table-tbody :nth-of-type(11)';
 const modalDialog = '.modal-dialog .modal-content';
 const disableTrialReadioBtn =
   '//label[text()="Disable Trial"]//span[@class="checkmark"]';
 const changeTrialRadioBtn =
   '//label[text()="Change Trial Period to"]//span[@class="checkmark"]';
 const trialDays = 'input[name="days"]';
-const noOfTrialDays = '//span[@class="badge"]';
+const noOfTrialDays = '.resizable-table-tbody :nth-of-type(11) span';
 const tableHeader = '.resizable-table-thead .th';
 const clientNameData = '.tr .td:nth-of-type(2)';
 const billingEditIcon = '.billing-card-title button';
 const billingInfoEditBtn = '.billing-user-info__wrapper .billing-user-info__edit.btn';
-const selectAdd = (key) => `//label[text() ="${key}"]/parent::div/child::div//span[@class="ss-select-value-label single"]`;
+const selectAdd = (key) => `//label[text() ="${key}"]/parent::div/child::div//span[contains(@class,"ss-select-value-label single")]`;
 const userDropdown =(option) => `//div[@class="user__dropdown" and text()="${option}"]`;
 const statusIcon = '.tr .td:nth-of-type(4)';
 const billingButton = '.billing-user-info__balance .btn-default';
@@ -271,7 +271,8 @@ export default class Reseller {
   }
 
   clickTrialButton() {
-    cy.xpath(trialButton).click();
+    cy.wait(1000);
+    cy.get(trialButton).click();
   }
 
   verifyModalDialogOpen() {
@@ -295,7 +296,8 @@ export default class Reseller {
   }
 
   verifyNoOfTrialDays(days) {
-    cy.xpath(noOfTrialDays).should('have.text', `${days}days`);
+    cy.wait(1000);
+    cy.get(noOfTrialDays).should('have.text', `${days}days`);
   }
 
   verifySearchFieldVisible() {

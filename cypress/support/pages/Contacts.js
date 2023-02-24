@@ -1011,8 +1011,8 @@ export default class Contacts {
         cy.log(list+ " List is not available.");
       } else {
         cy.get('.resizable-table-tbody > div').then($list => {
+          cy.contains(list).should('be.visible');
           for (let i = 0; i < $list.length; i++) {
-            cy.log($list.length)
             this.clickListDeleteButton(list);
             this.handleAlertForDelete();
             this.verifySuccessToastMessage('List deleted');

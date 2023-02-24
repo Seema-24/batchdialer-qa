@@ -20,9 +20,6 @@ let randNum = Math.floor(Math.random() * 100000);
 describe('Add Phone Number flow', () => {
   before(() => {
     cy.fixture('constants').then((data) => (fixtureData = data));
-    cy.readFile('cypress/fixtures/testData.json').then(
-      (data) => (testData = data)
-    );
     cy.visit('/', { failOnStatusCode: false });
     Cypress.Cookies.defaults({
       preserve: (cookies) => {
@@ -32,7 +29,9 @@ describe('Add Phone Number flow', () => {
   });
 
   beforeEach(() => {
-    cy.fixture('constants').then((data) => (fixtureData = data));
+    cy.readFile('cypress/fixtures/testData.json').then(
+      (data) => (testData = data)
+    );
     handlePoorConnectionPopup();
     closeDialogBox();
   });
@@ -96,20 +95,23 @@ describe('Add Phone Number flow', () => {
   });
 
   it('Should show added Phone number in table', () => {
-    cy.readFile('cypress/fixtures/testData.json').then((data) => {
-      num = data.BuyNumber;
-      addNum.clickPhoneNumberMenu();
-      addNum.verifyAddedPhoneNum(num);
-      cy.log(num);
-    });
+    num = testData.BuyNumber;
+    addNum.clickPhoneNumberMenu();
+    addNum.verifyAddedPhoneNum(num);
+    cy.log(num);
+  });
+
+  it('verify that when user Click on Replace on Phone number page Popup Message Should be Display', () => {
+    addNum.clickPhoneNumberMenu();
+    addNum.clickReplacePhoneNumber(testData.BuyNumber);
+    addNum.verifyModalWindowOpen();
+    addNum.verifyModalWindowText('The phone number will be replaced with new phone number in the same area code. Cost to replace the phone numbers is $4 and the amount will be charged to your account.')
   });
 
   it('Should delete the added Phone Number', () => {
     addNum.clickPhoneNumberMenu();
-    cy.readFile('cypress/fixtures/testData.json').then((data) => {
-      addNum.deleteAddedPhoneNumber(data.BuyNumber);
-      addNum.handleAlertForDelete();
-    });
+    addNum.deleteAddedPhoneNumber(testData.BuyNumber);
+    addNum.handleAlertForDelete();
     addNum.verifyDeletedToast();
   });
 
