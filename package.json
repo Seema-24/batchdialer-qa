@@ -18,7 +18,7 @@
     "report:generate:prod": "marge --inline cypress/results/mochawesome-bundle.json -o cypress/ProdReports/html",
     "report:generate:smoke": "marge --inline cypress/results/mochawesome-bundle.json -o cypress/SmokeProdReports/html",
     "report:copyScreenshots:prod": "cp -r cypress/screenshots cypress/ProdReports/html/screenshots",
-    "report:copyScreenshots:smoke": "cp -r cypress/screenshots cypress/SmokeReports/html/screenshots",
+    "report:copyScreenshots:smoke": "cp -r cypress/screenshots cypress/SmokeReports/html/screenshots || exit 0",
     "login": "npx cypress run --browser chrome --headless --config video=false --spec cypress/integration/login.spec.js",
     "login:prod": "npx cypress run --browser chrome --headless --config video=false --spec cypress/integration/login.spec.js --env configFile=prod",
     "precy:firstPromoter": "rm -r -f cypress/screenshots/* cypress/results/* cypress/ProdReports/*",
