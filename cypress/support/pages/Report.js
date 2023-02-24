@@ -40,8 +40,10 @@ const recycleIcon = (name) => `//div[text()="${name}"]/*[@class="recycle-icon-sv
 const dropdownOptions = '.ss-select-group-items';
 const statusdropdown = 'All Statuses';
 const floorView = '.dropdown-toggle.btn.btn-default';
-const userStatus = (name,presence) => 
-  `//div[@class="employee-name text-capitalize"][contains(.,"${name}")]/ancestor::div[@class="floor-map--item-bg d-flex"]/descendant::div[contains(@class,"${presence}")]`;
+const agentCard = '.avail-agent-card.react-draggable';
+const floorCanvas = '.floor-map--canvas';
+const floorMapItem = '.floor-map--item ';
+
 
 export default class Report {
   clickReportMenu() {
@@ -277,15 +279,7 @@ export default class Report {
   }
 
   verifyFloorMapItem(item) {
-    cy.get('.floor-map--item').should('have.length', item);
-  }
-
-  verifyUserStatus(name,status) {
-    cy.xpath(userStatus(name,'employee-presence')).should('have.text',status)
-  }
-
-  verifyUserPresenceTime(name) {
-    cy.xpath(userStatus(name,'employee-last-presence')).should('be.visible');
+    cy.get(floorMapItem).should('have.length', item);
   }
 
   clickOnButton(Btn) {
@@ -307,4 +301,37 @@ export default class Report {
     cy.get('.Toastify__toast-body').should('contain.text', msg)
   }
 
+  verifyAgentGroupName(name) {
+    for (let i = 0; i < name.length; i++) {
+      cy.get('.agent-info .fullname').contains(name[i])
+    } 
+  }
+
+  dragAndDropAgentCard() {
+    cy.get(agentCard).first()
+      .drag(floorCanvas, {
+        target: { position: 'center' },
+        force: true 
+    })
+  }
+
+  verifyFloorMapAgentName(item) {
+    cy.get(floorMapItem +'.employee-name').should('contain', item);
+  }
+
+  verifyFloorMapProfilePic() {
+    cy.get(floorMapItem).should('contain.html','img class="avatar"');
+  }
+
+  verifyFloorMapStatus() {
+    cy.get(floorMapItem + '.employee-presence').should('be.visible');
+  }
+
+  verifyFloorMapStatusTimer() {
+    cy.get(floorMapItem + '.employee-last-presence').first().should('not.be.empty');
+  }
+
+  verifyFloorMapStatusColor() {
+    cy.get(floorMapItem + '[style*="background: rgb"]').should('be.visible');
+  }
 }

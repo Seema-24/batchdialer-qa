@@ -1,5 +1,6 @@
 import Dashboard from '../support/pages/Dashboard';
 import Login from '../support/pages/Login';
+import PhoneNum from '../support/pages/PhoneNum';
 import Register from '../support/pages/Register';
 import Reseller from '../support/pages/ResellerAdmin';
 import { covertNumberToNormal, handlePoorConnectionPopup, ignoreSpeedTestPopup } from '../support/Utils';
@@ -8,6 +9,8 @@ const reseller = new Reseller();
 const login = new Login();
 const register = new Register();
 const Dash = new Dashboard();
+const addNum = new PhoneNum();
+
 let fixtureData;
 let testData;
 const randomNumber = Math.floor(Math.random() * 100000);
@@ -38,6 +41,7 @@ describe('Reseller Admin', () => {
         cy.log('Not performing Account Reactivation on Production');
       } else {
         cy.visit('/register_trial');
+        cy.wait(1000);
         register.enterFirstName('Demo');
         register.enterLastName('testing');
         register.enterCompanyName('Fleek+' + randomNumber + '');
@@ -316,6 +320,49 @@ describe('Reseller Admin', () => {
     });
   });
 
+  it('Verify that ADJUST button is present when Reseller admin Login as the client account', () => {
+    cy.url().then((url) => {
+      if (url.includes('app.batchdialer.com')) {
+        cy.log('Not performing Account Reactivation on Production');
+      } else {
+        reseller.clickUserTreeDropdown('Switch Account');
+        Dash.enterUserToSearch(email);
+        Dash.clickUserRoleEmail(email);
+        reseller.handleAlertWindow();
+        cy.wait(1000);
+        ignoreSpeedTestPopup();
+        login.verifySuccessfullLogin();
+        Dash.clickUserProfile();
+        Dash.clickBilling();
+        reseller.verifyBillingBtn('Adjust');
+      }
+    });
+  });
+
+  it('Verify that error message is displayed when Trial users try to Replace phone numbers by themselves', () => {
+    cy.url().then((url) => {
+      if (url.includes('app.batchdialer.com')) {
+        cy.log('Not performing Account Reactivation on Production');
+      } else {
+        addNum.clickPhoneNumberMenu();
+        addNum.clickBuyDidButton();
+        addNum.selectStateModeOption('Colorado');
+        addNum.selectPhoneNumber();
+        addNum.getFirstPhoneNumber();
+        addNum.clickOrderNowButton();
+        addNum.closingDialog();
+        cy.readFile('cypress/fixtures/testData.json').then((data) => {
+          addNum.clickReplacePhoneNumber(data.BuyNumber);
+        });
+        addNum.verifyModalWindowOpen();
+        addNum.clickOnButton('Proceed');
+        addNum.verifyToastMessage("Trial users can't replace DID numbers. Please contact support.");
+        Dash.clickBackToAdmin();
+        Dash.verifyUserDashboardName('First Tenant Reseller 1');
+      }
+    });
+  });
+
   it('Verify the default value that trial period can be extended', () => {
     cy.url().then((url) => {
       if (url.includes('app.batchdialer.com')) {
@@ -370,27 +417,6 @@ describe('Reseller Admin', () => {
       }
     });
   });
-
-  it('Verify that ADJUST button is present when Reseller admin Login as the client account', () => {
-    cy.url().then((url) => {
-      if (url.includes('app.batchdialer.com')) {
-        cy.log('Not performing Account Reactivation on Production');
-      } else {
-        reseller.clickUserTreeDropdown('Switch Account');
-        Dash.enterUserToSearch(email);
-        Dash.clickUserRoleEmail(email);
-        reseller.handleAlertWindow();
-        cy.wait(1000);
-        ignoreSpeedTestPopup();
-        login.verifySuccessfullLogin();
-        Dash.clickUserProfile();
-        Dash.clickBilling();
-        reseller.verifyBillingBtn('Adjust');
-        Dash.clickBackToAdmin();
-        Dash.verifyUserDashboardName('First Tenant Reseller 1');
-      }
-    });
-  })
 
   it('Verify that Reseller admin is able to delete an existing client account', () => {
     cy.url().then((url) => {

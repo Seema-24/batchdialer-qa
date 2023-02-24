@@ -26,6 +26,7 @@
 /// <reference types="cypress" />
 /// <reference types="cypress-xpath" />
 
+require('@4tw/cypress-drag-drop')
 require('cypress-downloadfile/lib/downloadFileCommand');
 import Login from '../support/pages/Login';
 const login = new Login();
