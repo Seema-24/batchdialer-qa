@@ -977,6 +977,10 @@ export default class PhoneNum {
     cy.get(modalWindow).should('be.visible');
   }
 
+  verifyModalWindowText(msg) {
+    cy.get(modalWindow).should('contain', msg);
+  }
+
   clickSelectGroupDropdown() {
     cy.get(modalContentDropdown).click();
   }

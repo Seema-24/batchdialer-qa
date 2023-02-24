@@ -1,6 +1,8 @@
 import { ignoreSpeedTestPopup } from '../Utils';
+import Contacts from './Contacts';
 import Dashboard from './Dashboard';
 import Dialer from './Dialer';
+import PhoneNum from './PhoneNum';
 import User from './User';
 
 const campaignsMenu = 'a[title="Campaigns"]';
@@ -168,6 +170,9 @@ const dialPadNumber = '.stg-softphone-number-digits';
 const addUser = new User();
 const dial = new Dialer();
 const dash = new Dashboard();
+const addCont = new Contacts();
+const addNum = new PhoneNum();
+let arrList = [];
 
 export default class Campaign {
   clickCampaignMenu() {
@@ -175,7 +180,7 @@ export default class Campaign {
   }
 
   clickAddNewCampaign() {
-    cy.xpath(addCampaign).click();
+    cy.xpath(addCampaign).click({force:true});
   }
 
   enterName(name) {
@@ -185,7 +190,7 @@ export default class Campaign {
   enterCampaignName(name) {
     cy.get(inputName)
       .wait(500)
-      .clear()
+      .clear({force:true})
       .scrollIntoView()
       .type(name, { delay: 200 });
       cy.get('body').then(($body) => {
@@ -271,7 +276,7 @@ export default class Campaign {
   }
 
   clickToSelectPasused(val) {
-    cy.get(statusDrpdwn(val)).click();
+    cy.get(statusDrpdwn(val)).click({force:true});
   }
 
   verifyLeadSheetDropdown() {
@@ -628,8 +633,8 @@ export default class Campaign {
     cy.get(contactListDropdown).should('be.visible');
   }
 
-  clickContactListDropdown() {
-    cy.xpath(cardDropdowns('Contact Lists')).click({force:true});
+  clickListDropdown(cardName) {
+    cy.xpath(cardDropdowns(cardName)).click({force:true});
   }
 
   clickCampaignSetting() {
@@ -1006,8 +1011,8 @@ export default class Campaign {
     })
   }
 
-  verifyCreatedAgentsInField(agent) {
-    cy.xpath(cardDropdowns('Agents')+'//span[contains(@class,"multiple")]').should('have.text',agent);
+  verifyCreatedCampCardInField(cardName, value) {
+    cy.xpath(cardDropdowns(cardName)+'//span[contains(@class,"multiple")]').should('contain.text',value);
   }
 
   deleteAgent(agent) {
@@ -1187,4 +1192,76 @@ export default class Campaign {
     }
   }
 
+  uploadContactViaCampaignCreation(file) {
+    cy.contains('Upload Contacts').click({force:true});
+    addCont.uploadFileForContact(file);
+    cy.wait(2000);
+    addCont.selectFirstNameDropdown();
+    addCont.selectLastNameDropdown();
+    addCont.selectEmailDropdown();
+    addCont.selectPhoneDropdown();
+    cy.wait(2000);
+    addCont.clickNextButton();
+    addCont.clickSubmitButton();
+    addCont.verifyImportStartedToast();
+    addCont.verifyImportContactCompleteToast();
+  }
+
+  verifyFileInContactList(file) {
+    addCont.clickingOnContactOption();
+    dial.clickOnSubMenu('Contact Lists');
+    addCont.verifyListExisting(file);
+  }
+
+  captureArrayList(index) {
+    cy.get(`.resizable-table-tbody div.td:nth-of-type(${index})`).then($ele => {
+      arrList = Array.from($ele, el => el.innerText);
+    })
+  }
+
+  getContactList() {
+    addCont.clickingOnContactOption();
+    dial.clickOnSubMenu('Contact Lists');
+    this.captureArrayList(2);
+  }
+
+  getPhoneNumberList() {
+    addNum.clickPhoneNumberMenu();
+    this.captureArrayList(3);
+  }
+
+  verifyListInCampDropdown(cardName) {
+    cy.get('body').then(arr => {
+      cy.log(arrList.length)
+      for (let i = 0; i < arrList.length; i++) {
+        cy.get(options).then((opt) => {
+          for (let j = 0; j < opt.length; j++) {
+            const option = opt[j].textContent.trim();
+            if (option.includes(arrList[i])) {
+              expect(option).to.contain(arrList[i])
+              break;
+            }
+          }
+        });
+      }
+      this.selectOptions(arrList[0]);
+      this.verifyCreatedCampCardInField(cardName, arrList[0]);
+    });
+  }
+
+  buyPhoneNumberViaCampaignCreation() {
+    cy.contains('BUY NEW NUMBERS').click({force:true});
+    addNum.selectStateModeOption('Colorado');
+    addNum.selectPhoneNumber();
+    addNum.getFirstPhoneNumber();
+    addNum.clickOrderNowButton();
+    cy.xpath('//button[text()=" Cancel"]', { timeout: 120000 }).should('be.enabled').click();
+  }
+
+  deletePhoneNumber(num) {
+    addNum.clickPhoneNumberMenu();
+    addNum.deleteAddedPhoneNumber(num);
+    addNum.handleAlertForDelete();
+    addNum.verifyDeletedToast();
+  }
 }
