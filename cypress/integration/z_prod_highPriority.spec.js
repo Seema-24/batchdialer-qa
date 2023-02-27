@@ -1063,7 +1063,7 @@ describe('Add Contact flow', () => {
     dial.selectCampaign(testData.campaign);
     dial.clickConfirmButton();
     dial.verifySoftPhoneOpen();
-    contact.dialPhoneNumber('8586515050');  //7209834562
+    contact.dialPhoneNumber('3023747120');  
     contact.clickDialerCallButton();
     cy.wait(10000);
     contact.clickDialerCallButton();
@@ -1140,7 +1140,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
     it('Add the New Contact for the Outbound call', () => {
       contact.clickingOnContactOption();
       contact.clickAddNewContactButton();
-      contact.verifyContactExisting('5703870000')
+      contact.verifyContactExisting('3023747120')
       contact.selctCreateNewContactOption();
       contact.enterFirstName('Twilio');
       contact.enterLastName('Test');
@@ -1149,7 +1149,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       contact.selectState('Arizona');
       contact.enterZipCode('85701');
       contact.enterEmail('test@test.com');
-      contact.enterPhoneNumber('5703870000');
+      contact.enterPhoneNumber('3023747120');
       contact.clickSaveButton();
       contact.verifySuccessToast();
     });
@@ -1927,7 +1927,7 @@ describe('Add Phone Number flow', () => {
   });
 
   it('Verify that Events created through call result Schedule a call back is reflected in the TASKS page', () => {
-    contact.dialPhoneNumber('8586515050');
+    contact.dialPhoneNumber('3023747120');
     contact.clickDialerCallButton();
     cy.wait(5000);
     contact.clickDialerCallButton();
