@@ -1,3 +1,7 @@
+def bucketName = "batch-qa-automation"
+def s3ObjectKey = "SmokeProdReports/mochawesome-bundle.html"
+def s3ObjectUrl = "https://${bucketName}.s3.us-west-2.amazonaws.com/${s3ObjectKey}"
+        
 pipeline {
   agent { label 'qa' }
   
@@ -36,6 +40,15 @@ pipeline {
                   includePathPattern: '**'
         cleanWs()
       }
+    }
+
+    stage('Publish Report URL to Slack') {
+    steps {
+      script {
+        // Share the S3 object URL in a Slack message
+        slackSend(channel: '#dialer-qa', message: "Here's the report generated from <${s3ObjectUrl}|SmokeProd qa automation>")
+      }
+    }
     }
   }
 }
