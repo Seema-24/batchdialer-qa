@@ -1160,4 +1160,12 @@ export default class PhoneNum {
     this.clickDropdownItem('Replace Number');
   }
 
+  checkNewlyExistsCR() {
+    cy.wait(1000).get('body').then($body => {
+      if($body.find(callResultDeleteBtn).length) {
+        this.clickCallResultDeleteBtn();
+      }
+    })
+  }
+
 }

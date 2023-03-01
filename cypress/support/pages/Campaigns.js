@@ -1216,7 +1216,19 @@ export default class Campaign {
   captureArrayList(index) {
     cy.get(`.resizable-table-tbody div.td:nth-of-type(${index})`).then($ele => {
       arrList = Array.from($ele, el => el.innerText);
-    })
+    });
+  }
+
+  captureGroup(group) {
+    let path;
+    if(group == 'Agent') {
+      path = '.user-editing-col :nth-of-type(1)';
+    } else if(group == 'Phone') {
+      path = '.did-groups-card .card-text .col:nth-of-type(1)';
+    }
+    cy.get(path).then($ele => {
+      arrList.push($ele.text());
+    });
   }
 
   getContactList() {
@@ -1228,6 +1240,13 @@ export default class Campaign {
   getPhoneNumberList() {
     addNum.clickPhoneNumberMenu();
     this.captureArrayList(3);
+    this.captureGroup('Phone');
+  }
+
+  getAgentList() {
+    addUser.clickingOnUserOption();
+    this.captureArrayList(2);
+    this.captureGroup('Agent');
   }
 
   verifyListInCampDropdown(cardName) {

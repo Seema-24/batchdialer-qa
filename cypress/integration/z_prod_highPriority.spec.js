@@ -904,7 +904,6 @@ describe('Add Contact flow', () => {
 
   it('Should Add Contact using Create New option', () => {
     contact.clickingOnContactOption();
-    cy.wait(3000);
     contact.verifyContactExisting('9999999999');
     contact.clickAddNewContactButton();
     contact.selctCreateNewContactOption();
@@ -1063,7 +1062,7 @@ describe('Add Contact flow', () => {
     dial.selectCampaign(testData.campaign);
     dial.clickConfirmButton();
     dial.verifySoftPhoneOpen();
-    contact.dialPhoneNumber('3023747120');  
+    contact.dialPhoneNumber('6029227636');  
     contact.clickDialerCallButton();
     cy.wait(10000);
     contact.clickDialerCallButton();
@@ -1113,6 +1112,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
 
     it('Create the New Preview Dialer', () => {
       dial.clickOnMenu('Campaigns');
+      dial.verifyCampaignExisting(campaignName);
       dial.clickOnButton('NEW CAMPAIGN');
       dial.clickOnRadioButton('Preview Dialer');
       dial.selectAgentToAssign(testData.AdminName);
@@ -1139,8 +1139,8 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
 
     it('Add the New Contact for the Outbound call', () => {
       contact.clickingOnContactOption();
+      contact.verifyContactExisting('6029227636');
       contact.clickAddNewContactButton();
-      contact.verifyContactExisting('3023747120')
       contact.selctCreateNewContactOption();
       contact.enterFirstName('Twilio');
       contact.enterLastName('Test');
@@ -1149,7 +1149,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       contact.selectState('Arizona');
       contact.enterZipCode('85701');
       contact.enterEmail('test@test.com');
-      contact.enterPhoneNumber('3023747120');
+      contact.enterPhoneNumber('6029227636');
       contact.clickSaveButton();
       contact.verifySuccessToast();
     });
@@ -1227,6 +1227,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
 
     it('Create a new Predictive Campaign', () => {
       dial.clickOnMenu('Campaigns');
+      dial.verifyCampaignExisting(campaignName);
       dial.clickOnButton('NEW CAMPAIGN');
       dial.clickOnRadioButton('Predictive Dialer');
       dial.selectAgentToAssign(testData.AdminName);
@@ -1353,6 +1354,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
 
     it('Create a new Predictive Campaign', () => {
       dial.clickOnMenu('Campaigns');
+      dial.verifyCampaignExisting(campaignName);
       dial.clickOnButton('NEW CAMPAIGN');
       dial.clickOnRadioButton('Predictive Dialer');
       dial.selectAgentToAssign(testData.AdminName);
@@ -1479,6 +1481,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
 
     it('Create a new Predictive Campaign', () => {
       dial.clickOnMenu('Campaigns');
+      dial.verifyCampaignExisting(campaignName);
       dial.clickOnButton('NEW CAMPAIGN');
       dial.clickOnRadioButton('Predictive Dialer');
       dial.selectAgentToAssign(testData.AdminName);
@@ -1603,6 +1606,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
 
     it('Create a new Preview Campaign with Call Recording Feature', () => {
       dial.clickOnMenu('Campaigns');
+      dial.verifyCampaignExisting(campaignWithRecording);
       dial.clickOnButton('NEW CAMPAIGN');
       dial.clickOnRadioButton('Preview Dialer');
       dial.selectAgentToAssign(testData.AdminName);
@@ -1628,6 +1632,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
 
     it('Create a new Preview Campaign without the Call Recording Feature', () => {
       dial.clickOnMenu('Campaigns');
+      dial.verifyCampaignExisting(campaignWithoutRecording);
       dial.clickOnButton('NEW CAMPAIGN');
       dial.clickOnRadioButton('Preview Dialer');
       dial.selectAgentToAssign(testData.AdminName);
@@ -1884,6 +1889,7 @@ describe('Add Phone Number flow', () => {
   it('Add New Call Result', () => {
     addNum.clickPhoneNumberMenu();
     addNum.clickCallResultMenu();
+    addNum.checkNewlyExistsCR();
     addNum.clickAddNewCallResultBtn();
     addNum.enterName('DemoTesting');
     addNum.chooseActiveInactive('Active');
@@ -1927,7 +1933,7 @@ describe('Add Phone Number flow', () => {
   });
 
   it('Verify that Events created through call result Schedule a call back is reflected in the TASKS page', () => {
-    contact.dialPhoneNumber('3023747120');
+    contact.dialPhoneNumber('6029227636');
     contact.clickDialerCallButton();
     cy.wait(5000);
     contact.clickDialerCallButton();
@@ -1959,6 +1965,7 @@ describe('Add Phone Number flow', () => {
     addNum.clickPhoneNumberMenu();
     addNum.clickCallResultMenu();
     addNum.clickOpenCallResultGroup('UNGROUPED');
+    contact.clickToCloseSoftphone();
     addNum.clickCallResultDeleteBtn();
     addNum.handleDeleteAlert('Delete call result?');
     addNum.verifyCallResultDelete('DemoTesting');
@@ -1994,6 +2001,7 @@ describe('Report Page', () => {
   });
 
   it('Should Login', () => {
+    verifyCloseApp();
     cy.Login(Cypress.env('username'), Cypress.env('password'));
     ignoreSpeedTestPopup();
   });
