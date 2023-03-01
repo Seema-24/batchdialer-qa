@@ -46,7 +46,7 @@ pipeline {
     steps {
       script {
         // Share the S3 object URL in a Slack message
-        slackSend(channel: '#dialer-qa', message: "Here's the report generated from <${s3ObjectUrl}|SmokeProd qa automation>")
+        slackSend(channel: '#dialer-qa', message: "Automated sanity check has been completed on production and here is the report <${s3ObjectUrl}|SmokeProd qa automation>")
       }
     }
     }
