@@ -984,7 +984,7 @@ export default class Contacts {
 
   verifyContactExisting(num) {
     const number = '(' + num.substring(0,3)+ ') ' + num.substr(3,3) +'-'+ num.substr(-4);
-    cy.wait(1000);
+    cy.wait(5000);
     cy.get('body').then(($body) => {
       if($body.text().includes(number)) {
         cy.xpath(
