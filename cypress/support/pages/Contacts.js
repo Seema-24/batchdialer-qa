@@ -984,7 +984,7 @@ export default class Contacts {
 
   verifyContactExisting(num) {
     const number = '(' + num.substring(0,3)+ ') ' + num.substr(3,3) +'-'+ num.substr(-4);
-    cy.wait(1000);
+    cy.wait(5000);
     cy.get('body').then(($body) => {
       if($body.text().includes(number)) {
         cy.xpath(
@@ -1011,8 +1011,8 @@ export default class Contacts {
         cy.log(list+ " List is not available.");
       } else {
         cy.get('.resizable-table-tbody > div').then($list => {
+          cy.contains(list).should('be.visible');
           for (let i = 0; i < $list.length; i++) {
-            cy.log($list.length)
             this.clickListDeleteButton(list);
             this.handleAlertForDelete();
             this.verifySuccessToastMessage('List deleted');

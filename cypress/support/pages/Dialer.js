@@ -800,4 +800,15 @@ export default class Dialer {
     cy.xpath(PhoneValue('Phone')).should('contain.text', number);
     cy.xpath(PhoneValue('Phone')).should('contains.text', callType);
   }
+
+  verifyCampaignExisting(camp) {
+    cy.wait(1000);
+    cy.get('body').then(($body) => {
+      if($body.text().includes(camp)) {
+        this.clickThreeDotMenuBtn(camp);
+        this.clickOnDropdownItem('Archive');
+        this.verifySuccessToastMessage('Campaign Archived');
+      }
+    })
+  }
 }

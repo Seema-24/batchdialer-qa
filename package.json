@@ -18,6 +18,7 @@
     "report:generate:prod": "marge --inline cypress/results/mochawesome-bundle.json -o cypress/ProdReports/html",
     "report:generate:smoke": "marge --inline cypress/results/mochawesome-bundle.json -o cypress/SmokeProdReports/html",
     "report:copyScreenshots:prod": "cp -r cypress/screenshots cypress/ProdReports/html/screenshots",
+    "report:copyScreenshots:smoke": "cp -r cypress/screenshots cypress/SmokeProdReports/html/screenshots || exit 0",
     "login": "npx cypress run --browser chrome --headless --config video=false --spec cypress/integration/login.spec.js",
     "login:prod": "npx cypress run --browser chrome --headless --config video=false --spec cypress/integration/login.spec.js --env configFile=prod",
     "precy:firstPromoter": "rm -r -f cypress/screenshots/* cypress/results/* cypress/ProdReports/*",
@@ -25,7 +26,7 @@
     "report:firstPromoter": "npm run cy:firstPromoter ; npm run report:merge ; npm run report:generate:prod ; npm run report:copyScreenshots:prod",
     "apitest": "mocha ./api/test/**/*.js --timeout 600000 --reporter mochawesome --reporter-options reportDir=reports/dialer-api,reportFilename=output || exit 0",
     "cy:smoke:prod": "npx cypress run --headless --config video=false --spec cypress/integration/z_prod_highPriority.spec.js --env configFile=prod",
-    "report:prod:smoke": "npm run cy:smoke:prod ; npm run report:merge ; npm run report:generate:smoke ; npm run report:copyScreenshots"
+    "report:prod:smoke": "npm run cy:smoke:prod ; npm run report:merge ; npm run report:generate:smoke ; npm run report:copyScreenshots:smoke"
   },
   "keywords": [],
   "author": "Anil",
@@ -38,7 +39,8 @@
     "mochawesome-merge": "^4.2.1",
     "mochawesome-report-generator": "^6.0.1",
     "chai": "^4.3.4",
-    "supertest": "^6.1.5"
+    "supertest": "^6.1.5",
+    "@4tw/cypress-drag-drop": "^2.2.3"
   },
   "dependencies": {
     "cypress-downloadfile": "^1.2.0",

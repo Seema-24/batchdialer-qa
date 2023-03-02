@@ -1,0 +1,54 @@
+def bucketName = "batch-qa-automation"
+def s3ObjectKey = "SmokeProdReports/mochawesome-bundle.html"
+def s3ObjectUrl = "https://${bucketName}.s3.us-west-2.amazonaws.com/${s3ObjectKey}"
+        
+pipeline {
+  agent { label 'qa' }
+  
+  options {
+    timeout(time: 7, unit: 'HOURS') 
+    ansiColor('xterm')
+    disableConcurrentBuilds()
+  }
+    
+  tools {
+    nodejs "Node14"
+  }
+    
+  stages {
+    stage("Install dependencies") {
+      steps {
+        sh """
+          npm install
+        """
+      }
+    }
+
+    stage("Build") {
+      steps {
+        sh """
+          npm run report:prod:smoke
+        """
+      }
+    }  
+
+    stage ("Upload report") {
+      steps {
+        s3Upload bucket: 'batch-qa-automation', 
+                  path: 'SmokeProdReports',
+                  workingDir: 'cypress/SmokeProdReports/html',
+                  includePathPattern: '**'
+        cleanWs()
+      }
+    }
+
+    stage('Publish Report URL to Slack') {
+    steps {
+      script {
+        // Share the S3 object URL in a Slack message
+        slackSend(channel: '#dialer-qa', message: "Automated sanity check has been completed on production and here is the report <${s3ObjectUrl}|SmokeProd qa automation>")
+      }
+    }
+    }
+  }
+}

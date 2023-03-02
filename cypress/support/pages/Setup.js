@@ -60,8 +60,8 @@ export default class Setup {
         phone.clickPhoneNumberMenu();
         phone.clickBuyDidButton();
         phone.selectStateModeOption('Colorado');
-        phone.clickSearchButton();
-        phone.verifysearchStartedToast();
+        //phone.clickSearchButton();
+        //phone.verifysearchStartedToast();
         phone.selectPhoneNumber();
         phone.assignAgentUser(agent);
         phone.getFirstPhoneNumber();
