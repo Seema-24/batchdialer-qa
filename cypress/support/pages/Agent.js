@@ -402,7 +402,7 @@ export default class Agent {
     cy.get(searchBoxOnContact).should('be.visible');
   }
   checkRoundAndCheckBtns() {
-    cy.get(roundBtns).click({ multiple: true }).should('be.visible');
+    cy.get(roundBtns).click({ multiple: true, force:true}).should('be.visible');
   }
   clickOnSelfMadeButton() {
     cy.xpath(selectSelfMadeOnly).click();

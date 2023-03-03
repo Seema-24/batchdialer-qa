@@ -166,6 +166,7 @@ const campaignCardRadioBtn = (campCard,radioBtn) => `//div[h2[@class="campaign-c
 const campaignCardCheckbox = (campCard) => `//div[h2[@class="campaign-card__checkbox-block__title"][text()="${campCard}"]]/following-sibling::span`;
 const campaignName = (name) => `//span[@class="campaign-name-table"][text()="${name}"]`;
 const dialPadNumber = '.stg-softphone-number-digits';
+const tableList = (index) => `.resizable-table-tbody div.td:nth-of-type(${index})`;
 
 const addUser = new User();
 const dial = new Dialer();
@@ -1214,20 +1215,18 @@ export default class Campaign {
   }
 
   captureArrayList(index) {
-    cy.get(`.resizable-table-tbody div.td:nth-of-type(${index})`).then($ele => {
+    cy.get(tableList(index)).then($ele => {
       arrList = Array.from($ele, el => el.innerText);
     });
   }
 
-  captureGroup(group) {
-    let path;
-    if(group == 'Agent') {
-      path = '.user-editing-col :nth-of-type(1)';
-    } else if(group == 'Phone') {
-      path = '.did-groups-card .card-text .col:nth-of-type(1)';
-    }
-    cy.get(path).then($ele => {
-      arrList.push($ele.text());
+  captureGroup() {
+    cy.get(tableList(5)).then($ele => {
+      for (let i = 0; i < $ele.length; i++) {
+        if($ele[i].textContent.trim() !== '-') {
+        arrList.push('Group'+$ele[i].textContent.trim());
+        }
+      }
     });
   }
 
@@ -1240,13 +1239,13 @@ export default class Campaign {
   getPhoneNumberList() {
     addNum.clickPhoneNumberMenu();
     this.captureArrayList(3);
-    this.captureGroup('Phone');
+    this.captureGroup();
   }
 
   getAgentList() {
     addUser.clickingOnUserOption();
     this.captureArrayList(2);
-    this.captureGroup('Agent');
+    this.captureGroup();
   }
 
   verifyListInCampDropdown(cardName) {

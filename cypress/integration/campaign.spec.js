@@ -701,11 +701,16 @@ describe('Add Campaign flow', () => {
       'Increasing the Max Attempts per record above 3 will result in lower connection rates due to increased phone number spam detection and blocking by carriers. The recommended setting is 3 attempts per record per day. Please refer to our help desk for more information.');
   });
 
-
-  it('Verify that User can Create agent from campaign creation page by clicking on (+ Create Agents)', () => {
+  it('Verify that User can select the agent and agents groups from agent dropdown in campaign creation page', () => {
+    addCamp.getAgentList();
     addCamp.clickCampaignMenu();
     addCamp.clickAddNewCampaign();
     addCamp.selectDialingMode('Predictive');
+    addCamp.clickListDropdown('Agents');
+    addCamp.verifyListInCampDropdown('Agents');
+  });
+
+  it('Verify that User can Create agent from campaign creation page by clicking on (+ Create Agents)', () => {
     addCamp.createAgentViaCampaignCreation(
       AgentName,
       'demo'+randNum.toString()+'@email.com',
