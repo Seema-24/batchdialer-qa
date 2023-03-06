@@ -1282,4 +1282,13 @@ export default class Campaign {
     addNum.handleAlertForDelete();
     addNum.verifyDeletedToast();
   }
+
+  clickOnCampaignWizard(name) {
+    cy.get('.campaign-wizard__body span',{timeout:30000}).contains(name).click();
+  }
+
+  verifyIncompleteCampWizard(name) {
+    cy.get('.campaign-wizard__body span',{timeout:30000}).should('not.contain.text',name)
+  }
+
 }

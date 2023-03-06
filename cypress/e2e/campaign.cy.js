@@ -756,4 +756,22 @@ describe('Add Campaign flow', () => {
     });
   });
 
+  it('Verify that user can go back to completed steps but cannot go forward for incomplete steps in Wizard and all the wizards icon are clickable (if steps are already completed)', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickAddNewCampaign();
+    addCamp.selectDialingMode('Predictive');
+    addCamp.verifyIncompleteCampWizard('Agents');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.selectPhoneNumberToAssign(testData.Number);
+    addCamp.clickOnCampaignWizard('Dialing Mode');
+    addCamp.verifyDialingMode();
+    addCamp.clickAdvancedConfiguration();
+    addCamp.clickOnCampaignWizard('Call Results');
+    addCamp.verifyCallResultsDropdown();
+    addCamp.clickOnCampaignWizard('Agents');
+    addCamp.verifyAgentToAssignDropdown();
+    addCamp.verifyPhoneNumberToAssignDropdown();
+    addCamp.clickOnButton('Cancel');
+  });
+
 });

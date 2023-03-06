@@ -1,16 +1,16 @@
-import Agent from "../support/pages/Agent";
-import Campaign from "../support/pages/Campaigns";
-import Contacts from "../support/pages/Contacts";
-import Dashboard from "../support/pages/Dashboard";
-import Dialer from "../support/pages/Dialer";
-import Login from "../support/pages/Login";
-import PhoneNum from "../support/pages/PhoneNum";
-import Register from "../support/pages/Register";
-import Report from "../support/pages/Report";
-import Setup from "../support/pages/Setup";
-import Suprevisor from "../support/pages/Supervisor";
-import User from "../support/pages/User";
-import { closeDialogBox, getDate, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus, verifyCloseApp } from "../support/Utils";
+import Agent from "../../support/pages/Agent";
+import Campaign from "../../support/pages/Campaigns";
+import Contacts from "../../support/pages/Contacts";
+import Dashboard from "../../support/pages/Dashboard";
+import Dialer from "../../support/pages/Dialer";
+import Login from "../../support/pages/Login";
+import PhoneNum from "../../support/pages/PhoneNum";
+import Register from "../../support/pages/Register";
+import Report from "../../support/pages/Report";
+import Setup from "../../support/pages/Setup";
+import Suprevisor from "../../support/pages/Supervisor";
+import User from "../../support/pages/User";
+import { closeDialogBox, getDate, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus, verifyCloseApp } from "../../support/Utils";
 
 let fixtureData,testData,count;
 const randomNumber = Math.floor(Math.random() * 1000);
@@ -1939,7 +1939,7 @@ describe('Add Phone Number flow', () => {
     contact.clickDialerCallButton();
     contact.selectCallResult('A CALL BACK'); 
     contact.clickContinueBtn();
-    cy.wait(1000);
+    cy.wait(3000);
     dashboard.clickTaskButton();
     dashboard.clickFutureButton();
     dashboard.verifyEventType('Appointment');   
