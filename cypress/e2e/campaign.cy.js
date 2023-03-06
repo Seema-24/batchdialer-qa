@@ -701,11 +701,16 @@ describe('Add Campaign flow', () => {
       'Increasing the Max Attempts per record above 3 will result in lower connection rates due to increased phone number spam detection and blocking by carriers. The recommended setting is 3 attempts per record per day. Please refer to our help desk for more information.');
   });
 
-
-  it('Verify that User can Create agent from campaign creation page by clicking on (+ Create Agents)', () => {
+  it('Verify that User can select the agent and agents groups from agent dropdown in campaign creation page', () => {
+    addCamp.getAgentList();
     addCamp.clickCampaignMenu();
     addCamp.clickAddNewCampaign();
     addCamp.selectDialingMode('Predictive');
+    addCamp.clickListDropdown('Agents');
+    addCamp.verifyListInCampDropdown('Agents');
+  });
+
+  it('Verify that User can Create agent from campaign creation page by clicking on (+ Create Agents)', () => {
     addCamp.createAgentViaCampaignCreation(
       AgentName,
       'demo'+randNum.toString()+'@email.com',
@@ -749,6 +754,24 @@ describe('Add Campaign flow', () => {
       addCamp.verifyCreatedCampCardInField('Phone Numbers', data.BuyNumber);
       addCamp.deletePhoneNumber(data.BuyNumber);
     });
+  });
+
+  it('Verify that user can go back to completed steps but cannot go forward for incomplete steps in Wizard and all the wizards icon are clickable (if steps are already completed)', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickAddNewCampaign();
+    addCamp.selectDialingMode('Predictive');
+    addCamp.verifyIncompleteCampWizard('Agents');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.selectPhoneNumberToAssign(testData.Number);
+    addCamp.clickOnCampaignWizard('Dialing Mode');
+    addCamp.verifyDialingMode();
+    addCamp.clickAdvancedConfiguration();
+    addCamp.clickOnCampaignWizard('Call Results');
+    addCamp.verifyCallResultsDropdown();
+    addCamp.clickOnCampaignWizard('Agents');
+    addCamp.verifyAgentToAssignDropdown();
+    addCamp.verifyPhoneNumberToAssignDropdown();
+    addCamp.clickOnButton('Cancel');
   });
 
 });
