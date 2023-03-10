@@ -1291,4 +1291,8 @@ export default class Campaign {
     cy.get('.campaign-wizard__body span',{timeout:30000}).should('not.contain.text',name)
   }
 
+  clickTermsConditionsCheckbox() {
+    cy.xpath('//label[text()="Accept Terms and Conditions "]/span[@class="checkmark"]').click();
+  }
+
 }

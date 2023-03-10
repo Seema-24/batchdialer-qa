@@ -194,7 +194,7 @@ export default class User {
   }
 
   clearSearch() {
-    cy.get(searchBox).clear();
+    cy.get(searchBox).clear({force:true});
   }
 
   verifyRoleDropdown() {

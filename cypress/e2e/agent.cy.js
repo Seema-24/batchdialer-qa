@@ -366,6 +366,7 @@ describe('Agent Profile', function () {
     agent.selectCampaign(testData.campaign);
     agent.clickConfirmButton();
     agent.clickCloseSoftphoneBtn();
+    closeDialogBox();
   });
 
   it('Verify The Change Campaign Page Elements', () => {

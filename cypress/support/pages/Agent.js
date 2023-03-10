@@ -1,4 +1,5 @@
 import { clickCallFunction } from "../Utils";
+import Dashboard from "./Dashboard";
 
 const campaignsMenu = 'a[title="Campaigns"]';
 const campaign = (camp) =>
@@ -12,17 +13,17 @@ const doneBtn = "//button[text()='Done']";
 const recentContact = 'a[title="Recent Contacts"]';
 const recentContactPage = '.reportCdrsForm.agent';
 const editContact = 'span[title="Edit"]';
-const callResultText = '.disposition';
-const editCallResultWindow = '.modal-content .call-disposition-title';
-const callResults = '.disposition-cell .disposition';
-const softphoneCloseBtn = '.stg-softphone-right-close' //'.softphone-close-button svg';
-const softphone = '.stg-softphone-wrapper';
+const callResultText = '.td .cursor_pointer span.d-inline-block';
+const editCallResultWindow = '.call-disposition div.position-absolute.overlay-content';
+const callResults = '.call-disposition main span.d-inline-block';
+const softphoneCloseBtn = '.softphone-close-button .cursor_pointer';
+const softphone = '.stg-softphone-wrapper .softphone-body-height-for-dialer';
 const contactsMenu = 'a[title="Contacts"]';
 const contact = '.contacts__name';
 const phoneNumber = '.phone__a-wrapper';
 const callTransferBtn = 'div[title="Transfer"]';
-const callBtn = '.stg-softphone-callbutton img';
-const callResultWindow = '.modal-content .call-disposition-title';
+const callBtn = (btn) => `[src*=softphone_phone_${btn}]`;
+const callResultWindow = '.call-disposition div.position-absolute.overlay-content';
 const cancelBtn = '//button[contains(text(),"Cancel")]';
 const confirmButton = '//button[contains(text(),"Confirm")]';
 const searchBox = '.search-box';
@@ -155,6 +156,8 @@ const dispositionWindow = '.call-disposition-modal .modal-content';
 const activityText = '.activity-title';
 const tableFirstRow = 'tbody tr:nth-child(1)';
 
+const dash = new Dashboard();
+
 export default class Agent {
   clickCampaignMenu() {
     cy.get(campaignsMenu).click({ force: true });
@@ -170,7 +173,10 @@ export default class Agent {
 
   selectAgentStatus(status) {
     clickCallFunction();
-    cy.get(statusDropdown).click().contains(status).click();
+    cy.get(statusDropdown).click().contains(status).click().wait(1000);
+    dash.clickUserProfile();
+    dash.clickOnChangeCampaign();
+    
   }
 
   verifySelectCampaignBox() {
@@ -190,7 +196,7 @@ export default class Agent {
   }
 
   clickContinueBtn() {
-    cy.xpath(doneBtn).click();
+    cy.xpath(doneBtn).last().click();
   }
 
   verifyContinueBtn() {
@@ -243,7 +249,7 @@ export default class Agent {
   }
 
   clickCloseSoftphoneBtn() {
-    cy.get(softphoneCloseBtn, { timeout: 30000 }).click();
+    cy.get(softphoneCloseBtn, { timeout: 30000 }).click({force:true});
   }
 
   enterSearch(search) {
@@ -256,6 +262,13 @@ export default class Agent {
   }
 
   verifySoftphoneOpen() {
+    cy.wait(1000).get('body').then(($body) => {
+      if($body.find(softphone).length){
+        cy.log("Dial Pad exist");
+      }else {
+        cy.get('img[src*="softphone.svg"]').click();
+      }
+    })
     cy.get(softphone, { timeout: 20000 }).should('be.visible');
   }
 
@@ -276,11 +289,11 @@ export default class Agent {
   }
 
   clickCallBtn() {
-    cy.get(callBtn).click({force:true});
+    cy.get(callBtn('green')).click({force:true});
   }
 
   clickEndCallBtn() {
-    cy.get(callBtn).click({force:true});
+    cy.get(callBtn('red')).click({force:true});
   }
 
   verifyCallResultWindow() {

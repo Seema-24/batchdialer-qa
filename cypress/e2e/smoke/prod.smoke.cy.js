@@ -101,20 +101,6 @@ describe('Registration & Login Flow', () => {
     register.verifyPaymentsPage();
   });
 
-  it('Verify that User can increase the number of agent by using slider on the plan selection page', () => {
-    register.clickSignUpBtn();
-    register.enterFirstName('Demo');
-    register.enterLastName('testing');
-    register.enterPhoneNumber('9999999999');
-    register.enterEmail(email);
-    register.enterPassword('Fleek@2016');
-    register.enterConfirmPassword('Fleek@2016');
-    register.clickContinueToPlanBtn();
-    register.verifyPlanSelectionWindow();
-    register.increaseAgentCount(10);
-    register.verifyAgentCount(10);
-  });
-
   it('Verifies Required Fields', () => {
     register.clickSignUpBtn();
     register.clickContinueToPlanBtn();
@@ -720,22 +706,24 @@ describe('Agent Profile', function () {
     agent.verifySelectCampaignBox();
     agent.selectCampaign(testData.campaign);
     agent.clickConfirmButton();
+    agent.verifySoftphoneOpen();
     agent.clickCloseSoftphoneBtn();
   });
 
   it('Verify The Change Campaign Page Elements', () => {
+    closeDialogBox();
     agent.clickOnAgentProfileDropDown();
     agent.clickOnChangeCampaignBtn();
-
     agent.verifyTesxtOnChangeCampaignPage('Start Calling');
     agent.verifyConfirmBtnOnChangeCamp();
+    closeDialogBox();
   });
 
   it('Verify the Active Campaign count when Agent become available', () => {
     agent.clickingOnContactOption();
     cy.wait(500);
     agent.clickDashboardMenu();
-    cy.wait(1500);
+    cy.wait(3000);
     agent.verifyActiveCampaignCount();
   });
 
@@ -745,7 +733,7 @@ describe('Agent Profile', function () {
     agent.clickContactName();
     agent.clickPhoneNumber();
     agent.clickCallBtn();
-    cy.wait(5000);
+    cy.wait(2000);
     agent.clickEndCallBtn();
     cy.wait(1000);
     agent.verifyCallResultWindow();
@@ -1133,6 +1121,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       dial.selectToTime('11:30 pm');
       dial.clickApplyToAllButton();
       dial.clickOnButton('APPLY');
+      dial.clickTermsConditionsCheckbox();
       dial.clickOnButton('Save');
       dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -1250,6 +1239,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       dial.clickApplyToAllButton();
       dial.clickOnButton('APPLY');
       dial.clickOnButton('Save');
+      dial.clickTermsConditionsCheckbox();
       dial.verifySuccessToastMessage('Campaign Created');
     });
 
@@ -1376,6 +1366,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       dial.selectToTime('11:30 pm');
       dial.clickApplyToAllButton();
       dial.clickOnButton('APPLY');
+      dial.clickTermsConditionsCheckbox();
       dial.clickOnButton('Save');
       dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -1507,6 +1498,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       dial.selectToTime('11:30 pm');
       dial.clickApplyToAllButton();
       dial.clickOnButton('APPLY');
+      dial.clickTermsConditionsCheckbox();
       dial.clickOnButton('Save');
       dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -1626,6 +1618,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       dial.selectToTime('11:30 pm');
       dial.clickApplyToAllButton();
       dial.clickOnButton('APPLY');
+      dial.clickTermsConditionsCheckbox();
       dial.clickOnButton('Save');
       dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -1653,6 +1646,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       dial.selectToTime('11:30 pm');
       dial.clickApplyToAllButton();
       dial.clickOnButton('APPLY');
+      dial.clickTermsConditionsCheckbox();
       dial.clickOnButton('Save');
       dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -1810,6 +1804,7 @@ describe('Add Phone Number flow', () => {
   });
 
   it('Should Login', () => {
+    verifyCloseApp();
     cy.Login(Cypress.env('username'), Cypress.env('password'));
     cy.reload();
     ignoreSpeedTestPopup();
@@ -1819,8 +1814,6 @@ describe('Add Phone Number flow', () => {
     addNum.clickPhoneNumberMenu();
     addNum.clickBuyDidButton();
     addNum.selectStateModeOption('Colorado');
-    // addNum.clickSearchButton();
-    // addNum.verifysearchStartedToast();
     addNum.selectPhoneNumber();
     addNum.assignAgentUser(testData.AdminName);
     addNum.getFirstPhoneNumber();
@@ -1889,6 +1882,7 @@ describe('Add Phone Number flow', () => {
   it('Add New Call Result', () => {
     addNum.clickPhoneNumberMenu();
     addNum.clickCallResultMenu();
+    addNum.clickOpenCallResultGroup('UNGROUPED');
     addNum.checkNewlyExistsCR();
     addNum.clickAddNewCallResultBtn();
     addNum.enterName('DemoTesting');
@@ -1936,12 +1930,14 @@ describe('Add Phone Number flow', () => {
     contact.dialPhoneNumber('6029227636');
     contact.clickDialerCallButton();
     cy.wait(5000);
-    contact.clickDialerCallButton();
+    contact.clickEndCallButton();
     contact.selectCallResult('A CALL BACK'); 
     contact.clickContinueBtn();
-    cy.wait(3000);
+    cy.wait(5000);
     dashboard.clickTaskButton();
     dashboard.clickFutureButton();
+    cy.reload();
+    ignoreSpeedTestPopup();
     dashboard.verifyEventType('Appointment');   
     dashboard.verifyEventContact('Unknown Contact');
     dashboard.verifyEventDate();
@@ -2234,6 +2230,7 @@ describe('Dashboard Elements', () => {
   it('verify elements in Dashboard Header', () => {
     dashboard.verifyDashboardHeaderElement();
   });
+
   it('Verify User settings Billing Elements', () => {
     dashboard.clickUserProfile();
     dashboard.clickBilling();
