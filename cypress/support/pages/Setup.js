@@ -24,13 +24,13 @@ const listSaveBtn =
 const addNewbTN = '//button[contains(text(),"ADD NEW")]';
 const nameField = 'input[name="name"]';
 const phoneEditButton = (number) =>
-  `//div[@class="tr"][div[@class="td"][text()="${number}"]]//div[@class="dropdown"]`;
+  `//div[@class="tr"][div[@class="td"][text()="${number}"]]//div[@class="dropdown"]//img`;
 const numberGroupDropdown = `//div[label[text()="Number Group"]]/following-sibling::div//div[contains(@class,"ss-select-control")]`;
 const options = '.ss-select-option';
 const destinationDropdown = `//div[label[text()="Destination"]]/following-sibling::div[1]//div[contains(@class,"ss-select-control")]`;
 const assignDropdown = `//div[label[text()="Destination"]]/following-sibling::div[2]//div[contains(@class,"ss-select-control")]`;
 const dropdownItems = '.show .dropdown-item';
-const userPermissionExpander = '.user-permissions-expander';
+const userPermissionExpander = '.user-permissions-expander img';
 const disabledPermissions = '.user-permission-checkbox[alt="Disabled"]';
 const enabledPermissions = '.user-permission-checkbox[alt="Enabled"]';
 const permissionHeading = '.user-permission-col';
@@ -380,7 +380,7 @@ export default class Setup {
 
   clickPhoneEditButton(number) {
     handlePoorConnectionPopup();
-    cy.xpath(phoneEditButton(number)).click();
+    cy.xpath(phoneEditButton(number)).click({force:true});
     this.clickDropdownItem('Edit Number');
   }
 

@@ -145,12 +145,13 @@ const playerForwardBtn = '.contacts-player__controls svg:nth-of-type(3)';
 const playerRewindBtn = '.contacts-player__controls svg:nth-of-type(1)';
 const contactPhoneNumber =
   '.phone-table tbody tr:nth-child(1) .phone__a-wrapper';
-const callButton = '.stg-softphone-callbutton';
-const callResults = '.disposition-cell .disposition';
+const callButton = (btn) => `[src*=softphone_phone_${btn}]`;
+const callResultWindow = '.show .call-disposition div.position-absolute.overlay-content';
+const callResults = '.show .call-disposition main span.d-inline-block'
 const doneBtn = "//button[text()='Done']";
 const openSoftphone = '.stg-softphone-wide';
-const softphoneIcon = '.nav-item img[src*="softphone"]';
-const softphoneNumPad = '.stg-softphone-keyboard-button';
+const softphoneIcon = '.softphone-close-button .cursor_pointer';
+const softphoneNumPad = '.softphone-keyboard-button';
 const modalTitle = '.modal-content .modal-title';
 const modal = '.modal-content';
 const speedDropdown = '.modal-content .ss-select-control';
@@ -221,12 +222,18 @@ export default class Contacts {
 
   clickDialerCallButton() {
     cy.get('body').then(($ele) => {
-      if($ele.find(callButton)) {
-        if($ele.find(callResults).length) {
-          cy.log('Disposition Found');
-        } else{
-          cy.get(callButton, { timeout: 20000 }).click();
-        }
+      if($ele.find(callButton('green'))) {
+        cy.get(callButton('green')).click();  
+      }
+    })
+  }
+
+  clickEndCallButton() {
+    cy.get('body').then(($ele) => {
+      if($ele.find(callResultWindow).length) {
+        cy.log('Disposition Found');
+      } else{
+        cy.get(callButton('red'), { timeout: 20000 }).click();
       }
     })
   }
@@ -239,7 +246,7 @@ export default class Contacts {
     cy.get(callResults).then(($el) => {
       for (let i = 0; i < $el.length; i++) {
         if ($el[i].textContent === result) {
-          $el[i].click();
+          $el[i].click({force:true});
           break;
         }
       }
@@ -365,7 +372,7 @@ export default class Contacts {
   clickToCloseSoftphone() {
     cy.wait(1000);
     cy.get('body').then((body) => {
-      if (body.find('.stg-softphone-wrapper .stg-softphone-wide').length) {
+      if (body.find('.stg-softphone-wrapper .softphone-body-height-for-dialer').length) {
         cy.get(softphoneIcon).click();
       }
     });

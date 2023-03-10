@@ -147,8 +147,8 @@ export function closeDialogBox() {
           }
         }
       });
-    }if($body.find('.call-disposition-title').length) {
-      cy.get('.disposition-cell .disposition').last().click();
+    }if($body.find('.show .call-disposition div.position-absolute.overlay-content').length) {
+      cy.get('.call-disposition main span.d-inline-block').last().click();
       cy.contains('Done').click();
     }if($body.find('.user__dropdown-menu.dropdown-menu.show').length) {
       cy.get('.profile_name').click({force:true});

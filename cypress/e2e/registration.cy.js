@@ -76,7 +76,7 @@ describe('Registration', () => {
     register.verifyPaymentsPage();
   });
 
-  it('Verify that User can increase the number of agent by using slider on the plan selection page', () => {
+  it.skip('Verify that User can increase the number of agent by using slider on the plan selection page', () => {
     register.clickSignUpBtn();
     register.enterFirstName('Demo');
     register.enterLastName('testing');

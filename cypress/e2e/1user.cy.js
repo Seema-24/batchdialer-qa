@@ -290,7 +290,7 @@ describe('Login Successfully and Add User', () => {
     addUser.enterAgentStatusName('to');
     addUser.clickOnAgentStatusSaveBtn();
     addUser.verifyToastMessage(
-      'Presence name must be at least 3 characters long'
+      'Status name must be at least 3 characters long'
     );
   });
 

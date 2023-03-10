@@ -99,7 +99,7 @@ const callResultSaveBtn = '//button[contains(text(),"Save")]';
 const callResultCancelBtn = '//button[contains(text(),"Cancel")]';
 const callResultDeleteBtn = '.disposition-controls .fa-trash';
 const callResultEditBtn = (callResult) =>
-  `//div[span[text()="${callResult}"]]/ancestor::tbody/descendant::span[@class="disposition-pencil-icon"]`;
+  `//span[span[text()="${callResult}"]]/ancestor::tbody/descendant::span[@class="disposition-pencil-icon"]`;
 const addPhoneGroup = '.card-title img[src*="add"]';
 const destinationDropdown = '.modal-content .ss-select';
 const destinationOptions = (option) =>
@@ -122,7 +122,7 @@ const addedNewDigit = '.number-editor input';
 const removeNewDigit = (val) =>
   "//div[contains(@class,'number-editor')][input[@value='" +
   val +
-  "']]/ancestor::div[contains(@class,'form-group')]//img[contains(@src,'remove')]";
+  "']]/ancestor::div[contains(@class,'mb-3 row')]//img[contains(@src,'remove')]";
   //"']]/ancestor::div[@class='row']//img[contains(@src,'remove')]";
 const contactName = '.custom_checkbox + td span:not(.fakelink)';
 const phone = '.phone-number';
@@ -171,7 +171,7 @@ export default class PhoneNum {
   clickCallResultDeleteBtn() {
     cy.get(callResultDeleteBtn).then((del) => {
       for (let i = 0; i < del.length; i++) {
-        cy.get(del[i]).click();
+        cy.get(del[i]).click({force:true});
       }
     });
   }
@@ -191,7 +191,7 @@ export default class PhoneNum {
   }
 
   clickCallResultEditBtn(callResult) {
-    cy.xpath(callResultEditBtn(callResult)).first().click();
+    cy.xpath(callResultEditBtn(callResult)).first().click({force:true});
   }
 
   verifyCallResultDelete(callResult) {
@@ -838,7 +838,7 @@ export default class PhoneNum {
   }
 
   clickAddNewCallResultBtn() {
-    cy.xpath(addNewCallResult).click();
+    cy.xpath(addNewCallResult).click({force:true});
   }
 
   verifyAddNewGroupBtn() {
@@ -1161,7 +1161,7 @@ export default class PhoneNum {
   }
 
   checkNewlyExistsCR() {
-    cy.wait(1000).get('body').then($body => {
+    cy.wait(2000).get('body').then($body => {
       if($body.find(callResultDeleteBtn).length) {
         this.clickCallResultDeleteBtn();
       }

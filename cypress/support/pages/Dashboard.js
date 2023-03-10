@@ -21,7 +21,7 @@ const SearchedUser = 'AUTOMATION';
 const SelectStatus = '.ss-select-group-items';
 const ContinueButton = '//button[text()="Continue"]';
 const DoneButton = '//button[text()="Done"]';
-const DialPad = '.stg-softphone-wrapper';
+const DialPad = '.stg-softphone-wrapper .softphone-body-height-for-dialer';
 const DialpadNumber = (number) => `//div[@class="stg-softphone-keyboard-button"][text()='${number}']`;
 const DialpadCallButton = '.stg-softphone-callbutton';
 const CallTimerContactButton = '.stg-softphone-contact';
@@ -224,7 +224,7 @@ const callGraph = '.flex-fill .recharts-responsive-container';
 const callGraphCloseBtn = 'button img[src*="close"]';
 const modalTitle = '.modal-title';
 const micTestStartBtn = '.recorder-buttons svg';
-const statusTimer = '.agent__presence-time';
+const statusTimer = '.auth__agent-presence';
 const clientUserId = '.group-row__center__id';
 const toastMessage = '.Toastify__toast-body';
 const userRoleStatus = (role) =>
@@ -238,10 +238,10 @@ const userTreeDropdown = 'div.dropdown-usertree.show';
 const billingCycle = '.billing-user-info__period__period';
 const billingInfoEditBtn = '.billing-user-info__wrapper .billing-user-info__edit.btn';
 const addDropdown = (add) => `//label[text() ="${add}"]/parent::div/child::div//span[@class="ss-select-value"]/span`;
-const selectState = (state) => `//span[text() ="${state}"]/ancestor::div[@class="row"]/following-sibling::div//span[@class="ss-select-value-label single"]`;
+const selectState = (state) => `//span[text() ="${state}"]/ancestor::div[@class="row"]/following-sibling::div//span[contains(@class,"ss-select-value-label")]`;
 const billingBtn = (btn) => `//button[@class="billing-button"][text()="${btn}"]`;
 const successToastMsg = '.mytoast-bottom';
-const cardEditBtn = '.billing-user-info__payment__edit';
+const cardEditBtn = '.billing-user-info__payment__edit svg';
 const mainTab = '//div[@class="dashboard"]//li[text()="MAIN"]';
 const liveCalls = '//div[@class="title "][text()="Live Calls"]';
 const resourceCenterIcon = '[id*="pendo-image-badge"]';
@@ -254,7 +254,7 @@ const callQualityChart = '.recharts-layer.recharts-area';
 const LeadsheetCheckbox = (label) => `//span[@class="custom-input__text disabled"][text()="${label}"]/ancestor::div[@class="lead-edit__list-item"]/descendant::div[@class="custom_checkbox"]//span[@class="checkmark"]`;
 const integrationTab = '.dashboard-view-Nav';
 const addIntegrationBtn = '.addnew.btn-primary';
-const agentPlusMinusBtn = (btn) =>`img[src*="billing-editor-${btn}"]`;
+const agentPlusMinusBtn = (btn) =>`svg[data-icon="${btn}"]`;
 const downgradeBtn = '.billing-plan__button.downgrade';
 const userRoleEmail = '.group-row-role .group-row-role__left__email';
 const activeAgentCount = '(//div[text()="Agents"]/parent::div/child::div/span)[1]';
@@ -1125,7 +1125,7 @@ export default class Dashboard {
   }
 
   clickCardEditBtn() {
-    cy.get(cardEditBtn).click();
+    cy.get(cardEditBtn).click({force:true});
   }
 
   clickAddNewCard() {
@@ -1756,7 +1756,7 @@ export default class Dashboard {
   }
 
   clickBillingNotificationBtn(btn) {
-    cy.xpath(billingBtn(btn)).click();
+    cy.xpath(billingBtn(btn)).click({force:true});
   }
 
   ClickSubscriptionOnHoldBtn() {

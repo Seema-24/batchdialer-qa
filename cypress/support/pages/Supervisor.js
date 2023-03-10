@@ -48,7 +48,7 @@ const heatRangePicker = '.reports-heat__range-picker';
 const rangeSelectRadioBtn = (range) =>
   `//label[@class="radio_cstm"][text()="${range}"]//span[@class="checkmark"]`;
 const dashboardElementsBox = (elementName) =>
-  `//div[text()="${elementName}"]/ancestor::div[contains(@class,"summary-card")]`;
+  `//span[text()="${elementName}"]/ancestor::div[contains(@class,"summary-card")]`;
 const dashboardGraphElements = (elementName) =>
   `//span[text()="${elementName}"]/ancestor::div[contains(@class,"col")]`;
 const addNewFloor = "//button[contains(text(),' Add New Floor')]";
@@ -184,7 +184,7 @@ export default class Suprevisor {
   }
 
   verifyExportButton(name) {
-    cy.get(`.report${name}Form__button`).should('be.visible');
+    cy.get(`.report${name}Form button`).should('be.visible');
   }
 
   verifyDatePicker() {

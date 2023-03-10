@@ -32,8 +32,8 @@ const simultaneousDialsPerAgent = `//label[text()="Simultaneous Dials p/Agent"]/
 const questionToolTip = '.question-tooltip';
 const contactProfile = '.contact-view-wrapper';
 const softphone = '.stg-softphone-wrapper .stg-softphone';
-const endCallButton = '.stg-softphone-callbutton img[src*="phone-red"]';
-const acceptCallButton = '.stg-softphone-callbutton img[src*="phone-green"]';
+const endCallButton = '[src*=softphone_phone_red]';
+const acceptCallButton = '[src*=softphone_phone_green]';
 const callDispositionWindow = '.call-disposition-modal .modal-content';
 const callDispositions = '.disposition-cell .disposition';
 const campaignDialsCount = (campaignName) =>
@@ -42,7 +42,7 @@ const campaignAnsweredCount = (campaignName) =>
   `(//div[contains(.,"${campaignName}")]/following-sibling::div)[3]`;
 const reportsMenu = 'a[title="Reports"]';
 const subMenu = (subMenuName) => `.subitem a[title="${subMenuName}"]`;
-const softPhoneOpen = '.stg-softphone-wrapper .stg-softphone-wide';
+const softPhoneOpen = '.stg-softphone-wrapper .softphone-body-height-for-dialer';
 const inqueuePhoneNumber = `(//span[text()="In Queue"]/parent::div/following-sibling::div)[3]`;
 const callingHoursDropdown = `//label[text()="Calling Hours"]/following-sibling::div`;
 const timeFromDropdown = `(//label[text()="Sunday"]/ancestor::div/following-sibling::div//div[contains(@class,"ss-select-control")])[1]`;
@@ -57,9 +57,9 @@ const recentContactsDisposition = '.disposition';
 const contactName = (firstName, lastName) =>
   `//span[@class="contacts__name" and text()="${firstName}" and text()="${lastName}"]`;
 const contactPhoneNumber = '.phone__a-wrapper';
-const agentStatus = '.agent__presence-name';
+const agentStatus = '.auth__agent-presence';
 const softphoneTitle = '.stg-softphone-title';
-const callTime = '.stg-softphone-time';
+const callTime = '.call-time';
 const softphoneButton = '.softphone-icon';
 const mappingFields = (fieldName) =>
   `//div[input[@title="${fieldName}"]]/following-sibling::div/div[contains(@class,"ss-select")]`;
@@ -98,7 +98,7 @@ const phoneRingning = '.Phone.is-animating';
 const cardDropdowns = (cardName) =>
   `//h2[@class="campaign-card__title"][text()="${cardName}"]/ancestor::div[contains(@class,"campaign-card")]//div[contains(@class,"ss-select-control")]`;
 const dashboard = 'a[title="Dashboard"]';
-const closeSoftBtn = '.stg-softphone-right-close';
+const closeSoftBtn = '.softphone-close-button .cursor_pointer';
 const timeoutDestination = '//label[text()="Timeout Destination"]/ancestor::div[contains(@class,"form-group")]/descendant::span[contains(@class,"ss-select-value")][1]';
 const queueCheckbox = (checkbox) => `//div[label[text()="${checkbox}"]]/parent::div//span[@class="checkmark"]`;
 const PhoneValue = (key) => `//div[@class="key"][text()="${key}"]/parent::div/child::div[@class="value"]`
@@ -173,14 +173,14 @@ export default class Dialer {
   }
 
   enterCampaignName(name) {
-    cy.get(nameField).clear().type(name);
+    cy.get(nameField).clear({force:true}).type(name);
   }
 
   clickOnRadioButton(radioButtonName) {
+    cy.get('object.loader').should('not.exist');
     cy.xpath(radioButtons(radioButtonName))
-    .wait(5000)
     .should('be.visible')
-    .click();
+    .click({force:true});
   }
 
   clickOnCheckboxButton(checkboxButton) {
@@ -490,7 +490,7 @@ export default class Dialer {
   }
 
   verifyAgentStatus(status) {
-    cy.get(agentStatus, { timeout: 80000 }).should('have.text', status);
+    cy.get(agentStatus, { timeout: 80000 }).should('contain.text', status);
   }
 
   verifySoftphoneTitle(name) {
@@ -748,7 +748,7 @@ export default class Dialer {
     cy.wait(1000);
     cy.get('body').then($body => {
       if($body.find(softPhoneOpen).length) {
-        cy.get(closeSoftBtn).click();
+        cy.get(closeSoftBtn).click({force:true});
       }
     })
   }
@@ -810,5 +810,9 @@ export default class Dialer {
         this.verifySuccessToastMessage('Campaign Archived');
       }
     })
+  }
+
+  clickTermsConditionsCheckbox() {
+    cy.xpath('//label[text()="Accept Terms and Conditions "]/span[@class="checkmark"]').click();
   }
 }
