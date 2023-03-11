@@ -34,8 +34,8 @@ const contactProfile = '.contact-view-wrapper';
 const softphone = '.stg-softphone-wrapper .stg-softphone';
 const endCallButton = '[src*=softphone_phone_red]';
 const acceptCallButton = '[src*=softphone_phone_green]';
-const callDispositionWindow = '.call-disposition-modal .modal-content';
-const callDispositions = '.disposition-cell .disposition';
+const callDispositionWindow = '.show .call-disposition div.position-absolute.overlay-content';
+const callDispositions = '.show .call-disposition main span.d-inline-block';
 const campaignDialsCount = (campaignName) =>
   `(//div[contains(.,"${campaignName}")]/following-sibling::div)[2]`;
 const campaignAnsweredCount = (campaignName) =>
@@ -58,7 +58,7 @@ const contactName = (firstName, lastName) =>
   `//span[@class="contacts__name" and text()="${firstName}" and text()="${lastName}"]`;
 const contactPhoneNumber = '.phone__a-wrapper';
 const agentStatus = '.auth__agent-presence';
-const softphoneTitle = '.stg-softphone-title';
+const softphoneTitle = '.softphone-body-height-for-dialer header span.d-block';
 const callTime = '.call-time';
 const softphoneButton = '.softphone-icon';
 const mappingFields = (fieldName) =>
@@ -69,7 +69,7 @@ const modalTitle = '.modal-content .modal-title';
 const modalDropdown = '.modal-content .ss-select';
 const listDeleteBtn = (listName) =>
   `//div[text()="${listName}"]/parent::div/child::div//*[name()="svg"][@data-icon="trash-alt"]`;
-const softphoneLines = '.stg-softphone-line';
+const softphoneLines = '.softphone-body-height-for-dialer [id*="softphone-line"]';
 const retryTime = (editBtn) =>
   `//label[text()="Retry Time"]//following-sibling::div//div[contains(@class,"number-editor")]//img[contains(@src,"${editBtn}")]`;
 const maxAttemptPerRecord =
@@ -77,12 +77,12 @@ const maxAttemptPerRecord =
 const contactThreeDotMenu = (firstName, lastName) =>
   `//span[@class="contacts__name" and text()="${firstName}" and text()="${lastName}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]`;
 const softphoneLineStatus = '.stg-softphone-line-status';
-const softphoneLineContactName = '.stg-softphone-line-contact';
+const softphoneLineContactName = '.multiline-panel.show div.position-relative';
 const ringTimeDuration = `//label[text()="Ring Time Duration"]/following-sibling::div//input`;
 const abandonmentTimeout = `//label[text()="Abandonment Timeout, sec"]/following-sibling::div//input`;
 const callRecordingCheckbox = 'input[name="callrecording"]';
 const callRecordingIcon = (firstName, lastName, camp) =>
-  `//div[div[text()="${firstName} ${lastName}"] and div[text()="${camp}"]]//img[contains(@src,"icon-listen")]`;
+  `//div[div[text()="${firstName} ${lastName}"] and div[text()="${camp}"]]//img[contains(@src,"volume-up-fill")]`;
 const playerCampaignName = '.contacts-player__top-campaign';
 const playerWindow = '.contacts-player .modal-content';
 const playerControlButton = (no) =>
@@ -92,7 +92,7 @@ const playerCloseButton = '.modal-content .fa-times';
 const dailyConnectsLimit = `//label[text()="Max Calls per Day"]/parent::div//input`;
 const campBehviorDropdown = (dropdown) => `//div[label[text()="${dropdown}"]]/parent::div//div[contains(@class,"ss-select-control")]`;
 const softphoneIcon = '.softphone-icon';
-const listenIcon = (camp) => `//div[text()="${camp}"]/parent::div/child::div//img[@alt="Listen"]`;
+const listenIcon = (camp) => `//div[text()="${camp}"]/parent::div/child::div//img[@src="/img/volume-up-fill.svg"]`;
 const tableRefreshBtn = 'span[title="Refresh"]';
 const phoneRingning = '.Phone.is-animating';
 const cardDropdowns = (cardName) =>
@@ -102,6 +102,7 @@ const closeSoftBtn = '.softphone-close-button .cursor_pointer';
 const timeoutDestination = '//label[text()="Timeout Destination"]/ancestor::div[contains(@class,"form-group")]/descendant::span[contains(@class,"ss-select-value")][1]';
 const queueCheckbox = (checkbox) => `//div[label[text()="${checkbox}"]]/parent::div//span[@class="checkmark"]`;
 const PhoneValue = (key) => `//div[@class="key"][text()="${key}"]/parent::div/child::div[@class="value"]`
+const contactLineCursor = (pos) => `svg[data-icon="angle-${pos}"]`
 
 const dash = new Dashboard();
 export default class Dialer {
@@ -482,7 +483,7 @@ export default class Dialer {
   }
 
   clickContactName(firstName, lastName) {
-    cy.xpath(contactName(firstName, lastName)).click();
+    cy.xpath(contactName(firstName, lastName)).click({force:true});
   }
 
   clickContactPhoneNumber() {
@@ -597,12 +598,18 @@ export default class Dialer {
     cy.xpath(contactThreeDotMenu(firstName, lastName)).click();
   }
 
+  clickContactLineCursor(pos) {
+    cy.get(contactLineCursor(pos),{timeout:40000}).click();
+  }
+
   verifySoftphoneLineContactName(contactName) {
+    this.clickContactLineCursor('right');
     cy.get(softphoneLineContactName, { timeout: 40000 }).then((lineText) => {
       for (let i = 0; i < lineText.length; i++) {
         expect(lineText[i].textContent.trim()).to.contains(contactName);
       }
     });
+    this.clickContactLineCursor('left');
   }
 
   verifySoftphoneLineStatus(status) {
@@ -643,7 +650,7 @@ export default class Dialer {
   }
 
   clickCallRecordingIcon(firstName, lastName, campaignName) {
-    cy.xpath(callRecordingIcon(firstName, lastName,campaignName)).first().click();
+    cy.xpath(callRecordingIcon(firstName, lastName,campaignName)).first().click({force:true});
   }
 
   verifyPlayerCampaignName(campaignName) {

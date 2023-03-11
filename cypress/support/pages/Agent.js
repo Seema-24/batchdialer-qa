@@ -8,20 +8,20 @@ const accessDenied =
   "//div[contains(@class,'card-title') and (text()='Access Denied')]";
 const statusDropdown = '.nav-item .ss-select';
 const selectCampaignBox = '.modal-content .select__campaign__select';
-const continueBtn = "//button[text()='Continue']";
+const continueBtn = "//button[text()='Confirm & Transfer']";
 const doneBtn = "//button[text()='Done']";
 const recentContact = 'a[title="Recent Contacts"]';
 const recentContactPage = '.reportCdrsForm.agent';
 const editContact = 'span[title="Edit"]';
 const callResultText = '.td .cursor_pointer span.d-inline-block';
-const editCallResultWindow = '.call-disposition div.position-absolute.overlay-content';
-const callResults = '.call-disposition main span.d-inline-block';
+const dispositionWindow = '.show .call-disposition div.position-absolute.overlay-content';
+const callResults = '.show .call-disposition main span.d-inline-block';
 const softphoneCloseBtn = '.softphone-close-button .cursor_pointer';
 const softphone = '.stg-softphone-wrapper .softphone-body-height-for-dialer';
 const contactsMenu = 'a[title="Contacts"]';
 const contact = '.contacts__name';
 const phoneNumber = '.phone__a-wrapper';
-const callTransferBtn = 'div[title="Transfer"]';
+const callTransferBtn = '//span[text()="transfer"]';
 const callBtn = (btn) => `[src*=softphone_phone_${btn}]`;
 const callResultWindow = '.call-disposition div.position-absolute.overlay-content';
 const cancelBtn = '//button[contains(text(),"Cancel")]';
@@ -147,14 +147,15 @@ const addNewNotePage = '.modal-content';
 const addNoteCloseBtn = "//button[contains(text(),' Close')]";
 const activitiesPage = '.userSedit';
 const filterButton = 'button.modal-filter-btn';
-const notesField = '.dispo__modal-note textarea';
+const notesField = '.show .call-disposition textarea[placeholder*="Add notes"]';
 const notesContent = '.comment-item .comment-item-body span';
-const moods = (value) => `.mood__modal span:nth-of-type(${value})`;
+const moods = (value) => `.show .call-disposition .justify-content-between span:nth-of-type(${value})`;
 const selectedMood = '//div[@class="tr"]//div[@class="td"][7]';
 const visibleMood = (mood) => `img[src*="mood-${mood}"]`;
-const dispositionWindow = '.call-disposition-modal .modal-content';
 const activityText = '.activity-title';
 const tableFirstRow = 'tbody tr:nth-child(1)';
+const addressBook = '.overflow-y-auto.position-relative .cursor_pointer';
+const backCursor = (title) => `//span[text()="${title}"]/preceding-sibling::span`;
 
 const dash = new Dashboard();
 
@@ -199,7 +200,7 @@ export default class Agent {
     cy.xpath(doneBtn).last().click();
   }
 
-  verifyContinueBtn() {
+  verifyConfirmTransferBtn() {
     cy.xpath(continueBtn).should('be.visible');
   }
 
@@ -224,7 +225,7 @@ export default class Agent {
   }
 
   verifyCallResultWindow() {
-    cy.get(editCallResultWindow).should('be.visible');
+    cy.get(dispositionWindow).should('be.visible');
   }
 
   selectCallResult(result) {
@@ -244,6 +245,17 @@ export default class Agent {
       if ($body.find(callResults).length) {
         this.selectCallResult(result);
         this.clickContinueBtn();
+      }
+    });
+  }
+
+  chooseEditCallResult(result) {
+    cy.get('.main_sec .call-disposition main span.d-inline-block', { timeout: 40000 }).then(($el) => {
+      for (let i = 0; i < $el.length; i++) {
+        if ($el[i].textContent === result) {
+          $el[i].click();
+          break;
+        }
       }
     });
   }
@@ -285,7 +297,7 @@ export default class Agent {
   }
 
   clickCallTransferBtn() {
-    cy.get(callTransferBtn).click();
+    cy.xpath(callTransferBtn).click();
   }
 
   clickCallBtn() {
@@ -304,8 +316,8 @@ export default class Agent {
     cy.xpath(cancelBtn).should('be.visible');
   }
 
-  clickCancelBtn() {
-    cy.xpath(cancelBtn).click();
+  clickBackCursor(title) {
+    cy.xpath(backCursor(title)).click();
   }
 
   verifyAverageCallDurationBox() {
@@ -730,7 +742,7 @@ export default class Agent {
 
   clickDeletNoteBtn(note) {
     cy.wait(500);
-    cy.get('.card-text').then(($ele) => {
+    cy.get('.card-text .comment-item-body').then(($ele) => {
       if($ele.text().includes(note)) {
         cy.xpath(deleteNoteBtn(note)).click({ multiple: true });
       }
@@ -827,5 +839,10 @@ export default class Agent {
         }
       }
     });
+  }
+
+  selectAddressBook() {
+    cy.get(addressBook).should('be.visible').first().click();
+
   }
 }
