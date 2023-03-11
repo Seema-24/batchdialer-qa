@@ -373,7 +373,7 @@ export default class Contacts {
     cy.wait(1000);
     cy.get('body').then((body) => {
       if (body.find('.stg-softphone-wrapper .softphone-body-height-for-dialer').length) {
-        cy.get(softphoneIcon).click();
+        cy.get(softphoneIcon).click({force:true});
       }
     });
   }
@@ -432,11 +432,11 @@ export default class Contacts {
 
   deleteAddedContacts(fstaName, lstName) {
     cy.xpath(
-      `//span[@class="contacts__name" and text()="${fstaName}" and text()="${lstName}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]`
+      `//span[@class="contacts__name" and text()="${fstaName}" and text()="${lstName}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]//img`
     )
       .first()
       .scrollIntoView()
-      .click();
+      .click({force:true});
     cy.xpath(deletOption).click();
   }
 
@@ -702,7 +702,7 @@ export default class Contacts {
   }
 
   clickAction() {
-    cy.xpath(actionsDropdown).click();
+    cy.xpath(actionsDropdown).click({force:true});
   }
 
   clickActionAddToCampaign() {
@@ -995,10 +995,10 @@ export default class Contacts {
     cy.get('body').then(($body) => {
       if($body.text().includes(number)) {
         cy.xpath(
-          `//div[@class="phone-number"]//span[text()="${number}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]`
+          `//div[@class="phone-number"]//span[text()="${number}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]//img`
           ).first()
           .scrollIntoView()
-          .click();
+          .click({force:true});
         cy.xpath(deletOption).click();
         this.handleAlertForDelete();
         this.verifyDeletedToast();

@@ -745,7 +745,7 @@ describe('Agent Profile', function () {
     agent.clickRecentContact();
     agent.clickEditRecentContact();
     agent.verifyCallResultWindow();
-    agent.selectCallResult('Busy');
+    agent.chooseEditCallResult('Busy');
     agent.clickContinueBtn();
     cy.wait(2000);
     agent.verifyCallResult('Busy');
@@ -790,9 +790,11 @@ describe('Agent Profile', function () {
     agent.clickCallBtn();
     cy.wait(2000);
     agent.clickCallTransferBtn();
-    agent.verifyContinueBtn();
+    agent.clickOnButton('Address Book');
+    agent.selectAddressBook();
+    agent.verifyConfirmTransferBtn();
     agent.verifyCancelBtn();
-    agent.clickCancelBtn();
+    agent.clickBackCursor('Transfer Call');
   });
 
   it('Verify that notes entered in the NOTES Tab is syncing with the Notes section in the Call Result window', () => {
@@ -828,6 +830,7 @@ describe('Agent Profile', function () {
     ]);
     addCamp.clickAdvancedConfiguration();
     addCamp.selectQueueCallMusicDropdown('None');
+    addCamp.clickTermsConditionsCheckbox();
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Created');
     cy.Logout();
@@ -1052,8 +1055,8 @@ describe('Add Contact flow', () => {
     dial.verifySoftPhoneOpen();
     contact.dialPhoneNumber('6029227636');  
     contact.clickDialerCallButton();
-    cy.wait(10000);
-    contact.clickDialerCallButton();
+    cy.wait(5000);
+    contact.clickEndCallButton();
     contact.selectCallResult('Successful Sale');
     contact.clickContinueBtn();
     contact.clickingOnContactOption();
@@ -1238,8 +1241,8 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       dial.selectToTime('11:30 pm');
       dial.clickApplyToAllButton();
       dial.clickOnButton('APPLY');
-      dial.clickOnButton('Save');
       dial.clickTermsConditionsCheckbox();
+      dial.clickOnButton('Save');
       dial.verifySuccessToastMessage('Campaign Created');
     });
 
