@@ -116,6 +116,7 @@ describe('Add Campaign flow', () => {
     Dial.selectToTime('11:59 pm');
     Dial.clickApplyToAllButton();
     Dial.clickOnButton('APPLY');
+    Dial.clickTermsConditionsCheckbox()
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Created');
   });
@@ -171,7 +172,10 @@ describe('Add Campaign flow', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickEditCampaign(fixtureData.campaignName + randNum.toString());
     addCamp.clickEditBtn();
+    cy.wait(1000);
+    addCamp.waitForLoader();
     addCamp.enterName('-edited');
+    addCamp.clickTermsConditionsCheckbox();
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Saved');
   });
@@ -219,6 +223,7 @@ describe('Add Campaign flow', () => {
     addCamp.clickAdvancedConfiguration();
     // addCamp.enterRingTimeDuration(10);
     addCamp.enterRetryTime(2);
+    addCamp.clickTermsConditionsCheckbox();
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Saved');
     addCamp.clickEditCampaign(
@@ -226,6 +231,7 @@ describe('Add Campaign flow', () => {
     );
     addCamp.clickEditBtn();
     addCamp.verifyCallResultValues(8);
+    addCamp.clickTermsConditionsCheckbox();
     addCamp.clickOnButton('Save');
   });
 
@@ -298,6 +304,7 @@ describe('Add Campaign flow', () => {
     addCamp.enterRetryTime(10);
     addCamp.enterMaxAttempts(2);
     addCamp.selectQueueCallMusicDropdown("Music 1");
+    addCamp.clickTermsConditionsCheckbox();
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Created');
   });
@@ -491,11 +498,13 @@ describe('Add Campaign flow', () => {
     cy.wait(5000)
     addCamp.selectDialingMode('Predictive');
     cy.wait(1000);
+    addCamp.clickTermsConditionsCheckbox();
     addCamp.clickOnButton('Save');
     addCamp.verifyCampaignChange('Predictive Dialer');
     addCamp.clickFirstCampaignMenuButton();
     addCamp.clickEditCampaignNew();
     addCamp.selectDialingMode('Preview');
+    addCamp.clickTermsConditionsCheckbox();
     addCamp.clickOnButton('Save');
   });
 

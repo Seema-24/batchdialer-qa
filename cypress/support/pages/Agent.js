@@ -16,6 +16,7 @@ const editContact = 'span[title="Edit"]';
 const callResultText = '.td .cursor_pointer span.d-inline-block';
 const dispositionWindow = '.show .call-disposition div.position-absolute.overlay-content';
 const callResults = '.show .call-disposition main span.d-inline-block';
+const editCallResult = '.main_sec .call-disposition main span.d-inline-block';
 const softphoneCloseBtn = '.softphone-close-button .cursor_pointer';
 const softphone = '.stg-softphone-wrapper .softphone-body-height-for-dialer';
 const contactsMenu = 'a[title="Contacts"]';
@@ -250,7 +251,7 @@ export default class Agent {
   }
 
   chooseEditCallResult(result) {
-    cy.get('.main_sec .call-disposition main span.d-inline-block', { timeout: 40000 }).then(($el) => {
+    cy.get(editCallResult, { timeout: 40000 }).then(($el) => {
       for (let i = 0; i < $el.length; i++) {
         if ($el[i].textContent === result) {
           $el[i].click();
@@ -830,11 +831,17 @@ export default class Agent {
     });
   }
 
-  doubleTapOnDisposition(result) {
-    cy.get(callResults, { timeout: 40000 }).then(($el) => {
+  doubleTapOnDisposition(result, title) {
+    let path;
+    if(title == 'edit') {
+      path = editCallResult;
+    } else {
+      path = callResults;
+    }
+    cy.get(path, { timeout: 40000 }).then(($el) => {
       for (let i = 0; i < $el.length; i++) {
         if ($el[i].textContent === result) {
-          cy.get(callResults).contains(result).dblclick()
+          cy.get(path).contains(result).dblclick()
           break;
         }
       }

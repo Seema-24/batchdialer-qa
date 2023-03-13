@@ -96,7 +96,7 @@ const checkApply = "//strong[text()='Sun']";
 const applyButton = "//button[text()=' APPLY']";
 const newScriptPopUp = '.modal-body';
 const contactListDropdown = '.ss-select-dropdown';
-const campaignSetting = '.tr .dropdown';
+const campaignSetting = '.tr .dropdown img';
 const campaignSettingOptions = '.show .dropdown-item';
 const FirstCampaignMenuButton =
   '//span[text()="FirstCampaign"]/ancestor::div[@class="tr"]/descendant::img[@alt="Menu"]';
@@ -123,12 +123,12 @@ const status =
   '//div[contains(@class,"expanded")]/following-sibling::div//div[text()="Status"]';
 const recycleOption = '//a[@class="dropdown-item" and text()="Recycle"]';
 const recycleCampaignMenuBtn = (campaignName) =>
-  `//span[text()="${campaignName}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]`;
+  `//span[text()="${campaignName}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]//img`;
 const leadSheetDropdown = `//div[label[@class="form-label" and text()="Lead Sheet"]]/following-sibling::div[div[contains(.,"Select Lead Sheet")]]`;
 const tableRefreshBtn = 'span[title="Refresh"]';
 const campaignStatus = (campaignName) =>
   `//span[text()="${campaignName}"]//ancestor::div[@class="tr"]//div[contains(@class,"progress-status")]/following-sibling::span`;
-const softphoneNextLead = '.stg-softphone-next-lead' //'Next Lead';
+const softphoneNextLead = 'Next Lead';
 const softphoneIcon = '.nav-item .softphone-icon';
 const dropdownItem = '.show.dropdown-menu .dropdown-item';
 const modalTitle = '.modal-content .modal-title';
@@ -157,7 +157,7 @@ const retryTimeDropdown =
   '//label[text()="Retry Time"]//following-sibling::div//div[contains(@class,"ss-select-control")]';
 const tooltip = '.question-tooltip';
 const recycleIcon = (recycleCamp)  => `//span[text()="${recycleCamp}"]/preceding-sibling::*[@class="recycle-icon-svg"]`;
-const recycleTooltip = '//div[@class="tooltip-inner"]//div[@class="text-left text-nowrap"]';
+const recycleTooltip = '//div[@class="tooltip-inner"]//div[@class="text-start text-nowrap"]';
 const campToolTip = (name) => `//label[text()="${name}"]/parent::div/child::span[@class="left question-tooltip"]`;
 const campBehviorDropdown = (dropdown) => `//div[label[text()="${dropdown}"]]/parent::div//div[contains(@class,"ss-select-control")]`;
 const queueCheckbox = (checkbox) => `//div[label[text()="${checkbox}"]]/parent::div//span[@class="checkmark"]`;
@@ -185,7 +185,7 @@ export default class Campaign {
   }
 
   enterName(name) {
-    cy.get(inputName).wait(500).scrollIntoView().type(name, { delay: 200 });
+    cy.get(inputName).wait(500).scrollIntoView().type(name, { delay: 2000, force:true });
   }
 
   enterCampaignName(name) {
@@ -289,7 +289,7 @@ export default class Campaign {
   }
 
   clickToSelectStatus(val) {
-    cy.get(statusDrpdwn(val)).click();
+    cy.get(statusDrpdwn(val)).click({force:true});
   }
 
   changeCampaignStatusByDrpdwn(status) {
@@ -306,7 +306,7 @@ export default class Campaign {
       { timeout: 30000 }
     )
       .scrollIntoView()
-      .click();
+      .click({force:true});
   }
 
   verifyCampaignNotVisible(camp) {
@@ -356,12 +356,12 @@ export default class Campaign {
 
   clickEditCampaign(campaignName) {
     cy.xpath(
-      `//span[text()="${campaignName}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]`
-    ).click();
+      `//span[text()="${campaignName}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]//img`
+    ).click({force:true});
   }
 
   clickRecycleCampaignMenuBtn(name) {
-    cy.xpath(recycleCampaignMenuBtn(name)).click();
+    cy.xpath(recycleCampaignMenuBtn(name)).click({force:true});
   }
 
   clickRecycleOption() {
@@ -773,8 +773,8 @@ export default class Campaign {
   }
 
   clickSoftphoneNextLead() {
-    //cy.get('.btn-primary').contains(softphoneNextLead).click();
-    cy.get(softphoneNextLead).click();
+    cy.get('.dialer-keypad-digit-display').contains(softphoneNextLead).click();
+    //cy.get(softphoneNextLead).click();
   }
 
   clickSoftphoneIcon() {
@@ -814,8 +814,11 @@ export default class Campaign {
     cy.xpath(ringTimeDurationDropdown).click();
   }
 
-  selectDialingMode(modeName) {
+  waitForLoader() {
     cy.get('object.loader').should('not.exist');
+  }
+  selectDialingMode(modeName) {
+    this.waitForLoader();
     cy.xpath(dialingMode(modeName)).click({force:true});
   }
 
@@ -1031,7 +1034,7 @@ export default class Campaign {
   }
 
   verifySourceCampaign(srcCamp, recycleCamp) {
-    cy.xpath(recycleIcon(recycleCamp)).trigger('mouseover');
+    cy.xpath(recycleIcon(recycleCamp)).trigger('mouseover',{force:true});
     cy.xpath(recycleTooltip).first().should('have.text', srcCamp);
     cy.get('[src*="arrow-forward"]').should('be.visible');
     cy.xpath(recycleTooltip).last().should('contain', recycleCamp);
@@ -1051,10 +1054,10 @@ export default class Campaign {
     dial.selectRecycledCampaign(RecycledCampaign);
     dial.clickConfirmButton();
     this.clickSoftphoneNextLead();
-    dash.clickCallButton();
+    dash.clickCallButton('red');
     dash.verifyCallStarted();
     cy.wait(5000);
-    dash.clickCallButton();
+    dash.clickCallButton('green');
     dash.clickAnsweringMachine();
     dash.clickOnDoneButton();
     cy.wait(1000);
@@ -1087,9 +1090,9 @@ export default class Campaign {
       if(recyCamp) {
         for (let i = 0; i < recyCamp; i++) {
           cy.xpath(
-            '//*[name()="svg"][@class="recycle-icon-svg"]/ancestor::div[@class="tr"]//div[@class="dropdown"]'
+            '//*[name()="svg"][@class="recycle-icon-svg"]/ancestor::div[@class="tr"]//div[@class="dropdown"]//img'
           )
-          .eq(i).click();
+          .eq(i).click({force:true});
           this.clickArchiveCampaignButton();
           this.handleAlertForDelete();
           cy.wait(1000);

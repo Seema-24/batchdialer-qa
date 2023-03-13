@@ -575,7 +575,7 @@ export default class Dialer {
   }
 
   clickListDeleteButton(listName) {
-    cy.xpath(listDeleteBtn(listName)).first().click();
+    cy.xpath(listDeleteBtn(listName)).first().click({force:true});
   }
 
   verifySoftphoneLinesNumber(no) {

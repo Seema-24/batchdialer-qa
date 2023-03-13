@@ -888,6 +888,7 @@ describe('Add Contact flow', () => {
   });
 
   it('Should Login', () => {
+    verifyCloseApp();
     cy.Login(Cypress.env('username'), Cypress.env('password'));
     cy.reload();
     ignoreSpeedTestPopup();
