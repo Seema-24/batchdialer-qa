@@ -818,7 +818,7 @@ export default class Contacts {
   }
 
   clickFollowUpCall() {
-    cy.get(followUpCall).click();
+    cy.get(followUpCall).click({force:true});
     cy.wait(1000);
   }
 

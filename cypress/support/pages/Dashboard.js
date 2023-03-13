@@ -23,7 +23,7 @@ const ContinueButton = '//button[text()="Continue"]';
 const DoneButton = '//button[text()="Done"]';
 const DialPad = '.stg-softphone-wrapper .softphone-body-height-for-dialer';
 const DialpadNumber = (number) => `//div[@class="stg-softphone-keyboard-button"][text()='${number}']`;
-const DialpadCallButton = '.stg-softphone-callbutton';
+const DialpadCallButton = (btn) => `[src*=softphone_phone_${btn}]`;
 const CallTimerContactButton = '.stg-softphone-contact';
 const calander = '.calendar';
 const todayButton = 'button[value="today"]';
@@ -528,13 +528,13 @@ export default class Dashboard {
     }
   }
 
-  clickCallButton() { 
+  clickCallButton(btn) { 
     cy.get('body').then(($ele) => {
-      if($ele.find(DialpadCallButton)) {
+      if($ele.find(DialpadCallButton(btn))) {
         if($ele.find('.disposition-cell .disposition').length) {
           cy.log('Disposition Found');
         } else{
-          cy.get(DialpadCallButton, { timeout: 20000 }).click();
+          cy.get(DialpadCallButton(btn), { timeout: 20000 }).click();
         }
       }
     })

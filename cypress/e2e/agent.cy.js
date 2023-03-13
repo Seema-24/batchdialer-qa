@@ -424,7 +424,7 @@ describe('Agent Profile', function () {
     agent.clickRecentContact();
     agent.clickEditRecentContact();
     agent.verifyCallResultWindow();
-    agent.selectCallResult('Busy');
+    agent.chooseEditCallResult('Busy');
     agent.clickContinueBtn();
     cy.wait(2000);
     agent.verifyCallResult('Busy');
@@ -469,9 +469,11 @@ describe('Agent Profile', function () {
     agent.clickCallBtn();
     cy.wait(2000);
     agent.clickCallTransferBtn();
-    agent.verifyContinueBtn();
+    agent.clickOnButton('Address Book');
+    agent.selectAddressBook();
+    agent.verifyConfirmTransferBtn();
     agent.verifyCancelBtn();
-    agent.clickCancelBtn();
+    agent.clickBackCursor('Transfer Call');
   });
 
   it('Verify that notes entered in the NOTES Tab is syncing with the Notes section in the Call Result window', () => {
@@ -501,6 +503,7 @@ describe('Agent Profile', function () {
     agent.clickContactName();
     agent.clickNotesBtn();
     agent.verifyNotesContent('testing note');
+    agent.clickCloseSoftphoneBtn();
   });
 
   it('Verify that Outbound call details are updated in View Contacts ACTIVITIES Tab', () => {
@@ -530,7 +533,7 @@ describe('Agent Profile', function () {
   it('Verify set disposition by double tap in Recent contacts Edit call results', () => {
     agent.clickEditRecentContact();
     agent.verifyCallResultWindow();
-    agent.doubleTapOnDisposition('Busy');
+    agent.doubleTapOnDisposition('Busy','edit');
     cy.wait(2000);
     agent.verifyCallResult('Busy');
     cy.Logout();
@@ -553,6 +556,7 @@ describe('Agent Profile', function () {
     ]);
     addCamp.clickAdvancedConfiguration();
     addCamp.selectQueueCallMusicDropdown('None');
+    addCamp.clickTermsConditionsCheckbox();
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Created');
     cy.Logout();
