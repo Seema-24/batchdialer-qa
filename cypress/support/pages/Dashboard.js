@@ -236,7 +236,7 @@ const userTreeSearchBox = '.dropdown-usertree-search__input';
 const searchedUserName = '.group-row-role__left__title';
 const userTreeDropdown = 'div.dropdown-usertree.show';
 const billingCycle = '.billing-user-info__period__period';
-const billingInfoEditBtn = '.billing-user-info__wrapper .billing-user-info__edit.btn';
+const billingInfoEditBtn = '.billing-user-info__wrapper .billing-user-info__edit svg.billing-edit-icon';
 const addDropdown = (add) => `//label[text() ="${add}"]/parent::div/child::div//span[@class="ss-select-value"]/span`;
 const selectState = (state) => `//span[text() ="${state}"]/ancestor::div[@class="row"]/following-sibling::div//span[contains(@class,"ss-select-value-label")]`;
 const billingBtn = (btn) => `//button[@class="billing-button"][text()="${btn}"]`;
@@ -1728,7 +1728,7 @@ export default class Dashboard {
   }
 
    clickBillingDetailsEditIcon() {
-    cy.get(billingInfoEditBtn).click();
+    cy.get(billingInfoEditBtn).click({force:true});
   }
 
   verifyZip(Zip) {

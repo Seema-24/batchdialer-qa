@@ -102,11 +102,6 @@ describe('Dashboard Elements', () => {
     Dash.verifyToastMessage('Copied!');
   });
 
-  //it can't be automated bcuz username is in smaller letter shows in HTML page
-  it.skip('Verify that username is capitalized only', () => {
-    Dash.verifyUserNameCapitalized();
-  });
-
   it('Verify that live status of the agent should appear', () => {
     Dash.verifyAgentRoleLiveStatusVisible();
   });

@@ -1,4 +1,4 @@
-const userPermissionExpander = '.user-permissions-expander';
+const userPermissionExpander = '.user-permissions-expander img';
 const permissions = '.user-permissions';
 const checkPermission = (permissionName) =>
   `//div[@class="user-permission-col"][text()="${permissionName}"]//div[contains(@class,"user-permission-checkbox-wrapper")]`;
@@ -11,16 +11,16 @@ const userRoleEmail = '.group-row-role .group-row-role__left__email';
 const backToAdmin = '.user__dropdown-logout';
 const contactEditBtn = '.contact__custom-input__edit';
 const contactName = '.contacts__name';
-const datePickerDropdown = '.date-picker';
+const datePickerDropdown = '.date-picker .fakeinput__overflow';
 const timeSpans = '.dropdown-menu.show .links button';
-const callResultEditBtn = '.reports-calls-buttons svg.fa-pencil-alt';
-const callDispositionModal = '.call-disposition-modal';
-const recentContactsExportBtn = '.reportCdrs__button';
+const callResultEditBtn = '.reports-calls-buttons span[title="Edit"]';
+const callDispositionModal = '.call-disposition div.position-absolute.overlay-content';
+const recentContactsExportBtn = '.reportCdrsForm .btn-primary';
 const dncPage = '.dnc.card';
 const fileDownloadBtn = '.resizable-table-tbody .tr .td img[src*="csv"]';
 const subMenu = (subMenuName) => `.subitem a[title="${subMenuName}"]`;
 const contactImportBtn = '//button[text()="IMPORT CONTACTS"]';
-const listenIcon = '.reports-calls-buttons img[alt="Listen"]';
+const listenIcon = '.reports-calls-buttons img[src*="volume-up"]';
 const playerModal = '.contacts-player';
 const playerCloseIcon = '.contacts-player .fa-times';
 const playerDownloadBtn = '.contacts-player__download';
@@ -145,7 +145,7 @@ export default class UserPermission {
   }
 
   clickContactName() {
-    cy.get(contactName,{timeout:60000}).first().click();
+    cy.get(contactName,{timeout:60000}).first().click({force:true});
   }
 
   verifyContactEditBtnNotExist() {
@@ -153,11 +153,11 @@ export default class UserPermission {
   }
 
   chooseDateToFilter() {
-    cy.get(datePickerDropdown).click();
+    cy.get(datePickerDropdown).click({force:true});
     cy.get(timeSpans).contains('Last 12 Months').click();
     cy.get('body').then((body) => {
       if (body.find(timeSpans).length) {
-        cy.get(datePickerDropdown).click();
+        cy.get(datePickerDropdown).click({force:true});
       }
     });
   }
@@ -215,7 +215,7 @@ export default class UserPermission {
   }
 
   clickListenIcon() {
-    cy.get(listenIcon).first().click();
+    cy.get(listenIcon).first().click({force:true});
   }
 
   verifyPlayerModalVisible() {
@@ -266,7 +266,7 @@ export default class UserPermission {
   }
 
   getUserCampaignCount(user) {
-    cy.get(dropdown).contains('Agent').click();
+    cy.get(dropdown).contains('Agent').click({force:true});
     cy.get(dropdownOptions).contains(user).click();
     cy.wait(2000);
     cy.get(userCampaignCount).then((count) => {
@@ -373,7 +373,7 @@ export default class UserPermission {
   }
 
   selectAgentToAssign(agentName) {
-    cy.xpath(assignAgentDropdown).click();
+    cy.xpath(assignAgentDropdown).click({force:true});
     this.chooseOption(agentName);
   }
 
@@ -389,7 +389,7 @@ export default class UserPermission {
   }
 
   removeAssignedAgent(agentName) {
-    cy.get(removeAgentBtn(agentName)).click();
+    cy.get(removeAgentBtn(agentName)).click({force:true});
   }
 
   verifyUsersMenuExist() {
@@ -405,7 +405,7 @@ export default class UserPermission {
   }
 
   verifyUserEditBtnExist() {
-    cy.get(userMenuBtn).first().click();
+    cy.get(userMenuBtn).first().click({force:true});
     cy.xpath(userEditBtn).should('be.visible');
   }
 
@@ -415,7 +415,7 @@ export default class UserPermission {
   }
 
   clickUserMenuBtn() {
-    cy.xpath(agentUserMenuBtn).first().click();
+    cy.xpath(agentUserMenuBtn).first().click({force:true});
   }
 
   clickUserEditBtn() {
@@ -423,12 +423,12 @@ export default class UserPermission {
   }
 
   verifyUserDeleteBtnExist() {
-    cy.get(userMenuBtn).first().click();
+    cy.get(userMenuBtn).first().click({force:true});
     cy.xpath(userDeleteBtn).should('be.visible');
   }
 
   verifyUserDeleteBtnNotExist() {
-    cy.get(userMenuBtn).first().click();
+    cy.get(userMenuBtn).first().click({force:true});
     cy.xpath(userDeleteBtn).should('not.exist');
   }
 

@@ -70,6 +70,7 @@ describe('Inbound Call Scenarios', () => {
       Dial.clickAdvanceConfiguration();
       Dial.clickOnRadioButton('Automatic Answer');
       Dial.selectQueueCallMusicDropdown('Music 1');
+      Dial.clickTermsConditionsCheckbox();
       Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -182,6 +183,7 @@ describe('Inbound Call Scenarios', () => {
       // Dial.clickNextButton();
       // Dial.clickOnRadioButton('Individual Agents');
       Dial.selectQueueCallMusicDropdown('Music 1');
+      Dial.clickTermsConditionsCheckbox();
       Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -308,6 +310,7 @@ describe('Inbound Call Scenarios', () => {
       Dial.clickOnButton('APPLY');
       //Dial.clickNextButton();
       //Dial.clickOnRadioButton('Individual Agents');
+      Dial.clickTermsConditionsCheckbox();
       Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -489,6 +492,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
+      Dial.clickTermsConditionsCheckbox();
       Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -606,6 +610,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
+      Dial.clickTermsConditionsCheckbox();
       Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -736,6 +741,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
+      Dial.clickTermsConditionsCheckbox();
       Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -869,6 +875,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
+      Dial.clickTermsConditionsCheckbox();
       Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -992,6 +999,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
+      Dial.clickTermsConditionsCheckbox();
       Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -1127,6 +1135,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
+      Dial.clickTermsConditionsCheckbox();
       Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -1265,6 +1274,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
+      Dial.clickTermsConditionsCheckbox();
       Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -1291,6 +1301,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
+      Dial.clickTermsConditionsCheckbox();
       Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -1477,6 +1488,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
+      Dial.clickTermsConditionsCheckbox();
       Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -1613,6 +1625,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
+      Dial.clickTermsConditionsCheckbox();
       Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });
@@ -1759,6 +1772,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectToTime('11:30 pm');
       Dial.clickApplyToAllButton();
       Dial.clickOnButton('APPLY');
+      Dial.clickTermsConditionsCheckbox();
       Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
     });

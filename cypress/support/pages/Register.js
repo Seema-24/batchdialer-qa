@@ -70,7 +70,7 @@ export default class Register {
   }
 
   enterFirstName(name) {
-    cy.get(firstName).clear().type(name);
+    cy.get(firstName).clear({force:true}).type(name);
   }
 
   verifyFirstNameField() {
