@@ -50,7 +50,7 @@ const noOfTrialDays = '.resizable-table-tbody :nth-of-type(11) span';
 const tableHeader = '.resizable-table-thead .th';
 const clientNameData = '.tr .td:nth-of-type(2)';
 const billingEditIcon = '.billing-card-title button';
-const billingInfoEditBtn = '.billing-user-info__wrapper .billing-user-info__edit.btn';
+const billingInfoEditBtn = '.billing-user-info__wrapper .billing-user-info__edit svg';
 const selectAdd = (key) => `//label[text() ="${key}"]/parent::div/child::div//span[contains(@class,"ss-select-value-label single")]`;
 const userDropdown =(option) => `//div[@class="user__dropdown" and text()="${option}"]`;
 const statusIcon = '.tr .td:nth-of-type(4)';
@@ -315,7 +315,7 @@ export default class Reseller {
   }
 
   clickBillingDetailsEditIcon() {
-    cy.get(billingInfoEditBtn).click();
+    cy.get(billingInfoEditBtn).click({force:true});
   }
 
   clickOnStatusIcon() {

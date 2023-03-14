@@ -270,6 +270,7 @@ describe('Report Page', () => {
   });
 
   it('Verify the User groups drop down in Create or Edit Floor map', () => {
+    cy.wait(2000);
     report.clickOnButton('Add New Floor');
     report.verifyAgentGroupName([
       testData.adminWithoutCalling,
