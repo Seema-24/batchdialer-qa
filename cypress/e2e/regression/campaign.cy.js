@@ -1,7 +1,7 @@
-import Campaign from '../support/pages/Campaigns';
-import Dialer from '../support/pages/Dialer';
-import Report from '../support/pages/Report';
-import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus, verifyCloseApp } from '../support/Utils';
+import Campaign from '../../support/pages/Campaigns';
+import Dialer from '../../support/pages/Dialer';
+import Report from '../../support/pages/Report';
+import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus, verifyCloseApp } from '../../support/Utils';
 
 let fixtureData;
 let testData;

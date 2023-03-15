@@ -1,5 +1,5 @@
-import Setup from '../support/pages/Setup';
-import { ignoreSpeedTestPopup } from '../support/Utils';
+import Setup from '../../support/pages/Setup';
+import { ignoreSpeedTestPopup } from '../../support/Utils';
 
 const setup = new Setup();
 let testData;

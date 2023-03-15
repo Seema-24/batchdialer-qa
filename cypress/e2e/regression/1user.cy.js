@@ -1,6 +1,6 @@
-import User from '../support/pages/User';
-import Dashboard from '../support/pages/Dashboard';
-import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus, verifyCloseApp } from '../support/Utils';
+import User from '../../support/pages/User';
+import Dashboard from '../../support/pages/Dashboard';
+import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus, verifyCloseApp } from '../../support/Utils';
 
 let fixtureData;
 let testData;

@@ -1,8 +1,8 @@
-import Campaign from '../support/pages/Campaigns';
-import Contacts from '../support/pages/Contacts';
-import Dialer from '../support/pages/Dialer';
-import Report from '../support/pages/Report';
-import Setup from '../support/pages/Setup';
+import Campaign from '../../support/pages/Campaigns';
+import Contacts from '../../support/pages/Contacts';
+import Dialer from '../../support/pages/Dialer';
+import Report from '../../support/pages/Report';
+import Setup from '../../support/pages/Setup';
 import {
   call,
   callWithHangup,
@@ -12,7 +12,7 @@ import {
   ignoreSpeedTestPopup,
   selectAgentStatus,
   verifyCloseApp,
-} from '../support/Utils';
+} from '../../support/Utils';
 
 let testData;
 const Dial = new Dialer();

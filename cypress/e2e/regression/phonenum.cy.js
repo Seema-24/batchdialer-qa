@@ -1,10 +1,10 @@
 import promisify from 'cypress-promise';
-import Campaign from '../support/pages/Campaigns';
-import Contacts from '../support/pages/Contacts';
-import Dashboard from '../support/pages/Dashboard';
-import Dialer from '../support/pages/Dialer';
-import PhoneNum from '../support/pages/PhoneNum';
-import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import Campaign from '../../support/pages/Campaigns';
+import Contacts from '../../support/pages/Contacts';
+import Dashboard from '../../support/pages/Dashboard';
+import Dialer from '../../support/pages/Dialer';
+import PhoneNum from '../../support/pages/PhoneNum';
+import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../../support/Utils';
 
 let fixtureData;
 let testData;
