@@ -1,5 +1,5 @@
-import Login from '../support/pages/Login';
-import { ignoreSpeedTestPopup, selectAgentStatus, verifyReactivateAccount } from '../support/Utils';
+import Login from '../../support/pages/Login';
+import { ignoreSpeedTestPopup, selectAgentStatus, verifyReactivateAccount } from '../../support/Utils';
 
 const login = new Login();
 let testData;

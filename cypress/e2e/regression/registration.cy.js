@@ -1,8 +1,8 @@
-import Dashboard from '../support/pages/Dashboard';
-import Login from '../support/pages/Login';
-import PhoneNum from '../support/pages/PhoneNum';
-import Register from '../support/pages/Register';
-import { ignoreSpeedTestPopup, skipTourGuidePopup } from '../support/Utils';
+import Dashboard from '../../support/pages/Dashboard';
+import Login from '../../support/pages/Login';
+import PhoneNum from '../../support/pages/PhoneNum';
+import Register from '../../support/pages/Register';
+import { ignoreSpeedTestPopup, skipTourGuidePopup } from '../../support/Utils';
 
 const register = new Register();
 const dashboard = new Dashboard();

@@ -1,7 +1,7 @@
-import Setup from '../support/pages/Setup';
-import User from '../support/pages/User';
-import UserPermission from '../support/pages/UserPermission';
-import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus, verifyRoleTitle } from '../support/Utils';
+import Setup from '../../support/pages/Setup';
+import User from '../../support/pages/User';
+import UserPermission from '../../support/pages/UserPermission';
+import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus, verifyRoleTitle } from '../../support/Utils';
 
 const permission = new UserPermission();
 const user = new User();

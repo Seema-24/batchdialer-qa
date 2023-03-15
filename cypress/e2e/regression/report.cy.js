@@ -1,5 +1,5 @@
-import Report from '../support/pages/Report';
-import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
+import Report from '../../support/pages/Report';
+import { handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../../support/Utils';
 
 const report = new Report();
 let fixtureData;

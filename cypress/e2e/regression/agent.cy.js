@@ -1,8 +1,8 @@
-import Agent from '../support/pages/Agent';
-import Campaign from '../support/pages/Campaigns';
-import Contacts from '../support/pages/Contacts';
-import Dialer from '../support/pages/Dialer';
-import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, verifyCloseApp } from '../support/Utils';
+import Agent from '../../support/pages/Agent';
+import Campaign from '../../support/pages/Campaigns';
+import Contacts from '../../support/pages/Contacts';
+import Dialer from '../../support/pages/Dialer';
+import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, verifyCloseApp } from '../../support/Utils';
 
 let testData;
 let randNum = Math.floor(Math.random() * 100000);
@@ -208,6 +208,7 @@ describe('Agent Profile', function () {
       'Created',
     ]);
   });
+
   it('Verify The Elements On The Page Of View Contact On Contact Page', () => {
     agent.clickingOnContactOption();
     agent.enterSearch('random Contact');
@@ -223,6 +224,7 @@ describe('Agent Profile', function () {
     agent.verifyCampaignBtn();
     agent.verifyNotesBtn();
   });
+
   it('Verify The Elements On Edit Form Of View Contact', () => {
     agent.verifyEdiitFormOnViewContact([
       'First name',
@@ -239,12 +241,15 @@ describe('Agent Profile', function () {
     ]);
     //agent.verifySaveBtn();
   });
+
   it('Verify The Script Body On View Contact Page', () => {
     agent.verifyScriptBody();
   });
+
   it('Verify the Script Minimize Button On contact View Page', () => {
     agent.VerifyscriptMinimizeBtn();
   });
+
   it('Verify Activities Page On View Contact Page', () => {
     agent.clickOnactivitiesBtn();
     agent.verifyActivitiesPage('Recent Activities');
@@ -370,6 +375,7 @@ describe('Agent Profile', function () {
   });
 
   it('Verify The Change Campaign Page Elements', () => {
+    closeDialogBox();
     agent.clickOnAgentProfileDropDown();
     agent.clickOnChangeCampaignBtn();
 
@@ -378,6 +384,7 @@ describe('Agent Profile', function () {
   });
 
   it('Verify the Active Campaign count when Agent become available', () => {
+    closeDialogBox();
     agent.clickingOnContactOption();
     cy.wait(500);
     agent.clickDashboardMenu();
@@ -395,6 +402,7 @@ describe('Agent Profile', function () {
   });
 
   it('Open the Call Result Window when Agent disconnect the Call', () => {
+    closeDialogBox();
     agent.clickingOnContactOption();
     agent.enterSearch('random Contact');
     agent.clickContactName();

@@ -285,7 +285,7 @@ export default class Campaign {
   }
 
   clickToSelectActive() {
-    cy.get(pausedDrpdwn).click();
+    cy.get(pausedDrpdwn).click({force:true});
   }
 
   clickToSelectStatus(val) {

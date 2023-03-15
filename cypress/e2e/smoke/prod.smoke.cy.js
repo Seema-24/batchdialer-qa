@@ -591,6 +591,7 @@ describe('Agent Profile', function () {
 
   beforeEach(() => {
     handlePoorConnectionPopup();
+    closeDialogBox();
   });
 
   after(() => {
@@ -1132,7 +1133,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
 
     it('Add the New Contact for the Outbound call', () => {
       contact.clickingOnContactOption();
-      contact.verifyContactExisting('6029227636');
+      contact.verifyContactExisting('5103256012');
       contact.clickAddNewContactButton();
       contact.selctCreateNewContactOption();
       contact.enterFirstName('Twilio');
@@ -1142,7 +1143,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       contact.selectState('Arizona');
       contact.enterZipCode('85701');
       contact.enterEmail('test@test.com');
-      contact.enterPhoneNumber('6029227636');
+      contact.enterPhoneNumber('5103256012');
       contact.clickSaveButton();
       contact.verifySuccessToast();
     });
@@ -1940,8 +1941,10 @@ describe('Add Phone Number flow', () => {
     cy.wait(5000);
     dashboard.clickTaskButton();
     dashboard.clickFutureButton();
-    cy.reload();
-    ignoreSpeedTestPopup();
+    for (let i = 0; i < 2; i++) {
+      cy.reload();
+      ignoreSpeedTestPopup(); 
+    }
     dashboard.verifyEventType('Appointment');   
     dashboard.verifyEventContact('Unknown Contact');
     dashboard.verifyEventDate();

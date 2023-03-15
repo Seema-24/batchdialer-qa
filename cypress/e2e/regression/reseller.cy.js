@@ -1,9 +1,9 @@
-import Dashboard from '../support/pages/Dashboard';
-import Login from '../support/pages/Login';
-import PhoneNum from '../support/pages/PhoneNum';
-import Register from '../support/pages/Register';
-import Reseller from '../support/pages/ResellerAdmin';
-import { covertNumberToNormal, handlePoorConnectionPopup, ignoreSpeedTestPopup } from '../support/Utils';
+import Dashboard from '../../support/pages/Dashboard';
+import Login from '../../support/pages/Login';
+import PhoneNum from '../../support/pages/PhoneNum';
+import Register from '../../support/pages/Register';
+import Reseller from '../../support/pages/ResellerAdmin';
+import { covertNumberToNormal, handlePoorConnectionPopup, ignoreSpeedTestPopup } from '../../support/Utils';
 
 const reseller = new Reseller();
 const login = new Login();

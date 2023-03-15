@@ -1,7 +1,7 @@
-import Dashboard from '../support/pages/Dashboard';
-import { closeDialogBox, getDate, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../support/Utils';
-import Contacts from '../support/pages/Contacts';
-import Campaign from '../support/pages/Campaigns';
+import Dashboard from '../../support/pages/Dashboard';
+import { closeDialogBox, getDate, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../../support/Utils';
+import Contacts from '../../support/pages/Contacts';
+import Campaign from '../../support/pages/Campaigns';
 
 const Dash = new Dashboard();
 const addCont = new Contacts();

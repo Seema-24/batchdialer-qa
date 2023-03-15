@@ -644,7 +644,7 @@ export default class Agent {
     cy.xpath(addNoteCloseBtn).click({ force: true });
   }
   clickOnactivitiesBtn() {
-    cy.xpath(activitiesBtn).click();
+    cy.xpath(activitiesBtn).click({force:true});
   }
   verifyActivitiesPage(activityText) {
     cy.get(activitiesPage).should('contain.text', activityText);
