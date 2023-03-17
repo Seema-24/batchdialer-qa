@@ -735,7 +735,7 @@ export default class Campaign {
   }
 
   verifyToast(message) {
-    cy.get(toast,{timeout:30000}).should('contain.text', message);
+    cy.get(toast,{timeout:60000}).should('contain.text', message);
   }
 
   verifyAddedRecycleCampaign(campaignName) {

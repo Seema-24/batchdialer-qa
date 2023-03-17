@@ -1938,13 +1938,11 @@ describe('Add Phone Number flow', () => {
     contact.clickEndCallButton();
     contact.selectCallResult('A CALL BACK'); 
     contact.clickContinueBtn();
+    dashboard.clickTaskButton();
     cy.wait(5000);
+    dashboard.clickDashboard();
     dashboard.clickTaskButton();
     dashboard.clickFutureButton();
-    for (let i = 0; i < 2; i++) {
-      cy.reload();
-      ignoreSpeedTestPopup(); 
-    }
     dashboard.verifyEventType('Appointment');   
     dashboard.verifyEventContact('Unknown Contact');
     dashboard.verifyEventDate();
