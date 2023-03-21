@@ -149,8 +149,9 @@ const callButton = (btn) => `[src*=softphone_phone_${btn}]`;
 const callResultWindow = '.show .call-disposition div.position-absolute.overlay-content';
 const callResults = '.show .call-disposition main span.d-inline-block'
 const doneBtn = "//button[text()='Done']";
-const openSoftphone = '.stg-softphone-wide';
-const softphoneIcon = '.softphone-close-button .cursor_pointer';
+const openSoftphone = '.stg-softphone-wrapper .softphone-body-height-for-dialer';
+const closeSoftphoneDialer = '.softphone-close-button .cursor_pointer';
+const softphoneIcon = '.softphone-icon'
 const softphoneNumPad = '.softphone-keyboard-button';
 const modalTitle = '.modal-content .modal-title';
 const modal = '.modal-content';
@@ -347,7 +348,7 @@ export default class Contacts {
   }
 
   clickListMenuIcon() {
-    cy.get(listMenuIcon).first().click();
+    cy.get(listMenuIcon).first().click({force:true});
   }
 
   verifyPlayerDownloadBtn() {
@@ -355,7 +356,7 @@ export default class Contacts {
   }
 
   clickRecordingIcon() {
-    cy.get(recordingIcon).first().click();
+    cy.get(recordingIcon).first().click({force:true});
   }
 
   ClickToOpenSoftphone() {
@@ -373,7 +374,7 @@ export default class Contacts {
     cy.wait(1000);
     cy.get('body').then((body) => {
       if (body.find('.stg-softphone-wrapper .softphone-body-height-for-dialer').length) {
-        cy.get(softphoneIcon).click({force:true});
+        cy.get(closeSoftphoneDialer).click({force:true});
       }
     });
   }
@@ -677,7 +678,7 @@ export default class Contacts {
   }
 
   clickListDropdown() {
-    cy.get(allList).click();
+    cy.get(allList).click({force:true});
   }
   selectContactList(listName) {
     cy.get('.ss-select-option').then((option) => {

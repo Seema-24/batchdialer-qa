@@ -460,7 +460,7 @@ describe('Add Contact flow', () => {
     addCont.clickContactPhoneNumber();
     addCont.clickDialerCallButton();
     cy.wait(5000);
-    addCont.clickDialerCallButton();
+    addCont.clickEndCallButton();
     addCont.selectCallResult('No Answer');
     addCont.clickContinueBtn();
     addCont.clickContactsCamapign();
@@ -511,10 +511,10 @@ describe('Add Contact flow', () => {
   it('Verify that agent user is able to dial a valid phone number which is not in the contacts', () => {
     dashboard.clickDashboard();
     addCont.ClickToOpenSoftphone();
-    addCont.dialPhoneNumber('8586515050');  //7209834562
+    addCont.dialPhoneNumber('6029227636');  
     addCont.clickDialerCallButton();
     cy.wait(10000);
-    addCont.clickDialerCallButton();
+    addCont.clickEndCallButton();
     addCont.selectCallResult('Successful Sale');
     addCont.clickContinueBtn();
     addCont.clickingOnContactOption();
@@ -558,5 +558,33 @@ describe('Add Contact flow', () => {
     addCont.enterSearch(testData.Contact);
     addCont.verifyNotesImg('active');
     addCont.verifyNotesCount();
+  });
+
+  it('verify that the Blue Color in Source Field is Represent the Particular Field is auto prefilled', () => {
+    addCont.clickingOnContactOption();
+    Dial.clickOnSubMenu('Contact Lists');
+    addCont.verifyListExisting('contact-sample.csv');
+    addCont.clickImportContacts();
+    addCont.uploadFileForContact('contact-sample.csv');
+    cy.wait(2000);
+    addCont.selectFirstNameDropdown();
+    addCont.selectLastNameDropdown();
+    addCont.selectEmailDropdown();
+    addCont.selectPhoneDropdown();
+    
+
+    cy.wait(2000);
+    addCont.clickNextButton();
+
+    addCont.clickSubmitButton();
+    addCont.verifyImportStartedToast();
+    addCont.verifyImportContactCompleteToast();
+    cy.wait(3000);
+    
+    addCont.clickOnDropdownItem('Assign To Campaign');
+    addCont.verifyModalOpen();
+    addCont.verifyModalTitle('Assign To Campaign');
+    addCont.clickOnButton('Cancel');
+    addCont.verifyModalClose();
   });
 });

@@ -52,11 +52,11 @@ const userEditBtn = '//a[@class="dropdown-item"][text()="Edit"]';
 const userDeleteBtn = '//a[@class="dropdown-item"][text()="Delete"]';
 const userGroupDropdown = `//label[text()="User Group"]/following-sibling::div[contains(@class,"ss-select")]`;
 const agentUserMenuBtn =
-  '//div[contains(text(),"Agent")]/parent::div//div[@class="dropdown"]';
+  '//div[contains(text(),"Agent")]/parent::div//div[@class="dropdown"]//img';
 const userPermissionBtn = '//button[text()="User Permissions"]';
 const enabledPermissions = (permissionName) =>
   `//div[@class="user-permission-col"][text()="${permissionName}"][div[contains(@class,"user-permission-checkbox-wrapper")]//img[@alt="Enabled"]]`;
-const permissionCounter = '.user-permissions-counter';
+const permissionCounter = '.user-permissions-expander span:nth-of-type(2)';
 const firstPermission = '.user-permission-checkbox';
 const agentTitle = (agentName) =>
   `//div[@class="tr"][div[text()="${agentName}"]]`;
@@ -129,6 +129,11 @@ export default class UserPermission {
   }
 
   loginWithUser(userEmail) {
+    cy.get('body').then(($ele) => {
+      if($ele.find('.dropdown-menu.show').length) {
+        this.clickProfileDropdown();
+      }
+    });
     this.clickProfileDropdown();
     this.clickOnDropdownItem('Switch Account');
     this.clickUserTreeExpander();
@@ -370,6 +375,7 @@ export default class UserPermission {
 
   editCampaign() {
     cy.get(campaignName).first().click();
+    cy.get('object.loader').should('not.exist');
   }
 
   selectAgentToAssign(agentName) {

@@ -819,6 +819,7 @@ export default class Campaign {
   }
   selectDialingMode(modeName) {
     this.waitForLoader();
+    cy.wait(1000);
     cy.xpath(dialingMode(modeName)).click({force:true});
   }
 
@@ -1053,11 +1054,11 @@ export default class Campaign {
     dial.clickSelectCampaignDropdown();
     dial.selectRecycledCampaign(RecycledCampaign);
     dial.clickConfirmButton();
-    this.clickSoftphoneNextLead();
-    dash.clickCallButton('red');
+    dash.dialNumber();
+    dash.clickCallButton('green');
     dash.verifyCallStarted();
     cy.wait(5000);
-    dash.clickCallButton('green');
+    dash.clickCallButton('red');
     dash.clickAnsweringMachine();
     dash.clickOnDoneButton();
     cy.wait(1000);

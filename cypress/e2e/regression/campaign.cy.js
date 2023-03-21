@@ -175,7 +175,7 @@ describe('Add Campaign flow', () => {
     cy.wait(1000);
     addCamp.waitForLoader();
     addCamp.enterName('-edited');
-    addCamp.clickTermsConditionsCheckbox();
+    //addCamp.clickTermsConditionsCheckbox();
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Saved');
   });
@@ -221,9 +221,8 @@ describe('Add Campaign flow', () => {
       'Successful Sale',
     ]);
     addCamp.clickAdvancedConfiguration();
-    // addCamp.enterRingTimeDuration(10);
     addCamp.enterRetryTime(2);
-    addCamp.clickTermsConditionsCheckbox();
+    //addCamp.clickTermsConditionsCheckbox();
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Saved');
     addCamp.clickEditCampaign(
@@ -498,14 +497,15 @@ describe('Add Campaign flow', () => {
     cy.wait(5000)
     addCamp.selectDialingMode('Predictive');
     cy.wait(1000);
-    addCamp.clickTermsConditionsCheckbox();
+    //addCamp.clickTermsConditionsCheckbox();
     addCamp.clickOnButton('Save');
     addCamp.verifyCampaignChange('Predictive Dialer');
     addCamp.clickFirstCampaignMenuButton();
     addCamp.clickEditCampaignNew();
     addCamp.selectDialingMode('Preview');
-    addCamp.clickTermsConditionsCheckbox();
+    //addCamp.clickTermsConditionsCheckbox();
     addCamp.clickOnButton('Save');
+    addCamp.verifyCampaignChange('Preview Dialer');
   });
 
   it('Verify the tool tip for Start and end Date field in the Recycle campaign set up screen', () => {
