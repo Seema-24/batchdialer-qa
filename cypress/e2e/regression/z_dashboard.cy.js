@@ -30,7 +30,7 @@ describe('Dashboard Elements', () => {
       if(url.includes('app.batchdialer.com')) {
         date = getDate(8);
       } else{
-        date = getDate(19);
+        date = getDate(14);
       }
     });
     Cypress.Cookies.defaults({
@@ -165,13 +165,13 @@ describe('Dashboard Elements', () => {
   });
 
   it('Verify that call quality chart is being plotted when an agent is on a call', () => {
-    addCont.dialPhoneNumber('8586515050');
+    addCont.dialPhoneNumber('6029227636');
     addCont.clickDialerCallButton();
     Dash.verifyCallStarted();
     cy.wait(3000);
     Dash.clickHardwareTestButton();
     Dash.verifyCallQualityChart();
-    addCont.clickDialerCallButton();
+    addCont.clickEndCallButton();
     addCont.selectCallResult('No Answer');
     addCont.clickContinueBtn();
     Dash.clickCallGraphCloseBtn();
@@ -180,10 +180,10 @@ describe('Dashboard Elements', () => {
   it('Verify user is able to make call using dialer button', () => {
     Dash.clickDialer();
     Dash.dialNumber();
-    Dash.clickCallButton();
+    Dash.clickCallButton('green');
     Dash.verifyCallStarted();
     cy.wait(3000);
-    Dash.clickCallButton();
+    Dash.clickCallButton('red');
     Dash.clickAnsweringMachine();
     Dash.clickOnDoneButton();
   });
@@ -225,6 +225,11 @@ describe('Dashboard Elements', () => {
     Dash.enterEventDescription('For Testing');
     Dash.selectEventTime();
     Dash.clickEventSaveButton();
+  });
+
+  it('Verify that when click on the dates on the Calender,events of that specific date is displayed in the list view', () => {
+    Dash.clickOnCalendarDate();
+    Dash.verifyCalendarDateFilterTask();
   });
 
   it('Edit the created Event for a Contact', () => {
@@ -608,7 +613,7 @@ describe('Dashboard Elements', () => {
     Dash.selectAvailable('Available', testData.campaign);
     Dash.clickConfirmButton();
     camp.clickCampaignMenu(); 
-    Dash.clickCloseSoftphoneBtn();
+  Dash.clickCloseSoftphoneBtn();
     camp.clickEditCampaign(testData.campaign);
     camp.clickEditBtn();
     camp.clickAdvancedConfiguration();
@@ -1227,6 +1232,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Verify user is able to copy API KEY', () => {
+    cy.wait(1000);
     Dash.clickOnIconBtn('Testing-edited', 'copy');
     Dash.verifySuccessMsg('Copied Successfully');
   });

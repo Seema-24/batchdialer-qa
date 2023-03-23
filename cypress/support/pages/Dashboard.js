@@ -22,9 +22,9 @@ const SelectStatus = '.ss-select-group-items';
 const ContinueButton = '//button[text()="Continue"]';
 const DoneButton = '//button[text()="Done"]';
 const DialPad = '.stg-softphone-wrapper .softphone-body-height-for-dialer';
-const DialpadNumber = (number) => `//div[@class="stg-softphone-keyboard-button"][text()='${number}']`;
+const DialpadNumber = (number) => `//li[contains(@class,"softphone-keyboard-button")]/span[text()='${number}']`;
 const DialpadCallButton = (btn) => `[src*=softphone_phone_${btn}]`;
-const CallTimerContactButton = '.stg-softphone-contact';
+const CallTimerContactButton = '.position-relative .call-time';
 const calander = '.calendar';
 const todayButton = 'button[value="today"]';
 const pastButton = 'button[value="past"]';
@@ -108,7 +108,7 @@ const recordingText = 'textarea[name="text"]';
 const generateButton = '//button[text()="Generate"]';
 const speech = '.progress';
 const searchClearBtn = '.search-box__wrapper button.x-close-icon';
-const softphoneCloseBtn = '.stg-softphone-right-close';
+const softphoneCloseBtn = '.softphone-close-button .cursor_pointer';
 const putSubscriptionOnHold = "//button[text()='Put Subscription On Hold']";
 const keepPhoneCheckbox = '.radio_cstm';
 const basePrice = '.price span:nth-of-type(1)';
@@ -172,7 +172,7 @@ const refreshBtn = 'span[title="Refresh"]';
 const leadItems = '.lead-item .lead-item__label';
 const leadSheetName = '.lead-edit__header .custom-input__text';
 const leadSheetNameField = '.lead-edit__header .custom-input__text input';
-const saveFieldBtn = '.custom-input__save';
+const saveFieldBtn = '.custom-input__save svg';
 const leadItemsName = (itemName) =>
   `//div[@class="lead-edit__list"]//span[contains(@class,"custom-input__text")][text()="${itemName}"]`;
 const leadSaveBtn = 'button[type="submit"]';
@@ -243,7 +243,7 @@ const billingBtn = (btn) => `//button[@class="billing-button"][text()="${btn}"]`
 const successToastMsg = '.mytoast-bottom';
 const cardEditBtn = '.billing-user-info__payment__edit svg';
 const mainTab = '//div[@class="dashboard"]//li[text()="MAIN"]';
-const liveCalls = '//div[@class="title "][text()="Live Calls"]';
+const liveCalls = '//span[@class][text()="Live Calls"]';
 const resourceCenterIcon = '[id*="pendo-image-badge"]';
 const customerChat = "//div[text()='Chat with us']";
 const allEventType = 'All Event Types';
@@ -405,7 +405,13 @@ export default class Dashboard {
   }
 
   clickLoginAs() {
-    this.clickUserProfile();
+    cy.get('body').then(($ele) => {
+      if($ele.find('.dropdown-menu.show').length) {
+        cy.log("User Profile Visible");
+      } else {
+        this.clickUserProfile();
+      }
+    });
     cy.xpath(ButtonLoginAs).click();
   }
 
@@ -424,7 +430,7 @@ export default class Dashboard {
   }
 
   clickSaveFieldBtn() {
-    cy.get(saveFieldBtn).click();
+    cy.get(saveFieldBtn).click({force:true});
   }
 
   clickStatusButton() {
@@ -445,7 +451,7 @@ export default class Dashboard {
   }
 
   clickAddNewLeadSheet() {
-    cy.xpath(addNewBtn,{timeout:3000}).click();
+    cy.xpath(addNewBtn,{timeout:3000}).click({force:true});
   }
 
   selectAvailable(Status, campaign) {
@@ -531,7 +537,7 @@ export default class Dashboard {
   clickCallButton(btn) { 
     cy.get('body').then(($ele) => {
       if($ele.find(DialpadCallButton(btn))) {
-        if($ele.find('.disposition-cell .disposition').length) {
+        if($ele.find('.show .call-disposition div.position-absolute.overlay-content').length) {
           cy.log('Disposition Found');
         } else{
           cy.get(DialpadCallButton(btn), { timeout: 20000 }).click();
@@ -601,7 +607,7 @@ export default class Dashboard {
     cy.get(leadItems).then((lead) => {
       for (let i = 0; i < lead.length; i++) {
         if (lead[i].textContent.trim() === leadItemName) {
-          cy.get(lead[i]).click();
+          cy.get(lead[i]).click({force:true});
           break;
         }
       }
@@ -711,7 +717,7 @@ export default class Dashboard {
   }
 
   clickAddressBook() {
-    cy.get(UserSettingOptions).contains('Address Book').click();
+    cy.get(UserSettingOptions).contains('Address Book').click({force:true});
   }
 
   clickLeadSheets() {
@@ -751,7 +757,7 @@ export default class Dashboard {
   }
 
   clickNewRuleBtn() {
-    cy.xpath(newRuleButton).scrollIntoView().click();
+    cy.xpath(newRuleButton).scrollIntoView().click({force:true});
   }
 
   verifyLeadScoreExample() {
@@ -759,7 +765,7 @@ export default class Dashboard {
   }
 
   clickLeadScore() {
-    cy.get(UserSettingOptions).contains('Lead Score').click();
+    cy.get(UserSettingOptions).contains('Lead Score').click({force:true});
     this.clickCloseSoftphoneBtn();
   }
 
@@ -772,7 +778,7 @@ export default class Dashboard {
   }
 
   clickNewAgentScriptBtn() {
-    cy.get(NewAgentScriptButton).click();
+    cy.get(NewAgentScriptButton).click({force:true});
   }
 
   verifyAgentScriptTableHeading(element) {
@@ -805,7 +811,7 @@ export default class Dashboard {
 
   clickAudioLibrary() {
     this.closeModalTitle();
-    cy.get(UserSettingOptions).contains('Audio Library').click();
+    cy.get(UserSettingOptions).contains('Audio Library').click({force:true});
   }
   verifyProfileAgentFeaturesDisable() {
     cy.xpath(ProfileAgentFeaturesDisable).should('be.visible');
@@ -876,7 +882,7 @@ export default class Dashboard {
   }
 
   clickAddNewContact() {
-    cy.get(AddressBookNewContact).click();
+    cy.get(AddressBookNewContact).click({force:true});
   }
 
   enterContactName(name) {
@@ -916,7 +922,7 @@ export default class Dashboard {
   }
 
   clickAddNewRecording() {
-    cy.xpath(AudioLibraryNewRecording).click();
+    cy.xpath(AudioLibraryNewRecording).click({force:true});
   }
 
   uploadFile(file) {
@@ -954,11 +960,11 @@ export default class Dashboard {
   }
 
   clickSearchClearBtn() {
-    cy.get(searchClearBtn).click();
+    cy.get(searchClearBtn).click({force:true});
   }
 
   clickPauseAccountBtn() {
-    cy.xpath(BillingPauseAccount).click();
+    cy.xpath(BillingPauseAccount).click({force:true});
   }
 
   clickCloseSoftphoneBtn() {
@@ -1362,7 +1368,7 @@ export default class Dashboard {
   }
 
   clickDashboardCalendar() {
-    cy.get(DashboardCalender).click();
+    cy.get(DashboardCalender).click({force:true});
   }
 
   EnterFilterStartAndEndDate(date, val) {
@@ -1446,7 +1452,7 @@ export default class Dashboard {
   }
 
   clickCompletedCheckbox() {
-    cy.xpath(completedCheckbox+'//span[@class="checkmark"]').click();
+    cy.xpath(completedCheckbox+'//span[@class="checkmark"]').click({force:true});
   }
 
   verifyTaskAddNewButton() {
@@ -1454,7 +1460,7 @@ export default class Dashboard {
   }
 
   clickTaskAddNewButton() {
-    cy.xpath(taskAddNewBtn).click();
+    cy.xpath(taskAddNewBtn).click({force:true});
   }
 
   verifyCalendarEventTypesBox() {
@@ -1470,7 +1476,7 @@ export default class Dashboard {
   }
 
   clickAddEventTypeButton() {
-    cy.get(addEventTypeButton).click();
+    cy.get(addEventTypeButton).click({force:true});
   }
 
   clickDeleteEventTypeBtn(name) {
@@ -1722,7 +1728,7 @@ export default class Dashboard {
       if (url.includes('app.batchdialer.com')) {
         cy.get(billingCycle).should('contain.text', 'Every 8th of each month');
       } else {
-        cy.get(billingCycle).should('contain.text', 'Every 19th of each month');
+        cy.get(billingCycle).should('contain.text', 'Every 14th of each month');
       }
     });
   }
@@ -1780,7 +1786,7 @@ export default class Dashboard {
   }
 
   clickOnMainTab() {
-    cy.xpath(mainTab).click();
+    cy.xpath(mainTab).click({force:true});
   }
 
   verifyDashboardLiveCalls() {
@@ -1799,7 +1805,7 @@ export default class Dashboard {
   }
 
   clickAllEventTypesDropdown() {
-    cy.contains(allEventType).scrollIntoView().click();
+    cy.contains(allEventType).scrollIntoView().click({force:true});
   }
 
   selectEventTypes(event) {
@@ -1877,7 +1883,7 @@ export default class Dashboard {
   }
 
   clickIntegrationsTab(tab){
-    cy.get(integrationTab).contains(tab).click();
+    cy.get(integrationTab).contains(tab).click({force:true});
   }
 
   verifyIntegrationTitle() {
@@ -1915,7 +1921,7 @@ export default class Dashboard {
   }
 
   clickOnIconBtn(name, icon) {
-    cy.xpath(integrationIcon(name,icon)).click();
+    cy.xpath(integrationIcon(name,icon)).click({force:true});
   }
 
   clickOnEyeBtn() {
@@ -1996,7 +2002,7 @@ export default class Dashboard {
       this.clickOnAgentPlusMinusIcon('-');
     }
     
-    cy.get('.billing-number-editor__value').first()
+    cy.get('.billing-plan.active input').first()
       .invoke('val').then(txt => {
       expect(agentNo).to.equal(txt);
     })
@@ -2084,6 +2090,30 @@ export default class Dashboard {
         expect(flag).to.equal(true)
       }
     });
+  }
+
+  clickOnCalendarDate() {
+    const date = new Date();
+    const todayDate = date.getDay();
+    cy.get('.DayPicker-Body .DayPicker-Day div.d-flex').then(date => {
+      if(date.textContent === todayDate) {
+        cy.contains(date.textContent).click();
+      }
+    })
+  }
+
+  verifyCalendarDateFilterTask() {
+    const today = new Date();
+    const todayDate = String(today.getMonth() + 1).padStart(2, '0') +
+      '/' + String(today.getDate()).padStart(2, '0') +
+      '/' + today.getFullYear();
+    
+      cy.get('.left.datefield span:nth-of-type(1)').then(DateCol => {
+        const column= Array.from(DateCol , ele => ele.innerText.trim());
+        for (let i = 0; i < column.length; i++) {
+          expect(column[i]).to.equals(todayDate);
+        }
+      });
   }
 
 }
