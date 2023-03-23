@@ -560,6 +560,32 @@ describe('Add Contact flow', () => {
     addCont.verifyNotesCount();
   });
 
+  it('Verify that a user is able to search the contents in notes within contacts', () => {
+    addCont.clickingOnContactOption();
+    addCont.enterSearch('Testing note for Contact');
+    cy.wait(1000);
+    addCont.verifyNotesImg('active');
+    addCont.clickNotesImg();
+    addCont.verifyTab('Notes');
+    addCont.verifyNotesContent('Testing note for Contact');
+  });
+
+  it('Verify that notes column is sortable based on the number of notes in the contacts', () => {
+    addCont.clickingOnContactOption();
+    addCont.clickTableHeaderSort('Notes');
+    addCont.verifySortingTable(11);
+    addCont.clickHeaderSortCaret('Notes');
+    addCont.verifySortingTable(11,'Desc');
+  });
+
+  it('Verify that user is able to slide till unlimited or 2 million', () => {
+    addCont.clickingOnContactOption();
+    Dial.clickOnSubMenu('Contact Lists');
+    addCont.verifyContactSliderText(['0','Unlimited']);
+    addCont.slideContactCountFromStart(2, 'right');
+    addCont.slideContactCountFromEnd(3,'left')
+  });
+
   it('verify that the Blue Color in Source Field is Represent the Particular Field is auto prefilled', () => {
     addCont.clickingOnContactOption();
     Dial.clickOnSubMenu('Contact Lists');
@@ -567,24 +593,63 @@ describe('Add Contact flow', () => {
     addCont.clickImportContacts();
     addCont.uploadFileForContact('contact-sample.csv');
     cy.wait(2000);
-    addCont.selectFirstNameDropdown();
-    addCont.selectLastNameDropdown();
-    addCont.selectEmailDropdown();
-    addCont.selectPhoneDropdown();
-    
+    addCont.verifyPrefilledSourceFields();
+  });
 
-    cy.wait(2000);
+  it('Verify that user is able to create Custom Field in Destination Field', () =>{
+    addCont.clickCustomField();
+    addCont.verifyModalTitle('Add Custom Field');
+    addCont.addCustomFieldName('TestingField');
+    addCont.clickOnButton('Save');
+    addCont.verifyCustomField('TestingField');
+  });
+
+  it('Verify that Remove Duplicates In List and Scrub Litigator List bydefault checked in Contact Import Page', () => {
     addCont.clickNextButton();
+    addCont.verifyCheckboxCheckedBydefault(['removeduplicates','scrublitigator']);
+  });
 
+  it('Verify that Scrub Federal DNC, Scrub Mobile, Scrub Company DNC not checked bydefault', ()=> {
+    addCont.verifyUncheckedCheckbox(['scrubfederal','scrubcompany','scrubmobile']);
+  });
+
+  it('Verify that import behavior should be present with (Keep old) selected by default', () => {
+    addCont.verifyDuplicateNumberData('Keep Old');
+    addCont.verifyDuplicateNumberTextInfo('Newly imported numbers that already exist in the system will remain as part of the old contact.');
+  });
+
+  it('Verify that in import behavior user is able to select (Reject) in the dropdown', () => {
+    addCont.clickOnDropdown('Duplicate Phone Numbers');
+    addCont.selectOption('Reject')
+    addCont.verifyDuplicateNumberData('Reject');
+    addCont.verifyDuplicateNumberTextInfo('This option will reject new import record if there is a matching contact/phone already in system.');
+  });
+
+  it('Verify that in import behavior user is able to select (Keep new) in the dropdown', () => {
+    addCont.clickOnDropdown('Duplicate Phone Numbers');
+    addCont.selectOption('Keep New')
+    addCont.verifyDuplicateNumberData('Keep New');
+    addCont.verifyDuplicateNumberTextInfo('Numbers that are found to be duplicate will be part of the newly uploaded contact and will be removed from existing contact.');
+  });
+
+  it('Verify That the User is able to assign a Campaign', () =>{
+    addCont.clickOnDropdown('Assign to Campaign (optional)');
+    addCont.selectOption(testData.campaign)
     addCont.clickSubmitButton();
     addCont.verifyImportStartedToast();
     addCont.verifyImportContactCompleteToast();
     cy.wait(3000);
-    
+    addCont.clickLists();
+    addCont.clickListMenuIcon();
+    addCont.verifyAssignToCampaignBtn();
     addCont.clickOnDropdownItem('Assign To Campaign');
     addCont.verifyModalOpen();
     addCont.verifyModalTitle('Assign To Campaign');
+    addCont.verifyAssignCampaignInModal(testData.campaign);
     addCont.clickOnButton('Cancel');
     addCont.verifyModalClose();
-  });
+    Dial.clickListDeleteButton('contact-sample.csv');
+    addCont.handleAlertForDelete();
+    Dial.verifySuccessToastMessage('List deleted');
+  }); 
 });

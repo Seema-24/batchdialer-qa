@@ -105,7 +105,7 @@ const destinationDropdown = '.modal-content .ss-select';
 const destinationOptions = (option) =>
   "//div[contains(@class,'ss-select-option')][text()='" + option + "']";
 const addedPhoneGroup = (group) =>
-  `//div[@class="card-body"]//div[div[text()="${group}"]]//div[@class="dropdown"]`;
+  `//div[@class="card-body"]//div[div[text()="${group}"]]//div[@class="dropdown"]//span`;
 const uploadFile = 'input[type="file"]';
 const uploadBtn =
   "//div[contains(@class,'dropbox')]//button[contains(text(),'Upload')]";
@@ -206,7 +206,7 @@ export default class PhoneNum {
     const num = search.split('');
     for (let i = 0; i < num.length; i++) {
       if (num[i] != '(' && num[i] != ')' && num[i] != ' ' && num[i] != '-') {
-        cy.get(searchBox).type(num[i]);
+        cy.get(searchBox).type(num[i],{force:true});
       }
     }
   }
@@ -262,7 +262,7 @@ export default class PhoneNum {
   }
 
   clickDeletePhoneGroup(group) {
-    cy.xpath(addedPhoneGroup(group)).click();
+    cy.xpath(addedPhoneGroup(group)).click({force:true});
     this.clickDropdownItem('Delete');
   }
 
@@ -310,7 +310,7 @@ export default class PhoneNum {
   }
 
   clickDeleteDncFile(fileName) {
-    cy.xpath(uploadedFile(fileName)).click();
+    cy.xpath(uploadedFile(fileName)).click({force:true});
   }
 
   enterFileNameToSearch(search) {
@@ -885,7 +885,7 @@ export default class PhoneNum {
   }
 
   clickContactMenu() {
-    cy.get(contactMenu).first().click();
+    cy.get(contactMenu).first().click({force:true});
   }
 
   clickAddToDNC() {
@@ -957,7 +957,7 @@ export default class PhoneNum {
   }
 
   clickSelectAllCheckbox() {
-    cy.xpath(selectAllCheckbox).last().click();
+    cy.xpath(selectAllCheckbox).last().click({force:true});
   }
 
   getTotalNumbersAvailable() {
@@ -970,7 +970,7 @@ export default class PhoneNum {
   }
 
   clickActionsButton() {
-    cy.get(actionsDropdown).click();
+    cy.get(actionsDropdown).click({force:true});
   }
 
   verifyModalWindowOpen() {

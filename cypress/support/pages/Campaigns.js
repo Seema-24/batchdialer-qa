@@ -1054,7 +1054,7 @@ export default class Campaign {
     dial.clickSelectCampaignDropdown();
     dial.selectRecycledCampaign(RecycledCampaign);
     dial.clickConfirmButton();
-    dash.dialNumber();
+    addCont.dialPhoneNumber('6029227636'); 
     dash.clickCallButton('green');
     dash.verifyCallStarted();
     cy.wait(5000);

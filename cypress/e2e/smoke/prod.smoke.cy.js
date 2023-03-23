@@ -1938,8 +1938,10 @@ describe('Add Phone Number flow', () => {
     contact.clickEndCallButton();
     contact.selectCallResult('A CALL BACK'); 
     contact.clickContinueBtn();
-    dashboard.clickTaskButton();
     cy.wait(5000);
+    dashboard.clickTaskButton();
+    cy.reload();
+    ignoreSpeedTestPopup();
     dashboard.clickDashboard();
     dashboard.clickTaskButton();
     dashboard.clickFutureButton();

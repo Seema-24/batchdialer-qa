@@ -24,22 +24,8 @@ const deletOption =
 const deleteToast =
   '//div[@class="Toastify__toast-body"]//div[contains(text(),"Deleted")]';
 const dropBoxUpload = '.dropbox input';
-const firstNameDrpdown =
-  '//div[input[@title="First Name"]]/following-sibling::div/div[contains(@class,"ss-select")]';
-const firstNameOption =
-  '//div[@class="ss-select-options"]//span/div[contains(text(),"First Name")]';
-const lastNameDrpdwn =
-  '//div[input[@title="Last Name"]]/following-sibling::div/div[contains(@class,"ss-select")]';
-const lastNameOption =
-  '//div[@class="ss-select-options"]//span/div[text()="Last Name"]';
-const phoneDrpdwn =
-  '//div[input[@title="Phone"]]/following-sibling::div/div[contains(@class,"ss-select")]';
-const phoneOption =
-  '//div[@class="ss-select-options"]//span/div[text()="Phone Number 1"]';
-const emailDrpdwn =
-  '//div[input[@title="Email"]]/following-sibling::div/div[contains(@class,"ss-select")]';
-const emailOption =
-  '//div[@class="ss-select-options"]//span/div[text()="Email"]';
+const destinationField = (value) =>
+  `//div[input[@title="${value}"]]/following-sibling::div/div[contains(@class,"ss-select")]`;
 const nextButton = 'button.next_btn';
 const backBtn = 'button.pre_btn';
 const submitButton = '//button[contains(text(),"SUBMIT")]';
@@ -169,6 +155,12 @@ const ToastMessage = `.Toastify__toast-body`;
 const leadSheetSaveBtn = '.contact-leads__row-button';
 const notesIcon = (status) => `img[src*="notes_${status}"]`;
 const focusBtn = '.contact-view-buttons .btn-primary';
+const prefilledSourceField = '.form-control.prefilled';
+const checkedCheckbox = (value) => `.custom_checkbox [name="${value}"]`;
+const importContactDrpdown = (label) => `//label[text()="${label}"]/parent::div/child::div/div[contains(@class,"ss-select")]`
+const contactSlider = (num) => `.rc-slider-handle-${num}`;
+const notesContent = (content) => `//div[contains(@class,"comment-item-body") and span//p[text()="${content}"]]`;
+const contactTableData = (index) => `.resizable-table-tbody> div> div:nth-of-type(${index})`;
 
 export default class Contacts {
   clickingOnContactOption() {
@@ -380,19 +372,19 @@ export default class Contacts {
   }
 
   selectFirstNameDropdown() {
-    cy.xpath(firstNameDrpdown).click({force:true});
+    cy.xpath(destinationField('First Name')).click({force:true});
     cy.contains('First Name').click({ force: true });
   }
   selectLastNameDropdown() {
-    cy.xpath(lastNameDrpdwn).click({force:true});
+    cy.xpath(destinationField('Last Name')).click({force:true});
     cy.contains('Last Name').click({ force: true });
   }
   selectEmailDropdown() {
-    cy.xpath(emailDrpdwn).click();
+    cy.xpath(destinationField('Email')).click();
     cy.contains('Email').click({ force: true });
   }
   selectPhoneDropdown() {
-    cy.xpath(phoneDrpdwn).click();
+    cy.xpath(destinationField('Phone')).click();
     cy.contains('Phone Number 1').click({ force: true });
   }
 
@@ -1088,4 +1080,111 @@ export default class Contacts {
     cy.get(focusBtn).should('have.text', tab)
   }
 
+  verifyPrefilledSourceFields() {
+    cy.get(prefilledSourceField).should('be.visible');
+  }
+
+  clickCustomField() {
+    cy.xpath(destinationField('ID')).click();
+    cy.contains('Custom Field').click();
+  }
+
+  addCustomFieldName(name) {
+    cy.get('.form-label + input').type(name);
+  }
+
+  verifyCustomField(name) {
+    cy.get('.contact-import-ss-label').should('contain.text', name)
+  }
+
+  verifyCheckboxCheckedBydefault(name) {
+    for (let i = 0; i < name.length; i++) {
+      cy.get(checkedCheckbox(name[i])).should('be.checked');
+    }
+  }
+
+  verifyUncheckedCheckbox(name) {
+    for (let i = 0; i < name.length; i++) {
+      cy.get(checkedCheckbox(name[i])).should('not.be.checked');
+    }
+  }
+
+  verifyDuplicateNumberData(text) {
+    cy.xpath(importContactDrpdown('Duplicate Phone Numbers')).should('have.text',text)
+  }
+
+  verifyDuplicateNumberTextInfo(msg) {
+    cy.xpath('//label[text()="Duplicate Phone Numbers"]/parent::div/child::div/div[contains(@class,"tax-info")]')
+      .should('have.text', msg)
+  }
+
+  clickOnDropdown(dropdown) {
+    cy.xpath(importContactDrpdown(dropdown)).click();
+  }
+
+  slideContactCountFromStart(count,move) {
+    const num = Intl.NumberFormat('en-US').format(count * 1000);
+   
+    cy.get(contactSlider('1')).click({force:true});
+    for (let i = 0; i < count; i++) {
+      cy.get(contactSlider('1')).type(`{${move}arrow}`);
+    }
+    this.verifyContactSliderText([num]);
+  }
+
+  slideContactCountFromEnd(count, move) {
+    const num = Intl.NumberFormat('en-US').format(2000000 - `${count}000`) ;
+    cy.get(contactSlider('2')).click();
+    for (let i = 0; i < count; i++) {
+      cy.get(contactSlider('2')).type(`{${move}arrow}`);
+    } 
+    this.verifyContactSliderText([num]);
+  }
+
+  verifyContactSliderText(contSlider) {
+    for (let i = 0; i < contSlider.length; i++) {
+      cy.get('.text-start').should('contain.text', contSlider[i]);
+    }
+  }
+
+  verifyNotesContent(content) {
+    cy.xpath(notesContent(content)).should('be.visible')
+  }
+
+  clickTableHeaderSort(header) {
+    cy.contains(header).find('[data-icon="sort"]').click({force:true});
+  }
+
+  clickHeaderSortCaret(header) {
+    cy.contains(header).find('[data-icon*="caret"]').click({force:true});
+  }
+
+  verifySortingTable(number,order) {
+    let flag;
+    cy.wait(1000);
+    cy.get(contactTableData(number)).then(($ele) => {
+      const tableData = Array.from($ele, el => el.innerText);
+
+      for (let i = 0; i < tableData.length-1; i++) {
+        if(order == 'Desc') {
+          if(tableData[i] >= tableData[i+1]) {
+            flag = true;
+          } else {
+            flag =false;
+          }
+        } else {
+          if(tableData[i] <= tableData[i+1]) {
+            flag = true;
+          } else {
+            flag =false;
+          }
+        }
+        expect(flag).to.equal(true)
+      }
+    });
+  }
+
+  verifyAssignCampaignInModal(camp) {
+    cy.get(CampaignDropdown).should('have.text', camp)
+  }
 }

@@ -516,13 +516,17 @@ describe('Add Phone Number flow', () => {
   });
 
   it('Verify that Events created through call result Schedule a call back is reflected in the TASKS page', () => {
-    addCont.dialPhoneNumber('8586515050');
+    addCont.dialPhoneNumber('6029227636');
     addCont.clickDialerCallButton();
     cy.wait(5000);
-    addCont.clickDialerCallButton();
+    addCont.clickEndCallButton();
     addCont.selectCallResult('A CALL BACK'); 
     addCont.clickContinueBtn();
-    cy.wait(1000);
+    cy.wait(5000);
+    dashboard.clickTaskButton();
+    cy.reload();
+    ignoreSpeedTestPopup();
+    dashboard.clickDashboard();
     dashboard.clickTaskButton();
     dashboard.clickFutureButton();
     dashboard.verifyEventType('Appointment');   
