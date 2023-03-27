@@ -682,7 +682,7 @@ export default class Agent {
   }
 
   clickFollowUpCall() {
-    cy.get(followUpCall).click();
+    cy.get(followUpCall).click({force:true});
   }
 
   selectDateToFollowUpCall() {

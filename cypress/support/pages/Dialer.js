@@ -99,7 +99,7 @@ const cardDropdowns = (cardName) =>
   `//h2[@class="campaign-card__title"][text()="${cardName}"]/ancestor::div[contains(@class,"campaign-card")]//div[contains(@class,"ss-select-control")]`;
 const dashboard = 'a[title="Dashboard"]';
 const closeSoftBtn = '.softphone-close-button .cursor_pointer';
-const timeoutDestination = '//label[text()="Timeout Destination"]/ancestor::div[contains(@class,"form-group")]/descendant::span[contains(@class,"ss-select-value")][1]';
+const timeoutDestination = '//label[text()="Timeout Destination"]/ancestor::div[contains(@class,"col")]/descendant::span[contains(@class,"ss-select-value")][1]';
 const queueCheckbox = (checkbox) => `//div[label[text()="${checkbox}"]]/parent::div//span[@class="checkmark"]`;
 const PhoneValue = (key) => `//div[@class="key"][text()="${key}"]/parent::div/child::div[@class="value"]`
 const contactLineCursor = (pos) => `svg[data-icon="angle-${pos}"]`
@@ -275,7 +275,7 @@ export default class Dialer {
   }
 
   enterSimultaneousDialsPerAgent(number) {
-    cy.xpath(simultaneousDialsPerAgent).clear().type(number);
+    cy.xpath(simultaneousDialsPerAgent).clear({force:true}).type(number);
   }
 
   verifyContactViewPage() {
@@ -555,7 +555,7 @@ export default class Dialer {
   }
 
   clickListAssignToCampaign(listName) {
-    cy.xpath(listThreeDotMenuBtn(listName)).click();
+    cy.xpath(listThreeDotMenuBtn(listName)).click({force:true});
     this.clickOnDropdownItem('Assign To Campaign');
   }
 
@@ -584,14 +584,14 @@ export default class Dialer {
 
   enterRetryTime(time) {
     for (let i = 0; i < time; i++) {
-      cy.xpath(retryTime('plus')).click();
+      cy.xpath(retryTime('plus')).click({force:true});
       this.clickOnButton('Got it');
     }
    
   }
 
   enterMaxAttemptPerRecord(attemptNo) {
-    cy.xpath(maxAttemptPerRecord).clear().type(attemptNo);
+    cy.xpath(maxAttemptPerRecord).clear({force:true}).type(attemptNo);
   }
 
   clickContactThreeDotMenu(firstName, lastName) {
@@ -599,16 +599,18 @@ export default class Dialer {
   }
 
   clickContactLineCursor(pos) {
-    cy.get(contactLineCursor(pos),{timeout:40000}).click();
+    cy.get(contactLineCursor(pos),{timeout:40000}).click({force:true});
   }
 
   verifySoftphoneLineContactName(contactName) {
+    cy.get('.contact-view-wrapper',{timeout:60000}).should('be.visible')
     this.clickContactLineCursor('right');
     cy.get(softphoneLineContactName, { timeout: 40000 }).then((lineText) => {
       for (let i = 0; i < lineText.length; i++) {
         expect(lineText[i].textContent.trim()).to.contains(contactName);
       }
     });
+    cy.wait(2000);
     this.clickContactLineCursor('left');
   }
 
@@ -682,11 +684,11 @@ export default class Dialer {
   }
 
   enterDailyConnectsLimit(limit) {
-    cy.xpath(dailyConnectsLimit).clear().type(limit);
+    cy.xpath(dailyConnectsLimit).clear({force:true}).type(limit);
   }
 
   selectRetryTimeDropdown(unit) {
-    cy.xpath(campBehviorDropdown('Retry Time')).click();
+    cy.xpath(campBehviorDropdown('Retry Time')).click({force:true});
     this.selectOption(unit);
   }
 

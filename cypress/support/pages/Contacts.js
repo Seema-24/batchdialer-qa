@@ -867,7 +867,7 @@ export default class Contacts {
   }
 
   clickNotes() {
-    cy.xpath(notes).click();
+    cy.xpath(notes).click({force:true});
   }
 
   clickAddNewNotes() {

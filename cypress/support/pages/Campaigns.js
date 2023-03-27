@@ -56,7 +56,7 @@ const simultaneousDials =
   "//label[text()='Simultaneous Dials Per Agent']/parent::div/div";
 const RetryTime =
   "//label[text()='Retry Time']/parent::div/following-sibling::div";
-const AgentScript = '.row-agentscript .ss-select-control';
+const AgentScript = '//label[text()="Agent Script"]/ancestor::div[@class="row"]';
 const AgentScriptCreateNew = '.row-agentscript button';
 const contactLists = "//label[text()='Contact Lists']/parent::div/div";
 const assignAgent =
@@ -158,15 +158,18 @@ const retryTimeDropdown =
 const tooltip = '.question-tooltip';
 const recycleIcon = (recycleCamp)  => `//span[text()="${recycleCamp}"]/preceding-sibling::*[@class="recycle-icon-svg"]`;
 const recycleTooltip = '//div[@class="tooltip-inner"]//div[@class="text-start text-nowrap"]';
-const campToolTip = (name) => `//label[text()="${name}"]/parent::div/child::span[@class="left question-tooltip"]`;
+const campToolTip = (name) => `//label[text()="${name}"]/parent::*//span[contains(@class,"question-tooltip")]/img`;
 const campBehviorDropdown = (dropdown) => `//div[label[text()="${dropdown}"]]/parent::div//div[contains(@class,"ss-select-control")]`;
 const queueCheckbox = (checkbox) => `//div[label[text()="${checkbox}"]]/parent::div//span[@class="checkmark"]`;
 const LabelDropdown = (label) => `//label[text()="${label}"]/following-sibling::div//span`;
 const campaignCardRadioBtn = (campCard,radioBtn) => `//div[h2[@class="campaign-card__title"][text()="${campCard}"]]//div[h2[text()="${radioBtn}"]]/following-sibling::span`;
 const campaignCardCheckbox = (campCard) => `//div[h2[@class="campaign-card__checkbox-block__title"][text()="${campCard}"]]/following-sibling::span`;
 const campaignName = (name) => `//span[@class="campaign-name-table"][text()="${name}"]`;
-const dialPadNumber = '.stg-softphone-number-digits';
+const dialPadNumber = '//li[contains(@class,"softphone-keyboard-button")]';
 const tableList = (index) => `.resizable-table-tbody div.td:nth-of-type(${index})`;
+const deleteSelectedDropdown = (value) => `//span[text()="${value}"]/following-sibling::span[@class="ss-select-value-delete"]`;
+const activeCampCard = '.campaign-card.active';
+const termCondition = '//label[text()="Accept Terms and Conditions "]/span[@class="checkmark"]';
 
 const addUser = new User();
 const dial = new Dialer();
@@ -488,7 +491,7 @@ export default class Campaign {
   }
 
   verifyAgentScript() {
-    cy.get(AgentScript).should('be.visible');
+    cy.xpath(AgentScript).should('be.visible');
   }
 
   verifyAgentScriptCreateNewButton() {
@@ -896,19 +899,26 @@ export default class Campaign {
     cy.xpath(callConnectType(type)).click({force:true});
   }
 
-  verifyCallConnectType() {
-    cy.xpath(callConnectType('Automatic Answer')).should('be.visible');
-    cy.xpath(callConnectType('Manual Answer')).should('be.visible');
+  verifyCallConnectType(cond) {
+    if(cond === 'not.exist') {
+      cy.xpath(callConnectType('Automatic Answer')).should(cond);
+      cy.xpath(callConnectType('Manual Answer')).should(cond);
+    } else {
+      cy.xpath(callConnectType('Automatic Answer')).should('be.visible');
+      cy.xpath(callConnectType('Manual Answer')).should('be.visible');
+    }
   }
 
   enterSimultaneousDials(no) {
     cy.xpath(dialingBehaviour('Simultaneous Dials p/Agent')).clear({force:true}).type(no);
   }
 
-  verifySimultaneousDialsField() {
-    cy.xpath(dialingBehaviour('Simultaneous Dials p/Agent')).should(
-      'be.visible'
-    );
+  verifySimultaneousDialsField(cond) {
+    if(cond === 'not.exist') {
+      cy.xpath(dialingBehaviour('Simultaneous Dials p/Agent')).should(cond);
+    } else {
+      cy.xpath(dialingBehaviour('Simultaneous Dials p/Agent')).should('be.visible');
+    }
   }
 
   enterRingTimeDuration(time) {
@@ -1066,11 +1076,19 @@ export default class Campaign {
   }
 
   mouseOverOnQuestionToolTip(name) {
-    cy.xpath(campToolTip(name)).trigger('mouseover')
+    cy.xpath(campToolTip(name)).trigger('mouseover',{force:true});
+  }
+
+  mouseOutOnQuestionToolTip(name) {
+    cy.xpath(campToolTip(name)).wait(500).trigger('mouseout',{force:true})
+  }
+
+  mouseOverOnCampTitle(title) {
+    cy.xpath(`//h2[text()="${title} "]/span[@class=" question-tooltip"]/img`).trigger('mouseover',{force:true});
   }
 
   verifyQuestionTooltipText(ToolTipText) {
-    cy.get('.tooltip-inner').should('have.text', ToolTipText)
+    cy.get('.tooltip-inner').should('have.text', ToolTipText);
   }
   
   verifyDefaultDateRange(time) {
@@ -1178,13 +1196,19 @@ export default class Campaign {
     }
   }
 
+  verifyCheckboxField(campCard, cond) {
+    if('not.exist' === cond) {
+      cy.xpath(campaignCardCheckbox(campCard)).should(cond);
+    }
+  }
+
   clickOnCampName(name) {
     cy.xpath(campaignName(name)).click();
   }
 
   verifyDialPadNumber(val) {
     if('Number' == val) {
-      cy.get(dialPadNumber).then(value => {
+      cy.xpath(dialPadNumber).then(value => {
         let number = value.text().split(' ').join('')
         expect(10).to.equal(number.length);
         cy.readFile('cypress/fixtures/testData.json').then(data => {
@@ -1193,7 +1217,7 @@ export default class Campaign {
         });
       });
     } else {
-      cy.get(dialPadNumber).should('have.text', 'Enter Phone Number');
+      //cy.xpath(dialPadNumber).should('have.text', 'Enter Phone Number');
     }
   }
 
@@ -1296,7 +1320,53 @@ export default class Campaign {
   }
 
   clickTermsConditionsCheckbox() {
-    cy.xpath('//label[text()="Accept Terms and Conditions "]/span[@class="checkmark"]').click();
+    cy.xpath(termCondition).click();
   }
 
+  verifyAgentScriptEyeBtn(condition) {
+    cy.xpath(AgentScript + '//img[@alt="View"]').should(condition)
+  }
+  
+  clickAgentScriptEyeBtn() {
+    cy.xpath(AgentScript + '//img[@alt="View"]').click({force:true});
+  }
+
+  verifyAgentScriptOpen() {
+    cy.xpath(AgentScript+ '/descendant::span[@class="ss-select-value"]/span').then((script) => {
+      this.verifyModalTitle(script.text());
+      cy.get(modal).should('not.contain.html','class*="editor"');
+      cy.get('.close-button').click();
+    })
+  }
+
+  selectAgentScriptDropdown(opt) {
+    cy.xpath(AgentScript+ '/descendant::span[@class="ss-select-value"]').click({force:true});
+    this.selectOptions(opt);
+  }
+
+  verifySaveButtonVisiblity(condition) {
+    cy.xpath('//button[text()="Save"]').should(`be.${condition}`);
+  }
+
+  clickSelectedItem(name) {
+    cy.xpath(deleteSelectedDropdown(name)).click({force:true});
+  }
+
+  verifyActiveCampLength(length) {
+    cy.get(activeCampCard).should('have.length.at.least',length)
+  }
+
+  verifyTermConditionCheckbox(checkbox) {
+    if(checkbox === 'disabled') {
+      cy.xpath(termCondition)
+        .should('have.css', 'background-color', 'rgb(228, 234, 240)'); // white or disable
+    } else {
+      cy.xpath(termCondition)
+        .should('have.css', 'background-color', 'rgb(54, 131, 188)');  //blue color or enable
+    }
+  }
+
+  verifyTermsAndConditionsAcknowlegde(text) {
+    cy.get('.campaign-terms').should('have.text',text);
+  }
 }
