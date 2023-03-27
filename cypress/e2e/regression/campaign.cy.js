@@ -681,19 +681,71 @@ describe('Add Campaign flow', () => {
     });
     addCamp.verifyDefaultValue('Agent Script', 'Default');
     addCamp.clickAdvancedConfiguration();
-    //addCamp.VerifyDefaultRadioBtn('Random Dialing','Enable');
+    addCamp.VerifyDefaultRadioBtn('Smart Local Presence ','Enabled');         // BAT-T1128
     addCamp.VerifyDefaultRadioBtn('Call Connect Type','Automatic Answer');
     addCamp.verifyDialingBehavior('Max Calls per Day', 0);
     addCamp.verifyDialingBehavior('Max Attempts Per Record', 3);
     addCamp.verifyDialingBehavior('Simultaneous Dials p/Agent', 2);
-    addCamp.verifyDefaultCheckbox('Call Recording');
-    addCamp.verifyDefaultCheckbox('Suppress System Do Not Contact');
+    addCamp.verifyDefaultCheckbox('Call Recording','enable');                 
+    addCamp.verifyDefaultCheckbox('Suppress System Do Not Contact','enable');      
     addCamp.verifyDefaultCheckbox('Answering Machine Detection','disable');
-    addCamp.verifyDefaultCheckbox('Suppress Federal Do Not Call', 'disable');
+    addCamp.verifyDefaultCheckbox('Suppress Federal Do Not Call', 'disable');    
+    addCamp.verifyDefaultCheckbox('Supress Wireless Contacts', 'disable');      // BAT-T1207 
+    addCamp.verifyDefaultCheckbox('Supress Litigator Contacts', 'disable');
     addCamp.verifyDefaultValue('Calling Hours', 'Sun-Sat: 8:00 am-9:00 pm');
     cy.readFile('cypress/fixtures/testData.json').then((data) => 
       addCamp.verifyDefaultValue('Time Zone', data.timeZone)
     );
+  });
+
+  it('Verify the tool tip displayed on the Campaign element', () => {
+    addCamp.mouseOverOnQuestionToolTip('Agents');
+    addCamp.verifyQuestionTooltipText('Assign which agents or group can join this campaign');
+    addCamp.mouseOutOnQuestionToolTip('Agents');
+    addCamp.mouseOverOnQuestionToolTip('Phone Numbers');
+    addCamp.verifyQuestionTooltipText('Phone numbers are used to dial outbound calls to customers.');
+    addCamp.mouseOutOnQuestionToolTip('Phone Numbers');
+    addCamp.mouseOverOnQuestionToolTip('Contact Lists');
+    addCamp.verifyQuestionTooltipText('The selected lists will be automatically added to the campaign.');
+    addCamp.mouseOutOnQuestionToolTip('Contact Lists');
+    addCamp.mouseOverOnQuestionToolTip('Campaign Name');
+    addCamp.verifyQuestionTooltipText('The campaign name is used for internal campaign identification and tracking');
+    addCamp.mouseOutOnQuestionToolTip('Campaign Name');
+    addCamp.mouseOverOnQuestionToolTip('Call Results');
+    addCamp.verifyQuestionTooltipText('The call outcomes you select here will be available for agents to select from once the call has ended. You will be able to view');
+    addCamp.mouseOutOnQuestionToolTip('Call Results');
+    addCamp.mouseOverOnQuestionToolTip('Agent Script');
+    addCamp.verifyQuestionTooltipText('The predefined script that agents will see in real time upon successful connection');
+    addCamp.mouseOutOnQuestionToolTip('Agent Script');
+    addCamp.mouseOverOnQuestionToolTip('Max Calls per Day');
+    addCamp.verifyQuestionTooltipText('Daily connects limit (0 for no limit)');
+    addCamp.mouseOutOnQuestionToolTip('Max Calls per Day');
+    addCamp.mouseOverOnQuestionToolTip('Max Attempts Per Record');
+    addCamp.verifyQuestionTooltipText('The number of times the system will attempt to dial a phone number before a connection is established');
+    addCamp.mouseOutOnQuestionToolTip('Max Attempts Per Record');
+    addCamp.mouseOverOnQuestionToolTip('Simultaneous Dials p/Agent');
+    addCamp.verifyQuestionTooltipText('The maximum channels (phone lines) agents will be allowed to dial simultaneously on outbound campaigns. High number will lead to higher abandon rate, lower number will lead to more agent wait times between calls. Desired abandon rate < 10%.');
+    addCamp.mouseOutOnQuestionToolTip('Simultaneous Dials p/Agent');
+    addCamp.mouseOverOnQuestionToolTip('Retry Time');
+    addCamp.verifyQuestionTooltipText('After an unsuccessful attempt to connect to a phone number, the system will retry to dial the phone after the specified time');
+    addCamp.mouseOutOnQuestionToolTip('Retry Time');
+    addCamp.mouseOverOnQuestionToolTip('Abandonment Timeout, sec');
+    addCamp.verifyQuestionTooltipText('Abandonment Timeout');
+    addCamp.mouseOutOnQuestionToolTip('Abandonment Timeout, sec');
+    addCamp.mouseOverOnQuestionToolTip('Lead Sheet');
+    addCamp.verifyQuestionTooltipText('Assign leadsheet');
+    addCamp.mouseOutOnQuestionToolTip('Lead Sheet');
+    addCamp.mouseOverOnQuestionToolTip('Calling Hours');
+    addCamp.verifyQuestionTooltipText('You can pre-configure campaign calling hours to match the timezone and location you are dialing. Agents will only be allowed to join this campaign during allowed hours. TCPA allows calls to be made between 8 A.M. and 9 P.M. in the local timezone');
+    addCamp.mouseOutOnQuestionToolTip('Calling Hours');
+    addCamp.mouseOverOnQuestionToolTip('Time Zone');
+    addCamp.verifyQuestionTooltipText('Setting the correct timezone for a campaign will allow agents to start and end calls at specified times');
+    addCamp.mouseOutOnQuestionToolTip('Time Zone');
+  });
+
+  it('Verify the tool tip displayed on the Smart Local Presence section', () => {
+    addCamp.mouseOverOnCampTitle('Smart Local Presence');
+    addCamp.verifyQuestionTooltipText('Allows you to select Outbound Calling Number which is closest match to the area code, city or state that you are dialing. Other numbers will be used, if not available.');
     addCamp.clickOnButton('Cancel');
   });
 
@@ -772,15 +824,101 @@ describe('Add Campaign flow', () => {
     addCamp.verifyIncompleteCampWizard('Agents');
     addCamp.selectAgentToAssign(testData.AdminName);
     addCamp.selectPhoneNumberToAssign(testData.Number);
+    addCamp.enterCampaignName(fixtureData.campaignName + randNum.toString() + '2');
     addCamp.clickOnCampaignWizard('Dialing Mode');
     addCamp.verifyDialingMode();
     addCamp.clickAdvancedConfiguration();
     addCamp.clickOnCampaignWizard('Call Results');
     addCamp.verifyCallResultsDropdown();
+    addCamp.clickOnCampaignWizard('Agent Script');
     addCamp.clickOnCampaignWizard('Agents');
     addCamp.verifyAgentToAssignDropdown();
     addCamp.verifyPhoneNumberToAssignDropdown();
+  });
+
+  it('Verify that when user click on eye icon its should open the selected agent script which is not editable', () => {
+    addCamp.verifyAgentScript();
+    addCamp.verifyAgentScriptEyeBtn('be.visible');
+    addCamp.clickAgentScriptEyeBtn();
+    addCamp.verifyDialogOpen();
+    addCamp.verifyAgentScriptOpen();
+  });
+  
+  it('Verify that when no script selected then eye icon should not be available', () => {
+    addCamp.selectAgentScriptDropdown('None');
+    addCamp.verifyAgentScriptEyeBtn('not.exist');
+  });
+
+  it('Verify that Accept Terms and Conditions is visible', () => {
+    addCamp.verifyTermsAndConditionsAcknowlegde(
+      'You acknowledge that you have read, understand and accept our terms of service (link) as well as all TCPA, TSR and applicable state specific regulations including but not limited to:' + 
+      'You must have documented consent or another exemption to call numbers on State/Fed DNC lists.' + 
+      'You must have documented consent or another exemption to call wireless numbers using a dialer. We do not certify that our system is not an auto dialer.' +
+      'It is illegal to market to individuals who have asked you to stop. No marketing to individuals/numbers who have requested that calls stop, or otherwise revoked consent.' +
+      'No delivery of pre-recorded messages or artificial voices without well documented written consent.' +
+      'Certain states require consent for call recording/monitoring. You acknowledge proper disclosures are in place at the beginning of every call.' 
+    );
+  });
+
+  it('Verify that without Accepting terms and Condition save option is disable', () => {
+    addCamp.verifyTermConditionCheckbox('disabled'); //checkbox before click
+    addCamp.verifySaveButtonVisiblity('disabled');
+  });
+
+  it('Verify that user is able to Accept terms and Condition on Campaign page', () => {
+    addCamp.clickTermsConditionsCheckbox();
+    addCamp.verifyTermConditionCheckbox('enabled');  //checkbox after click
+  });
+
+  it('Verify that after Accepting Terms And Condition User is able to Save Campaign', () => {
+    addCamp.verifySaveButtonVisiblity('enabled');
+    addCamp.clickOnButton('Save');
+    addCamp.verifyToast('Campaign Created');
+    addCamp.clickEditCampaign(fixtureData.campaignName + randNum.toString() + '2');
+    addCamp.clickArchiveCampaignButton();
+    addCamp.handleAlertForDelete();
+    cy.wait(1000);
+    addCamp.verifyArchivedCampaign(fixtureData.campaignName + randNum.toString() + '2', 'not.exist');
+  })
+
+  it('Verify that all the required fields are filled up: Atleast 1 agent, Atleast 1 phone number then save button should be enabled', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickAddNewCampaign();
+    addCamp.selectDialingMode('Predictive');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.selectPhoneNumberToAssign(testData.Number);
+    addCamp.clickTermsConditionsCheckbox();
+    addCamp.verifySaveButtonVisiblity('enabled');
+  });
+
+  it('Verify that Advanced Configuration is hidden by default and when user clicks on (+) icon then its shows the Advanced Configuration', () => {
+    addCamp.verifyActiveCampLength(5);
+    addCamp.clickAdvancedConfiguration();
+    addCamp.verifyActiveCampLength(12);
+  });
+
+  it('Verify that if any one of the field - Agent and Phone number is not filled then Save button should disabled', () => {
+    addCamp.clickSelectedItem(testData.AdminName);
+    addCamp.verifySaveButtonVisiblity('disabled');
     addCamp.clickOnButton('Cancel');
   });
+
+  it('Verify that when user create preview campaign then some fields should not shown', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickAddNewCampaign();
+    addCamp.selectDialingMode('Preview');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.selectPhoneNumberToAssign(testData.Number);
+    addCamp.clickAdvancedConfiguration();
+    addCamp.verifyCallConnectType('not.exist');
+    addCamp.verifySimultaneousDialsField('not.exist');
+    addCamp.verifyCheckboxField('Answering Machine Detection','not.exist');
+  });
+
+  it('Verify that by default Smart Local Presence is enabled while creating a campaign of type preview dialer', () => {
+    addCamp.VerifyDefaultRadioBtn('Smart Local Presence ','Enabled'); 
+    addCamp.clickOnButton('Cancel');
+  });
+
 
 });

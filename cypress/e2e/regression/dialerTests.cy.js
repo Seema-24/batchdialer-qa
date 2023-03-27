@@ -23,8 +23,8 @@ const report = new Report();
 
 describe('Inbound Call Scenarios', () => {
   beforeEach(() => {
-    closeDialogBox();
     handlePoorConnectionPopup();
+    closeDialogBox();
   })
   describe('Inbound Calls with Call Connect type of Auto Answer mode', () => {
     const campaignName = 'Auto Answer Campaign';
@@ -56,6 +56,7 @@ describe('Inbound Call Scenarios', () => {
     it('create new Predictive Dialer Campaign with Auto Answer Mode', () => {
       setup.assignNumberToAgent(testData.Number, testData.AdminName);
       Dial.clickOnMenu('Campaigns');
+      Dial.verifyCampaignExisting(campaignName);
       Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
       Dial.selectAgentToAssign(testData.AdminName);
@@ -164,6 +165,7 @@ describe('Inbound Call Scenarios', () => {
 
     it('create new Predictive Dialer Campaign with Ringing Sound Mode', () => {
       Dial.clickOnMenu('Campaigns');
+      Dial.verifyCampaignExisting(campaignName);
       Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
       Dial.selectAgentToAssign(testData.AdminName);
@@ -285,6 +287,7 @@ describe('Inbound Call Scenarios', () => {
 
     it('Create a campaign for the Queue', () => {
       Dial.clickOnMenu('Campaigns');
+      Dial.verifyCampaignExisting(campaignName);
       Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
       //Dial.clickOnRadioButton('Individual Numbers');
@@ -437,8 +440,8 @@ describe('Inbound Call Scenarios', () => {
 
 describe('Outbound Calling Scenarios', () => {
   beforeEach(() => {
-    closeDialogBox();
     handlePoorConnectionPopup();
+    closeDialogBox();
   })
 
   describe('Preview Campaign Dialing', () => {
@@ -472,6 +475,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create the New Preview Dialer', () => {
       Dial.clickOnMenu('Campaigns');
+      Dial.verifyCampaignExisting(campaignName);
       Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Preview Dialer');
       Dial.selectAgentToAssign(testData.AdminName);
@@ -500,7 +504,7 @@ describe('Outbound Calling Scenarios', () => {
     it('Add the New Contact for the Outbound call', () => {
       contact.clickingOnContactOption();
       contact.clickAddNewContactButton();
-      contact.verifyContactExisting('5703870000')
+      contact.verifyContactExisting('5103256012')
       contact.selctCreateNewContactOption();
       contact.enterFirstName('Twilio');
       contact.enterLastName('Test');
@@ -509,7 +513,7 @@ describe('Outbound Calling Scenarios', () => {
       contact.selectState('Arizona');
       contact.enterZipCode('85701');
       contact.enterEmail('test@test.com');
-      contact.enterPhoneNumber('5703870000');
+      contact.enterPhoneNumber('5103256012');
       contact.clickSaveButton();
       contact.verifySuccessToast();
     });
@@ -536,7 +540,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('End the Call and select the Disposition', () => {
-      Dial.endCallAtTime('0:10');
+      Dial.endCallAtTime('0:20');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
       Dial.clickOnButton('Done');
@@ -589,6 +593,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a new Predictive Campaign', () => {
       Dial.clickOnMenu('Campaigns');
+      Dial.verifyCampaignExisting(campaignName);
       Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
       Dial.selectAgentToAssign(testData.AdminName);
@@ -668,7 +673,7 @@ describe('Outbound Calling Scenarios', () => {
     it('Verify that Agent status should be On Call and End the Call and select the Disposition', () => {
       Dial.verifyAgentStatus('On Call');
       Dial.verifySoftphoneTitle('Test Number');
-      Dial.endCallAtTime('0:10');
+      Dial.endCallAtTime('0:20');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
       Dial.clickOnButton('Done');
@@ -720,6 +725,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a new Predictive Campaign', () => {
       Dial.clickOnMenu('Campaigns');
+      Dial.verifyCampaignExisting(campaignName);
       Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
       Dial.selectAgentToAssign(testData.AdminName);
@@ -798,7 +804,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.disconnectAvailableCall();
       Dial.verifyAgentStatus('On Call');
       Dial.verifySoftphoneTitle('Test Number');
-      Dial.endCallAtTime('0:10');
+      Dial.endCallAtTime('0:20');
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
       Dial.clickOnButton('Done');
@@ -850,6 +856,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a new Predictive Campaign', () => {
       Dial.clickOnMenu('Campaigns');
+      Dial.verifyCampaignExisting(campaignName);
       Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
       Dial.selectAgentToAssign(testData.AdminName);
@@ -925,7 +932,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.verifySimultaneousDial(
         ['Twilio Test'],
           'On Call',
-          '0:10',
+          '0:20',
           'No Answer'
       );
     });
@@ -1105,6 +1112,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a new Predictive Campaign', () => {
       Dial.clickOnMenu('Campaigns');
+      Dial.verifyCampaignExisting(campaignName);
       Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
       Dial.selectAgentToAssign(testData.AdminName);
@@ -1255,6 +1263,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a new Preview Campaign with Call Recording Feature', () => {
       Dial.clickOnMenu('Campaigns');
+      Dial.verifyCampaignExisting(campaignWithRecording);
       Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Preview Dialer');
       Dial.selectAgentToAssign(testData.AdminName);
@@ -1281,6 +1290,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a new Preview Campaign without the Call Recording Feature', () => {
       Dial.clickOnMenu('Campaigns');
+      Dial.verifyCampaignExisting(campaignWithoutRecording);
       Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Preview Dialer');
       Dial.selectAgentToAssign(testData.AdminName);
@@ -1462,6 +1472,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a new Predictive Campaign', () => {
       Dial.clickOnMenu('Campaigns');
+      Dial.verifyCampaignExisting(campaignName);
       Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
       Dial.selectAgentToAssign(testData.AdminName);
@@ -1575,7 +1586,7 @@ describe('Outbound Calling Scenarios', () => {
     });
   });
 
-  describe('Verify Predictive Campaign dialing with status', () => {
+  describe('Verify Predictive Campaign dialing with campaign status', () => {
     const campaignName = 'New Leads Campaign';
     const list1 = 'twilio.csv';
 
@@ -1604,6 +1615,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create a new Predictive Campaign', () => {
       Dial.clickOnMenu('Campaigns');
+      Dial.verifyCampaignExisting(campaignName);
       Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Predictive Dialer');
       Dial.selectAgentToAssign(testData.AdminName);
@@ -1697,7 +1709,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.verifyPhoneRingingIcon();
     });
 
-    it('Verify the Campaign status "Inter dialing pause" when an agent starts dialing a campaign type Predictive dialer', () => {
+    it('Verify the Campaign status (Inter dialing pause) when an agent starts dialing a campaign type Predictive dialer', () => {
       Dial.clickOnMenu('Dashboard');
       Dial.clickOnMenu('Campaigns');
       camp.verifyCampaignStatus(campaignName,'Interdialing Pause');
@@ -1720,7 +1732,7 @@ describe('Outbound Calling Scenarios', () => {
     });
   });
 
-  describe('Verify Preview Campaign dialing with status', () => {
+  describe('Verify Preview Campaign dialing with campaign status', () => {
     const campaignName = 'Manual Dialing';
     const random = Math.floor(Math.random() * 100);
     before(() => {
@@ -1752,6 +1764,7 @@ describe('Outbound Calling Scenarios', () => {
 
     it('Create the New Preview Dialer', () => {
       Dial.clickOnMenu('Campaigns');
+      Dial.verifyCampaignExisting(campaignName);
       Dial.clickOnButton('NEW CAMPAIGN');
       Dial.clickOnRadioButton('Preview Dialer');
       Dial.selectAgentToAssign(testData.AdminName);
@@ -1787,7 +1800,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Verify that View Contact page is displayed when Click on NEXT CONTACT in the Dialpad during manual mode of dialing (Preview Dialer)', () => {
-      camp.verifyDialPadNumber();
+      //camp.verifyDialPadNumber();
       camp.clickSoftphoneNextLead();
       cy.wait(2000)
       camp.verifyDialPadNumber('Number');

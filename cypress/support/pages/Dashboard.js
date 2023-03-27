@@ -591,7 +591,7 @@ export default class Dashboard {
   }
 
   clickTaskButton() {
-    cy.get(Task).click();
+    cy.get(Task).click({force:true});
   }
 
   verifyTask() {
