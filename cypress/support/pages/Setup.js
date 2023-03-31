@@ -112,8 +112,8 @@ export default class Setup {
   }
 
   createCampaign(name, callResults, phone, agentName) {
-    cy.wait(2000);
     this.clickCampaignMenu();
+    cy.wait(2000);
     cy.get('.resizable-table-tbody').then((table) => {
       if (table.find('.resizable-table-nodata').length) {
         this.createNewCampaign(name, callResults, phone, agentName);
@@ -133,12 +133,14 @@ export default class Setup {
 
   createNewCampaign(name, callResults, phone, agentName) {
     campaign.clickAddNewCampaign();
-    campaign.selectDialingMode('Predictive');
+    campaign.selectDialingMode('Preview');
     campaign.selectAgentToAssign(agentName);
     campaign.selectPhoneNumberToAssign(phone);
     campaign.enterCampaignName(name);
     campaign.selectCallResults(callResults);
+    campaign.clickTermsConditionsCheckbox();
     campaign.clickOnButton('Save');
+    campaign.verifyToast('Campaign Created');
   }
 
   getAdminName() {

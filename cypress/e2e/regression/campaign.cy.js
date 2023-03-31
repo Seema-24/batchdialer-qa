@@ -5,6 +5,10 @@ import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, select
 
 let fixtureData;
 let testData;
+var today = new Date();
+today = String(today.getMonth() + 1).padStart(2,'0') + '-' +
+  String(today.getDate()).padStart(2,'0') + '-' + 
+  String(today.getFullYear()).slice(-2);
 let randNum = Math.floor(Math.random() * 1000);
 let AgentName = 'demo Agent';
 const addCamp = new Campaign();
@@ -101,13 +105,13 @@ describe('Add Campaign flow', () => {
     addCamp.clickAdvancedConfiguration();
     addCamp.selectCallsOrder('adaptive'); //highestfirst //lowestfirst
     addCamp.selectCallConnectType('Automatic Answer'); //Manual Answer
-    addCamp.enterSimultaneousDials(3);
+   // addCamp.enterSimultaneousDials(3);
     // addCamp.enterRingTimeDuration(15);
     
     addCamp.enterRetryTime(5);
     // addCamp.selectRetryTimeUnit('sec');
     // addCamp.clickOnButton('Got it');
-    addCamp.enterMaxAttempts(2);
+    addCamp.enterMaxAttempts('Max Attempts Per Record', 2);
     addCamp.selectQueueCallMusicDropdown('Music 1');
     addCamp.clickQueueCheckbox();
     addCamp.enterAbandonedTimeout(15);
@@ -301,7 +305,7 @@ describe('Add Campaign flow', () => {
     addCamp.selectCallsOrder('adaptive'); //highestfirst //lowestfirst
     // addCamp.enterRingTimeDuration(15);
     addCamp.enterRetryTime(10);
-    addCamp.enterMaxAttempts(2);
+    addCamp.enterMaxAttempts('Max Attempts Per Record', 2);
     addCamp.selectQueueCallMusicDropdown("Music 1");
     addCamp.clickTermsConditionsCheckbox();
     addCamp.clickOnButton('Save');
@@ -386,7 +390,7 @@ describe('Add Campaign flow', () => {
     addCamp.clickAdvancedConfiguration();
     addCamp.verifyCallsOrder();
     addCamp.verifyCallConnectType();
-    addCamp.verifySimultaneousDialsField();
+   // addCamp.verifySimultaneousDialsField();
     // addCamp.verifyRingTimeDuration();
     addCamp.clickQueueCheckbox();
     addCamp.verifyAbandonedTimeout();
@@ -650,11 +654,11 @@ describe('Add Campaign flow', () => {
     addCamp.selectDialingMode('Predictive');
     addCamp.selectAgentToAssign(testData.AdminName);
     addCamp.selectPhoneNumberToAssign(testData.Number);
-    addCamp.verifyDefaultCampaignName('New Campaign');
+    addCamp.verifyDefaultCampaignName('New Campaign - ' + today);
   });
 
   it('Verify default value in all fields in Create New Campaign page', () => {
-    addCamp.verifyDefaultCampaignName('New Campaign');
+    addCamp.verifyDefaultCampaignName('New Campaign - ' + today);
     cy.url().then((url) => {
       if(url.includes('app.batchdialer.com')) {
         addCamp.verifyCallResultsOption([
@@ -685,13 +689,13 @@ describe('Add Campaign flow', () => {
     addCamp.VerifyDefaultRadioBtn('Call Connect Type','Automatic Answer');
     addCamp.verifyDialingBehavior('Max Calls per Day', 0);
     addCamp.verifyDialingBehavior('Max Attempts Per Record', 3);
-    addCamp.verifyDialingBehavior('Simultaneous Dials p/Agent', 2);
+    //addCamp.verifyDialingBehavior('Simultaneous Dials p/Agent', 2);
     addCamp.verifyDefaultCheckbox('Call Recording','enable');                 
     addCamp.verifyDefaultCheckbox('Suppress System Do Not Contact','enable');      
     addCamp.verifyDefaultCheckbox('Answering Machine Detection','disable');
     addCamp.verifyDefaultCheckbox('Suppress Federal Do Not Call', 'disable');    
-    addCamp.verifyDefaultCheckbox('Supress Wireless Contacts', 'disable');      // BAT-T1207 
-    addCamp.verifyDefaultCheckbox('Supress Litigator Contacts', 'disable');
+    addCamp.verifyDefaultCheckbox('Suppress Wireless Contacts', 'disable');      // BAT-T1207 
+    addCamp.verifyDefaultCheckbox('Suppress Litigator Contacts', 'disable');
     addCamp.verifyDefaultValue('Calling Hours', 'Sun-Sat: 8:00 am-9:00 pm');
     cy.readFile('cypress/fixtures/testData.json').then((data) => 
       addCamp.verifyDefaultValue('Time Zone', data.timeZone)
@@ -723,11 +727,11 @@ describe('Add Campaign flow', () => {
     addCamp.mouseOverOnQuestionToolTip('Max Attempts Per Record');
     addCamp.verifyQuestionTooltipText('The number of times the system will attempt to dial a phone number before a connection is established');
     addCamp.mouseOutOnQuestionToolTip('Max Attempts Per Record');
-    addCamp.mouseOverOnQuestionToolTip('Simultaneous Dials p/Agent');
-    addCamp.verifyQuestionTooltipText('The maximum channels (phone lines) agents will be allowed to dial simultaneously on outbound campaigns. High number will lead to higher abandon rate, lower number will lead to more agent wait times between calls. Desired abandon rate < 10%.');
-    addCamp.mouseOutOnQuestionToolTip('Simultaneous Dials p/Agent');
+   // addCamp.mouseOverOnQuestionToolTip('Simultaneous Dials p/Agent');
+   // addCamp.verifyQuestionTooltipText('The maximum channels (phone lines) agents will be allowed to dial simultaneously on outbound campaigns. High number will lead to higher abandon rate, lower number will lead to more agent wait times between calls. Desired abandon rate < 10%.');
+   // addCamp.mouseOutOnQuestionToolTip('Simultaneous Dials p/Agent');
     addCamp.mouseOverOnQuestionToolTip('Retry Time');
-    addCamp.verifyQuestionTooltipText('After an unsuccessful attempt to connect to a phone number, the system will retry to dial the phone after the specified time');
+    addCamp.verifyQuestionTooltipText('After an unsuccessful attempt to connect to a phone number, the system will retry to dial the phone number/lead after the specified time');
     addCamp.mouseOutOnQuestionToolTip('Retry Time');
     addCamp.mouseOverOnQuestionToolTip('Abandonment Timeout, sec');
     addCamp.verifyQuestionTooltipText('Abandonment Timeout');
@@ -755,11 +759,40 @@ describe('Add Campaign flow', () => {
     addCamp.selectDialingMode('Preview');
     addCamp.selectAgentToAssign(testData.AdminName);
     addCamp.selectPhoneNumberToAssign(testData.Number);
-    addCamp.verifyDefaultCampaignName('New Campaign');
     addCamp.clickAdvancedConfiguration();
-    addCamp.enterMaxAttempts(4);
+    addCamp.enterMaxAttempts('Max Attempts Per Record', 4);
     addCamp.verifyMaxAttemptWarningMsg(
-      'Increasing the Max Attempts per record above 3 will result in lower connection rates due to increased phone number spam detection and blocking by carriers. The recommended setting is 3 attempts per record per day. Please refer to our help desk for more information.');
+      'Increasing the Max Attempts per record above 3 will result in lower connection rates due to increased phone number spam detection and blocking by carriers. The recommended setting is 3 attempts per record per day. Please refer to our help desk for more information.'
+    );
+    addCamp.clickOnButton('Got it')
+  });
+
+  it('Verify that warning message is displayed when retry time is set below the default value (3 hours) for Campaign type preview dialer', () => {
+    addCamp.enterMaxAttempts('Retry Time', 1);
+    addCamp.verifyMaxAttemptWarningMsg(
+      'Decreasing the Retry Time under 3 hours will result in lower connection rates due to increased phone number spam detection and blocking by carriers. The recommended setting is 3+ hours. Please refer to our help desk for more information.'
+    );
+  });
+
+  it('Verify that warning message is displayed whenMax Attempts Per Record is set above the default value (3) for Campaign type preview dialer', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickAddNewCampaign();
+    addCamp.selectDialingMode('Predictive');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.selectPhoneNumberToAssign(testData.Number);
+    addCamp.clickAdvancedConfiguration();
+    addCamp.enterMaxAttempts('Max Attempts Per Record', 4);
+    addCamp.verifyMaxAttemptWarningMsg(
+      'Increasing the Max Attempts per record above 3 will result in lower connection rates due to increased phone number spam detection and blocking by carriers. The recommended setting is 3 attempts per record per day. Please refer to our help desk for more information.'
+    );
+    addCamp.clickOnButton('Got it')
+  });
+
+  it('Verify that warning message is displayed when retry time is set below the default value (3 hours) for Campaign type preview dialer', () => {
+    addCamp.enterMaxAttempts('Retry Time', 1);
+    addCamp.verifyMaxAttemptWarningMsg(
+      'Decreasing the Retry Time under 3 hours will result in lower connection rates due to increased phone number spam detection and blocking by carriers. The recommended setting is 3+ hours. Please refer to our help desk for more information.'
+    );
   });
 
   it('Verify that User can select the agent and agents groups from agent dropdown in campaign creation page', () => {
@@ -911,7 +944,7 @@ describe('Add Campaign flow', () => {
     addCamp.selectPhoneNumberToAssign(testData.Number);
     addCamp.clickAdvancedConfiguration();
     addCamp.verifyCallConnectType('not.exist');
-    addCamp.verifySimultaneousDialsField('not.exist');
+    //addCamp.verifySimultaneousDialsField('not.exist');
     addCamp.verifyCheckboxField('Answering Machine Detection','not.exist');
   });
 
@@ -920,5 +953,85 @@ describe('Add Campaign flow', () => {
     addCamp.clickOnButton('Cancel');
   });
 
+  it('Verify that user can add campaign in the draft by clicking on "Save to Draft" button', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.verifyDraftCampDelete();
+    addCamp.clickAddNewCampaign();
+    addCamp.selectDialingMode('Preview');
+    addCamp.clickOnButton('Save to draft');
+    addCamp.verifyToast('Campaign Saved as Draft');
+  });
+
+  it('Verify that when user save campaign as draft its should show in the campaign table', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.verifyAddedCampaign('New Campaign - '+ today);
+  });
+
+  it('Verify that draft campaign should always show on the top of the campaign list', () => {
+    addCamp.verifyDraftAtTop();
+  });
+
+  it('Verify that when user save campaign as draft and again open new campaign then its should open from the scratch', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickAddNewCampaign();
+    addCamp.verifyDialingMode();
+    addCamp.verifyAgentToAssignDropdown('not.exist');
+    addCamp.clickOnButton('Cancel');
+  });
+
+  it('Verify that when user edit the draft campaign then it should open from where user left the campaign', () => { 
+    addCamp.clickOnDraftIcon();
+    addCamp.verifyDialingMode();
+    addCamp.verifyAgentToAssignDropdown();
+    addCamp.verifyPhoneNumberToAssignDropdown('not.exist');
+  });
+
+  it('Verify that when user edit the already created campaign then the same layout as campaign creation flow should open',() => {
+    addCamp.verifyPhoneNumberToAssignDropdown('not.exist');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.verifyPhoneNumberToAssignDropdown();
+    addCamp.verifyCampaignNameField('not.exist');
+    addCamp.selectPhoneNumberToAssign(testData.Number);
+    addCamp.verifyCampaignNameField();
+  });
+
+  it('Verify that user can can save the draft as a draft again and the data will get updated',() => {
+    addCamp.enterCampaignName('Draft Campaign-edited');
+    addCamp.clickOnButton('Save to draft');
+    addCamp.verifyToast('Campaign Saved as Draft');
+    addCamp.verifyAddedCampaign('Draft Campaign-edited'); //edit campaign visible
+  });
+
+  it('Verify that user can delete the draft campaign', () => {  //BAT-T647
+    addCamp.clickEditCampaign('Draft Campaign-edited');
+    addCamp.clickDropdownItem('Delete');
+    addCamp.verifyToast('Draft Deleted');
+  });
+
+  it('Verify that in call order > in Adaptive user click on "Lead score setting here" it should open the lead score section', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickAddNewCampaign();
+    addCamp.selectDialingMode('Predictive');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.selectPhoneNumberToAssign(testData.Number);
+    addCamp.clickAdvancedConfiguration();
+    addCamp.clickOnLeadScore();
+    addCamp.verifyLeadScoreHeading();
+  });
+
+  it('Verify that when user add 1 phone number during creating or editing campaign it shows a message below', () => {
+    addCamp.clickCampaignMenu();
+    addCamp.clickAddNewCampaign();
+    addCamp.selectDialingMode('Predictive');
+    addCamp.selectAgentToAssign(testData.AdminName);
+    addCamp.clickListDropdown('Phone Numbers');
+    addCamp.selectDropdownValue();
+    addCamp.verifyPhoneNumberMsg('Based on industry best practices, recommended dials per phone number per day is 150. You will be able to make 150 calls with 1 phone number.');
+  });
+
+  it('Verify that when user add 2 phone number during creating or editing campaign it shows a message below',() => {
+    addCamp.selectDropdownValue();
+    addCamp.verifyPhoneNumberMsg('Based on industry best practices, recommended dials per phone number per day is 150. You will be able to make 300 calls with 2 phone number.');
+  });
 
 });

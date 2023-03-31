@@ -1,6 +1,7 @@
 import Agent from '../../support/pages/Agent';
 import Campaign from '../../support/pages/Campaigns';
 import Contacts from '../../support/pages/Contacts';
+import Dashboard from '../../support/pages/Dashboard';
 import Dialer from '../../support/pages/Dialer';
 import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, verifyCloseApp } from '../../support/Utils';
 
@@ -10,6 +11,8 @@ const agent = new Agent();
 const addCamp = new Campaign();
 const dialer = new Dialer();
 const contact = new Contacts();
+const dash = new Dashboard();
+
 let fixtureData;
 describe('Agent Profile', function () {
   before(() => {
@@ -65,6 +68,7 @@ describe('Agent Profile', function () {
     agent.clickOnContactName(testData.Contact);
     agent.clickFollowUpCall();
     agent.selectDateToFollowUpCall();
+    dash.selectEventTime();
     cy.wait(1000);
     agent.clickSaveButton();
     cy.wait(1000);
