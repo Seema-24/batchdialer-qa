@@ -7,7 +7,7 @@ import User from './User';
 
 const campaignsMenu = 'a[title="Campaigns"]';
 const addCampaign = '//button[text()="NEW CAMPAIGN"]';
-const inputName = 'input[name="name"]';
+const inputName = '.active input[name="name"]';
 const switchBar = 'span.switch';
 const radioBtn = (mode) =>
   "//label[input[@type='radio']][contains(.,'" +
@@ -50,7 +50,6 @@ const callRecordingDisable =
 const callerIDGroup = '.row-callerid .ss-select:not(.multiple)';
 const callerIDNumber = '.row-callerid .multiple';
 const callingHours = `//label[text()="Calling Hours"]/following-sibling::div`;
-const callResult = "div[class='collapse show'] .row-calldisposition .ss-select";
 const MaxAttempts = "//label[text()='Max Attempts Per Record']/parent::div/div";
 const simultaneousDials =
   "//label[text()='Simultaneous Dials Per Agent']/parent::div/div";
@@ -140,7 +139,7 @@ const ringTimeDurationDropdown = `//label[text()="Ring Time Duration"]/following
 const dialingMode = (modeName) =>
   `//h2[@class="campaign-card__radio-block__title"][text()="${modeName} Dialer"]/ancestor::label//span[@class="checkmark"]`;
 const cardDropdowns = (cardName) =>
-  `//h2[@class="campaign-card__title"][text()="${cardName}"]/ancestor::div[contains(@class,"campaign-card")]//div[contains(@class,"ss-select-control")]`;
+  `//div[@class="campaign-card active"]/h2[@class="campaign-card__title"][text()="${cardName}"]/ancestor::div[contains(@class,"campaign-card")]//div[contains(@class,"ss-select-control")]`;
 const callResultsDropdown = `//label[text()="Call Results"]/ancestor::div[@class="row"]//div[contains(@class,"ss-select-control")]`;
 const advanceConfiguration = '.campaign-expander';
 const callOrder = (order) =>
@@ -170,6 +169,7 @@ const tableList = (index) => `.resizable-table-tbody div.td:nth-of-type(${index}
 const deleteSelectedDropdown = (value) => `//span[text()="${value}"]/following-sibling::span[@class="ss-select-value-delete"]`;
 const activeCampCard = '.campaign-card.active';
 const termCondition = '//label[text()="Accept Terms and Conditions "]/span[@class="checkmark"]';
+const draftIcon = '.progress-status.draft';
 
 const addUser = new User();
 const dial = new Dialer();
@@ -204,8 +204,12 @@ export default class Campaign {
       })
   }
 
-  verifyCampaignNameField() {
-    cy.get(inputName).should('be.visible');
+  verifyCampaignNameField(cond) {
+    if('not.exist' === cond) {
+      cy.get(inputName).should(cond);
+    } else {
+      cy.get(inputName).should('be.visible');
+    }
   }
 
   enableAdvancedSwitchBar() {
@@ -409,10 +413,6 @@ export default class Campaign {
     cy.get(searchBox).clear({force:true}).type(campname);
   }
 
-  verifyCampaignNameField() {
-    cy.get(inputName).scrollIntoView().should('be.visible');
-  }
-
   verifyDialModeDropdown() {
     cy.xpath(radioBtn('Preview Dialer')).should('be.visible');
     cy.xpath(radioBtn('Predictive Dialer')).should('be.visible');
@@ -472,10 +472,6 @@ export default class Campaign {
 
   verifyCallingHours() {
     cy.xpath(callingHours).should('be.visible');
-  }
-
-  verifyCallResult() {
-    cy.get(callResult).should('be.visible');
   }
 
   verifyMaxAttempts() {
@@ -836,8 +832,12 @@ export default class Campaign {
     this.selectOptions(agentName);
   }
 
-  verifyAgentToAssignDropdown() {
-    cy.xpath(cardDropdowns('Agents')).should('be.visible');
+  verifyAgentToAssignDropdown(cond) {
+    if('not.exist' === cond) {
+      cy.xpath(cardDropdowns('Agents')).should(cond);
+    } else {
+      cy.xpath(cardDropdowns('Agents')).should('be.visible');
+    }
   }
 
   selectPhoneNumberToAssign(phoneNumber) {
@@ -845,8 +845,12 @@ export default class Campaign {
     this.selectOptions(phoneNumber);
   }
 
-  verifyPhoneNumberToAssignDropdown() {
-    cy.xpath(cardDropdowns('Phone Numbers')).should('be.visible');
+  verifyPhoneNumberToAssignDropdown(cond) {
+    if('not.exist' === cond) {
+      cy.xpath(cardDropdowns('Phone Numbers')).should(cond);
+    } else {
+      cy.xpath(cardDropdowns('Phone Numbers')).should('be.visible');
+    }
   }
 
   selectContactLists(listName) {
@@ -945,15 +949,19 @@ export default class Campaign {
     cy.xpath(dialingBehaviour('Max Calls per Day')).should('be.visible');
   }
 
-  enterMaxAttempts(no) {
-    cy.xpath(dialingBehaviour('Max Attempts Per Record')).clear({force:true}).type(no);
+  enterMaxAttempts(field, no) {
+    if(field === 'Max Attempts Per Record') {
+      cy.xpath(dialingBehaviour(field)).clear({force:true}).type(no);
+    } else {
+      cy.xpath(`//label[text()="${field}"]//following-sibling::div//div[contains(@class,"number-editor")]//input`).clear({force:true}).type(no,{force:true});
+    }
   }
 
   verifyMaxAttempts() {
     cy.xpath(dialingBehaviour('Max Attempts Per Record')).should('be.visible');
   }
 
-  enterRetryTime(duration) {
+  enterRetryTime(duration,) {
     for (let i = 0; i < duration; i++) {
       cy.xpath(retryTimeplusIcon).click({force:true});
       this.clickOnButton('Got it');
@@ -989,15 +997,8 @@ export default class Campaign {
   }
 
   verifyDefaultCampaignName(name) {
-    var today = new Date();
-    today = String(today.getMonth() + 1).padStart(2,'0') 
-      + '-' +
-      String(today.getDate()).padStart(2,'0') 
-      + '-' + 
-      String(today.getFullYear()).slice(-2);
-
     cy.xpath('//label[text()="Campaign Name"]/parent::div/child::input[@name="name"]')
-      .should('have.value', name +' - '+ today);
+      .should('have.value', name);
   }
 
   verifyDefaultRecycleCampaignName(val) {
@@ -1117,6 +1118,22 @@ export default class Campaign {
           cy.wait(1000);
         }
         cy.get('.recycle-icon-svg').should('not.exist');
+      }
+    })
+  }
+
+  verifyDraftCampDelete() {
+    cy.wait(1500);
+    cy.get('body').then(($ele) => {
+      const draft = $ele.find(draftIcon).length;
+      if(draft) {
+        for (let i = 0; i < draft; i++) {
+          cy.xpath('//div[contains(@class,"draft")]/ancestor::div[@class="tr"]//div[@class="dropdown"]//img')
+            .eq(i).click({force:true});
+            this.clickDropdownItem('Delete');
+            cy.wait(1000);
+        }
+        cy.get(draftIcon).should('not.exist');
       }
     })
   }
@@ -1368,5 +1385,34 @@ export default class Campaign {
 
   verifyTermsAndConditionsAcknowlegde(text) {
     cy.get('.campaign-terms').should('have.text',text);
+  }
+
+  clickOnDraftIcon() {
+    cy.get(draftIcon).first().click();
+  }
+
+  verifyDraftAtTop() {
+    cy.get(tableList(4)).first().should('contain.text','Draft');
+  }
+
+  verifyPhoneNumberMsg(msg) {
+    cy.get('#phonenumbers p').should('have.text', msg)
+  }
+
+  selectDropdownValue() {
+    cy.get('.ss-select-option').then((el) => {
+      for (let i = 0; i < el.length; i++) {
+        cy.get(el[i]).click({ force: true });
+        break;
+      }
+    });
+  }
+
+  clickOnLeadScore() {
+    cy.get('a.bat-link[href*="leadscore"]').invoke('removeAttr','target').click({force:true});
+  }
+
+  verifyLeadScoreHeading() {
+    cy.xpath('//label[text()="Lead Scoring"]').should('be.visible');
   }
 }

@@ -1488,7 +1488,7 @@ export default class Dashboard {
   }
 
   clickSaveEventTypeNameField() {
-    cy.get(saveEventTypeNameField).click();
+    cy.get(saveEventTypeNameField).click({force:true});
   }
 
   verifyAddedEventTypeName(name) {
@@ -1563,12 +1563,12 @@ export default class Dashboard {
 
   selectEventTime() {
     const dayjs = require("dayjs");
-    let time = dayjs().format("m");
+    let time = dayjs().format("mm");
 
-    if(time>30){
+    if(time < 30){
       time = dayjs().format("h:30 A");
     } else {
-      time = dayjs().format("h:00 A");
+      time = dayjs().add(1,"hour").format("h:00 A");
     }
     cy.log(time)
     cy.xpath(eventTimeDropdown).click();

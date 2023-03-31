@@ -266,7 +266,7 @@ export default class Agent {
   }
 
   enterSearch(search) {
-    cy.get(searchBox).clear({force:true}).type(search);
+    cy.get(searchBox).clear({force:true}).type(search,{force:true});
     cy.wait(1000);
   }
 

@@ -629,6 +629,7 @@ describe('Agent Profile', function () {
     agent.clickOnContactName(testData.Contact);
     agent.clickFollowUpCall();
     agent.selectDateToFollowUpCall();
+    dashboard.selectEventTime();
     cy.wait(1000);
     agent.clickSaveButton();
     cy.wait(1000);
@@ -1170,7 +1171,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
     });
 
     it('End the Call and select the Disposition', () => {
-      dial.endCallAtTime('0:10');
+      dial.endCallAtTime('0:20');
       dial.verifyCallDispositionWindow();
       dial.selectCallDisposition('No Answer');
       dial.clickOnButton('Done');
@@ -1299,7 +1300,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       //dial.verifyPhoneRingingIcon();
       dial.verifyAgentStatus('On Call');
       dial.verifySoftphoneTitle('Test Number');
-      dial.endCallAtTime('0:10');
+      dial.endCallAtTime('0:20');
       dial.verifyCallDispositionWindow();
       dial.selectCallDisposition('No Answer');
       dial.clickOnButton('Done');
@@ -1428,7 +1429,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       //dial.verifyPhoneRingingIcon();
       dial.verifyAgentStatus('On Call');
       dial.verifySoftphoneTitle('Test Number');
-      dial.endCallAtTime('0:10');
+      dial.endCallAtTime('0:20');
       dial.verifyCallDispositionWindow();
       dial.selectCallDisposition('No Answer');
       dial.clickOnButton('Done');
@@ -1553,7 +1554,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       dial.verifySimultaneousDial(
         ['Twilio Test'],
           'On Call',
-          '0:10',
+          '0:20',
           'No Answer'
       );
     });
@@ -1939,11 +1940,12 @@ describe('Add Phone Number flow', () => {
     contact.selectCallResult('A CALL BACK'); 
     contact.clickContinueBtn();
     cy.wait(5000);
-    dashboard.clickTaskButton();
-    cy.reload();
-    ignoreSpeedTestPopup();
-    dashboard.clickDashboard();
-    dashboard.clickTaskButton();
+    for (let i = 0; i < 2; i++) {
+      dashboard.clickDashboard();
+      cy.reload();
+      ignoreSpeedTestPopup();
+      dashboard.clickTaskButton(); 
+    }
     dashboard.clickFutureButton();
     dashboard.verifyEventType('Appointment');   
     dashboard.verifyEventContact('Unknown Contact');
