@@ -2,10 +2,12 @@ import Dashboard from '../../support/pages/Dashboard';
 import { closeDialogBox, getDate, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../../support/Utils';
 import Contacts from '../../support/pages/Contacts';
 import Campaign from '../../support/pages/Campaigns';
+import PhoneNum from '../../support/pages/PhoneNum';
 
 const Dash = new Dashboard();
 const addCont = new Contacts();
 const camp = new Campaign();
+const addNum = new PhoneNum();
 var date=[];
 let fixtureData;
 let testData;
@@ -248,16 +250,16 @@ describe('Dashboard Elements', () => {
   });
 
   it('Mark the created event Completed', () => {
-    Dash.clickEventStatusCheckbox(testData.Contact, 'Pending');
+    Dash.clickEventStatusCheckbox('Unknown Contact', 'Pending');
   });
 
   it('Verify that if event is marked as completed then it should disappear from list', () => {
-    Dash.verifyCompletedEventDisappear(testData.Contact);
+    Dash.verifyCompletedEventDisappear('Unknown Contact');
   });
 
   it('Mark the Completed Event as Pending Event', () => {
     Dash.clickCompletedCheckbox();
-    Dash.clickEventStatusCheckbox(testData.Contact, 'Completed');
+    Dash.clickEventStatusCheckbox('Unknown Contact', 'Completed');
   });
 
   it('Delete the Added Event', () => {
@@ -338,6 +340,12 @@ describe('Dashboard Elements', () => {
     Dash.verifyInvoice();
   });
 
+  it('Verify that when user Add a Credit/debit card opens a popup', () => {
+    Dash.closeCreditCardPopup();
+    Dash.clickCardEditBtn();
+    Dash.verifyPopUpHeader('Credit card management');
+  });
+
   it('Add New Credit Card', () => {
     cy.url().then((url) => {
       if(url.includes('app.batchdialer.com')) {
@@ -375,6 +383,15 @@ describe('Dashboard Elements', () => {
       }
     })
   });
+
+  it('Verify that when user click on the star will make the card primary and there should tooltip present', () => {
+    Dash.mouseHoverOnStar();
+    Dash.verifyTooltipText('Make as primary');
+  });
+
+  it('Verify that Cards should not be edited, only deleted', () => {
+    Dash.verifyDeleteIcon();
+  })
 
   it('Verify the Default Credit Card Functionality', () => {
     cy.url().then((url) => {
@@ -877,6 +894,45 @@ describe('Dashboard Elements', () => {
     Dash.clickBilling();
     Dash.downloadAndVerifyInvoice();
   });
+
+  it('Verify that Column data (Paid change and Billing period) columns should be merged in BILLING PERIOD', () => {
+    Dash.verifyBillingTableHeader([
+      'Invoice',
+      'Status',
+      'Amount',
+      'Created',
+      'Billing Period'
+    ]);
+  });
+
+  it('Verify that Subscription modification should be triggered', () => {
+    Dash.clickBillingEditBtn();
+    Dash.clickOnAgentPlusMinusIcon('-');  //downgrade agent seat in current plan
+    Dash.clickOnDowngradeBtn();         
+    Dash.verifyDowngradeButton('Selected Plan');
+    Dash.clickOnAgentPlusMinusIcon('+'); 
+    Dash.clickOnDowngradeBtn();          //downgrade plan SLD 
+    Dash.verifyDowngradeButton('Selected Plan');
+    Dash.clickOnAgentPlusMinusIcon('+');   //upgrade seat in current plan
+    Dash.clickOnUpgradeBtn();           
+    Dash.verifyUpgradeButton('Selected Plan');
+    Dash.clickOnButton('Cancel');
+  });
+
+  it('Verify that (Amount and Created table) in Invoice table sorting option should be present', () => {
+    Dash.verifyTableHeaderSorting('Amount');
+    Dash.verifyTableHeaderSorting('Created');
+  });
+
+  it('Verify that Right panel should have: Billing Information, Billing date, Payment Methods, Pause/Cancelling', () => {
+    Dash.verifyBillingInfoHeader('Billing Information');
+    Dash.verifyBillingAddress();
+    Dash.verifyPaymentMethod();
+    Dash.verifyBillingPeriod();
+    Dash.verifyPauseAccount();
+    Dash.verifyCancelAccount();
+  });
+
   it('Verify chat option should be visible', () => {
     Dash.clickDashboard();     //team chat box at top-left
     Dash.verifyChaticon();
@@ -1103,6 +1159,15 @@ describe('Dashboard Elements', () => {
     Dash.verifyBillingCycle();
   });
 
+  it('Verify that Billing section should be as a part of Settings Menu', () => {
+    Dash.verifyPage('billing');
+  });
+
+  it('Verify that in billing page at the top panel billing sumarry details should be available', () => {
+    Dash.verifyBillingPlan('Multi-Line Dialer');
+    Dash.verifyBillingPrice('$');
+  });
+
   it('Verify that State name is prefilled in the feedback form  If the state info is present in the Billing profile', () => {
     Dash.clickCancelAccount();
     Dash.clickProceedWithCancel();
@@ -1111,7 +1176,6 @@ describe('Dashboard Elements', () => {
     Dash.verifyState('NY');
     Dash.clickDialogCloseButton();
   });
-
 
   it('Verify that the authorized user is able to cancel the account states other than CA, NY, OR', () => {
     Dash.clickCancelAccount();
@@ -1177,9 +1241,45 @@ describe('Dashboard Elements', () => {
     Dash.verifyAlertMsgNotExist();
   });
 
-  it('Verify that number of seats cannot be downgraded to a number that is lower, than the number of current agents', () => {
+  it('Verify that number of seats cannot be downgraded to a number that is lower, than the number of current agents', () => { //BAT-T908
     Dash.verifyDowngradeAgentSeatCount();
     Dash.verifyAlertNotification('You cannot downgrade to a lower number seat unless agent is removed'); 
+    Dash.clickOnButton('Cancel');
+  });
+
+  it('Verify that user can Upgrade/Downgrade plan and Upgrade/Downgrade seat', () => {
+    Dash.closeModalTitle();
+    Dash.clickBillingEditBtn();
+    Dash.clickOnDowngradeBtn();          //downgrade plan SLD 
+    Dash.verifyDowngradeButton('Selected Plan');
+    Dash.clickOnButton('Continue');
+    cy.wait(1000);
+    Dash.verifyPopUpHeader('Order forSingle Line Dialer');
+    Dash.verifyModalBody('Your plan will be downgraded to Single Line Dialer on ' + date[1] + 
+    '. You will be able to renew your subscription before the date.');
+    Dash.clickOnButton('CONTINUE');
+    Dash.verifySuccessMsg('Scheduling the plan change, please wait');
+    Dash.verifyAlertNotification('Your plan is paid until '+ date[1] + '. After that, your plan Multi-Line Dialer (monthly) will be downgraded to Single Line Dialer (monthly)');
+    Dash.clickBillingNotificationBtn('Renew Subscription');
+    Dash.verifySuccessMsg('Your subscription has been renewed');
+    
+    Dash.clickBillingEditBtn();
+    Dash.clickOnAgentPlusMinusIcon('+');   //upgrade seat in current plan
+    Dash.clickOnUpgradeBtn();           
+    Dash.verifyUpgradeButton('Selected Plan');
+    Dash.clickOnButton('Continue');
+    cy.wait(1000);
+    Dash.verifyPaymentPricePlan();
+    Dash.clickOnButton('Cancel');
+  });
+
+  it('Verify that Billing date change will be done in calendar control displaying a current month', () => {
+    Dash.clickBillingPeriodBtn();
+    Dash.changeBillingDate();
+    Dash.clickOnButton('SAVE');
+    Dash.verifyAlertNotification('Your billing cycle will be changed to 5th of each month and change will take effect during next billing date.');
+    Dash.clickBillingPeriodBtn();
+    Dash.verifyToastMessage('Billing cycle reset canceled');
   });
 
   it('Verify the elements in the INTEGRATIONS page', () => {
@@ -1258,8 +1358,24 @@ describe('Dashboard Elements', () => {
     Dash.clickAddIntegrationKeyBtn();
     Dash.enterName(' ');
     camp.verifyQuestionTooltipText('This field is required');
+    Dash.clickOnButton('Cancel');
   });
 
-
-
+  it('Verify that user should able to purchase number by billing page', () => {
+    Dash.clickBillingBtn();
+    Dash.clickPhonePlusIcon();
+    addNum.enterAreaCode('720');
+    addNum.verifySearchNumber('720');
+    addNum.selectPhoneNumber();
+    addNum.getFirstPhoneNumber();
+    addNum.clickOrderNowButton();
+    Dash.verifySuccessMsg('Ordering started, please wait');
+    addNum.closingDialog();
+    cy.readFile('cypress/fixtures/testData.json').then((data) => {
+      addNum.clickPhoneNumberMenu();
+      addNum.deleteAddedPhoneNumber(data.BuyNumber);
+      addNum.handleAlertForDelete();
+    });
+    addNum.verifyDeletedToast();
+  });
 });

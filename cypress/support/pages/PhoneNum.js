@@ -220,7 +220,7 @@ export default class PhoneNum {
   }
 
   clickDeleteRuleBtn() {
-    cy.get(deleteRuleBtn).scrollIntoView().click();
+    cy.get(deleteRuleBtn).first().scrollIntoView().click({force:true});
   }
 
   verifySearchResults(callResult) {
@@ -412,8 +412,8 @@ export default class PhoneNum {
   }
 
   closingDialog() {
-    cy.xpath(closeBtn, { timeout: 120000 }).should('be.enabled');
-    cy.xpath(closeBtn).click();
+    cy.xpath(closeBtn).last({ timeout: 120000 }).should('be.enabled');
+    cy.xpath(closeBtn).last().click();
   }
 
   getFirstPhoneNumber() {

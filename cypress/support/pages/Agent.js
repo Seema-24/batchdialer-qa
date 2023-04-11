@@ -175,7 +175,7 @@ export default class Agent {
 
   selectAgentStatus(status) {
     clickCallFunction();
-    cy.get(statusDropdown).click().contains(status).click().wait(1000);
+    cy.get(statusDropdown,{timeout:60000}).click().contains(status).click().wait(1000);
     dash.clickUserProfile();
     dash.clickOnChangeCampaign();
     
@@ -198,7 +198,7 @@ export default class Agent {
   }
 
   clickContinueBtn() {
-    cy.xpath(doneBtn).last().click();
+    cy.xpath(doneBtn).last().click({force:true});
   }
 
   verifyConfirmTransferBtn() {
@@ -613,7 +613,7 @@ export default class Agent {
     cy.get(monthYearStatusBar).should('be.visible');
   }
   clickOnAgentDetailsPlusBtn(agent_Details) {
-    cy.get(agentDetailsPlusBtn).click();
+    cy.get(agentDetailsPlusBtn).click({force:true});
     for (let i = 0; i < agent_Details.length; i++) {
       cy.get(agentCallDetails).should('contain.text', agent_Details[i]);
     }

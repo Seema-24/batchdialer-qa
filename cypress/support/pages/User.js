@@ -84,6 +84,8 @@ const micIcon = 'div.user-quality-icon.mic svg';
 const qualityIcon = 'div.user-quality-icon.mos svg';
 const alertMsg = '[role="alert"]';
 const enableCallingFeature = '//label[text()="Enable Calling Feature"]/child::input[@type="checkbox"]';
+const customAgentCheckbox = (statusName) => `//div[div[contains(@class,"agent-editing")]//div[contains(@class,"inline-input-label")][text()="${statusName}"]]//span[@class="checkmark"]`;
+
 
 export default class User {
   clickingOnUserOption() {
@@ -592,5 +594,39 @@ export default class User {
 
   verifyDisableCallingFeatureCheckbox() {
     cy.xpath(enableCallingFeature).should('be.disabled');
+  }
+
+  clickPresenceStatusDropdown() {
+    cy.get('.nav-item .ss-select',{timeout:60000}).click();
+  }
+
+  verifyStatusDropdownText(status, cond) {
+    if(cond == 'not.exist') {
+      cy.get('.agent__presence-name').should('not.contain.text', status)
+    } else {
+      cy.get('.agent__presence-name').should('contain.text', status)
+    }
+  }
+
+  clickStatusCheckbox(statusName) {
+    cy.xpath(customAgentCheckbox(statusName)).click();
+  }
+
+  verifyCustomStatusCheckbox(statusName, checkbox) {
+    if(checkbox == 'disable') {
+      cy.xpath(customAgentCheckbox(statusName))
+        .should('have.css', 'background-color', 'rgb(228, 234, 240)'); // white or disable
+    } else {
+      cy.xpath(customAgentCheckbox(statusName))
+        .should('have.css', 'background-color', 'rgb(54, 131, 188)');  //blue color or enable
+    }
+  }
+
+  verifyAgentStatusHeading(header) {
+    cy.get('.status-type').contains(header).should('be.visible');
+  }
+
+  verifySystemStatusDisabled() {
+    cy.get('.radio_cstm.disabled input').should('be.disabled').and('have.length', 9);
   }
 }

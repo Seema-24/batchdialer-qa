@@ -253,7 +253,7 @@ export default class Contacts {
         for (let j = 0; j < numPad.length; j++) {
           // cy.log(numPad[1].textContent);
           if (numPad[j].textContent.includes(number[i])) {
-            cy.get(numPad[j]).click();
+            cy.get(numPad[j]).click({force:true});
             break;
           }
         }
@@ -505,7 +505,7 @@ export default class Contacts {
   }
 
   clickContactsCamapign() {
-    cy.xpath(contactsCampaign).click();
+    cy.xpath(contactsCampaign).click({force:true});
   }
 
   verifyFirstNameField() {

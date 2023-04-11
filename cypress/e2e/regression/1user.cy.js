@@ -264,6 +264,10 @@ describe('Login Successfully and Add User', () => {
     ]);
   });
 
+  it('verify that System agent status cannot be changed with checkbox checked always', () => { // link with above testcase
+    addUser.verifySystemStatusDisabled();
+  });
+
   it('verify that clicking on the add status button then an inline input field should be visible along with the save and cancel button', () => {
     addUser.clickingOnUserOption();
     addUser.clickAddAgentStatus();
@@ -300,6 +304,38 @@ describe('Login Successfully and Add User', () => {
     addUser.enterAgentStatusName('Working');
     addUser.clickOnAgentStatusSaveBtn();
     addUser.verifyAddedAgentStatus('Working');
+  });
+
+  it('verify Agent Status Types - System and Custom should be visible', () => {
+    addUser.verifyAgentStatusHeading('System');
+    addUser.verifyAgentStatusHeading('Custom');
+  });
+
+  it('verify that Error message to appear if users create duplicate status', () => {
+    addUser.clickingOnUserOption();
+    addUser.clickAddAgentStatus();
+    addUser.enterAgentStatusName('Working');
+    addUser.clickOnAgentStatusSaveBtn();
+    addUser.verifyToastMessage('Created agent status already exists');
+  });
+
+  it('verify that Disabled statuses shouldn’t appear in status dropdown', () => {
+    addUser.clickPresenceStatusDropdown();
+    addUser.verifyStatusDropdownText('Working', 'not.exist');
+  });
+
+  it('verified that Once custom agent status is enabled, same status to appear in status dropdown', () => {
+    addUser.clickStatusCheckbox('Working');
+    cy.reload();
+    ignoreSpeedTestPopup();
+    addUser.clickPresenceStatusDropdown();
+    addUser.verifyStatusDropdownText('Working', 'exist');
+  });
+
+  it('verify that Custom agent status can be enabled or disabled', () => {
+    addUser.verifyCustomStatusCheckbox('Working','enable');
+    addUser.clickStatusCheckbox('Working');
+    addUser.verifyCustomStatusCheckbox('Working','disable');
   });
 
   it('Verify that Agent Status actions are combined in the menu : Edit, Change colour, delete', () => {

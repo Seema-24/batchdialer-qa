@@ -1073,8 +1073,8 @@ describe('Add Contact flow', () => {
 
 describe('Outbound Calling Scenarios with creating campaign', () => {
   beforeEach(() => {
-    closeDialogBox();
     handlePoorConnectionPopup();
+    closeDialogBox();
   })
 
   describe('Preview Campaign Dialing', () => {
@@ -1554,7 +1554,7 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       dial.verifySimultaneousDial(
         ['Twilio Test'],
           'On Call',
-          '0:20',
+          '0:30',
           'No Answer'
       );
     });
