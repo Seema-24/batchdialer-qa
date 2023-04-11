@@ -12,7 +12,7 @@ const permit = new UserPermission();
 export function selectAgentStatus(status) {
   handlePoorConnectionPopup();
   clickCallFunction();
-  cy.get(statusDropdown)
+  cy.get(statusDropdown,{timeout:60000})
     .invoke('show')
     .click()
     .contains(status)

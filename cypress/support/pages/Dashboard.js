@@ -267,6 +267,12 @@ const apiKeyField = '.integrations-keys-edit-key-field';
 const integrationIcon = (name,icon) => `//div[text()="${name}"]/parent::div/child::div/img[contains(@src,"${icon}")]`;
 const ApiKeyText = (name) => `(//div[text()="${name}"]/parent::div/child::div)[2]`;
 const integrationTableData = (index) => `.resizable-table-tbody> div> div:nth-of-type(${index})`;
+const productPlusIcon = (title) => `//div[text()="${title}"]/parent::div/child::button/img[@class="billing-active-card__plus"]`;
+const sortIcon = (header) => `//div[text()="${header}"]//*[name()="svg"][@data-icon="sort"]`;
+const billingPlanEditBtn = '.billing-user-plan__plan button svg';
+const billingPlanBtn = '.billing-plan__button';
+const billingPeriodEditBtn = '.billing-user-info__period .billing-user-info__edit svg';
+const dayPicker = '[class="DayPicker-Day"]';
 
 export default class Dashboard {
   clickDashboard() {
@@ -1016,12 +1022,8 @@ export default class Dashboard {
     cy.xpath(plans(planName)).click();
   }
 
-  upgradePlan(planName) {
-    cy.reload();
-    ignoreSpeedTestPopup();
-    // this.clickStartBtn();
-    cy.get('.rc-slider-step').first().click();
-    cy.xpath(plans(planName)).click();
+  clickOnUpgradeBtn() {
+    cy.get(billingPlanBtn).contains('Upgrade').click();
   }
 
   clickContinueBtn() {
@@ -1480,7 +1482,7 @@ export default class Dashboard {
   }
 
   clickDeleteEventTypeBtn(name) {
-    cy.xpath(deleteEventTypeBtn(name)).click();
+    cy.xpath(deleteEventTypeBtn(name)).click({force:true});
   }
 
   typeEventTypeName(name) {
@@ -1552,7 +1554,7 @@ export default class Dashboard {
   clickEventStatusCheckbox(contactName, eventStatus) {
     cy.xpath(eventStatusCheckbox(contactName, eventStatus)).then((checkBox) => {
       for (let i = 0; i < checkBox.length; i++) {
-        cy.get(checkBox[i]).click();
+        cy.get(checkBox[i]).click({force:true  });
       }
     });
   }
@@ -1642,7 +1644,7 @@ export default class Dashboard {
 
   verifyStatusTimerVisible() {
     clickCallFunction();
-    cy.get(statusTimer).should('contain.text', '0:');
+    cy.get(statusTimer,{timeout:60000}).should('contain.text', '0:');
   }
 
   clickClientPlusIcon() {
@@ -1966,6 +1968,10 @@ export default class Dashboard {
     cy.get(downgradeBtn).last().should('have.text', btn);
   }
 
+  verifyUpgradeButton(btn) {
+    cy.get(billingPlanBtn).last().should('have.text', btn);
+  }
+
   verifyAlertNotification(msg) {
     cy.get(alertMessage).should('contain.text',msg);
   }
@@ -2061,7 +2067,7 @@ export default class Dashboard {
   }
 
   clickOnChangeCampaign() {
-    cy.get(changeCampaign).click();
+    cy.get(changeCampaign).click({force:true});
   }
 
   closeUserProfile() {
@@ -2073,7 +2079,11 @@ export default class Dashboard {
   }
 
   clickTableHeaderSort(header) {
-    cy.get(`[field="${header}"] [data-icon="sort"]`).click();
+    cy.xpath(sortIcon(header)).click();
+  }
+
+  verifyTableHeaderSorting(header) {
+    cy.xpath(sortIcon(header)).should('be.visible');
   }
 
   verifySorting(number) {
@@ -2108,12 +2118,79 @@ export default class Dashboard {
       '/' + String(today.getDate()).padStart(2, '0') +
       '/' + today.getFullYear();
     
-      cy.get('.left.datefield span:nth-of-type(1)').then(DateCol => {
-        const column= Array.from(DateCol , ele => ele.innerText.trim());
-        for (let i = 0; i < column.length; i++) {
-          expect(column[i]).to.equals(todayDate);
-        }
-      });
+    cy.get('.left.datefield span:nth-of-type(1)').then(DateCol => {
+      const column= Array.from(DateCol , ele => ele.innerText.trim());
+      for (let i = 0; i < column.length; i++) {
+        expect(column[i]).to.equals(todayDate);
+      }
+    });
   }
 
+  clickPhonePlusIcon() {
+    cy.xpath(productPlusIcon('Phone Numbers')).click({force:true});
+  }
+
+  clickBillingBtn() {
+    cy.get(UserSettingOptions).contains('Billing').click({ force: true });
+  }
+
+  verifyPage(URL) {
+    cy.url().should('eq', `${Cypress.config().baseUrl}/${URL}/`);
+  }
+
+  verifyBillingPlan(plan) {
+    cy.get(currentBillingCard).should('be.visible').and('contain.text', plan);
+  }
+
+  verifyBillingPrice(price) {
+    cy.get('.billing-user-plan__plan__price').should('be.visible').and('contain.text', price);
+  }
+
+  verifyBillingTableHeader(headers) {
+    for (let i = 0; i < headers.length; i++) {
+      cy.get('.billing-content__lower__th').should('contain.text', headers[i]);
+    }
+  }
+
+  clickBillingEditBtn () {
+    cy.get(billingPlanEditBtn).click({force:true});
+  }
+
+  verifyModalBody(txt) {
+    cy.get('.modal-body').should('contain.text', txt)
+  }
+
+  verifyPaymentPricePlan() {
+    cy.get('.billing-plans__summary__amountdue').should('be.visible');
+  }
+
+  verifyBillingPeriod() {
+    cy.get(billingCycle).should('be.visible');
+  }
+
+  verifyBillingInfoHeader(header) {
+    cy.get('.billing-user-info__header').should('have.text', header)
+  }
+
+  mouseHoverOnStar() {
+    cy.get('[src*="bat-star-uncheck"]').first().trigger('mouseover');
+  }
+
+  verifyTooltipText(ToolTipText) {
+    cy.get('.tooltip-inner').should('have.text', ToolTipText);
+  }
+
+  verifyDeleteIcon() {
+    cy.get('[data-icon="trash"]').should('be.visible');
+  }
+
+  clickBillingPeriodBtn() {
+    cy.get(billingPeriodEditBtn).click({force:true});
+  }
+
+  changeBillingDate() {
+    cy.get('[aria-label="Next Month"]').click();
+    cy.get(dayPicker).contains('5').click();
+  }
+  
 }

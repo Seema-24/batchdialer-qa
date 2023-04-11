@@ -196,7 +196,7 @@ export default class Campaign {
       .wait(500)
       .clear({force:true})
       .scrollIntoView()
-      .type(name, { delay: 200 });
+      .type(name, { delay: 2000 });
       cy.get('body').then(($body) => {
         if($body.find('#pendo-guide-container').length) {
           cy.contains('Next').click();

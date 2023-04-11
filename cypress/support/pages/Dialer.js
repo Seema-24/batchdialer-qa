@@ -1,4 +1,4 @@
-import { covertNumberToNormal, ignoreSpeedTestPopup, clickCallFunction } from '../Utils';
+import { covertNumberToNormal, ignoreSpeedTestPopup, clickCallFunction, handlePoorConnectionPopup } from '../Utils';
 import Dashboard from './Dashboard';
 
 const statusDropdown = '.nav-item.auth__agent-presence .ss-select';
@@ -337,6 +337,7 @@ export default class Dialer {
   }
 
   verifyCallDispositionWindow() {
+    handlePoorConnectionPopup();
     cy.get(callDispositionWindow).should('be.visible');
   }
 
