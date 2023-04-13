@@ -980,6 +980,12 @@ describe('Dashboard Elements', () => {
     Dash.clickDashboardCalendar();
   });
 
+  it('verify Calendar filter on Dashboard', () => {
+    Dash.clickDashboardCalendar();
+    Dash.clickOnTimeSpan('Today');
+
+  });
+
   // Fixed according to the BAT-747
   it('Verify Admin is able to Switch to Agents Account', () => {
     Dash.clickCloseSoftphoneBtn();

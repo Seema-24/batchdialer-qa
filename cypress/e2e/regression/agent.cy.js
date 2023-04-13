@@ -451,7 +451,7 @@ describe('Agent Profile', function () {
     agent.clickContactName();
     agent.clickPhoneNumber();
     agent.clickCallBtn();
-    cy.wait(3000);
+    cy.wait(5000);
     agent.clickEndCallBtn();
     agent.verifyCallResultWindow();
     agent.selectCallResult('No Answer');

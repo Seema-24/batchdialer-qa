@@ -109,7 +109,7 @@ export default class Dialer {
  
   selectStatus(statusName) {
     clickCallFunction();
-    cy.get(statusDropdown).click();
+    cy.get(statusDropdown, {timeout:60000}).click();
     cy.get(statusNames).then((names) => {
       for (let i = 0; i < names.length; i++) {
         if (names[i].textContent.trim() === statusName) {

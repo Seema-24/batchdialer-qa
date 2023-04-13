@@ -871,7 +871,7 @@ export default class Campaign {
         for (let j = 0; j < option.length; j++) {
           if (option[j].textContent.trim() === callResults[i]) {
             cy.log(option[j].textContent.trim());
-            option[j].click();
+            cy.contains(option[j].textContent.trim()).click();
             break;
           }
         }

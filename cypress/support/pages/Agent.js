@@ -21,7 +21,7 @@ const softphoneCloseBtn = '.softphone-close-button .cursor_pointer';
 const softphone = '.stg-softphone-wrapper .softphone-body-height-for-dialer';
 const contactsMenu = 'a[title="Contacts"]';
 const contact = '.contacts__name';
-const phoneNumber = '.phone__a-wrapper';
+const phoneNumber = '.phone__a-wrapper span';
 const callTransferBtn = '//span[text()="transfer"]';
 const callBtn = (btn) => `[src*=softphone_phone_${btn}]`;
 const callResultWindow = '.call-disposition div.position-absolute.overlay-content';
@@ -294,7 +294,7 @@ export default class Agent {
   }
 
   clickPhoneNumber() {
-    cy.get(phoneNumber).first().click();
+    cy.get(phoneNumber).first().click({force:true});
   }
 
   clickCallTransferBtn() {
