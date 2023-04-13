@@ -273,6 +273,7 @@ const billingPlanEditBtn = '.billing-user-plan__plan button svg';
 const billingPlanBtn = '.billing-plan__button';
 const billingPeriodEditBtn = '.billing-user-info__period .billing-user-info__edit svg';
 const dayPicker = '[class="DayPicker-Day"]';
+const timeSpans = '.dropdown-menu.show .links button';
 
 export default class Dashboard {
   clickDashboard() {
@@ -2191,6 +2192,25 @@ export default class Dashboard {
   changeBillingDate() {
     cy.get('[aria-label="Next Month"]').click();
     cy.get(dayPicker).contains('5').click();
+  }
+
+  clickOnTimeSpan(filter) {
+    cy.get(timeSpans).contains(filter).click();
+  }
+
+  verifyFilterDate(date) {
+    const dayjs = require.dayjs();
+    const today = dayjs.format('MM/DD/YYYY');
+
+    cy.get('.date-input-field input').first()
+      .invoke('val').then((ActDate) => {
+        expect(date).to.equals(ActDate);
+    });
+
+    cy.get('.date-input-field input').last()
+    .invoke('val').then((ActDate) => {
+      expect(today).to.equals(ActDate);
+  });
   }
   
 }

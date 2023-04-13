@@ -509,6 +509,7 @@ describe('Add Contact flow', () => {
   });
 
   it('Verify that agent user is able to dial a valid phone number which is not in the contacts', () => {
+    addCont.verifyContactExisting('6029227636');
     dashboard.clickDashboard();
     addCont.ClickToOpenSoftphone();
     addCont.dialPhoneNumber('6029227636');  
@@ -517,10 +518,6 @@ describe('Add Contact flow', () => {
     addCont.clickEndCallButton();
     addCont.selectCallResult('Successful Sale');
     addCont.clickContinueBtn();
-    addCont.clickingOnContactOption();
-    addCont.deleteAddedContacts('Unknown','Contact');
-    addCont.handleAlertForDelete();
-    addCont.verifyDeletedToast();
     addCont.clickToCloseSoftphone();
   });
 
