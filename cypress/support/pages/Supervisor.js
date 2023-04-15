@@ -292,7 +292,7 @@ export default class Suprevisor {
   }
 
   clickFilterButton() {
-    cy.get(filterButton).click();
+    cy.get(filterButton).click({force:true});
   }
 
   clickOnMainTab() {

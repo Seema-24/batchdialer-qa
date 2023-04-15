@@ -87,10 +87,28 @@ describe('Dashboard Elements', () => {
     Dash.clickCallGraphCloseBtn();
   });
 
-  it('verify elements in Dashboard', () => {
+  it('Verify that user is able to open Main Dashboard Page', () => {
     Dash.clickDashboard();
     Dash.clickOnMainTab();
+    Dash.verifyPage('dashboard/main');
+  });
+
+  it('verify elements in Dashboard', () => {
     Dash.verifyDashboardElements();
+    Dash.verifyDashboardCardboxElement([
+      'Outbound Calls',
+      'Connected Calls',
+      'Avg. Call Duration',
+      'Avg. Agent Wait Time',
+      'Abandon Rate',
+      'Active Campaigns',
+      'Leads Generated',
+      'Connect Rate',
+      'Dialing Time',
+      'Avg. CPA(Calls Per Agent)',
+      'Calls Per Connect',
+      'Voicemails Reached'
+    ]);
   });
 
   it('Verify that when user click on (+/-) icon its should expand the roles', () => {
@@ -965,27 +983,6 @@ describe('Dashboard Elements', () => {
     Dash.clickConfirmButton();
   });
 
-  it('Verify Calendar Month Left Arrow Functionality', () => {
-    Dash.clickDashboard();
-    Dash.clickOnMainTab();
-    Dash.clickDashboardCalendar();
-    var month = Dash.getLastMonth();
-    Dash.clickTaskLeftArrow();
-    Dash.verifyMonth(month);
-  });
-
-  it('Verify Admin a Able to use Filter on Dashboard', () => {
-    Dash.EnterFilterStartAndEndDate('1', 'DayPicker-Day--start');
-    Dash.EnterFilterStartAndEndDate('25', 'DayPicker-Day--end');
-    Dash.clickDashboardCalendar();
-  });
-
-  it('verify Calendar filter on Dashboard', () => {
-    Dash.clickDashboardCalendar();
-    Dash.clickOnTimeSpan('Today');
-
-  });
-
   // Fixed according to the BAT-747
   it('Verify Admin is able to Switch to Agents Account', () => {
     Dash.clickCloseSoftphoneBtn();
@@ -1344,12 +1341,12 @@ describe('Dashboard Elements', () => {
   });
 
   it('Verify user is able to click on sorting tab', ()  => {
-    Dash.clickTableHeaderSort('name');
+    Dash.clickTableHeaderSort('Name');
     Dash.verifySorting(1);
     Dash.clickOnEyeBtn();
-    Dash.clickTableHeaderSort('credentials');
+    Dash.clickTableHeaderSort('Key');
     Dash.verifySorting(2);
-    Dash.clickTableHeaderSort('createdby');
+    Dash.clickTableHeaderSort('Created By');
     Dash.verifySorting(4); 
   });
 
@@ -1383,5 +1380,64 @@ describe('Dashboard Elements', () => {
       addNum.handleAlertForDelete();
     });
     addNum.verifyDeletedToast();
+  });
+
+  it('verify that calendar filter is visible in Main dashboard', () => {
+    Dash.clickDashboard();
+    Dash.clickOnMainTab();
+    Dash.verifyDashboardCalandar();
+  });
+
+  it('Verify Calendar Month Left Arrow Functionality', () => {
+    Dash.clickDashboardCalendar();
+    var month = Dash.getLastMonth();
+    Dash.clickTaskLeftArrow();
+    Dash.verifyMonth(month);
+  });
+
+  it('Verify Admin a Able to use Filter on Dashboard', () => {
+    Dash.EnterFilterStartAndEndDate('1', 'DayPicker-Day--start');
+    Dash.EnterFilterStartAndEndDate('25', 'DayPicker-Day--end');
+    Dash.clickDashboardCalendar();
+  });
+
+  it('verify Calendar filter on Dashboard', () => {
+    let filterDate;
+    Dash.clickDashboardCalendar();
+    filterDate = Dash.clickOnTimeSpan('Today');
+    Dash.verifyFilterDate(filterDate);
+    filterDate = Dash.clickOnTimeSpan('Last 7 Days');
+    Dash.verifyFilterDate(filterDate);
+    filterDate = Dash.clickOnTimeSpan('Last 4 Weeks');
+    Dash.verifyFilterDate(filterDate);
+    filterDate = Dash.clickOnTimeSpan('Last 3 Months');
+    Dash.verifyFilterDate(filterDate);
+    filterDate = Dash.clickOnTimeSpan('Last 12 Months');
+    Dash.verifyFilterDate(filterDate);
+    filterDate = Dash.clickOnTimeSpan('Month to Date');
+    Dash.verifyFilterDate(filterDate);
+     filterDate = Dash.clickOnTimeSpan('Quarter to Date');
+    Dash.verifyFilterDate(filterDate);
+    filterDate = Dash.clickOnTimeSpan('Year to Date');
+    Dash.verifyFilterDate(filterDate);
+  });
+
+  it('verify that User is able to see Agent or Campaign Filter ', () => {
+    Dash.verifyFilterDropdown('Agents');
+    Dash.verifyFilterDropdown('Campaigns');
+  });
+
+  it('Verify that user is able to select Agent in Agent Filter', () => {
+    Dash.clickFilterDropdown('Agents', testData.agent);
+    Dash.verifyFilterResult(testData.agent);
+  });
+
+  it('Verify that user is able to select Campaign using Campaign Filter', () => {
+    Dash.clickFilterDropdown('Campaigns', testData.campaign);
+    Dash.verifyFilterResult(testData.campaign);
+  });
+
+  it('verify that Data is sorted as according to Calendar', () => {
+    
   });
 });

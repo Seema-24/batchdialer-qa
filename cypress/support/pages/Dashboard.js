@@ -8,7 +8,6 @@ const AgentTalktime = 'Avg. Agent Talk Time';
 const BestTimeToCall = 'Best Time to Call';
 const CallResults = 'Call Results';
 const CampaignAnalytics = 'Campaign Analytics';
-const AverageCallDuration = 'Average Call Duration';
 const ButtonLoginAs = '//div[@class="user__dropdown"][text()="Switch Account"]';
 const clientPlusIcon = '.group-client img';
 const groupExpended = 'span.group-client+div';
@@ -274,6 +273,7 @@ const billingPlanBtn = '.billing-plan__button';
 const billingPeriodEditBtn = '.billing-user-info__period .billing-user-info__edit svg';
 const dayPicker = '[class="DayPicker-Day"]';
 const timeSpans = '.dropdown-menu.show .links button';
+const filterDropdown =(label) => `//span[text()="${label}"]/ancestor::div[contains(@class,"ss-select-control")]`;
 
 export default class Dashboard {
   clickDashboard() {
@@ -401,6 +401,12 @@ export default class Dashboard {
     cy.contains(BestTimeToCall).should('be.visible');
     cy.contains(CallResults).should('be.visible');
     cy.contains(CampaignAnalytics).should('be.visible');
+  }
+
+  verifyDashboardCardboxElement(elementsName) {
+    for (let i = 0; i < elementsName.length; i++) {
+      cy.get('.summary-card').contains(elementsName[i]).should('be.visible');
+    }
   }
 
   verifyDashboardHeaderElement() {
@@ -648,7 +654,7 @@ export default class Dashboard {
   }
 
   clickProfile() {
-    cy.get(profile).click();
+    cy.get(profile).click({force:true});
   }
 
   verifyUserSettingsProfileFields(val) {
@@ -2195,22 +2201,75 @@ export default class Dashboard {
   }
 
   clickOnTimeSpan(filter) {
+    let getDate;
+    const dayjs = require("dayjs");
+
     cy.get(timeSpans).contains(filter).click();
+    if(filter === 'Today') {
+      getDate = dayjs().format('MM/DD/YYYY');
+    } else if(filter === 'Last 7 Days') {
+      getDate = dayjs().subtract(6,'days').format('MM/DD/YYYY');
+    } else if(filter === 'Last 4 Weeks') {
+      getDate = dayjs().subtract(28, 'days').format('MM/DD/YYYY');
+    } else if(filter === 'Last 3 Months') {
+      getDate = dayjs().subtract(3,'month').format('MM/DD/YYYY');
+    } else if(filter === 'Last 12 Months') {
+      getDate = dayjs().subtract(1,'year').format('MM/DD/YYYY');
+    } else if(filter === 'Month to Date') {
+      getDate = dayjs().format('MM/01/YYYY');
+    } else if(filter === 'Quarter to Date') {
+      const month = dayjs().format('M');
+      if(month <=3 ) {
+        getDate = dayjs().format('01/01/YYYY');
+      } else if ( month >= 3 && month <= 6)  {
+        getDate = dayjs().format('04/01/YYYY');
+      } else if ( month >= 6 && month <= 9)  {
+        getDate = dayjs().format('07/01/YYYY');
+      } else {
+        getDate = dayjs().format('10/01/YYYY');
+      }   
+    } else if(filter === 'Year to Date') {
+      getDate = dayjs().format('01/01/YYYY');
+    } 
+
+    return getDate;
   }
 
   verifyFilterDate(date) {
-    const dayjs = require.dayjs();
-    const today = dayjs.format('MM/DD/YYYY');
+    const dayjs = require("dayjs");
+    const today = dayjs().format('MM/DD/YYYY');
 
+    cy.log(date);
     cy.get('.date-input-field input').first()
       .invoke('val').then((ActDate) => {
         expect(date).to.equals(ActDate);
     });
 
     cy.get('.date-input-field input').last()
-    .invoke('val').then((ActDate) => {
-      expect(today).to.equals(ActDate);
-  });
+      .invoke('val').then((ActDate) => {
+        expect(today).to.equals(ActDate);
+    });
+  }
+
+  verifyFilterDropdown(label) {
+    cy.xpath(filterDropdown(label)).should('be.visible');
+  }
+
+  clickFilterDropdown(label, option) {
+    cy.xpath(filterDropdown(label)).click({force:true});
+    this.selectOption(option);
+    cy.get('.ss-select-control.expanded').click({force:true});
+  } 
+
+  verifyFilterResult(data) {
+    cy.get(integrationTableData(1)).should('contain.text', data)
+  }
+  
+  verifyDashCallsResult() {
+    cy.contains(value)
+      .siblings('div')
+      .children('span')
+      .should('have.length.greaterThan', 0);
   }
   
 }

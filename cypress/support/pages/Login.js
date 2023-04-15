@@ -84,7 +84,7 @@ export default class Login {
   verifyCloseApp() {
     cy.get('body').then(($body) => {
       if($body.find(dashboardProfilePic).length) {
-        cy.logout();
+        cy.Logout();
       }
     })
   }
