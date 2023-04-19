@@ -1541,7 +1541,7 @@ export default class Dashboard {
   }
 
   enterEventDescription(description) {
-    cy.get(descriptionField).type(description);
+    cy.get(descriptionField).type(description, {force:true});
   }
 
   chooseContactToAddEvent(contact) {
@@ -2256,20 +2256,41 @@ export default class Dashboard {
   }
 
   clickFilterDropdown(label, option) {
-    cy.xpath(filterDropdown(label)).click({force:true});
+    cy.get('body',).then(ele => {
+      if(ele.find('.ms-1').length) {
+        this.removeSelectChecbox(label);
+      } else {
+        cy.xpath(filterDropdown(label)).click({force:true});
+      }
+    });
     this.selectOption(option);
     cy.get('.ss-select-control.expanded').click({force:true});
   } 
+
+  removeSelectChecbox(label) {
+    cy.xpath(`//div[text()="${label}"]`).click({force:true});
+    cy.get('.ss-select-option [data-icon="check"]').click({force:true});
+  }
 
   verifyFilterResult(data) {
     cy.get(integrationTableData(1)).should('contain.text', data)
   }
   
-  verifyDashCallsResult() {
+  verifyDashCallsResult(value, scenerio) {
     cy.contains(value)
       .siblings('div')
       .children('span')
-      .should('have.length.greaterThan', 0);
+      .then(number => {
+        if(scenerio == 'no calls') {
+          expect(parseInt(number.text())).equals(0);
+        } else if(scenerio == 'time') {
+          expect(number.text()).not.contains('00:00:00');
+        } else if(scenerio == 'rate') {
+          expect(number.text()).not.equals('0%');
+        } else {
+          expect(parseInt(number.text())).above(0);
+        } 
+      });
   }
   
 }

@@ -1437,7 +1437,51 @@ describe('Dashboard Elements', () => {
     Dash.verifyFilterResult(testData.campaign);
   });
 
-  it('verify that Data is sorted as according to Calendar', () => {
-    
+  it('verify that Data is sorted as according to Calendar', () => {  //BAT-T1039
+    Dash.clickDashboardCalendar();
+    Dash.clickOnTimeSpan('Last 12 Months');
+    cy.wait(1000)
+    Dash.clickDashboardCalendar();
+    Dash.verifyDashCallsResult('Outbound Calls'); 
+    Dash.verifyDashCallsResult('Connected Calls');
+  });
+
+  it('Verify call details should display in main card section', () => { 
+    Dash.verifyDashCallsResult('Outbound Calls'); 
+    Dash.verifyDashCallsResult('Connected Calls');
+    Dash.verifyDashCallsResult('Avg. Call Duration', 'time');
+    Dash.verifyDashCallsResult('Avg. Agent Wait Time', 'time');
+    Dash.verifyDashCallsResult('Abandon Rate', 'rate');
+    Dash.verifyDashCallsResult('Leads Generated');
+    Dash.verifyDashCallsResult('Connect Rate', 'rate');
+    Dash.verifyDashCallsResult('Dialing Time', 'time');
+    Dash.verifyDashCallsResult('Avg. CPA(Calls Per Agent)');
+    Dash.verifyDashCallsResult('Calls Per Connect');
+    Dash.verifyDashCallsResult('Voicemails Reached');
+  });
+
+  it('Verify that when user applies the Agent filter then dasboard details should be as per agent filter', () => {
+    Dash.clickFilterDropdown('Agents', testData.adminWithoutCalling);
+    cy.wait(1000);
+    Dash.verifyDashCallsResult('Outbound Calls', 'no calls')
+    Dash.verifyDashCallsResult('Avg. CPA(Calls Per Agent)', 'no calls');
+    Dash.clickFilterDropdown('Agents', testData.agent);
+    cy.wait(1000);
+    Dash.verifyDashCallsResult('Outbound Calls');
+    Dash.verifyDashCallsResult('Connected Calls');
+    Dash.verifyDashCallsResult('Avg. CPA(Calls Per Agent)');
+    Dash.removeSelectChecbox('Agents');
+  });
+
+  it('Verify that when user applies the Campaign filter then dasboard details should be as per Campaign filter', () => {
+    Dash.clickFilterDropdown('Campaigns', 'Test Camp');
+    cy.wait(1000);
+    Dash.verifyDashCallsResult('Outbound Calls', 'no calls')
+    Dash.verifyDashCallsResult('Avg. CPA(Calls Per Agent)', 'no calls');
+    Dash.clickFilterDropdown('Campaigns', testData.agent);
+    cy.wait(1000);
+    Dash.verifyDashCallsResult('Outbound Calls');
+    Dash.verifyDashCallsResult('Connected Calls');
+    Dash.verifyDashCallsResult('Avg. CPA(Calls Per Agent)');
   });
 });

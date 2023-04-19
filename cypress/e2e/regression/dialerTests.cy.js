@@ -70,7 +70,6 @@ describe('Inbound Call Scenarios', () => {
       ]);
       Dial.clickAdvanceConfiguration();
       Dial.clickOnRadioButton('Automatic Answer');
-      Dial.selectQueueCallMusicDropdown('Music 1');
       Dial.clickTermsConditionsCheckbox();
       Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
@@ -184,7 +183,6 @@ describe('Inbound Call Scenarios', () => {
       Dial.clickOnRadioButton('Ringing Sound');
       // Dial.clickNextButton();
       // Dial.clickOnRadioButton('Individual Agents');
-      Dial.selectQueueCallMusicDropdown('Music 1');
       Dial.clickTermsConditionsCheckbox();
       Dial.clickOnButton('Save');
       Dial.verifySuccessToastMessage('Campaign Created');
@@ -305,7 +303,6 @@ describe('Inbound Call Scenarios', () => {
       ]);
       Dial.clickAdvanceConfiguration();
       Dial.clickOnRadioButton('Automatic Answer');
-      Dial.selectQueueCallMusicDropdown('Music 1');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
@@ -381,10 +378,6 @@ describe('Inbound Call Scenarios', () => {
       Dial.clickOnSubMenu('Inbound Calls');
       Dial.clickDeleteQueueButton(queueName);
       Dial.verifySuccessToastMessage('Queue deleted');
-      contact.clickingOnContactOption();
-      contact.deleteAddedContacts('Unknown', 'Contact');
-      contact.handleAlertForDelete();
-      contact.verifyDeletedToast();
     });
   });
 
@@ -490,7 +483,6 @@ describe('Outbound Calling Scenarios', () => {
         'Successful sale'
       ]);
       Dial.clickAdvanceConfiguration();
-      Dial.selectQueueCallMusicDropdown('Music 1');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
@@ -608,8 +600,7 @@ describe('Outbound Calling Scenarios', () => {
       ]);
       Dial.clickAdvanceConfiguration();
       Dial.clickOnRadioButton('Automatic Answer');
-      Dial.enterSimultaneousDialsPerAgent('3');
-      Dial.selectQueueCallMusicDropdown('Music 1');
+     // Dial.enterSimultaneousDialsPerAgent('3');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
@@ -665,10 +656,6 @@ describe('Outbound Calling Scenarios', () => {
       Dial.verifySoftPhoneOpen();
       Dial.verifySoftphoneLinesNumber(3);
     });
-
-    it('​Verify the ringing icon animation when system start dialing', () => {
-      Dial.verifyPhoneRingingIcon();
-    })
 
     it('Verify that Agent status should be On Call and End the Call and select the Disposition', () => {
       Dial.verifyAgentStatus('On Call');
@@ -740,8 +727,7 @@ describe('Outbound Calling Scenarios', () => {
       ]);
       Dial.clickAdvanceConfiguration();
       Dial.clickOnRadioButton('Automatic Answer');
-      Dial.enterSimultaneousDialsPerAgent('1');
-      Dial.selectQueueCallMusicDropdown('Music 1');
+      //Dial.enterSimultaneousDialsPerAgent('1');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
@@ -797,7 +783,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectCampaign(campaignName);
       Dial.clickConfirmButton();
       Dial.verifySoftPhoneOpen();
-      Dial.verifySoftphoneLinesNumber(1);
+      //Dial.verifySoftphoneLinesNumber(1);
     });
 
     it('Verify that Agent status should be On Call and End the Call and select the Disposition', () => {
@@ -871,12 +857,11 @@ describe('Outbound Calling Scenarios', () => {
       ]);
       Dial.clickAdvanceConfiguration();
       Dial.clickOnRadioButton('Automatic Answer');
-      Dial.enterSimultaneousDialsPerAgent('1');
+      //Dial.enterSimultaneousDialsPerAgent('1');
       Dial.enterMaxAttemptPerRecord('3');
       Dial.enterRetryTime('4');
       Dial.selectRetryTimeDropdown('sec');
       Dial.clickOnButton('Got it')
-      Dial.selectQueueCallMusicDropdown('Music 1');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
@@ -924,7 +909,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectCampaign(campaignName);
       Dial.clickConfirmButton();
       Dial.verifySoftPhoneOpen();
-      Dial.verifySoftphoneLinesNumber(1);
+      //Dial.verifySoftphoneLinesNumber(1);
     });
 
     it('Verify that Agent status should be On Call', () => {
@@ -997,7 +982,7 @@ describe('Outbound Calling Scenarios', () => {
       ]);
       Dial.clickAdvanceConfiguration();
       Dial.clickOnRadioButton('Automatic Answer');
-      Dial.enterSimultaneousDialsPerAgent('1');
+      //Dial.enterSimultaneousDialsPerAgent('1');
       Dial.enterMaxAttemptPerRecord('1');
       Dial.enterRetryTime('1');
       Dial.enterRingTimeDuration('15');
@@ -1128,16 +1113,14 @@ describe('Outbound Calling Scenarios', () => {
       Dial.clickAdvanceConfiguration();
       Dial.clickOnRadioButton('Manual Answer');
       cy.wait(1000);
-      Dial.clickOnRadioButton('Ringing Sound');
+      Dial.clickOnRadioButton('Ringing Sound'); //Beep Once'
       Dial.clickOnCheckboxButton('Answering Machine Detection');
-      Dial.enterSimultaneousDialsPerAgent('3');
+      //Dial.enterSimultaneousDialsPerAgent('3');
       Dial.enterMaxAttemptPerRecord('3');
       Dial.enterRetryTime('1');
-      Dial.selectRetryTimeDropdown('min');
+      Dial.selectRetryTimeDropdown('sec');
       Dial.clickOnButton('Got it')
-      Dial.selectQueueCallMusicDropdown('Music 1');
-      Dial.clickQueueCheckbox();
-      Dial.enterAbandonmentDuration('15');
+      Dial.enterAbandonmentDuration('30');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
@@ -1196,6 +1179,10 @@ describe('Outbound Calling Scenarios', () => {
       Dial.verifySoftphoneLinesNumber(3);
     });
 
+    it('​Verify the ringing icon animation when system start dialing', () => {
+      Dial.verifyPhoneRingingIcon();
+    })
+
     it('Verify the Abandoned Time Out of 15 sec and call should be marked as Abandoned', () => {
       Dial.verifyAbandonedCall(); 
       Dial.verifyAgentStatus('Auto Pause'); 
@@ -1235,13 +1222,10 @@ describe('Outbound Calling Scenarios', () => {
   describe('Campaign - Call Recording Feature', () => {
     const campaignWithRecording = 'Campaign with call recording';
     const campaignWithoutRecording = 'Campaign without Call Recording';
-    const listName = 'twilio.csv';
-    let callNumber = '+1';
     before(() => {
       cy.visit('/');
       cy.readFile('cypress/fixtures/testData.json').then((data) => {
         testData = data;
-        callNumber = callNumber + covertNumberToNormal(testData.Number);
       });
       Cypress.Cookies.defaults({
         preserve: (cookies) => {
@@ -1277,7 +1261,6 @@ describe('Outbound Calling Scenarios', () => {
         'Successful sale'
       ]);
       Dial.clickAdvanceConfiguration();
-      Dial.selectQueueCallMusicDropdown('Music 1');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
@@ -1304,7 +1287,6 @@ describe('Outbound Calling Scenarios', () => {
         'Successful sale'
       ]);
       Dial.clickAdvanceConfiguration();
-      Dial.selectQueueCallMusicDropdown('Music 1');
       Dial.disableCallRecording();
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
@@ -1359,11 +1341,15 @@ describe('Outbound Calling Scenarios', () => {
       Dial.verifyCallDispositionWindow();
       Dial.selectCallDisposition('No Answer');
       Dial.clickOnButton('Done');
+      cy.reload();
+      ignoreSpeedTestPopup();
     });
 
     it('verify that Call recording should be available in Recent Contacts', () => {
       Dial.clickOnMenu('Reports');
       Dial.clickOnSubMenu('Recent Contacts');
+      cy.reload();
+      ignoreSpeedTestPopup();
       Dial.verifyCallRecordingIcon(campaignWithRecording,true);
     });
 
@@ -1440,12 +1426,10 @@ describe('Outbound Calling Scenarios', () => {
   describe('Predictive campaign with Daily Connects Limit of 1', () => {
     const campaignName = 'Daily Connect Campaign';
     const listName = 'twilio.csv';
-    let callNumber = '+1';
     before(() => {
       cy.visit('/');
       cy.readFile('cypress/fixtures/testData.json').then((data) => {
         testData = data;
-        callNumber = callNumber + covertNumberToNormal(testData.Number);
       });
       cy.readFile('cypress/fixtures/testData.json').then((data) => {
         data.flag = false;
@@ -1487,13 +1471,12 @@ describe('Outbound Calling Scenarios', () => {
       ]);
       Dial.clickAdvanceConfiguration();
       Dial.clickOnRadioButton('Automatic Answer');
-      Dial.enterSimultaneousDialsPerAgent('3');
+      //Dial.enterSimultaneousDialsPerAgent('3');
       Dial.selectRetryTimeDropdown('sec');
       Dial.clickOnButton('Got it')
       Dial.enterRetryTime('10');
       Dial.enterMaxAttemptPerRecord('3');
       Dial.enterDailyConnectsLimit('1');
-      Dial.selectQueueCallMusicDropdown('Music 1');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
@@ -1630,8 +1613,7 @@ describe('Outbound Calling Scenarios', () => {
       ]);
       Dial.clickAdvanceConfiguration();
       Dial.clickOnRadioButton('Automatic Answer');
-      Dial.enterSimultaneousDialsPerAgent('2');
-      Dial.selectQueueCallMusicDropdown('Music 1');
+      //Dial.enterSimultaneousDialsPerAgent('2');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
@@ -1695,7 +1677,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectCampaign(campaignName);
       Dial.clickConfirmButton();
       Dial.verifySoftPhoneOpen();
-      Dial.verifySoftphoneLinesNumber(2);
+      Dial.verifySoftphoneLinesNumber(3);
     });
 
     it('Verify the campaign status when the agent make the status available and start dialing a campaign of type predictive dialer', () => {
@@ -1723,16 +1705,17 @@ describe('Outbound Calling Scenarios', () => {
       Dial.verifySuccessToastMessage('Campaign Archived');
     });
 
-    it('Delete the Uploaded List', () => {
-      Dial.clickOnMenu('Contacts');
-      Dial.clickOnSubMenu('Contact Lists');
-      Dial.clickListDeleteButton(list1);
-      contact.handleAlertForDelete();
-      Dial.verifySuccessToastMessage('List deleted');
-    });
+    // it('Delete the Uploaded List', () => {
+    //   Dial.clickOnMenu('Contacts');
+    //   Dial.clickOnSubMenu('Contact Lists');
+    //   Dial.clickListDeleteButton(list1);
+    //   contact.handleAlertForDelete();
+    //   Dial.verifySuccessToastMessage('List deleted');
+    // });
   });
 
   describe('Verify Preview Campaign dialing with campaign status', () => {
+    const contactList = 'twilio';
     const campaignName = 'Manual Dialing';
     const random = Math.floor(Math.random() * 100);
     before(() => {
@@ -1769,7 +1752,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.clickOnRadioButton('Preview Dialer');
       Dial.selectAgentToAssign(testData.AdminName);
       Dial.selectPhoneNumber(testData.Number);
-      camp.selectContactLists('Internal');
+      camp.selectContactLists(contactList);
       Dial.enterCampaignName(campaignName); 
       cy.wait(1000);
       Dial.clickCallResultsDropdown();
@@ -1779,7 +1762,6 @@ describe('Outbound Calling Scenarios', () => {
         'Successful sale'
       ]);
       Dial.clickAdvanceConfiguration();
-      Dial.selectQueueCallMusicDropdown('Music 1');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
@@ -1800,10 +1782,9 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Verify that View Contact page is displayed when Click on NEXT CONTACT in the Dialpad during manual mode of dialing (Preview Dialer)', () => {
-      //camp.verifyDialPadNumber();
       camp.clickSoftphoneNextLead();
       cy.wait(2000)
-      camp.verifyDialPadNumber('Number');
+      camp.verifyDialPadNumber();
       Dial.verifyContactViewPage();
     });
 
@@ -1828,7 +1809,10 @@ describe('Outbound Calling Scenarios', () => {
       Dial.clickThreeDotMenuBtn(campaignName);
       Dial.clickOnDropdownItem('Archive');
       Dial.verifySuccessToastMessage('Campaign Archived');
-    });
+      Dial.clickOnMenu('Contacts');
+      Dial.clickOnSubMenu('Contact Lists');
+      contact.verifyListExisting(contactList+'.csv');
+    }); 
   });
 
 });

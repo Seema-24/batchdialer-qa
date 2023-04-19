@@ -567,7 +567,6 @@ describe('Agent Profile', function () {
       'Call Back'
     ]);
     addCamp.clickAdvancedConfiguration();
-    addCamp.selectQueueCallMusicDropdown('None');
     addCamp.clickTermsConditionsCheckbox();
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Created');
