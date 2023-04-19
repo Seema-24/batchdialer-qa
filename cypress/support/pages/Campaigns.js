@@ -158,13 +158,11 @@ const tooltip = '.question-tooltip';
 const recycleIcon = (recycleCamp)  => `//span[text()="${recycleCamp}"]/preceding-sibling::*[@class="recycle-icon-svg"]`;
 const recycleTooltip = '//div[@class="tooltip-inner"]//div[@class="text-start text-nowrap"]';
 const campToolTip = (name) => `//label[text()="${name}"]/parent::*//span[contains(@class,"question-tooltip")]/img`;
-const campBehviorDropdown = (dropdown) => `//div[label[text()="${dropdown}"]]/parent::div//div[contains(@class,"ss-select-control")]`;
-const queueCheckbox = (checkbox) => `//div[label[text()="${checkbox}"]]/parent::div//span[@class="checkmark"]`;
 const LabelDropdown = (label) => `//label[text()="${label}"]/following-sibling::div//span`;
 const campaignCardRadioBtn = (campCard,radioBtn) => `//div[h2[@class="campaign-card__title"][text()="${campCard}"]]//div[h2[text()="${radioBtn}"]]/following-sibling::span`;
 const campaignCardCheckbox = (campCard) => `//div[h2[@class="campaign-card__checkbox-block__title"][text()="${campCard}"]]/following-sibling::span`;
 const campaignName = (name) => `//span[@class="campaign-name-table"][text()="${name}"]`;
-const dialPadNumber = '//li[contains(@class,"softphone-keyboard-button")]';
+const dialPadNumber = '.keyPad-digits-display input';
 const tableList = (index) => `.resizable-table-tbody div.td:nth-of-type(${index})`;
 const deleteSelectedDropdown = (value) => `//span[text()="${value}"]/following-sibling::span[@class="ss-select-value-delete"]`;
 const activeCampCard = '.campaign-card.active';
@@ -1138,23 +1136,6 @@ export default class Campaign {
     })
   }
 
-  selectQueueCallMusicDropdown(music) {
-    cy.get('body').then($body => {
-      if($body.text().includes('In Queue Call Music')) {
-        cy.xpath(campBehviorDropdown('In Queue Call Music')).click({force:true});
-        this.selectOptions(music);
-      }
-    })
-  }
-
-  clickQueueCheckbox() {
-    cy.get('body').then($body => {
-      if($body.text().includes('In Queue Call Music')) {
-        cy.xpath(queueCheckbox('In Queue Call Music')).click({force:true});
-      }
-    })
-  }
-
   verifyCallResultsOption(callRslts) {
     cy.get('.ss-select-value-label.multiple span').then((option) => {
       for (let i = 0; i < callRslts.length; i++) {
@@ -1223,19 +1204,14 @@ export default class Campaign {
     cy.xpath(campaignName(name)).click();
   }
 
-  verifyDialPadNumber(val) {
-    if('Number' == val) {
-      cy.xpath(dialPadNumber).then(value => {
-        let number = value.text().split(' ').join('')
-        expect(10).to.equal(number.length);
-        cy.readFile('cypress/fixtures/testData.json').then(data => {
-          data.dialNumber = number;
-          cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
-        });
+  verifyDialPadNumber() {
+    cy.get(dialPadNumber).invoke('val').then((number) => {
+      expect(10).to.equal(number.length);
+      cy.readFile('cypress/fixtures/testData.json').then(data => {
+        data.dialNumber = number;
+        cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
       });
-    } else {
-      //cy.xpath(dialPadNumber).should('have.text', 'Enter Phone Number');
-    }
+    });
   }
 
   uploadContactViaCampaignCreation(file) {

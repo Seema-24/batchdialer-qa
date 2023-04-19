@@ -112,8 +112,6 @@ describe('Add Campaign flow', () => {
     // addCamp.selectRetryTimeUnit('sec');
     // addCamp.clickOnButton('Got it');
     addCamp.enterMaxAttempts('Max Attempts Per Record', 2);
-    addCamp.selectQueueCallMusicDropdown('Music 1');
-    addCamp.clickQueueCheckbox();
     addCamp.enterAbandonedTimeout(15);
     Dial.clickCallingHoursDropdown();
     Dial.selectFromTime('12:00 am');
@@ -306,7 +304,6 @@ describe('Add Campaign flow', () => {
     // addCamp.enterRingTimeDuration(15);
     addCamp.enterRetryTime(10);
     addCamp.enterMaxAttempts('Max Attempts Per Record', 2);
-    addCamp.selectQueueCallMusicDropdown("Music 1");
     addCamp.clickTermsConditionsCheckbox();
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Created');
@@ -392,7 +389,6 @@ describe('Add Campaign flow', () => {
     addCamp.verifyCallConnectType();
    // addCamp.verifySimultaneousDialsField();
     // addCamp.verifyRingTimeDuration();
-    addCamp.clickQueueCheckbox();
     addCamp.verifyAbandonedTimeout();
     addCamp.verifyRetryTime();
     addCamp.verifyRetryTimeUnitDropdown();

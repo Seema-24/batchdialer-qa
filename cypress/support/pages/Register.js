@@ -323,7 +323,7 @@ export default class Register {
   }
 
   clickDeleteUserButton() {
-    cy.get(userDropdownMenu).click()
+    cy.get(userDropdownMenu).click({force:true})
     cy.contains('Delete').click();
   }
 

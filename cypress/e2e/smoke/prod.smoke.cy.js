@@ -831,7 +831,6 @@ describe('Agent Profile', function () {
       'Call Back'
     ]);
     addCamp.clickAdvancedConfiguration();
-    addCamp.selectQueueCallMusicDropdown('None');
     addCamp.clickTermsConditionsCheckbox();
     addCamp.clickOnButton('Save');
     addCamp.verifyToast('Campaign Created');
@@ -1121,7 +1120,6 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
         'Successful sale'
       ]);
       dial.clickAdvanceConfiguration();
-      dial.selectQueueCallMusicDropdown('Music 1');
       dial.clickCallingHoursDropdown();
       dial.selectFromTime('12:00 am');
       dial.selectToTime('11:30 pm');
@@ -1238,7 +1236,6 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       dial.clickAdvanceConfiguration();
       dial.clickOnRadioButton('Automatic Answer');
       dial.enterSimultaneousDialsPerAgent('3');
-      dial.selectQueueCallMusicDropdown('Music 1');
       dial.clickCallingHoursDropdown();
       dial.selectFromTime('12:00 am');
       dial.selectToTime('11:30 pm');
@@ -1366,7 +1363,6 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       dial.clickAdvanceConfiguration();
       dial.clickOnRadioButton('Automatic Answer');
       dial.enterSimultaneousDialsPerAgent('1');
-      dial.selectQueueCallMusicDropdown('Music 1');
       dial.clickCallingHoursDropdown();
       dial.selectFromTime('12:00 am');
       dial.selectToTime('11:30 pm');
@@ -1498,7 +1494,6 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
       dial.enterRetryTime('4');
       dial.selectRetryTimeDropdown('sec');
       dial.clickOnButton('Got it')
-      dial.selectQueueCallMusicDropdown('Music 1');
       dial.clickCallingHoursDropdown();
       dial.selectFromTime('12:00 am');
       dial.selectToTime('11:30 pm');
@@ -1618,7 +1613,6 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
         'Successful sale'
       ]);
       dial.clickAdvanceConfiguration();
-      dial.selectQueueCallMusicDropdown('Music 1');
       dial.clickCallingHoursDropdown();
       dial.selectFromTime('12:00 am');
       dial.selectToTime('11:30 pm');
@@ -1645,7 +1639,6 @@ describe('Outbound Calling Scenarios with creating campaign', () => {
         'Successful sale'
       ]);
       dial.clickAdvanceConfiguration();
-      dial.selectQueueCallMusicDropdown('Music 1');
       dial.disableCallRecording();
       dial.clickCallingHoursDropdown();
       dial.selectFromTime('12:00 am');

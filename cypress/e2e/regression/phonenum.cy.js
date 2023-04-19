@@ -523,19 +523,20 @@ describe('Add Phone Number flow', () => {
     addCont.selectCallResult('A CALL BACK'); 
     addCont.clickContinueBtn();
     cy.wait(5000);
-    dashboard.clickTaskButton();
-    cy.reload();
-    ignoreSpeedTestPopup();
-    dashboard.clickDashboard();
-    dashboard.clickTaskButton();
+    for (let i = 0; i < 2; i++) {
+      dashboard.clickDashboard();
+      cy.reload();
+      ignoreSpeedTestPopup();
+      dashboard.clickTaskButton(); 
+    }
     dashboard.clickFutureButton();
     dashboard.verifyEventType('Appointment');   
     dashboard.verifyEventContact('Unknown Contact');
     dashboard.verifyEventDate();
     dashboard.verifyEventAssignedName(testData.AdminName);
     dashboard.verifyEventTitle('Scheduled from call result');
-    dashboard.clickEventThreeDotMenuBtn('Unknown Contact');
-    dashboard.selectDropdownItemToClick('Delete Event');
+    // dashboard.clickEventThreeDotMenuBtn('Unknown Contact');
+    // dashboard.selectDropdownItemToClick('Delete Event');
   });
 
   it('Remove the added New Rule from Call Result', () => {

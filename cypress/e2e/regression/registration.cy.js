@@ -472,7 +472,7 @@ describe('Registration', () => {
         register.clickDeleteUserButton();
         register.clickCancelNowRadioBtn();
         register.clickOnButton('Continue');
-        
+        cy.wait(500);
         // registered account also cancel
         register.enterUserToSearch(email);
         register.clickDeleteUserButton();

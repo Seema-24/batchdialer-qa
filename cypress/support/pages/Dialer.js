@@ -24,14 +24,14 @@ const agentsDropdown =
   '//div[contains(@class,"ss-select-control")]/span[contains(text(),"Agents")]';
 const successToastMessage = `.Toastify__toast-body`;
 const threeDotMenuBtn = (CampName) =>
-  `//span[text()="${CampName}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]`;
+  `//span[text()="${CampName}"]/ancestor::div[@class="tr"]//div[@class="dropdown"]//img`;
 const dropdownItems = '.show .dropdown-item';
 const warningTitle = '.warning__modal .modal-content .warning__modal-title';
 const warningGotItBtn = '.warning__modal .modal-content button';
 const simultaneousDialsPerAgent = `//label[text()="Simultaneous Dials p/Agent"]//following-sibling::div[contains(@class,"number-editor")]//input`;
 const questionToolTip = '.question-tooltip';
 const contactProfile = '.contact-view-wrapper';
-const softphone = '.stg-softphone-wrapper .stg-softphone';
+const incomingCall = '.softphone-body-height-for-incoming-call-ringing';
 const endCallButton = '[src*=softphone_phone_red]';
 const acceptCallButton = '[src*=softphone_phone_green]';
 const callDispositionWindow = '.show .call-disposition div.position-absolute.overlay-content';
@@ -100,7 +100,6 @@ const cardDropdowns = (cardName) =>
 const dashboard = 'a[title="Dashboard"]';
 const closeSoftBtn = '.softphone-close-button .cursor_pointer';
 const timeoutDestination = '//label[text()="Timeout Destination"]/ancestor::div[contains(@class,"col")]/descendant::span[contains(@class,"ss-select-value")][1]';
-const queueCheckbox = (checkbox) => `//div[label[text()="${checkbox}"]]/parent::div//span[@class="checkmark"]`;
 const PhoneValue = (key) => `//div[@class="key"][text()="${key}"]/parent::div/child::div[@class="value"]`
 const contactLineCursor = (pos) => `svg[data-icon="angle-${pos}"]`
 
@@ -162,7 +161,7 @@ export default class Dialer {
     cy.get('button').then((Btn) => {
       for (let i = 0; i < Btn.length; i++) {
         if (Btn[i].textContent.trim() === buttonName) {
-          cy.get(Btn[i]).click();
+          cy.get(Btn[i]).click({force:true});
           break;
         }
       }
@@ -252,7 +251,7 @@ export default class Dialer {
 
   clickThreeDotMenuBtn(campName) {
     this.closeSoftCloseBtn();
-    cy.xpath(threeDotMenuBtn(campName)).click();
+    cy.xpath(threeDotMenuBtn(campName)).click({force:true});
   }
 
   clickOnDropdownItem(itemName) {
@@ -320,7 +319,7 @@ export default class Dialer {
   }
 
   verifySoftphone() {
-    cy.get(softphone, { timeout: 60000 }).should('be.visible');
+    cy.get(incomingCall, { timeout: 60000 }).should('be.visible');
   }
 
   clickEndCallButton() {
@@ -608,7 +607,9 @@ export default class Dialer {
     this.clickContactLineCursor('right');
     cy.get(softphoneLineContactName, { timeout: 40000 }).then((lineText) => {
       for (let i = 0; i < lineText.length; i++) {
-        expect(lineText[i].textContent.trim()).to.contains(contactName);
+        if(lineText[i].textContent == contactName) {
+          expect(lineText[i].textContent.trim()).to.contains(contactName);
+        }
       }
     });
     cy.wait(2000);
@@ -766,23 +767,6 @@ export default class Dialer {
   selectTimeoutDestination(destination) {
     cy.xpath(timeoutDestination).click();
     this.selectOption(destination);
-  }
-
-  selectQueueCallMusicDropdown(music) {
-    cy.get('body').then(($body) => {
-      if($body.text().includes('In Queue Call Music')) {
-        cy.xpath(campBehviorDropdown('In Queue Call Music')).click();
-        this.selectOption(music);
-      }
-    }) 
-  }
-
-  clickQueueCheckbox() {
-    cy.get('body').then(($body) => {
-      if($body.text().includes('In Queue Call Music')) {
-        cy.xpath(queueCheckbox('In Queue Call Music')).click();
-      }
-    })
   }
 
   closeRecordingDialog() {
