@@ -283,6 +283,8 @@ describe('Dashboard Elements', () => {
   it('Delete the Added Event', () => {
     Dash.clickEventThreeDotMenuBtn(testData.Contact);
     Dash.selectDropdownItemToClick('Delete Event');
+    Dash.clickEventThreeDotMenuBtn('Unknown Contact');
+    Dash.selectDropdownItemToClick('Delete Event');
   });
 
   it('If TODAY,PAST,FUTURE and Completed are set by user,verify that those settings are kept throughout the current session', () => {
@@ -321,7 +323,6 @@ describe('Dashboard Elements', () => {
       'Lead Score',
       'Agent Scripts',
       'Audio Library',
-      'Affiliate',
       'Lead Sheets',
     ]);
   });
@@ -1484,4 +1485,32 @@ describe('Dashboard Elements', () => {
     Dash.verifyDashCallsResult('Connected Calls');
     Dash.verifyDashCallsResult('Avg. CPA(Calls Per Agent)');
   });
+
+  it('Verify Tables and Charts in Main dashboard page', () => {
+    Dash.verifyMainDashboardTableOrChart('Calls Summary');
+    Dash.verifyMainDashboardTableOrChart('Call Results');
+    Dash.verifyMainDashboardTableOrChart('Responsiveness');
+    Dash.verifyMainDashboardTableOrChart('Avg. Agent Talk Time');
+    Dash.verifyMainDashboardTableOrChart('Agent Analytics');
+    Dash.verifyMainDashboardTableOrChart('Best Time to Call');
+    Dash.verifyMainDashboardTableOrChart('Campaign Analytics');
+  });
+
+  it('Verify that user are able to see the hourly, daily and Weekly in call summary table', () => {
+    Dash.clickTimeFilterRadioBtn('CallSummary', 'Daily');
+    Dash.VerifyRadioBtn('CallSummary', 'Daily');
+    Dash.clickTimeFilterRadioBtn('CallSummary', 'Hourly');
+    Dash.VerifyRadioBtn('CallSummary', 'Hourly');
+    Dash.clickTimeFilterRadioBtn('CallSummary', 'Weekly');
+    Dash.VerifyRadioBtn('CallSummary', 'Weekly');
+  });
+
+  it('Verify that user are able to see the hourly, daily and Weekly in Avg Agent Talk Time table', () => {
+    Dash.clickTimeFilterRadioBtn('AvgAgentTalkTime', 'Daily');
+    Dash.VerifyRadioBtn('AvgAgentTalkTime', 'Daily');
+    Dash.clickTimeFilterRadioBtn('AvgAgentTalkTime', 'Hourly');
+    Dash.VerifyRadioBtn('AvgAgentTalkTime', 'Hourly');
+    Dash.clickTimeFilterRadioBtn('AvgAgentTalkTime', 'Weekly');
+    Dash.VerifyRadioBtn('AvgAgentTalkTime', 'Weekly');
+  })
 });

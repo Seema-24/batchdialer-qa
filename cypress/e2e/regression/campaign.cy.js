@@ -822,7 +822,7 @@ describe('Add Campaign flow', () => {
     addCamp.verifyListInCampDropdown('Contact Lists');
   });
   
-  it('Verify that user can upload contact list from campaign creation page by clicking on "+upload contacts"', () => {
+  it('Verify that user can upload contact list from campaign creation page by clicking on (upload contacts)', () => {
     addCamp.uploadContactViaCampaignCreation('contact-sample.csv');
     addCamp.verifyCreatedCampCardInField('Contact Lists', 'contact-sample.csv');
     addCamp.verifyFileInContactList('contact-sample.csv');
@@ -838,7 +838,7 @@ describe('Add Campaign flow', () => {
     addCamp.verifyListInCampDropdown('Phone Numbers');
   });
 
-  it('Verify that User can Buy phone number from campaign creation page by clicking on "Buy Phone Numbers " button', () => {
+  it('Verify that User can Buy phone number from campaign creation page by clicking on (Buy Phone Numbers) button', () => {
     addCamp.buyPhoneNumberViaCampaignCreation();
     cy.readFile('cypress/fixtures/testData.json').then((data) => {
       addCamp.verifyCreatedCampCardInField('Phone Numbers', data.BuyNumber);
@@ -949,7 +949,7 @@ describe('Add Campaign flow', () => {
     addCamp.clickOnButton('Cancel');
   });
 
-  it('Verify that user can add campaign in the draft by clicking on "Save to Draft" button', () => {
+  it('Verify that user can add campaign in the draft by clicking on (Save to Draft) button', () => {
     addCamp.clickCampaignMenu();
     addCamp.verifyDraftCampDelete();
     addCamp.clickAddNewCampaign();
@@ -1004,7 +1004,7 @@ describe('Add Campaign flow', () => {
     addCamp.verifyToast('Draft Deleted');
   });
 
-  it('Verify that in call order > in Adaptive user click on "Lead score setting here" it should open the lead score section', () => {
+  it('Verify that in call order > in Adaptive user click on (Lead score setting here) it should open the lead score section', () => {
     addCamp.clickCampaignMenu();
     addCamp.clickAddNewCampaign();
     addCamp.selectDialingMode('Predictive');

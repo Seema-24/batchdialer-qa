@@ -274,6 +274,7 @@ const billingPeriodEditBtn = '.billing-user-info__period .billing-user-info__edi
 const dayPicker = '[class="DayPicker-Day"]';
 const timeSpans = '.dropdown-menu.show .links button';
 const filterDropdown =(label) => `//span[text()="${label}"]/ancestor::div[contains(@class,"ss-select-control")]`;
+const timeFilter = (equityBox,btn) => `.horizontal-radio-group [name="timeFilterFor${equityBox}"][value="${btn}"] + .checkmark`;
 
 export default class Dashboard {
   clickDashboard() {
@@ -1522,7 +1523,7 @@ export default class Dashboard {
   clickEventThreeDotMenuBtn(name) {
     cy.reload();
     ignoreSpeedTestPopup();
-    cy.xpath(eventThreeDotMenuBtn(name)).first().click();
+    cy.xpath(eventThreeDotMenuBtn(name)).first().click({force:true});
   }
 
   verifyCompletedEventDisappear(name) {
@@ -2292,5 +2293,22 @@ export default class Dashboard {
         } 
       });
   }
-  
+
+  verifyMainDashboardTableOrChart(header) {
+    cy.get('.equity_box')
+      .children('.dashboard__row-title')
+      .contains(header).should('be.visible');
+  }
+
+  clickTimeFilterRadioBtn(equityBox,radiobtn) {
+    cy.get(timeFilter(equityBox,radiobtn)).click({force:true});
+  }
+
+  VerifyRadioBtn(equityBox,radiobtn) {
+    cy.get(timeFilter(equityBox,radiobtn))
+    .scrollIntoView()
+    .should('have.css', 'background-color', 'rgb(33, 150, 243)')
+  }
+
+
 }
