@@ -1423,25 +1423,9 @@ describe('Dashboard Elements', () => {
     Dash.verifyFilterDate(filterDate);
   });
 
-  it('verify that User is able to see Agent or Campaign Filter ', () => {
-    Dash.verifyFilterDropdown('Agents');
-    Dash.verifyFilterDropdown('Campaigns');
-  });
-
-  it('Verify that user is able to select Agent in Agent Filter', () => {
-    Dash.clickFilterDropdown('Agents', testData.agent);
-    Dash.verifyFilterResult(testData.agent);
-  });
-
-  it('Verify that user is able to select Campaign using Campaign Filter', () => {
-    Dash.clickFilterDropdown('Campaigns', testData.campaign);
-    Dash.verifyFilterResult(testData.campaign);
-  });
-
   it('verify that Data is sorted as according to Calendar', () => {  //BAT-T1039
-    Dash.clickDashboardCalendar();
     Dash.clickOnTimeSpan('Last 12 Months');
-    cy.wait(1000)
+    cy.wait(2000)
     Dash.clickDashboardCalendar();
     Dash.verifyDashCallsResult('Outbound Calls'); 
     Dash.verifyDashCallsResult('Connected Calls');
@@ -1461,13 +1445,30 @@ describe('Dashboard Elements', () => {
     Dash.verifyDashCallsResult('Voicemails Reached');
   });
 
+  it('verify that User is able to see Agent or Campaign Filter ', () => {
+    Dash.verifyFilterDropdown('Agents');
+    Dash.verifyFilterDropdown('Campaigns');
+  });
+
+  it('Verify that user is able to select Agent in Agent Filter', () => {
+    Dash.clickFilterDropdown('Agents', testData.agent);
+    Dash.verifyFilterResult(testData.agent);
+    Dash.removeSelectChecbox('Agents');
+  });
+
+  it('Verify that user is able to select Campaign using Campaign Filter', () => {
+    Dash.clickFilterDropdown('Campaigns', testData.campaign);
+    Dash.verifyFilterResult(testData.campaign);
+    Dash.removeSelectChecbox('Campaigns');
+  });
+
   it('Verify that when user applies the Agent filter then dasboard details should be as per agent filter', () => {
     Dash.clickFilterDropdown('Agents', testData.adminWithoutCalling);
-    cy.wait(1000);
+    cy.wait(4000);
     Dash.verifyDashCallsResult('Outbound Calls', 'no calls')
     Dash.verifyDashCallsResult('Avg. CPA(Calls Per Agent)', 'no calls');
     Dash.clickFilterDropdown('Agents', testData.agent);
-    cy.wait(1000);
+    cy.wait(4000);
     Dash.verifyDashCallsResult('Outbound Calls');
     Dash.verifyDashCallsResult('Connected Calls');
     Dash.verifyDashCallsResult('Avg. CPA(Calls Per Agent)');
@@ -1476,11 +1477,11 @@ describe('Dashboard Elements', () => {
 
   it('Verify that when user applies the Campaign filter then dasboard details should be as per Campaign filter', () => {
     Dash.clickFilterDropdown('Campaigns', 'Test Camp');
-    cy.wait(1000);
+    cy.wait(4000);
     Dash.verifyDashCallsResult('Outbound Calls', 'no calls')
     Dash.verifyDashCallsResult('Avg. CPA(Calls Per Agent)', 'no calls');
     Dash.clickFilterDropdown('Campaigns', testData.agent);
-    cy.wait(1000);
+    cy.wait(4000);
     Dash.verifyDashCallsResult('Outbound Calls');
     Dash.verifyDashCallsResult('Connected Calls');
     Dash.verifyDashCallsResult('Avg. CPA(Calls Per Agent)');
@@ -1498,19 +1499,19 @@ describe('Dashboard Elements', () => {
 
   it('Verify that user are able to see the hourly, daily and Weekly in call summary table', () => {
     Dash.clickTimeFilterRadioBtn('CallSummary', 'Daily');
-    Dash.VerifyRadioBtn('CallSummary', 'Daily');
+    Dash.VerifyEquityBoxRadioBtn('CallSummary', 'Daily');
     Dash.clickTimeFilterRadioBtn('CallSummary', 'Hourly');
-    Dash.VerifyRadioBtn('CallSummary', 'Hourly');
+    Dash.VerifyEquityBoxRadioBtn('CallSummary', 'Hourly');
     Dash.clickTimeFilterRadioBtn('CallSummary', 'Weekly');
-    Dash.VerifyRadioBtn('CallSummary', 'Weekly');
+    Dash.VerifyEquityBoxRadioBtn('CallSummary', 'Weekly');
   });
 
   it('Verify that user are able to see the hourly, daily and Weekly in Avg Agent Talk Time table', () => {
     Dash.clickTimeFilterRadioBtn('AvgAgentTalkTime', 'Daily');
-    Dash.VerifyRadioBtn('AvgAgentTalkTime', 'Daily');
+    Dash.VerifyEquityBoxRadioBtn('AvgAgentTalkTime', 'Daily');
     Dash.clickTimeFilterRadioBtn('AvgAgentTalkTime', 'Hourly');
-    Dash.VerifyRadioBtn('AvgAgentTalkTime', 'Hourly');
+    Dash.VerifyEquityBoxRadioBtn('AvgAgentTalkTime', 'Hourly');
     Dash.clickTimeFilterRadioBtn('AvgAgentTalkTime', 'Weekly');
-    Dash.VerifyRadioBtn('AvgAgentTalkTime', 'Weekly');
+    Dash.VerifyEquityBoxRadioBtn('AvgAgentTalkTime', 'Weekly');
   })
 });

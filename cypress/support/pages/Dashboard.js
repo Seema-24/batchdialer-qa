@@ -213,7 +213,7 @@ const contactsSearchResult = '.ss-select-option';
 const descriptionField = 'input[name="description"]';
 const eventTitle = 'input[name="title"]';
 const eventThreeDotMenuBtn = (contactName) =>
-  `//a[text()="${contactName}"]/ancestor::td[contains(@class,"contactfield")]/following-sibling::td[contains(@class,"dropdownfield")]`;
+  `//a[text()="${contactName}"]/ancestor::td[contains(@class,"contactfield")]/following-sibling::td[contains(@class,"dropdownfield")]//img`;
 const dropdownItems = '.dropdown-item';
 const eventStatusCheckbox = (contactName, eventStatus) =>
   `//a[text()="${contactName}"]/ancestor::td[contains(@class,"contactfield")]/parent::tr//img[@alt='${eventStatus}']`;
@@ -2304,7 +2304,7 @@ export default class Dashboard {
     cy.get(timeFilter(equityBox,radiobtn)).click({force:true});
   }
 
-  VerifyRadioBtn(equityBox,radiobtn) {
+  VerifyEquityBoxRadioBtn(equityBox,radiobtn) {
     cy.get(timeFilter(equityBox,radiobtn))
     .scrollIntoView()
     .should('have.css', 'background-color', 'rgb(33, 150, 243)')
