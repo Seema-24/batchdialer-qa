@@ -1066,7 +1066,7 @@ export default class Campaign {
     addCont.dialPhoneNumber('6029227636'); 
     dash.clickCallButton('green');
     dash.verifyCallStarted();
-    cy.wait(5000);
+    cy.wait(8000);
     dash.clickCallButton('red');
     dash.clickAnsweringMachine();
     dash.clickOnDoneButton();

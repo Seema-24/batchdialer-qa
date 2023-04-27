@@ -213,7 +213,7 @@ const contactsSearchResult = '.ss-select-option';
 const descriptionField = 'input[name="description"]';
 const eventTitle = 'input[name="title"]';
 const eventThreeDotMenuBtn = (contactName) =>
-  `//a[text()="${contactName}"]/ancestor::td[contains(@class,"contactfield")]/following-sibling::td[contains(@class,"dropdownfield")]`;
+  `//a[text()="${contactName}"]/ancestor::td[contains(@class,"contactfield")]/following-sibling::td[contains(@class,"dropdownfield")]//img`;
 const dropdownItems = '.dropdown-item';
 const eventStatusCheckbox = (contactName, eventStatus) =>
   `//a[text()="${contactName}"]/ancestor::td[contains(@class,"contactfield")]/parent::tr//img[@alt='${eventStatus}']`;
@@ -274,6 +274,7 @@ const billingPeriodEditBtn = '.billing-user-info__period .billing-user-info__edi
 const dayPicker = '[class="DayPicker-Day"]';
 const timeSpans = '.dropdown-menu.show .links button';
 const filterDropdown =(label) => `//span[text()="${label}"]/ancestor::div[contains(@class,"ss-select-control")]`;
+const timeFilter = (equityBox,btn) => `.horizontal-radio-group [name="timeFilterFor${equityBox}"][value="${btn}"] + .checkmark`;
 
 export default class Dashboard {
   clickDashboard() {
@@ -1522,7 +1523,7 @@ export default class Dashboard {
   clickEventThreeDotMenuBtn(name) {
     cy.reload();
     ignoreSpeedTestPopup();
-    cy.xpath(eventThreeDotMenuBtn(name)).first().click();
+    cy.xpath(eventThreeDotMenuBtn(name)).first().click({force:true});
   }
 
   verifyCompletedEventDisappear(name) {
@@ -2292,5 +2293,22 @@ export default class Dashboard {
         } 
       });
   }
-  
+
+  verifyMainDashboardTableOrChart(header) {
+    cy.get('.equity_box')
+      .children('.dashboard__row-title')
+      .contains(header).should('be.visible');
+  }
+
+  clickTimeFilterRadioBtn(equityBox,radiobtn) {
+    cy.get(timeFilter(equityBox,radiobtn)).click({force:true});
+  }
+
+  VerifyEquityBoxRadioBtn(equityBox,radiobtn) {
+    cy.get(timeFilter(equityBox,radiobtn))
+    .scrollIntoView()
+    .should('have.css', 'background-color', 'rgb(33, 150, 243)')
+  }
+
+
 }

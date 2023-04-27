@@ -450,12 +450,12 @@ export default class PhoneNum {
 
   clickPhoneMenuDropdown(num) {
     cy.xpath(
-      `//div[@class="tr"][div[@class="td"][text()="${num}"]]//div[@class="dropdown"]`,
+      `//div[@class="tr"][div[@class="td"][text()="${num}"]]//div[@class="dropdown"]//img`,
       { timeout: 5000 }
     )
       .first()
-      .scrollIntoView()
-      .click();
+      .scrollIntoView({force:true})
+      .click({force:true});
   }
 
   deleteAddedPhoneNumber(num) {
