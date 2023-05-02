@@ -167,6 +167,7 @@ const tableList = (index) => `.resizable-table-tbody div.td:nth-of-type(${index}
 const deleteSelectedDropdown = (value) => `//span[text()="${value}"]/following-sibling::span[@class="ss-select-value-delete"]`;
 const activeCampCard = '.campaign-card.active';
 const termCondition = '//label[text()="Accept Terms and Conditions "]/span[@class="checkmark"]';
+const MainDashTableResult = (header) => `//div[span[text()="${header}"]]/following-sibling::div//div[@class="td"][1]`;
 const draftIcon = '.progress-status.draft';
 
 const addUser = new User();
@@ -1269,6 +1270,11 @@ export default class Campaign {
     this.captureGroup();
   }
 
+  getCampaignList() {
+    this.clickCampaignMenu();
+    this.captureArrayList(2);
+  }
+
   verifyListInCampDropdown(cardName) {
     cy.get('body').then(arr => {
       cy.log(arrList.length)
@@ -1390,5 +1396,21 @@ export default class Campaign {
 
   verifyLeadScoreHeading() {
     cy.xpath('//label[text()="Lead Scoring"]').should('be.visible');
+  }
+
+  verifyDashCampaignAnalyticsList() {
+    cy.get('body').then(arr => {
+      for (let i = 0; i < arrList.length; i++) {
+        cy.xpath(MainDashTableResult('Campaign Analytics')).then((list) => {
+          for (let j = 0; j < list.length; j++) {
+            const opt = list[j].textContent.trim();
+            if (opt.includes(arrList[i])) {
+              expect(opt).to.contain(arrList[i]);
+              break;
+            }
+          }
+        });
+      }
+    });
   }
 }

@@ -141,7 +141,9 @@ export function closeDialogBox() {
     }if($body.find('#pendo-guide-container').length) {
       cy.get('button').then((btns) => {
         for (let i = 0; i < btns.length; i++) {
-          if (btns[i].textContent.trim() === 'Dismiss') {
+          if (btns[i].textContent.trim() === 'Dismiss' || 
+              btns[i].textContent.trim() === 'Not this time'
+            ) {
             cy.get(btns[i]).click({force:true});
             break;
           }

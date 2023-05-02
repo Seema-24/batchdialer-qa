@@ -29,9 +29,11 @@
 require('@4tw/cypress-drag-drop')
 require('cypress-downloadfile/lib/downloadFileCommand');
 import Login from '../support/pages/Login';
+import { closeDialogBox } from './Utils';
 const login = new Login();
 
 Cypress.Commands.add('Login', (username, password) => {
+  closeDialogBox();
   login.enterEmailtoSignin(username);
   login.enterPasswordToSignin(password);
   login.clickTermsCheckBox();

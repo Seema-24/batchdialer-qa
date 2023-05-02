@@ -702,42 +702,55 @@ describe('Add Campaign flow', () => {
     addCamp.mouseOverOnQuestionToolTip('Agents');
     addCamp.verifyQuestionTooltipText('Assign which agents or group can join this campaign');
     addCamp.mouseOutOnQuestionToolTip('Agents');
+
     addCamp.mouseOverOnQuestionToolTip('Phone Numbers');
     addCamp.verifyQuestionTooltipText('Phone numbers are used to dial outbound calls to customers.');
     addCamp.mouseOutOnQuestionToolTip('Phone Numbers');
+
     addCamp.mouseOverOnQuestionToolTip('Contact Lists');
     addCamp.verifyQuestionTooltipText('The selected lists will be automatically added to the campaign.');
     addCamp.mouseOutOnQuestionToolTip('Contact Lists');
+
     addCamp.mouseOverOnQuestionToolTip('Campaign Name');
     addCamp.verifyQuestionTooltipText('The campaign name is used for internal campaign identification and tracking');
     addCamp.mouseOutOnQuestionToolTip('Campaign Name');
+
     addCamp.mouseOverOnQuestionToolTip('Call Results');
     addCamp.verifyQuestionTooltipText('The call outcomes you select here will be available for agents to select from once the call has ended. You will be able to view');
     addCamp.mouseOutOnQuestionToolTip('Call Results');
+
     addCamp.mouseOverOnQuestionToolTip('Agent Script');
     addCamp.verifyQuestionTooltipText('The predefined script that agents will see in real time upon successful connection');
     addCamp.mouseOutOnQuestionToolTip('Agent Script');
+
     addCamp.mouseOverOnQuestionToolTip('Max Calls per Day');
     addCamp.verifyQuestionTooltipText('Daily connects limit (0 for no limit)');
     addCamp.mouseOutOnQuestionToolTip('Max Calls per Day');
+
     addCamp.mouseOverOnQuestionToolTip('Max Attempts Per Record');
     addCamp.verifyQuestionTooltipText('The number of times the system will attempt to dial a phone number before a connection is established');
     addCamp.mouseOutOnQuestionToolTip('Max Attempts Per Record');
+
    // addCamp.mouseOverOnQuestionToolTip('Simultaneous Dials p/Agent');
    // addCamp.verifyQuestionTooltipText('The maximum channels (phone lines) agents will be allowed to dial simultaneously on outbound campaigns. High number will lead to higher abandon rate, lower number will lead to more agent wait times between calls. Desired abandon rate < 10%.');
    // addCamp.mouseOutOnQuestionToolTip('Simultaneous Dials p/Agent');
+
     addCamp.mouseOverOnQuestionToolTip('Retry Time');
     addCamp.verifyQuestionTooltipText('After an unsuccessful attempt to connect to a phone number, the system will retry to dial the phone number/lead after the specified time');
     addCamp.mouseOutOnQuestionToolTip('Retry Time');
+
     addCamp.mouseOverOnQuestionToolTip('Abandonment Timeout, sec');
     addCamp.verifyQuestionTooltipText('Abandonment Timeout');
     addCamp.mouseOutOnQuestionToolTip('Abandonment Timeout, sec');
+
     addCamp.mouseOverOnQuestionToolTip('Lead Sheet');
     addCamp.verifyQuestionTooltipText('Assign leadsheet');
     addCamp.mouseOutOnQuestionToolTip('Lead Sheet');
+
     addCamp.mouseOverOnQuestionToolTip('Calling Hours');
     addCamp.verifyQuestionTooltipText('You can pre-configure campaign calling hours to match the timezone and location you are dialing. Agents will only be allowed to join this campaign during allowed hours. TCPA allows calls to be made between 8 A.M. and 9 P.M. in the local timezone');
     addCamp.mouseOutOnQuestionToolTip('Calling Hours');
+    
     addCamp.mouseOverOnQuestionToolTip('Time Zone');
     addCamp.verifyQuestionTooltipText('Setting the correct timezone for a campaign will allow agents to start and end calls at specified times');
     addCamp.mouseOutOnQuestionToolTip('Time Zone');
