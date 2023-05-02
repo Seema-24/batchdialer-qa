@@ -526,19 +526,6 @@ describe('Add Contact flow', () => {
     addCont.clickToCloseSoftphone();
   });
 
-  // it('Verify that Unknown Contact able to create event', () => {
-  //   dashboard.clickTaskButton();
-  //   dashboard.clickTaskAddNewButton();
-  //   dashboard.enterEventTitle('Dashboard Task Testing');
-  //   dashboard.chooseContactToAddEvent('Unknown Contact');
-  //   dashboard.enterEventDescription('For Testing - Mark as completed/Pending');
-  //   dashboard.selectEventTime();
-  //   addCont.clickSavebtn();
-  //   cy.wait(1000);
-  //   dashboard.verifyEventContact('Unknown Contact');
-  //   dashboard.verifyEventTitle('Dashboard Task Testing');
-  // });
-
   it('Verify the Assign to Campaign Option for Lists', () => {
     addCont.clickingOnContactOption();
     addCont.clickLists();

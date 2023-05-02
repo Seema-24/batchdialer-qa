@@ -1,5 +1,5 @@
 import Dashboard from '../../support/pages/Dashboard';
-import { closeDialogBox, getDate, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus } from '../../support/Utils';
+import { closeDialogBox, getDate, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus, verifyRoleTitle } from '../../support/Utils';
 import Contacts from '../../support/pages/Contacts';
 import Campaign from '../../support/pages/Campaigns';
 import PhoneNum from '../../support/pages/PhoneNum';
@@ -1452,13 +1452,13 @@ describe('Dashboard Elements', () => {
 
   it('Verify that user is able to select Agent in Agent Filter', () => {
     Dash.clickFilterDropdown('Agents', testData.agent);
-    Dash.verifyFilterResult(testData.agent);
+    Dash.verifyTableResult('Agent Analytics', testData.agent);
     Dash.removeSelectChecbox('Agents');
   });
 
   it('Verify that user is able to select Campaign using Campaign Filter', () => {
     Dash.clickFilterDropdown('Campaigns', testData.campaign);
-    Dash.verifyFilterResult(testData.campaign);
+    Dash.verifyTableResult('Campaign Analytics', testData.campaign);
     Dash.removeSelectChecbox('Campaigns');
   });
 
@@ -1513,5 +1513,138 @@ describe('Dashboard Elements', () => {
     Dash.VerifyEquityBoxRadioBtn('AvgAgentTalkTime', 'Hourly');
     Dash.clickTimeFilterRadioBtn('AvgAgentTalkTime', 'Weekly');
     Dash.VerifyEquityBoxRadioBtn('AvgAgentTalkTime', 'Weekly');
-  })
+  });
+
+  it('Verify Agent Analytics table column should be shown', () => {
+    Dash.verifyTableHeadings([
+      'Agent',
+      'Outbound Calls',
+      'Inbound Calls',
+      'Connect Rate %',
+      'Voice Mails Reached',
+      'Leads Generated',
+      'Connects Per Lead',
+      'Total Call Duration',
+      'Avg. Call Duration',
+      'Avg. Handle Time'
+    ]);
+    Dash.TableHeaderSettingIcon('Agent Analytics');
+  });
+
+  it('Verify Campaign Analytics table columns should be shown', () => {
+    Dash.verifyTableHeadings([
+      'Campaign Name',
+      'Agents in Campaign',
+      'Remaining Calls',
+      'Leads',
+      'Voicemails Reached',
+      'Abandon Rate',
+      'Connect Rate %'
+    ]);
+    Dash.TableHeaderSettingIcon('Campaign Analytics');
+  });
+
+  it('Verify that Barge, Listen and Whispering Icon Display on Live dashboard for Admin', () => {
+    Dash.clickStatusButton();
+    Dash.selectAvailable('Available', testData.campaign);
+    Dash.clickConfirmButton();
+    addCont.dialPhoneNumber('6029227636');
+    addCont.clickDialerCallButton();
+    Dash.verifyCallStarted();
+    Dash.clickDashboard();
+    Dash.verifyCallMonitoringIcon('Listen');   // Admin can Listen both Agent & Cust (but can't talk to them)
+    Dash.verifyCallMonitoringIcon('Barge In'); // All three can talk (like conference)
+    Dash.verifyCallMonitoringIcon('whisper');  //Admin & agent can talk (cust can't hear)
+  });
+
+  it('Verify that Listen Icon Display on Live dashboard for Supervisor account', () => {
+    Dash.clickLoginAs();
+    Dash.clickLoginAsPlusIcon();
+    Dash.clickAgentOrSupervisor(testData.supervisor);
+    Dash.verifyUserDashboardName(testData.supervisor);
+    Dash.verifyCallMonitoringIcon('Listen');   // Supervisor can Listen both Agent & Cust
+    ignoreSpeedTestPopup();
+    Dash.clickBackToAdmin();
+    ignoreSpeedTestPopup();
+    Dash.verifyUserDashboardName(testData.AdminName);
+  });
+
+  it('Verify that all the campaign is present in that account there data should be shown in the table', () => {
+    verifyRoleTitle();
+    camp.getCampaignList();
+    Dash.clickDashboard();
+    Dash.clickOnMainTab();
+    camp.verifyDashCampaignAnalyticsList();
+  });
+
+  it('Verify that data should be shown in Agent Analytics as per the agent whose involve in calling', () => {
+    Dash.verifyTableResultLength('Agent Analytics');
+  });
+
+  it('Verify that when user hover on the block in Best time to call chart then its shows tooltip', () => {
+    Dash.clickDashboardCalendar();
+    Dash.clickOnTimeSpan('Last 7 Days');
+    cy.wait(1000)
+    Dash.mouseOverOnChart('Best Time to Call','center');
+    Dash.verifyChartTooltip(['Wednesday 11:00 am - 12:00 pm', 'Avg Answered Calls:', '%']);
+  });
+
+  it('Verify that when user hover on the doughnut chart then in tooltip call result name with percentage value should be shown', () => {
+    Dash.clickDashboardCalendar();
+    Dash.clickOnTimeSpan('Last 4 Weeks');
+    cy.wait(1000);
+    Dash.mouseOverOnChart('Call Results',{ clientX: 200, clientY: 300 });
+    Dash.verifyChartTooltip(['Calls', '%']);
+  });
+
+  it('Verify the tool tip displayed on the main card section', () => { 
+    Dash.mouseOverOnMainCard('Outbound Calls'); 
+    Dash.verifyTooltipText('Calls that are initiated outward to a contact');
+    Dash.mouseOutOnMainCardToolTip('Outbound Calls');
+
+    Dash.mouseOverOnMainCard('Connected Calls');
+    Dash.verifyTooltipText('The number of outbound calls a contact answered.');
+    Dash.mouseOutOnMainCardToolTip('Connected Calls');
+
+    Dash.mouseOverOnMainCard('Avg. Call Duration', 'time');
+    Dash.verifyTooltipText('The average amount of time an agent spent in a call.');
+    Dash.mouseOutOnMainCardToolTip('Avg. Call Duration', 'time');
+
+    Dash.mouseOverOnMainCard('Avg. Agent Wait Time', 'time');
+    Dash.verifyTooltipText('The average amount of time an agent spent in a call.');
+    Dash.mouseOutOnMainCardToolTip('Avg. Agent Wait Time', 'time');
+
+    Dash.mouseOverOnMainCard('Abandon Rate', 'rate');
+    Dash.verifyTooltipText('The percent of all abandoned calls that hangs up before the system routes the call to an available agent, or the system fails to route the call to an available agent.');
+    Dash.mouseOutOnMainCardToolTip('Abandon Rate', 'rate');
+
+    Dash.mouseOverOnMainCard('Active Campaigns');
+    Dash.verifyTooltipText('Number of Campaigns that are operating to service Outbound calls.');
+    Dash.mouseOutOnMainCardToolTip('Active Campaigns');
+
+    Dash.mouseOverOnMainCard('Leads Generated');
+    Dash.verifyTooltipText('Disposition generated through successful customer prospect.');
+    Dash.mouseOutOnMainCardToolTip('Leads Generated');
+
+    Dash.mouseOverOnMainCard('Connect Rate', 'rate');
+    Dash.verifyTooltipText('The percent of all numbers dialed that connected to a contact.');
+    Dash.mouseOutOnMainCardToolTip('Connect Rate', 'rate');
+
+    Dash.mouseOverOnMainCard('Dialing Time', 'time');
+    Dash.verifyTooltipText("The time between the dialer sending the request to the phone network and the respondent's phone starting to ring.");
+    Dash.mouseOutOnMainCardToolTip('Dialing Time', 'time');
+
+    Dash.mouseOverOnMainCard('Avg. CPA(Calls Per Agent)');
+    Dash.verifyTooltipText('The average calls an agent had per day.');
+    Dash.mouseOutOnMainCardToolTip('Avg. CPA(Calls Per Agent)');
+
+    Dash.mouseOverOnMainCard('Calls Per Connect');
+    Dash.verifyTooltipText('Number of calls that are connected to a live contact.');
+    Dash.mouseOutOnMainCardToolTip('Calls Per Connect');
+
+    Dash.mouseOverOnMainCard('Voicemails Reached');
+    Dash.verifyTooltipText('Calls that were not connected to a live contact and went to voicemail.');
+    Dash.mouseOutOnMainCardToolTip('Voicemails Reached');
+  });
+
 });

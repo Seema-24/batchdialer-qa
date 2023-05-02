@@ -275,6 +275,8 @@ const dayPicker = '[class="DayPicker-Day"]';
 const timeSpans = '.dropdown-menu.show .links button';
 const filterDropdown =(label) => `//span[text()="${label}"]/ancestor::div[contains(@class,"ss-select-control")]`;
 const timeFilter = (equityBox,btn) => `.horizontal-radio-group [name="timeFilterFor${equityBox}"][value="${btn}"] + .checkmark`;
+const MainDashTableResult = (header) => `//div[span[text()="${header}"]]/following-sibling::div//div[@class="td"][1]`;
+const tableChart = (header) => `//div[span[text()="${header}"]]/following-sibling::div[contains(@class,"dashboard-responsiveness__chart")]/canvas`
 
 export default class Dashboard {
   clickDashboard() {
@@ -2205,7 +2207,7 @@ export default class Dashboard {
     let getDate;
     const dayjs = require("dayjs");
 
-    cy.get(timeSpans).contains(filter).click();
+    cy.get(timeSpans).contains(filter).click({force:true});
     if(filter === 'Today') {
       getDate = dayjs().format('MM/DD/YYYY');
     } else if(filter === 'Last 7 Days') {
@@ -2273,8 +2275,8 @@ export default class Dashboard {
     cy.get('.ss-select-option [data-icon="check"]').click({force:true});
   }
 
-  verifyFilterResult(data) {
-    cy.get(integrationTableData(1)).should('contain.text', data)
+  verifyTableResult(header, data) {
+    cy.xpath(MainDashTableResult(header)).should('contain.text', data)
   }
   
   verifyDashCallsResult(value, scenerio) {
@@ -2308,6 +2310,39 @@ export default class Dashboard {
     cy.get(timeFilter(equityBox,radiobtn))
     .scrollIntoView()
     .should('have.css', 'background-color', 'rgb(33, 150, 243)')
+  }
+
+  TableHeaderSettingIcon(table) {
+    cy.xpath(`//div[span[text()="${table}"]]/following-sibling::*//div[contains(@class,"resizable-table-buttons")]`)
+      .should('be.visible');
+  }
+
+  verifyCallMonitoringIcon(icon) {
+    cy.get(`img[alt="${icon}"]`).should('be.visible');
+  }
+
+  mouseOverOnChart(header,position) {
+    cy.xpath(tableChart(header))
+      .scrollIntoView()
+      .trigger('mousemove', position, {force:true});
+  }
+
+  verifyTableResultLength(header) {
+    cy.xpath(MainDashTableResult(header)).should('have.length.greaterThan', 0);
+  }
+
+  verifyChartTooltip(tooltip) {
+    for (let i = 0; i < tooltip.length; i++) {
+      cy.get('#chartjs-tooltip').should('contain.text', tooltip[i]);
+    }
+  }
+
+  mouseOverOnMainCard(name) {
+    cy.contains(name).trigger('mouseover',{force:true});
+  }
+
+  mouseOutOnMainCardToolTip(name) {
+    cy.contains(name).wait(500).trigger('mouseout',{force:true})
   }
 
 
