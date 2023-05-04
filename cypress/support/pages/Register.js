@@ -1,4 +1,4 @@
-import { ignoreSpeedTestPopup } from '../Utils';
+import { ignoreSpeedTestPopup } from "../Utils";
 
 const signUpBtn = 'a[href*="register"]';
 const firstName = 'input[name="firstname"].form-control';
@@ -63,6 +63,7 @@ const city = 'input[name="city"]';
 export default class Register {
   clickSignUpBtn() {
     cy.get(signUpBtn).click();
+    this.closePopUp();
   }
 
   verifyRegistrationUrl() {
@@ -441,5 +442,20 @@ export default class Register {
 
   enterCity(name) {
     cy.get(city).clear().type(name);
+  }
+
+  closePopUp() {
+    cy.wait(5000).get('body').then(($body)=> {
+      if($body.find('#pendo-guide-container').length) {
+        cy.get('button').then((btns) => {
+          for (let i = 0; i < btns.length; i++) {
+            if(btns[i].textContent.trim() === 'Not this time') {
+              cy.get(btns[i]).click({force:true});
+              break;
+            }
+          }
+        });
+      }
+    });
   }
 }

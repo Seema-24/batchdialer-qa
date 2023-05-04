@@ -35,6 +35,7 @@ const setup = new Setup();
 describe('Registration & Login Flow', () => {
   beforeEach(() => {
     cy.visit('/');
+    closeDialogBox();
     cy.fixture('testData').then((data) => (testData = data));
     Cypress.Cookies.defaults({
       preserve: (cookies) => {
@@ -248,6 +249,7 @@ describe('Registration & Login Flow', () => {
   });
 
   it('Verify elements of login page', () => {
+    register.closePopUp();
     login.verifyEmailField();
     login.verifyPasswordField();
     login.verifyLoginButton();
@@ -256,6 +258,7 @@ describe('Registration & Login Flow', () => {
   });
   
   it('Login with Incorrect Credentials', () => {
+    register.closePopUp();
     login.enterEmailtoSignin('test2ing@email.com');
     login.enterPasswordToSignin('Fleek@2016');
     login.clickTermsCheckBox();
@@ -264,6 +267,7 @@ describe('Registration & Login Flow', () => {
   });
   
   it('Verify the Forget Password Button', () => {
+    register.closePopUp();
     login.clickForgetPassword();
     login.verifyForgetPasswordPage();
   });
@@ -280,21 +284,21 @@ describe('Registration & Login Flow', () => {
   });
 
   it('Verify that Locked account should give error when trying to Login', () => {
-    cy.url().then((url) => {
-      let lockedAccount = 'martinj@test.com';
-      let password = 'Test@123';
-      login.enterEmailtoSignin(lockedAccount);
-      login.enterPasswordToSignin(password);
-      login.clickTermsCheckBox();
-      login.clickSigninButton();
-      login.verifyErrorMessage(
-        'This client account is locked. Please contact support'
-      );
-    });
+    let lockedAccount = 'martinj@test.com';
+    let password = 'Test@123';
+    register.closePopUp();
+    login.enterEmailtoSignin(lockedAccount);
+    login.enterPasswordToSignin(password);
+    login.clickTermsCheckBox();
+    login.clickSigninButton();
+    login.verifyErrorMessage(
+      'This client account is locked. Please contact support'
+    );
   });
 
   it('SuccessFully Login', () => {
     verifyCloseApp();
+    register.closePopUp();
     login.enterEmailtoSignin(Cypress.env('username'));
     login.enterPasswordToSignin(Cypress.env('password'));
     login.clickTermsCheckBox();
@@ -1989,6 +1993,7 @@ describe('Report Page', () => {
   
   beforeEach(() => {
     handlePoorConnectionPopup();
+    closeDialogBox();
   })
   
   after(() => {
@@ -2074,6 +2079,7 @@ describe('SuperVisor Flow', () => {
 
   beforeEach(() => {
     handlePoorConnectionPopup();
+    closeDialogBox();
   })
 
   after(() => {

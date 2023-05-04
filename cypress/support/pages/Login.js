@@ -10,11 +10,11 @@ const errorMessage = '.Toastify__toast--error';
 
 export default class Login {
   enterEmailtoSignin(email) {
-    cy.get(emailInputField).clear().type(email);
+    cy.get(emailInputField).clear({force:true}).type(email);
   }
 
   enterPasswordToSignin(pswd) {
-    cy.get(passwordInputField).clear().type(pswd);
+    cy.get(passwordInputField).clear({force:true}).type(pswd);
   }
 
   clickTermsCheckBox() {
