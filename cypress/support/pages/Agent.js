@@ -850,6 +850,22 @@ export default class Agent {
 
   selectAddressBook() {
     cy.get(addressBook).should('be.visible').first().click();
+  }
 
+  closePopUp() {
+    cy.wait(1000).get('body').then(($body) => {
+      if($body.find('#pendo-guide-container').length) {
+        cy.get('button').then((btns) => {
+          for (let i = 0; i < btns.length; i++) {
+            if (btns[i].textContent.trim() === 'Dismiss' || 
+                btns[i].textContent.trim() === 'Not this time'
+              ) {
+              cy.get(btns[i]).click({force:true});
+              break;
+            }
+          }
+        });
+      }
+    });
   }
 }

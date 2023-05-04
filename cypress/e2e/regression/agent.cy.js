@@ -31,6 +31,7 @@ describe('Agent Profile', function () {
 
   beforeEach(() => {
     handlePoorConnectionPopup();
+    agent.closePopUp();
   });
 
   after(() => {

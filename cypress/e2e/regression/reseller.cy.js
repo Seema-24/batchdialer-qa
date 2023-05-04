@@ -3,7 +3,7 @@ import Login from '../../support/pages/Login';
 import PhoneNum from '../../support/pages/PhoneNum';
 import Register from '../../support/pages/Register';
 import Reseller from '../../support/pages/ResellerAdmin';
-import { covertNumberToNormal, handlePoorConnectionPopup, ignoreSpeedTestPopup } from '../../support/Utils';
+import { closeDialogBox, covertNumberToNormal, handlePoorConnectionPopup, ignoreSpeedTestPopup } from '../../support/Utils';
 
 const reseller = new Reseller();
 const login = new Login();
@@ -42,6 +42,7 @@ describe('Reseller Admin', () => {
       } else {
         cy.visit('/register_trial');
         cy.wait(1000);
+        register.closePopUp();
         register.enterFirstName('Demo');
         register.enterLastName('testing');
         register.enterCompanyName('Fleek+' + randomNumber + '');

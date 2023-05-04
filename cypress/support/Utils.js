@@ -28,7 +28,11 @@ export function skipTourGuidePopup() {
   cy.wait(2000);
   cy.get('body').then(($body) => {
     if($body.find(quickStartGuidePopUp).length) {
-      cy.contains('Skip Tour').click();
+      if($body.text().includes('Skip Tour')) {
+        cy.contains('Skip Tour').click();
+      } if ($body.text().includes('Not this time')) {
+        cy.contains('Not this time').click();
+      }
       cy.wait(1000);
     } else if ($body.find(speedTestPopup).length) {
       ignoreSpeedTestPopup();
