@@ -1002,6 +1002,7 @@ describe('Dashboard Elements', () => {
     Dash.clickLoginAs();
     Dash.clickLoginAsPlusIcon();
     Dash.clickAgentOrSupervisor(testData.supervisor);
+    ignoreSpeedTestPopup();
     Dash.verifyUserDashboardName(testData.supervisor);
     Dash.clickBackToAdmin();
     ignoreSpeedTestPopup();
@@ -1104,6 +1105,7 @@ describe('Dashboard Elements', () => {
     Dash.clickLoginAs();
     Dash.clickLoginAsPlusIcon();
     Dash.clickAgentOrSupervisor(testData.supervisor);
+    ignoreSpeedTestPopup();
     Dash.verifyUserDashboardName(testData.supervisor);
     Dash.clickMessageIcon();
     Dash.verifyChatBox();
@@ -1563,6 +1565,8 @@ describe('Dashboard Elements', () => {
     Dash.clickAgentOrSupervisor(testData.supervisor);
     Dash.verifyUserDashboardName(testData.supervisor);
     Dash.verifyCallMonitoringIcon('Listen');   // Supervisor can Listen both Agent & Cust
+    Dash.verifyCallMonitoringIcon('Barge In', 'NoAccess'); 
+    Dash.verifyCallMonitoringIcon('whisper', 'NoAccess');  
     ignoreSpeedTestPopup();
     Dash.clickBackToAdmin();
     ignoreSpeedTestPopup();

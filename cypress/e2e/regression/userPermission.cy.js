@@ -1829,14 +1829,16 @@ describe('User Permission Costumization Flow for Admin Role', () => {
     ]);
   });
 
-  it('verify that for supervisor users All 3 permissions are optional', () => {
+  it('verify that supervisor should have access for Listening and No access for barge-in and Whispering permission', () => {
     user.clickingOnUserOption();
     user.searchUser(testData.supervisor);
     cy.wait(4000);
     user.clickUserEditButton(supervisorFirstName, supervisorLastName);
     permission.clickUserPermissionExpander();
     permission.verifyDefaultPermissions([
-      'Listening',
+      'Listening'
+    ]);
+    permission.verifyNoAccessPermissions([
       'Whispering',
       'Barge-in'
     ]);

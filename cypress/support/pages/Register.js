@@ -458,4 +458,12 @@ export default class Register {
       }
     });
   }
+
+  storeRegisterAccount(email) {
+    cy.readFile('cypress/fixtures/testData.json',() => {
+    }).then((data) => {
+      data.registerEmail = email;
+      cy.writeFile('cypress/fixtures/testData.json', JSON.stringify(data));
+    });
+  }
 }

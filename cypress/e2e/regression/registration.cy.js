@@ -269,6 +269,7 @@ describe('Registration', () => {
         register.verifySubscribedNowBtnEnabled();
         register.clickSubscribeBtn();
         register.verifyPaymentSummaryVisible();
+        register.storeRegisterAccount(email);
         cy.wait(1000);
         register.clickOnButton('Continue to dashboard');
         cy.waitFor(cy.get('.main_sec', { timeout: 30000 }));
@@ -458,7 +459,7 @@ describe('Registration', () => {
         dashboard.verifyZip(Cypress.env('BillingZip'));
         dashboard.verifyCountry(Cypress.env('Country'));
         dashboard.clickCancelBtn();
-        cy.Logout();
+         cy.Logout();
       }
     })
   });
@@ -478,12 +479,6 @@ describe('Registration', () => {
         register.handleAlertWindow();
         register.clickClientsMenu();
         register.enterUserToSearch('testing@test.com');
-        register.clickDeleteUserButton();
-        register.clickCancelNowRadioBtn();
-        register.clickOnButton('Continue');
-        cy.wait(500);
-        // registered account also cancel
-        register.enterUserToSearch(email);
         register.clickDeleteUserButton();
         register.clickCancelNowRadioBtn();
         register.clickOnButton('Continue');

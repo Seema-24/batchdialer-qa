@@ -10,7 +10,7 @@ import Report from "../../support/pages/Report";
 import Setup from "../../support/pages/Setup";
 import Suprevisor from "../../support/pages/Supervisor";
 import User from "../../support/pages/User";
-import { closeDialogBox, getDate, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus, verifyCloseApp } from "../../support/Utils";
+import { closeDialogBox, getDate, handlePoorConnectionPopup, ignoreSpeedTestPopup, selectAgentStatus, verifyCloseApp, verifyRoleTitle } from "../../support/Utils";
 
 let fixtureData,testData,count;
 const randomNumber = Math.floor(Math.random() * 1000);
@@ -263,7 +263,7 @@ describe('Registration & Login Flow', () => {
     login.enterPasswordToSignin('Fleek@2016');
     login.clickTermsCheckBox();
     login.clickSigninButton();
-    login.verifyErrorMessage('User test2ing@email.com not found');
+    login.verifyErrorMessage('Login or password is not correct');
   });
   
   it('Verify the Forget Password Button', () => {
@@ -2336,6 +2336,7 @@ describe('Dashboard Elements', () => {
     dashboard.clickLoginAs();
     dashboard.clickLoginAsPlusIcon();
     dashboard.clickAgentOrSupervisor(testData.supervisor);
+    ignoreSpeedTestPopup();
     dashboard.verifyUserDashboardName(testData.supervisor);
     dashboard.clickBackToAdmin();
     ignoreSpeedTestPopup();
@@ -2343,6 +2344,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Verify that Next Billing date is displayed in the BILLING INFO section', () => {
+    verifyRoleTitle();
     dashboard.clickUserProfile();
     dashboard.clickBilling();
     dashboard.verifyBillingCycle();

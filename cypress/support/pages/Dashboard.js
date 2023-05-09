@@ -451,7 +451,7 @@ export default class Dashboard {
 
   clickStatusButton() {
     clickCallFunction();
-    cy.get(StatusDropDown).click();
+    cy.get(StatusDropDown, {timeout:60000}).click();
   }
 
   clickLeadItemsNameField(name) {
@@ -2317,8 +2317,12 @@ export default class Dashboard {
       .should('be.visible');
   }
 
-  verifyCallMonitoringIcon(icon) {
-    cy.get(`img[alt="${icon}"]`).should('be.visible');
+  verifyCallMonitoringIcon(icon, cond) {
+    if(cond === 'NoAccess') {
+      cy.get(`img[alt="${icon}"]`).should('not.exist');
+    } else {
+      cy.get(`img[alt="${icon}"]`).should('be.visible');
+    }
   }
 
   mouseOverOnChart(header,position) {
@@ -2345,5 +2349,12 @@ export default class Dashboard {
     cy.contains(name).wait(500).trigger('mouseout',{force:true})
   }
 
+  verifyAddonInActiveProduct(product) {
+    cy.get('.billing-active-card__description').should('contain.text', product);
+  }   
+
+  verifyRecommendedAddons(prod) {
+    cy.get('.recommended_addon').should('contain.text', prod);
+  }
 
 }

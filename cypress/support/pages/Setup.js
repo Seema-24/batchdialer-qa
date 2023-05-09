@@ -614,19 +614,5 @@ export default class Setup {
       .children(disabledPermissions)
       .scrollIntoView()
       .click({ force: true });
-    cy.get(disabledPermissions)
-      .parents(permissionHeading)
-      .contains('Whispering')
-      .children('div')
-      .children(disabledPermissions)
-      .scrollIntoView()
-      .click({ force: true });
-    cy.get(disabledPermissions)
-      .parents(permissionHeading)
-      .contains('Barge-in')
-      .children('div')
-      .children(disabledPermissions)
-      .scrollIntoView()
-      .click({ force: true });
   }
 }

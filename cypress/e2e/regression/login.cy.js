@@ -30,7 +30,7 @@ describe('Login Flow', () => {
     login.enterPasswordToSignin('Fleek@2016');
     login.clickTermsCheckBox();
     login.clickSigninButton();
-    login.verifyErrorMessage('User test2ing@email.com not found');
+    login.verifyErrorMessage('Login or password is not correct');
   });
 
   it('Verify the Forget Password Button', () => {
