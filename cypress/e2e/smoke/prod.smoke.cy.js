@@ -304,6 +304,7 @@ describe('Registration & Login Flow', () => {
     login.clickTermsCheckBox();
     login.clickSigninButton();
     login.verifySuccessfullLogin();
+    ignoreSpeedTestPopup();
   });
 
   it('Setup Account', () => {
@@ -314,7 +315,6 @@ describe('Registration & Login Flow', () => {
     const [adminFirstName, adminlastName] =
       testData.adminWithoutCalling.split(' ');
 
-    ignoreSpeedTestPopup();
     setup.addNewAgent(
       agentFirstName,
       agentlastName,
