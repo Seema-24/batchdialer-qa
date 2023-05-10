@@ -313,13 +313,13 @@ export default class Contacts {
   }
 
   verifySuccessToastMessage(message) {
-    cy.get(ToastMessage,{time:30000})
+    cy.get(ToastMessage,{timeout:60000})
       .should('be.visible')
       .should('contain.text', message);
   }
 
   verifyErrorToastMessage(message) {
-    cy.get(ToastMessage,{time:30000})
+    cy.get(ToastMessage,{timeout:30000})
       .should('be.visible')
       .should('contain.text', message);
   }
@@ -1161,7 +1161,7 @@ export default class Contacts {
 
   verifySortingTable(number,order) {
     let flag;
-    cy.wait(1000);
+    cy.wait(2000);
     cy.get(contactTableData(number)).then(($ele) => {
       const tableData = Array.from($ele, el => el.innerText);
 

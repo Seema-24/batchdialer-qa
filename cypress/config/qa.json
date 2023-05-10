@@ -1,7 +1,7 @@
 {
   "baseUrl": "https://qa.int.batchdialer.com",
   "env": {
-    "username": "testing01@email.com",
+    "username": "testing02@email.com",
     "password": "Fleek@2016",
     "CardName": "Testing",
     "CardNumber": "5200828282828210",

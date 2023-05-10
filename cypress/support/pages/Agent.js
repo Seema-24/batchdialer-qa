@@ -91,11 +91,11 @@ const callsInfo = "[alt='Calls']";
 const voiceMailInfo = "[alt='Voicemail']";
 const leadInfoBtn = ".btn-primary[type='button']";
 const propertyDetailsBtn =
-  "//*[@id='root']/section/div/div/div/div[2]/div[1]/div/div/div[1]/button[2]";
+  '//div[@class="contact-view-buttons"]/button[text()="Property Details"]';
 const activitiesBtn =
-  "//*[@id='root']/section/div/div/div/div[2]/div[1]/div/div/div[1]/button[3]";
+  '//div[@class="contact-view-buttons"]/button[text()="Activities"]';
 const campaignsBtn =
-  "//*[@id='root']/section/div/div/div/div[2]/div[1]/div/div/div[1]/button[4]";
+  '//div[@class="contact-view-buttons"]/button[text()="Campaigns"]';
 const editFormOnViewContact = '.contact-field';
 // const saveBtn = '.contact__save-btn';
 const contactCalengerViewBtn = '.contact-view__calendar-btn';
@@ -138,11 +138,9 @@ const monthChangeBnts = '.svg-stroke';
 const monthYearStatusBar = '.daypicker__month-select';
 const agentDetailsPlusBtn = "[data-icon='plus']";
 const agentCallDetails = '.reports-agents__summary';
-const campaignBtnOnViewContact =
-  "//*[@id='root']/section/div/div/div/div[2]/div[1]/div/div/div[1]/button[4]";
 const viewContactCampaignTableHeader = '.table thead';
 const notesBtnOnViewContact =
-  "//*[@id='root']/section/div/div/div/div[2]/div[1]/div/div/div[1]/button[5]";
+  '//div[@class="contact-view-buttons"]/button[text()="Notes"]';
 // const addNewNoteBtn = "//button[text()='Add New Note']";
 const addNewNotePage = '.modal-content';
 const addNoteCloseBtn = "//button[contains(text(),' Close')]";
@@ -619,7 +617,7 @@ export default class Agent {
     }
   }
   clickOnCampaignBtnOnViewContact() {
-    cy.xpath(campaignBtnOnViewContact).click({force:true});
+    cy.xpath(campaignsBtn).click({force:true});
   }
   verifyViewContactCampaignTableHeader(headerElements) {
     for (let i = 0; i < headerElements.length; i++) {

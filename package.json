@@ -29,7 +29,7 @@
     "report:prod:smoke": "npm run cy:smoke:prod ; npm run report:merge ; npm run report:generate:smoke ; npm run report:copyScreenshots:smoke"
   },
   "keywords": [],
-  "author": "Anil",
+  "author": "Seema",
   "license": "ISC",
   "devDependencies": {
     "@4tw/cypress-drag-drop": "^2.2.3",
