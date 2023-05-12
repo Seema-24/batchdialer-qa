@@ -1694,7 +1694,7 @@ describe('Outbound Calling Scenarios', () => {
     it('Verify the Campaign status (Inter dialing pause) when an agent starts dialing a campaign type Predictive dialer', () => {
       Dial.clickOnMenu('Dashboard');
       Dial.clickOnMenu('Campaigns');
-      camp.verifyCampaignStatus(campaignName,'Interdialing Pause');
+      camp.verifyCampaignStatus(campaignName,'Interdialing Pause'); //when leads or timeout over then Interdialing pause show
     });
 
     it('Delete the Created Campaign', () => {
@@ -1814,5 +1814,74 @@ describe('Outbound Calling Scenarios', () => {
       contact.verifyListExisting(contactList+'.csv');
     }); 
   });
+
+});
+
+describe('Verify Softphone Re-Design Scenerios', () => {
+  before(() => {
+    cy.visit('/');
+    Cypress.Cookies.defaults({
+      preserve: (cookies) => {
+        return true;
+      },
+    });
+  });
+
+  beforeEach(() => {
+    handlePoorConnectionPopup();
+    closeDialogBox();
+  });
+
+  after(() => {
+    cy.Logout();
+  });
+
+  it('Login To Application', () => {
+    verifyCloseApp();
+    cy.Login(Cypress.env('username'), Cypress.env('password'));
+    ignoreSpeedTestPopup();
+  });
+
+  it('Verify Elements of Softphone Dialer', () =>{
+    Dial.clickToOpenSoftphone();
+    Dial.verifySoftphonePresenceLight();
+    Dial.verifySoftphonePresenceName();
+    Dial.verifySoftphonePresenceTime();
+    Dial.verifySoftphoneSwitchTab(['Campaigns','Phone','Settings']);
+  });
+
+  it('Verify campaign tab from softphone', () => {
+    Dial.verifySoftphoneCampSearchbox();
+    Dial.verifySoftphoneCampaignList();
+    Dial.verifySoftphoneDialerModeIcon();
+    Dial.verifySoftphoneCampaignName();
+    Dial.verifySoftphoneCampLeadsCount();
+    Dial.verifySoftphoneCampDate();
+    Dial.verifySoftphoneCampaignBtn('Join');
+  });
+
+  it('Verify Status icon', () => {
+    Dial.clickSoftphoneAgentPresence();
+    Dial.verifyStatusChangeWindow();
+    Dial.verifyAgentStatusList([
+      'Available',
+      'Break',
+      'Lunch',
+      'In training',
+      'Out of desk',
+      'Offline',
+      'In Meeting',
+      'PrepWork',
+      'After Call'
+    ]);
+    Dial.ClickBackFromStatusChangeWindow();
+  });
+
+  it('Verify that A user with Agent feature is able to open the Settings tab in the Softphone', () => {
+    Dial.clickSoftphoneSwitchTab('Settings');
+    Dial.verifySoftphoneSettingVisible();
+  });
+
+
 
 });

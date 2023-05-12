@@ -102,6 +102,12 @@ const closeSoftBtn = '.softphone-close-button .cursor_pointer';
 const timeoutDestination = '//label[text()="Timeout Destination"]/ancestor::div[contains(@class,"col")]/descendant::span[contains(@class,"ss-select-value")][1]';
 const PhoneValue = (key) => `//div[@class="key"][text()="${key}"]/parent::div/child::div[@class="value"]`
 const contactLineCursor = (pos) => `svg[data-icon="angle-${pos}"]`
+const SoftphonePresenceHeader = '.softphone-header-height .agent-presence >div >div';
+const softphoneBottomSwitchTab = (tab) => `//footer//li/span[text()="${tab}"]/preceding-sibling::span[contains(@class,"cursor_pointer")]`;
+const softphoneDialerModeIcon = '//ul[contains(@class,"campaigns-list")]/li//div[contains(@class,"icon")]';
+const softphoneCampName = (classVal) => `//ul[contains(@class,"campaigns-list")]/li//span[contains(@class,"${classVal}")]`;
+const statusChangeWindow = '.status-change-window .show';
+
 
 const dash = new Dashboard();
 export default class Dialer {
@@ -728,7 +734,7 @@ export default class Dialer {
   }
 
   clickToOpenSoftphone() {
-    cy.get(softphoneIcon).click();
+    cy.get(softphoneIcon,{timeout:60000}).click();
   }
 
   clickTableRefreshButton() {
@@ -808,5 +814,82 @@ export default class Dialer {
 
   clickTermsConditionsCheckbox() {
     cy.xpath('//label[text()="Accept Terms and Conditions "]/span[@class="checkmark"]').click();
+  }
+
+  verifySoftphonePresenceLight() {
+    cy.get(SoftphonePresenceHeader +' .agent__presence-light').should('be.visible');
+  }
+
+  verifySoftphonePresenceName() {
+    cy.get(SoftphonePresenceHeader +' .agent__presence-name').should('be.visible');
+  }
+
+  verifySoftphonePresenceTime() {
+    cy.get(SoftphonePresenceHeader).last().should('contain.text', '00:');
+  }
+
+  verifySoftphoneSwitchTab(tabs) {
+    for (let i = 0; i < tabs.length; i++) {
+      cy.xpath(softphoneBottomSwitchTab(tabs[i])).should('be.visible');
+    }
+  }
+
+  verifySoftphoneCampSearchbox() {
+    cy.get('[placeholder="Search Campaign"]').should('be.visible');
+  }
+
+  verifySoftphoneCampaignList() {
+    cy.get('.campaigns-list').should('be.visible');
+  }
+
+  verifySoftphoneCampaignBtn(btn) {
+    cy.get('.campaigns-list button').should('be.visible').and('contain.text', btn)
+  }
+
+  verifySoftphoneDialerModeIcon() {
+    cy.xpath(softphoneDialerModeIcon).should('be.visible');
+  }
+
+  verifySoftphoneCampaignName() {
+    cy.xpath(softphoneCampName('text-truncate')).should('be.visible');
+  }
+
+  verifySoftphoneCampLeadsCount() {
+    cy.xpath(softphoneCampName('light-grey-text me-2')).should('be.visible');
+  }
+  verifySoftphoneCampDate() {
+    cy.xpath(softphoneCampName('light-grey-text font')).should('be.visible');
+  }
+
+  clickSoftphoneAgentPresence() {
+    cy.get(SoftphonePresenceHeader+ ' [data-icon="angle-down"]').first().click({force:true});
+  }
+
+  verifyStatusChangeWindow() {
+    cy.get(statusChangeWindow).should('be.visible');
+  }
+
+  verifyAgentStatusList(list) {
+    for (let i = 0; i < list.length; i++) {
+      cy.get(options).then((status) => {
+        for (let i = 0; i < status.length; i++) {
+          if(status[i].textContent === list[i]) {
+            cy.contains(list[i]).scrollIntoView().should('be.visible');
+          }
+        }
+      });
+    }
+  }
+
+  clickSoftphoneSwitchTab(tab) {
+    cy.xpath(softphoneBottomSwitchTab(tab)).click({force:true});
+  }
+
+  ClickBackFromStatusChangeWindow() {
+    cy.get('.rounded-top .cursor_pointer').click();
+  }
+
+  verifySoftphoneSettingVisible() {
+    cy.get('.softphone-settings').should('be.visible');
   }
 }

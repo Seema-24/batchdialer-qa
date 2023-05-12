@@ -1610,7 +1610,7 @@ export default class Dashboard {
     cy.get('button').then((Btn) => {
       for (let i = 0; i < Btn.length; i++) {
         if (Btn[i].textContent.trim() === buttonName) {
-          cy.get(Btn[i], { timeout: 60000 }).should('be.visible');
+          cy.get(Btn[i], { timeout: 60000 }).scrollIntoView().should('be.visible');
         }
       }
     });

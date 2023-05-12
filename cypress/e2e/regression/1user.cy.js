@@ -63,6 +63,7 @@ describe('Login Successfully and Add User', () => {
   it('Should Add User for Agent role', () => {
     addUser.clickingOnUserOption();
     cy.wait(3000);
+    addUser.verifyUserExisting(fixtureData.userFirstname +' '+ fixtureData.userLastname);
     addUser.clickAddNewUserButton();
     addUser.chooseUserRole('Agent');
     addUser.enterFirstName(fixtureData.userFirstname);
@@ -454,6 +455,7 @@ describe('Login Successfully and Add User', () => {
   it('Create Agent and Verify count', () => {
     addUser.clickingOnUserOption();
     cy.wait(3000);
+    addUser.verifyUserExisting(fixtureData.userFirstname +' '+ fixtureData.userLastname);
     addUser.clickAddNewUserButton();
     addUser.chooseUserRole('Agent');
     addUser.enterFirstName(fixtureData.userFirstname);
