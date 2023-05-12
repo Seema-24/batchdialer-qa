@@ -29,6 +29,7 @@ describe('SuperVisor Flow', () => {
   it('Supervisor Should Login Successfully', () => {
     cy.Login(testData.SupervisorEmail, testData.password);
     cy.reload();
+    ignoreSpeedTestPopup();
   });
 
   it('Verify the Dashboard Elements', () => {
@@ -97,6 +98,7 @@ describe('SuperVisor Flow', () => {
     suprevisor.verifyLogin(testData.agent);
     suprevisor.clickOnProfile();
     suprevisor.clickBackToSupervisor();
+    ignoreSpeedTestPopup();
     suprevisor.verifySupervisorProfile();
   });
 

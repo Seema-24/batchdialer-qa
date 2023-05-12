@@ -472,11 +472,13 @@ describe('Registration', () => {
       } else {
         login.verifyCloseApp();
         cy.Login('god', 'god');
+        ignoreSpeedTestPopup();
         register.clickUserTreeDropdown('Switch Account');
         register.clickOnUser('First Tenant');
         register.clickOnUser('Reseller 1');
         register.clickOnResellerUser();
         register.handleAlertWindow();
+        ignoreSpeedTestPopup();
         register.clickClientsMenu();
         register.enterUserToSearch('testing@test.com');
         register.clickDeleteUserButton();

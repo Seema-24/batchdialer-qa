@@ -629,4 +629,18 @@ export default class User {
   verifySystemStatusDisabled() {
     cy.get('.radio_cstm.disabled input').should('be.disabled').and('have.length', 9);
   }
+
+  verifyUserExisting(user) {
+    this.searchUser(user);
+    cy.wait(2000).get('body').then(($body) => {
+      if($body.text().includes('No Users Found')) {
+        cy.log('User not found')
+      } else {
+        cy.xpath('//div[@class="tr"][div[@class="td"]]//div[@class="dropdown"]//img[@alt="Menu"]').first().click({force:true});
+        this.clickOnDropdownItem('Delete');
+        this.handleWindowAlert('Delete user?');
+        this.verifyDeletedToast();
+      }
+    });
+  }
 }

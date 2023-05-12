@@ -102,11 +102,13 @@ describe('Reseller Admin', () => {
         cy.log('Not performing Account Reactivation on Production');
       } else {
         cy.Login(Cypress.env('resellerUsername'), Cypress.env('resellerPassword'));
+        ignoreSpeedTestPopup();
         reseller.clickUserTreeDropdown('Switch Account');
         reseller.clickOnUser('First Tenant');
         reseller.clickOnUser('Reseller 1');
         reseller.clickOnResellerUser();
         cy.wait(1000);
+        ignoreSpeedTestPopup();
         login.verifySuccessfullLogin();
       }
     });
@@ -359,6 +361,7 @@ describe('Reseller Admin', () => {
         addNum.clickOnButton('Proceed');
         addNum.verifyToastMessage("Trial users can't replace DID numbers. Please contact support.");
         Dash.clickBackToAdmin();
+        ignoreSpeedTestPopup();
         Dash.verifyUserDashboardName('First Tenant Reseller 1');
       }
     });

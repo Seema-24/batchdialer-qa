@@ -804,6 +804,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.verifyPhoneSystemMenu();
     permission.clickBackToAdminBtn();
@@ -821,6 +822,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.verifyPhoneSystemMenuNotExist();
     permission.clickBackToAdminBtn();
@@ -838,6 +840,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Contacts');
     permission.verifyContactsPage();
@@ -856,6 +859,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Contacts');
     permission.clickContactName();
@@ -875,6 +879,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Contacts');
     permission.clickContactName();
@@ -895,6 +900,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Reports');
     permission.clickOnSubMenu('Recent Contacts');
@@ -917,6 +923,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Reports');
     permission.clickOnSubMenu('Recent Contacts');
@@ -937,6 +944,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Reports');
     permission.clickOnSubMenu('Recent Contacts');
@@ -956,6 +964,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Reports');
     permission.clickOnSubMenu('Recent Contacts');
@@ -975,6 +984,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Contacts');
     permission.verifyToastMessage(
@@ -995,6 +1005,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Phone System');
     permission.verifyDncPageVisible();
@@ -1013,6 +1024,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.verifyPhoneSystemMenuNotExist();
     permission.clickBackToAdminBtn();
@@ -1030,6 +1042,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Contacts');
     permission.clickOnSubMenu('Contact Lists');
@@ -1049,6 +1062,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Contacts');
     permission.clickOnSubMenu('Contact Lists');
@@ -1069,6 +1083,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Contacts');
     permission.clickOnSubMenu('Contact Lists');
@@ -1088,6 +1103,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Contacts');
     permission.clickOnSubMenu('Contact Lists');
@@ -1108,6 +1124,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Reports');
     permission.clickOnSubMenu('Recent Contacts');
@@ -1131,6 +1148,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Reports');
     permission.clickOnSubMenu('Recent Contacts');
@@ -1155,6 +1173,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Reports');
     permission.clickOnSubMenu('Recent Contacts');
@@ -1179,6 +1198,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Reports');
     permission.clickOnSubMenu('Recent Contacts');
@@ -1200,6 +1220,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickProfileDropdown();
     permission.verifyBillingPageExist();
@@ -1218,6 +1239,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickProfileDropdown();
     permission.verifyBillingPageNotExist();
@@ -1236,6 +1258,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickTasksIcon();
     cy.wait(2000);
@@ -1258,6 +1281,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickTasksIcon();
     cy.wait(2000);
@@ -1283,6 +1307,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Campaigns');
     cy.wait(2000);
@@ -1304,6 +1329,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Campaigns');
     cy.wait(2000);
@@ -1324,6 +1350,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Campaigns');
     cy.wait(2000);
@@ -1350,6 +1377,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Campaigns');
     cy.wait(2000);
@@ -1369,6 +1397,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Campaigns');
     cy.wait(2000);
@@ -1388,6 +1417,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Campaigns');
     cy.wait(2000);
@@ -1412,6 +1442,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Campaigns');
     cy.wait(2000);
@@ -1432,6 +1463,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.verifyCampaignMenuNotExist();
     permission.clickBackToAdminBtn();
@@ -1449,6 +1481,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.verifyUsersMenuExist();
     permission.clickOnMenu('Users');
@@ -1468,6 +1501,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Users');
     permission.verifyUserEditBtnExist();
@@ -1486,6 +1520,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Users');
     permission.verifyUserDeleteBtnExist();
@@ -1504,6 +1539,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Users');
     permission.clickUserMenuBtn();
@@ -1525,6 +1561,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Users');
     permission.clickUserMenuBtn();
@@ -1546,6 +1583,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Users');
     cy.wait(2000);
@@ -1565,6 +1603,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.clickOnMenu('Users');
     cy.wait(2000);
@@ -1584,6 +1623,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(1000);
     permission.verifyUsersMenuNotExist();
     permission.clickBackToAdminBtn();
@@ -1602,6 +1642,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(2000);
     permission.clickOnMenu('Reports');
     permission.verifySubMenuExist([
@@ -1628,6 +1669,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     user.clickOnButton('SAVE');
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
+    ignoreSpeedTestPopup();
     cy.wait(2000);
     permission.clickOnMenu('Reports');
     permission.clickOnSubMenu('Recent Contacts');
@@ -1650,6 +1692,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
     cy.wait(2000);
+    ignoreSpeedTestPopup();
     permission.clickOnMenu('Reports');
     permission.clickOnSubMenu('Recent Contacts');
     cy.wait(2000);
@@ -1670,6 +1713,7 @@ describe('User Permission Costumization Flow for Supervisor Role', () => {
     permission.verifyToastMessage('Saved');
     permission.loginWithUser(testData.SupervisorEmail);
     cy.wait(2000);
+    ignoreSpeedTestPopup();
     permission.verifyReportsMenuNotExist();
     permission.clickBackToAdminBtn();
     ignoreSpeedTestPopup();

@@ -10,7 +10,6 @@ today = String(today.getMonth() + 1).padStart(2,'0') + '-' +
   String(today.getDate()).padStart(2,'0') + '-' + 
   String(today.getFullYear()).slice(-2);
 let randNum = Math.floor(Math.random() * 1000);
-let AgentName = 'demo Agent';
 const addCamp = new Campaign();
 const Dial = new Dialer();
 const report = new Report();
@@ -814,6 +813,7 @@ describe('Add Campaign flow', () => {
   });
 
   it('Verify that User can Create agent from campaign creation page by clicking on (+ Create Agents)', () => {
+    let AgentName = fixtureData.userFirstname +' '+fixtureData.userLastname; 
     addCamp.createAgentViaCampaignCreation(
       AgentName,
       'demo'+randNum.toString()+'@email.com',
