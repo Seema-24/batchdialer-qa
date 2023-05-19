@@ -106,7 +106,9 @@ const SoftphonePresenceHeader = '.softphone-header-height .agent-presence >div >
 const softphoneBottomSwitchTab = (tab) => `//footer//li/span[text()="${tab}"]/preceding-sibling::span[contains(@class,"cursor_pointer")]`;
 const softphoneDialerModeIcon = '//ul[contains(@class,"campaigns-list")]/li//div[contains(@class,"icon")]';
 const softphoneCampName = (classVal) => `//ul[contains(@class,"campaigns-list")]/li//span[contains(@class,"${classVal}")]`;
-const statusChangeWindow = '.status-change-window .show';
+const statusChangeWindow = '.status-change-window.show';
+const softphoneSettingHeader= (header) => `//div[span[text()="${header}"]]/following-sibling::div//*`;
+const softphoneSearchbox = '[placeholder="Search Campaign"]';
 
 
 const dash = new Dashboard();
@@ -820,12 +822,12 @@ export default class Dialer {
     cy.get(SoftphonePresenceHeader +' .agent__presence-light').should('be.visible');
   }
 
-  verifySoftphonePresenceName() {
-    cy.get(SoftphonePresenceHeader +' .agent__presence-name').should('be.visible');
+  verifySoftphonePresenceName(name) {
+    cy.get(SoftphonePresenceHeader +' .agent__presence-name').should('contain.text', name);
   }
 
-  verifySoftphonePresenceTime() {
-    cy.get(SoftphonePresenceHeader).last().should('contain.text', '00:');
+  verifySoftphonePresenceTime(time) {
+    cy.get(SoftphonePresenceHeader).last().should('contain.text', time);
   }
 
   verifySoftphoneSwitchTab(tabs) {
@@ -835,7 +837,11 @@ export default class Dialer {
   }
 
   verifySoftphoneCampSearchbox() {
-    cy.get('[placeholder="Search Campaign"]').should('be.visible');
+    cy.get(softphoneSearchbox).should('be.visible');
+  }
+
+  searchCampaign(camp) {
+    cy.get(softphoneSearchbox).clear().type(camp);
   }
 
   verifySoftphoneCampaignList() {
@@ -843,7 +849,11 @@ export default class Dialer {
   }
 
   verifySoftphoneCampaignBtn(btn) {
-    cy.get('.campaigns-list button').should('be.visible').and('contain.text', btn)
+    cy.get('.campaigns-list button').contains(btn).should('be.visible');
+  }
+
+  clickCampaignBtn(btn) {
+    cy.get('.campaigns-list button').contains(btn).click();
   }
 
   verifySoftphoneDialerModeIcon() {
@@ -854,11 +864,19 @@ export default class Dialer {
     cy.xpath(softphoneCampName('text-truncate')).should('be.visible');
   }
 
+  verifyCampaignName(camp) {
+    cy.xpath(softphoneCampName('text-truncate')).should('have.text', camp);
+  }
+
+  verifyContactAndDateIcon() {
+    cy.xpath(softphoneCampName('light-grey-text me-1') + '/*[name()="svg"]').should('be.visible');
+  }
+
   verifySoftphoneCampLeadsCount() {
     cy.xpath(softphoneCampName('light-grey-text me-2')).should('be.visible');
   }
-  verifySoftphoneCampDate() {
-    cy.xpath(softphoneCampName('light-grey-text font')).should('be.visible');
+  verifySoftphoneCampDate(text) {
+    cy.xpath(softphoneCampName('light-grey-text font')).should('be.visible').and('contain.text', text);
   }
 
   clickSoftphoneAgentPresence() {
@@ -892,4 +910,44 @@ export default class Dialer {
   verifySoftphoneSettingVisible() {
     cy.get('.softphone-settings').should('be.visible');
   }
+
+  verifyCallRingtoneDropdown(header) {
+    cy.xpath(softphoneSettingHeader(header) + '[contains(@class,"ss-select ")]').should('be.visible');
+  }
+
+  verifySpeakerIcon(header) {
+    cy.xpath(softphoneSettingHeader(header)+ '[@data-icon="volume-up"]').should('be.visible');
+  }
+
+  verifyPlayConnectToggleSwitch(header) {
+    cy.xpath(softphoneSettingHeader(header) + '[@class="switch disabled"]').should('be.visible');
+  }
+  
+  verifySoundTrackingEnabled(header) {
+    cy.xpath(softphoneSettingHeader(header) + '[@class="checked-track"]').should('be.visible');
+  }
+
+  selectCallRingtone(header, opt) {
+    cy.xpath(softphoneSettingHeader(header)+ '[contains(@class,"ss-select ")]').click();
+    this.selectOption(opt);
+
+  }
+
+  clickOnRingtoneSpeaker(header) {
+    cy.xpath(softphoneSettingHeader(header)+ '[@data-icon="volume-up"]').click();
+  }
+
+  verifyDisabledStatus(status) {
+    cy.get(statusChangeWindow + ' .agent__presence-name').contains(status).should('have.class','disabled')
+  }
+
+  clickDialerBackspace(back) {
+    for (let i = 0; i < back; i++) {
+      cy.get('[data-icon="backspace"]').click();
+    }
+  }
+
+  
+
+
 }

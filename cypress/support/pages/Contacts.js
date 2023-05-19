@@ -261,6 +261,12 @@ export default class Contacts {
     }
   }
 
+  verifyDialPadNumber(num) {
+    cy.get('.keyPad-digits-display input').invoke('val').then((number) => {
+      expect(num).to.equal(number);
+    });
+  }
+
   enterEmail(email) {
     cy.xpath(EmailEditBtn).click();
     cy.get(inputEmail).clear().type(email);

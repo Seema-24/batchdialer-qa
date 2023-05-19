@@ -600,7 +600,7 @@ describe('Outbound Calling Scenarios', () => {
       ]);
       Dial.clickAdvanceConfiguration();
       Dial.clickOnRadioButton('Automatic Answer');
-     // Dial.enterSimultaneousDialsPerAgent('3');
+      Dial.enterSimultaneousDialsPerAgent('3');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
@@ -727,7 +727,7 @@ describe('Outbound Calling Scenarios', () => {
       ]);
       Dial.clickAdvanceConfiguration();
       Dial.clickOnRadioButton('Automatic Answer');
-      //Dial.enterSimultaneousDialsPerAgent('1');
+      Dial.enterSimultaneousDialsPerAgent('1');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
@@ -857,7 +857,7 @@ describe('Outbound Calling Scenarios', () => {
       ]);
       Dial.clickAdvanceConfiguration();
       Dial.clickOnRadioButton('Automatic Answer');
-      //Dial.enterSimultaneousDialsPerAgent('1');
+      Dial.enterSimultaneousDialsPerAgent('1');
       Dial.enterMaxAttemptPerRecord('3');
       Dial.enterRetryTime('4');
       Dial.selectRetryTimeDropdown('sec');
@@ -982,7 +982,7 @@ describe('Outbound Calling Scenarios', () => {
       ]);
       Dial.clickAdvanceConfiguration();
       Dial.clickOnRadioButton('Automatic Answer');
-      //Dial.enterSimultaneousDialsPerAgent('1');
+      Dial.enterSimultaneousDialsPerAgent('1');
       Dial.enterMaxAttemptPerRecord('1');
       Dial.enterRetryTime('1');
       Dial.enterRingTimeDuration('15');
@@ -1115,7 +1115,7 @@ describe('Outbound Calling Scenarios', () => {
       cy.wait(1000);
       Dial.clickOnRadioButton('Ringing Sound'); //Beep Once'
       Dial.clickOnCheckboxButton('Answering Machine Detection');
-      //Dial.enterSimultaneousDialsPerAgent('3');
+      Dial.enterSimultaneousDialsPerAgent('3');
       Dial.enterMaxAttemptPerRecord('3');
       Dial.enterRetryTime('1');
       Dial.selectRetryTimeDropdown('sec');
@@ -1471,7 +1471,7 @@ describe('Outbound Calling Scenarios', () => {
       ]);
       Dial.clickAdvanceConfiguration();
       Dial.clickOnRadioButton('Automatic Answer');
-      //Dial.enterSimultaneousDialsPerAgent('3');
+      Dial.enterSimultaneousDialsPerAgent('3');
       Dial.selectRetryTimeDropdown('sec');
       Dial.clickOnButton('Got it')
       Dial.enterRetryTime('10');
@@ -1613,7 +1613,7 @@ describe('Outbound Calling Scenarios', () => {
       ]);
       Dial.clickAdvanceConfiguration();
       Dial.clickOnRadioButton('Automatic Answer');
-      //Dial.enterSimultaneousDialsPerAgent('2');
+      Dial.enterSimultaneousDialsPerAgent('2');
       Dial.clickCallingHoursDropdown();
       Dial.selectFromTime('12:00 am');
       Dial.selectToTime('11:30 pm');
@@ -1782,7 +1782,8 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Verify that View Contact page is displayed when Click on NEXT CONTACT in the Dialpad during manual mode of dialing (Preview Dialer)', () => {
-      camp.clickSoftphoneNextLead();
+      camp.verifyNextLeadBtn();
+      camp.clickSoftphoneNextLead();       //BAT-T1174
       cy.wait(2000)
       camp.verifyDialPadNumber();
       Dial.verifyContactViewPage();
@@ -1820,6 +1821,9 @@ describe('Outbound Calling Scenarios', () => {
 describe('Verify Softphone Re-Design Scenerios', () => {
   before(() => {
     cy.visit('/');
+    cy.fixture('testData').then((data) => {
+      testData = data;
+    });
     Cypress.Cookies.defaults({
       preserve: (cookies) => {
         return true;
@@ -1845,18 +1849,19 @@ describe('Verify Softphone Re-Design Scenerios', () => {
   it('Verify Elements of Softphone Dialer', () =>{
     Dial.clickToOpenSoftphone();
     Dial.verifySoftphonePresenceLight();
-    Dial.verifySoftphonePresenceName();
-    Dial.verifySoftphonePresenceTime();
+    Dial.verifySoftphonePresenceName('PrepWork');
+    Dial.verifySoftphonePresenceTime('00:');
     Dial.verifySoftphoneSwitchTab(['Campaigns','Phone','Settings']);
   });
 
-  it('Verify campaign tab from softphone', () => {
+  it('Verify campaign tab from softphone', () => { //BAT-T1176
     Dial.verifySoftphoneCampSearchbox();
     Dial.verifySoftphoneCampaignList();
     Dial.verifySoftphoneDialerModeIcon();
+    Dial.verifyContactAndDateIcon();
     Dial.verifySoftphoneCampaignName();
     Dial.verifySoftphoneCampLeadsCount();
-    Dial.verifySoftphoneCampDate();
+    Dial.verifySoftphoneCampDate('/20');
     Dial.verifySoftphoneCampaignBtn('Join');
   });
 
@@ -1877,10 +1882,101 @@ describe('Verify Softphone Re-Design Scenerios', () => {
     Dial.ClickBackFromStatusChangeWindow();
   });
 
-  it('Verify that A user with Agent feature is able to open the Settings tab in the Softphone', () => {
+  it('Verify that user can select any status', () => {
+    Dial.clickSoftphoneAgentPresence();
+    Dial.selectOption('Break');
+    Dial.verifySoftphonePresenceName('Break');
+    Dial.verifyAgentStatus('Break');
+
+    Dial.clickSoftphoneAgentPresence();
+    Dial.selectOption('Lunch');
+    Dial.verifySoftphonePresenceName('Lunch');
+    Dial.verifyAgentStatus('Lunch');
+
+    Dial.clickSoftphoneAgentPresence();
+    Dial.selectOption('In training');
+    Dial.verifySoftphonePresenceName('In training');
+    Dial.verifyAgentStatus('In training');
+
+    Dial.clickSoftphoneAgentPresence();
+    Dial.selectOption('Out of desk');
+    Dial.verifySoftphonePresenceName('Out of desk');
+    Dial.verifyAgentStatus('Out of desk');
+
+    Dial.clickSoftphoneAgentPresence();
+    Dial.selectOption('In Meeting');
+    Dial.verifySoftphonePresenceName('In Meeting');
+    Dial.verifyAgentStatus('In Meeting');
+  });
+
+  it('Verify that user not able to select After Call status and its only shows when call is getting disconnected', () => {
+    Dial.clickSoftphoneAgentPresence();
+    Dial.verifyDisabledStatus('After Call'); //call disconnect testcase shown below with status 
+  });
+
+  it('Verify that time spent by agent in the current status is displayed in the top bar', () => {
+    Dial.selectOption('PrepWork');
+    Dial.verifySoftphonePresenceTime('00:00:0');
+    Dial.verifyAgentStatus('00:00:0');
+  });
+
+  it('Verify that A user with Agent feature is able to open the Settings tab in the Softphone', () => { 
     Dial.clickSoftphoneSwitchTab('Settings');
     Dial.verifySoftphoneSettingVisible();
   });
+
+  it('Verify the Elements in the Settings tab in the softphone',() => { // BAT-1178
+    Dial.verifyCallRingtoneDropdown('Inbound Call Ringtone');
+    Dial.verifySpeakerIcon('Inbound Call Ringtone');
+    Dial.verifyPlayConnectToggleSwitch('Play Connecting Sound');
+    Dial.verifySoftphonePresenceName('PrepWork');
+  });
+
+  it('Verify the Play Connecting sound toggle switch is enabled always', () => {
+    Dial.verifySoundTrackingEnabled('Play Connecting Sound');
+  });
+
+  it('Verify that a user is able to play back the ringtone from the dropdown', () => {
+    Dial.selectCallRingtone('Inbound Call Ringtone','Modern Ringtone 1');
+    Dial.clickOnRingtoneSpeaker('Inbound Call Ringtone');
+    cy.wait(2000);
+  });
+
+  it('Verify that user cannot click on phone tab without join a campaign', () => {
+    Dial.clickSoftphoneSwitchTab('Phone'); 
+    contact.verifyErrorToastMessage('Please select the campaign first.');
+  })
+
+  it('Verify Search Campaign Functionality', () => {
+    Dial.searchCampaign(testData.campaign);
+    Dial.verifyCampaignName(testData.campaign);
+  });
+
+  it('Verify join and leave tab', () => {
+    Dial.verifySoftphoneCampaignBtn('Join');          
+    Dial.clickCampaignBtn('Join');
+    Dial.clickSoftphoneSwitchTab('Campaigns');  //BAT-T1179
+    Dial.verifySoftphoneCampaignBtn('Leave');      
+  });
+
+  it('Verify phone tab', () => {
+    Dial.clickSoftphoneSwitchTab('Phone');  
+    Dial.verifySoftPhoneOpen();
+  });
+
+  it('Verify that user can dial number manually', () => {
+    contact.dialPhoneNumber('1234567890');
+    contact.verifyDialPadNumber('1234567890');
+    Dial.clickDialerBackspace(10);
+  });
+
+  it('Verify that user can use their computer keyboard to enter the digits 0 - 9 and the * and # characters', () => {
+    contact.dialPhoneNumber('##＊#＊#');
+    contact.verifyDialPadNumber('##*#*#');
+  })
+
+
+
 
 
 

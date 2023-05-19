@@ -770,9 +770,12 @@ export default class Campaign {
     );
   }
 
+  verifyNextLeadBtn() {
+    cy.get('.dialer-keypad-digit-display').contains(softphoneNextLead).should('be.visible');
+  }
+
   clickSoftphoneNextLead() {
     cy.get('.dialer-keypad-digit-display').contains(softphoneNextLead).click();
-    //cy.get(softphoneNextLead).click();
   }
 
   clickSoftphoneIcon() {

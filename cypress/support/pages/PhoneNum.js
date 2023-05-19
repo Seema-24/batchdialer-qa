@@ -166,6 +166,8 @@ const callResultName = '.dispositions-sortable span';
 const itemType = '.table-order-tbody__td';
 const dncSearchBox = (dncBox) =>`//span[contains(.,'${dncBox}')]/parent::div/child::span//div[@class="search-box__wrapper"]/input`
 const dncValue = (val) => `//div[@class="card-body"][contains(.,"${val}")]//div[@class="item"]`;
+const shieldIcon = '[src*="reputation/shield"]';
+const reputationUpdate =(title) => `//span[text()="${title}"]/parent::div`;
 
 export default class PhoneNum {
   clickCallResultDeleteBtn() {
@@ -229,6 +231,10 @@ export default class PhoneNum {
 
   clickAddPhoneGroup() {
     cy.get(addPhoneGroup).click({ force: true });
+  }
+
+  verifyNumberGroupAddIcon() {
+    cy.get(addPhoneGroup).should('be.visible');
   }
 
   SelectDestination(destination) {
@@ -634,7 +640,15 @@ export default class PhoneNum {
   }
 
   verifyAssignCampaignDropdown(name) {
+    this.verifyDropdownField(name);
+  }
+
+  verifyDropdownField(name) {
     cy.xpath(selectDropdown(name)).should('be.visible');
+  }
+
+  verifyNumberGroupCard() {
+    cy.get('.did-groups-card').should('be.visible')
   }
 
   selectAssignCampaignDropdown(name, campaign) {
@@ -826,7 +840,7 @@ export default class PhoneNum {
   }
 
   verifyWelcomePromptDropdown(dropdown) {
-    cy.xpath(selectDropdown(dropdown));
+    cy.xpath(selectDropdown(dropdown)).should('be.visible');
   }
 
   verifyAddNewBtn() {
@@ -1167,5 +1181,46 @@ export default class PhoneNum {
       }
     })
   }
+
+  verifyTooltipText(tooltip) {
+    for (let i = 0; i < tooltip.length; i++) {
+      cy.get('[role="tooltip"]').should('contain.text', tooltip[i]);
+    }
+  }
+
+  verifyPhoneReputationShieldIcon() {
+    cy.get(shieldIcon).should('be.visible');
+  }
+
+  mouseOverOnShield() {
+    cy.get(shieldIcon).first().trigger('mouseover');
+  }
+
+  mouseOverOnReputationQuest() {
+    cy.get('[src*="reputation/question"]').trigger('mouseover');
+  }
+
+  clickOnShieldIcon() {
+    cy.get(shieldIcon).first().click();
+  }
+
+  verifyAddedReputation(status) {
+    cy.get(shieldIcon +`[alt="${status}"]`).should('be.visible')
+  }
+
+  verifyKpiUpdateCount(title, expVal) {
+    for (let i = 0; i < title.length; i++) {
+      cy.wait(1000).xpath(reputationUpdate(title[i]) + '//span[@class="value"]').then((val)  => {
+        expect('/'+expVal).to.equals(val.text());
+      });
+    }
+  }
+
+  verifyUsageReputationCount(expVal) {
+    cy.xpath(reputationUpdate('Phone Reputation Usage') + '//span[@class="value blue-text"]').then((val)  => {
+      expect(String(expVal)).to.equals(val.text());
+    });
+  }
+
 
 }

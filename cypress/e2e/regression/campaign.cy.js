@@ -104,7 +104,7 @@ describe('Add Campaign flow', () => {
     addCamp.clickAdvancedConfiguration();
     addCamp.selectCallsOrder('adaptive'); //highestfirst //lowestfirst
     addCamp.selectCallConnectType('Automatic Answer'); //Manual Answer
-   // addCamp.enterSimultaneousDials(3);
+    addCamp.enterSimultaneousDials(3);
     // addCamp.enterRingTimeDuration(15);
     
     addCamp.enterRetryTime(5);
