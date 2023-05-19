@@ -2,14 +2,16 @@ import { closeDialogBox, handlePoorConnectionPopup, ignoreSpeedTestPopup, verify
 import Addons from "../../support/pages/Addons";
 import Contacts from "../../support/pages/Contacts";
 import Dashboard from "../../support/pages/Dashboard";
+import PhoneNum from "../../support/pages/PhoneNum";
 import Register from "../../support/pages/Register";
 
 
-let testData, date;
+let testData, date, count = 0;
 const addon = new Addons();
 const cont = new Contacts();
 const dash = new Dashboard();
 const regs = new Register();
+const phone = new PhoneNum();
 
 describe('Add-ons Flow', () => {
     before(() => {
@@ -34,7 +36,7 @@ describe('Add-ons Flow', () => {
 
     after(() => {
         cy.Logout();
-    })
+    });
 
     it('Login To Application', () => {
         cy.Login(Cypress.env('username'), Cypress.env('password'));
@@ -122,7 +124,7 @@ describe('Add-ons Flow', () => {
         dash.verifyButtonsVisible('Confirm');
     });
 
-    it('Verify that when click on - or + in the BUY SUBSCRIPTION modal the prices are changing accordingly', () => {
+    it('Verify that when click on -/+ in the BUY SUBSCRIPTION modal the prices are changing accordingly', () => {
         const clickToAdd = 3; 
         const increseBudle = clickToAdd;
         const clickToMinus = 1; 
@@ -137,67 +139,141 @@ describe('Add-ons Flow', () => {
     it('Verify the CANCEL button functionality in the BUY SUBSCRIPTION modal in the ADD-ON store', () => {
         cont.clickOnButton('Cancel');
         addon.verifyModalTitle('BUY SUBSCRIPTION','notExist');
-        cy.Logout();
     });
 
+    it('Verify that More info modal is being poped up when click on the arrow icon in the Advanced phone reputation ADD-ON', () => {
+        addon.clickOnArrow();
+        addon.verifyModalHeading('Advanced Phone Reputation');
+        addon.verifyModalContent([
+            'Take control of your reputation!',
+            'This add-on helps you manage your reputation by monitoring the health of your outbound calls and call connections, pulling information from multiple sources, including call centers, carriers, and third-party apps.',
+            'This feature includes:',
+            'Phone number reputation pre-screening.',
+            'Daily Monitoring of phone number spam score rating.',
+            'Auto-replacement of phone numbers that are marked as spam.'
+        ]);
+    });
 
+    it('Verify the functionality of Close in the more info pop up', () => {
+        addon.clickCloseModal();
+        addon.verifyModalHeading('Advanced Phone Reputation', 'notExist');
+    });
 
+    it('Verify the Phone Number page phone reputation column if the ADD-ON is not activated', () => {
+        phone.clickPhoneNumberMenu();
+        phone.verifyPhoneReputationShieldIcon();
+        phone.mouseOverOnShield();
+        phone.verifyTooltipText([
+            'Subscribe to Monitor Phone Number Reputations',
+            "Advanced Phone Reputation provides comprehensive health monitoring of your company's outbound phone calls and call connections."
+        ]);
+        phone.clickOnShieldIcon();
+        addon.verifyModalTitle('BUY SUBSCRIPTION');
+    });
 
+    it('Verify the functionality of Monitor Reputation menu item when advanced phone reputation add-on is not enabled', () => {
+        phone.clickPhoneNumberMenu();
+        phone.clickPhoneMenuDropdown(testData.Number);
+        cy.wait(1000);
+        phone.clickDropdownItem('Monitor Reputation');
+        addon.verifyModalTitle('BUY SUBSCRIPTION');
+    });
 
-
+    it('Verify the tool tip on Reputation column heading', () => {
+        phone.clickPhoneNumberMenu();
+        phone.mouseOverOnReputationQuest();
+        phone.verifyTooltipText(['0-2 flags', '3-5 flags', '6+ flags']);
+    });
 
     // Dependent on Registration Page ( new user register )
     it('Verify that a user is able to purchase Advanced Phone Reputation ADD-ON', () => {
         cy.url().then((url) => {
-          if(url.includes('qa.int.batchdialer.com')) {
-            verifyCloseApp();
-            cy.Login(testData.registerEmail, 'Test@123');
-            ignoreSpeedTestPopup();
-            addon.clickOnMenu('Add-ons');
-            addon.clickAddonSwitch('Advanced Phone Reputation');
-            addon.verifyModalTitle('BUY SUBSCRIPTION');
-            cont.clickOnButton('Confirm');
-            cont.verifySuccessToastMessage('Advanced Phone Reputation add-on is successfully activated');
-            dash.clickUserProfile();
-            dash.clickBilling();
-            dash.verifyAddonInActiveProduct('Advanced Phone Reputation');
-          }
-        })
-      });
-    
-      it('', () => {
+            if(url.includes('qa.int.batchdialer.com')) {
+                verifyCloseApp();
+                cy.Login(testData.registerEmail, 'Test@123');
+                ignoreSpeedTestPopup();
+                addon.clickOnMenu('Add-ons');
+                addon.clickAddonSwitch('Advanced Phone Reputation');
+                addon.verifyModalTitle('BUY SUBSCRIPTION');
+                cont.clickOnButton('Confirm');
+                cont.verifySuccessToastMessage('Advanced Phone Reputation add-on is successfully activated');
+            }
+        });
+    });
+
+    it('Verify that Active Products section in the Billing page is updated when advanced phone reputation is activated', () => {
         cy.url().then((url) => {
-          if(url.includes('qa.int.batchdialer.com')) {
-            addon.clickOnMenu('Add-ons');
-            addon.clickAddonSwitch('Advanced Phone Reputation');
-            addon.verifyModalTitle('Deactivate Advanced Phone Reputation Add-on');
-            cont.clickOnButton('Proceed');
-            cont.verifySuccessToastMessage('Advanced Phone Reputation add-on deactivation scheduled'); 
-            dash.verifyAlertNotification('Add-on Advanced Phone Reputation will be cancelled on '+ date + '.');
-            cy.Logout();
-          }
-        })
-      });
+            if(url.includes('qa.int.batchdialer.com')) {
+                dash.clickUserProfile();
+                dash.clickBilling();
+                dash.verifyAddonInActiveProduct('Advanced Phone Reputation');
+            }
+        });
+    });
+    
+    it('Verify that a user is able to deactivate the Advanced Phone reputation ADD-ON from ADD-ONS page', () => {
+        cy.url().then((url) => {
+            if(url.includes('qa.int.batchdialer.com')) {
+                addon.clickOnMenu('Add-ons');
+                addon.clickAddonSwitch('Advanced Phone Reputation');
+                addon.verifyModalTitle('Deactivate Advanced Phone Reputation Add-on');
+                cont.clickOnButton('Proceed');
+                cont.verifySuccessToastMessage('Advanced Phone Reputation add-on deactivation scheduled'); 
+                dash.verifyAlertNotification('Add-on Advanced Phone Reputation will be cancelled on '+ date + '.');
+                dash.clickUserProfile();
+                dash.clickBilling();
+                dash.verifyAlertNotification('Add-on Advanced Phone Reputation will be cancelled on '+ date + '.');
+            }
+        });
+    });
+
+    it('Verify that an authorized user is able to cancel the scheduled de activation', () => {
+        cy.url().then((url) => {
+            if(url.includes('qa.int.batchdialer.com')) {
+                dash.clickBillingNotificationBtn('Do Not Cancel');
+                dash.verifySuccessMsg('Your add-on downgrade stopped');
+                dash.verifyAlertMsgNotExist();
+            }
+        });
+    });
+
+    it('Verify that an authorized user is able to enable monitoring of a phone number', () => {
+        cy.url().then((url) => {
+            if(url.includes('qa.int.batchdialer.com')) {
+                phone.clickPhoneNumberMenu();
+                addon.clickPhoneNumberMenuDropdown();
+                cy.wait(1000);
+                phone.clickDropdownItem('Monitor Reputation');
+                cont.verifySuccessToastMessage('Success added to Monitoring');
+                phone.verifyAddedReputation('await');
+                phone.verifyUsageReputationCount(++count);
+                phone.verifyKpiUpdateCount(
+                    ['Clean Numbers', 'Flagged', 'Flagged in Past 24h', 'Flagged in Past 7 days'], count 
+                );
+                cy.Logout();
+            }
+        });
+    });
 
 
     it('Delete account from the Super Admin Panel', () => {
         cy.url().then((url) => {
-          if (url.includes('qa.int.batchdialer.com')) {
-            verifyCloseApp();
-            cy.Login('god', 'god');
-            ignoreSpeedTestPopup();
-            regs.clickUserTreeDropdown('Switch Account');
-            regs.clickOnUser('First Tenant');
-            regs.clickOnUser('Reseller 1');
-            regs.clickOnResellerUser();
-            regs.handleAlertWindow();
-            ignoreSpeedTestPopup();
-            regs.clickClientsMenu();
-            regs.enterUserToSearch(testData.registerEmail);
-            regs.clickDeleteUserButton();
-            regs.clickCancelNowRadioBtn();
-            regs.clickOnButton('Continue');
-          }
+            if (url.includes('qa.int.batchdialer.com')) {
+                verifyCloseApp();
+                cy.Login('god', 'god');
+                ignoreSpeedTestPopup();
+                regs.clickUserTreeDropdown('Switch Account');
+                regs.clickOnUser('First Tenant');
+                regs.clickOnUser('Reseller 1');
+                regs.clickOnResellerUser();
+                regs.handleAlertWindow();
+                ignoreSpeedTestPopup();
+                regs.clickClientsMenu();
+                regs.enterUserToSearch(testData.registerEmail);
+                regs.clickDeleteUserButton();
+                regs.clickCancelNowRadioBtn();
+                regs.clickOnButton('Continue');
+            }
         });
     });
 });

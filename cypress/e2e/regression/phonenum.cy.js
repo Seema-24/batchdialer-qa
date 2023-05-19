@@ -49,6 +49,27 @@ describe('Add Phone Number flow', () => {
     ignoreSpeedTestPopup();
   });
 
+  it('Verify Phone Numbers Elements', () => {
+    addNum.clickPhoneNumberMenu();
+    addNum.verifySearchBox();
+    addNum.verifyDropdownField('All Destinations');
+    addNum.verifyDropdownField('Any Reputation');
+    dashboard.verifyButtonsVisible('Add External Number');
+    dashboard.verifyButtonsVisible('BUY NUMBER');
+    dashboard.verifyButtonsVisible('EXPORT ALL');
+    addNum.verifyTableHeaderName([
+      'Status',
+      'Number',
+      'Reputation',
+      'Group',
+      'Destination',
+      'Location',
+      'Total Calls'
+    ]);
+    addNum.verifyNumberGroupCard();
+    addNum.verifyNumberGroupAddIcon();
+  });
+
   it('Verify that user is able to make bulk and single-row selection by using checkbox', () => {
     addNum.clickPhoneNumberMenu();
     addNum.selectPhoneNumberCheckbox(1);

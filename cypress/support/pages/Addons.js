@@ -1,6 +1,11 @@
+import PhoneNum from "./PhoneNum";
+
 const menu = (menuName) => `li:not(.subitem) a[title="${menuName}"]`;
 const btn = (btn) => `//button[text()="${btn}"]`;
 const switchBtn = (title) => `//div[div[contains(@class,"card-title")][text()="${title}"]]//span[normalize-space(@class)="switch"]`;
+const modal = '.modal-content';
+
+const addNum = new PhoneNum();
 
 export default class Addons {
 
@@ -35,7 +40,7 @@ export default class Addons {
 
     verifyAddonSubscriptionText(ele) {
         for (let i = 0; i < ele.length; i++) {
-            cy.get('.modal-content .addon_subscribe').should('contain.text', ele[i]); 
+            cy.get(modal+ ' .addon_subscribe').should('contain.text', ele[i]); 
         }
     }
 
@@ -99,6 +104,53 @@ export default class Addons {
         this.verifyInputValue(phoneBundle);
         this.verifyAmount(Amount);
     }
+
+    clickOnArrow() {
+        cy.get('[src*="arrow"]').click();
+    }
+
+    verifyModalContent(desc) {
+        for (let i = 0; i < desc.length; i++) {
+            cy.get(modal+ ' p').should('contain.text',desc[i])   
+        }
+    }
+    
+    verifyModalHeading(title, cond) {
+        if('notExist' === cond) {
+            cy.get('.modal-heading').should('not.exist');
+        } else {
+            cy.get('.modal-heading').should('have.text', title);
+        }
+    }
+
+    clickCloseModal() {
+        cy.get('.cross').click();
+    }
+
+    clickPhoneNumberMenuDropdown() {
+        cy.wait(2000).get('.resizable-table-container').then(($table) => {
+            if($table.find('[src*="nodatatable"]').length) {
+                addNum.clickBuyDidButton();
+                addNum.selectStateModeOption('Colorado');
+                addNum.selectNumberOneByOne(3);
+                addNum.clickOrderNowButton();
+                addNum.closingDialog();
+                cy.wait(2000);
+                this.clickReputaionPhoneDropdown();
+            } else {
+                this.clickReputaionPhoneDropdown(); 
+            }
+        });
+    }
+
+    clickReputaionPhoneDropdown() {
+        cy.wait(2000).xpath(`//div[div[@class="td"][4][text()="-"]]//div[@class="dropdown"]//img`,{ timeout: 5000 })
+        .first()
+        .scrollIntoView({force:true})
+        .click({force:true});
+    }
+
+    
 
 
 
