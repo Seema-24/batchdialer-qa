@@ -1879,7 +1879,15 @@ describe('Verify Softphone Re-Design Scenerios', () => {
       'PrepWork',
       'After Call'
     ]);
+  });
+
+  it('Verify that user can go back by using back icon and by the clicking remainng area of the from Status page', () => {
     Dial.ClickBackFromStatusChangeWindow();
+    Dial.verifyStatusChangeWindow('notExist');
+    Dial.clickSoftphoneAgentPresence();      //go to status window again
+    Dial.verifyStatusChangeWindow();
+    Dial.clickSoftphoneAgentPresence(); // come back from status page when click any outside element from status page
+    Dial.verifyStatusChangeWindow('notExist');
   });
 
   it('Verify that user can select any status', () => {

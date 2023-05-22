@@ -883,8 +883,12 @@ export default class Dialer {
     cy.get(SoftphonePresenceHeader+ ' [data-icon="angle-down"]').first().click({force:true});
   }
 
-  verifyStatusChangeWindow() {
-    cy.get(statusChangeWindow).should('be.visible');
+  verifyStatusChangeWindow(cond) {
+    if(cond == 'notExist') {
+      cy.get(statusChangeWindow).should('not.exist');
+    } else {
+      cy.get(statusChangeWindow).should('be.visible');
+    }
   }
 
   verifyAgentStatusList(list) {
