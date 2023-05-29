@@ -312,7 +312,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that when user enables the permission Upload Contacts Lists then Agent user should able to upload contact list ', () => {
+  it('Verify that when user enables the permission Upload Contacts Lists then Agent user should able to upload contact list', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);
@@ -331,7 +331,7 @@ describe('User Permission Costumization Flow for Agent Role', () => {
     ignoreSpeedTestPopup();
   });
 
-  it('Verify that when user disables  the permission Upload Contacts Lists then Agent user should not able to upload contact list ', () => {
+  it('Verify that when user disables  the permission Upload Contacts Lists then Agent user should not able to upload contact list', () => {
     verifyRoleTitle();
     user.clickingOnUserOption();
     user.searchUser(testData.agent);

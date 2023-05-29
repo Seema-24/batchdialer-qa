@@ -225,11 +225,12 @@ describe('Report Page', () => {
   });
 
   //it can't be verified Export data in CSV file
-  it.skip('Verifies the Export Functionality of Recent Contact', () => {
+  it('Verifies the Export Functionality of Recent Contact', () => {
     report.clickReportMenu();
     report.clickReportsHeader('Recent Contacts');
     report.getDialedContactNumbers();
     report.clickExportBtn();
+    ignoreSpeedTestPopup();
   });
 
   it('Verify Agent Heat Map Elements', () => {

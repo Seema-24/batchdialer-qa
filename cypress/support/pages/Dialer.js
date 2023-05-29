@@ -1,4 +1,5 @@
 import { covertNumberToNormal, ignoreSpeedTestPopup, clickCallFunction, handlePoorConnectionPopup } from '../Utils';
+import Contacts from './Contacts';
 import Dashboard from './Dashboard';
 
 const statusDropdown = '.nav-item.auth__agent-presence .ss-select';
@@ -43,6 +44,7 @@ const campaignAnsweredCount = (campaignName) =>
 const reportsMenu = 'a[title="Reports"]';
 const subMenu = (subMenuName) => `.subitem a[title="${subMenuName}"]`;
 const softPhoneOpen = '.stg-softphone-wrapper .softphone-body-height-for-dialer';
+const softphone = '.stg-softphone-wrapper';
 const inqueuePhoneNumber = `(//span[text()="In Queue"]/parent::div/following-sibling::div)[3]`;
 const callingHoursDropdown = `//label[text()="Calling Hours"]/following-sibling::div`;
 const timeFromDropdown = `(//label[text()="Sunday"]/ancestor::div/following-sibling::div//div[contains(@class,"ss-select-control")])[1]`;
@@ -104,14 +106,18 @@ const PhoneValue = (key) => `//div[@class="key"][text()="${key}"]/parent::div/ch
 const contactLineCursor = (pos) => `svg[data-icon="angle-${pos}"]`
 const SoftphonePresenceHeader = '.softphone-header-height .agent-presence >div >div';
 const softphoneBottomSwitchTab = (tab) => `//footer//li/span[text()="${tab}"]/preceding-sibling::span[contains(@class,"cursor_pointer")]`;
-const softphoneDialerModeIcon = '//ul[contains(@class,"campaigns-list")]/li//div[contains(@class,"icon")]';
+const softphoneDialerModeIcon = '//ul[contains(@class,"campaigns-list")]/li//div[contains(@class,"icon")]//*[name()="svg"]';
 const softphoneCampName = (classVal) => `//ul[contains(@class,"campaigns-list")]/li//span[contains(@class,"${classVal}")]`;
 const statusChangeWindow = '.status-change-window.show';
 const softphoneSettingHeader= (header) => `//div[span[text()="${header}"]]/following-sibling::div//*`;
 const softphoneSearchbox = '[placeholder="Search Campaign"]';
+const campList = '.campaigns-list';
+const callMenu = '.call-menus .d-inline-block';
+const campListName = '.campaigns-list .text-truncate';
 
 
 const dash = new Dashboard();
+const contact = new Contacts();
 export default class Dialer {
  
   selectStatus(statusName) {
@@ -590,6 +596,10 @@ export default class Dialer {
     cy.get(softphoneLines).should('have.length', no);
   }
 
+  verifyCallingStart() {
+    cy.get(softphoneLines + '.bg-yellow',{timeout:60000}).should('be.visible');
+  }
+
   enterRetryTime(time) {
     for (let i = 0; i < time; i++) {
       cy.xpath(retryTime('plus')).click({force:true});
@@ -608,6 +618,10 @@ export default class Dialer {
 
   clickContactLineCursor(pos) {
     cy.get(contactLineCursor(pos),{timeout:40000}).click({force:true});
+  }
+
+  verifyNumberDialing() {
+    cy.get(softphoneLineContactName, { timeout: 40000 }).should('be.visible');
   }
 
   verifySoftphoneLineContactName(contactName) {
@@ -737,6 +751,7 @@ export default class Dialer {
 
   clickToOpenSoftphone() {
     cy.get(softphoneIcon,{timeout:60000}).click();
+    cy.get(softphoneIcon).trigger('mouseout');
   }
 
   clickTableRefreshButton() {
@@ -841,19 +856,19 @@ export default class Dialer {
   }
 
   searchCampaign(camp) {
-    cy.get(softphoneSearchbox).clear().type(camp);
+    cy.get(softphoneSearchbox).realHover().clear().type(camp);
   }
 
   verifySoftphoneCampaignList() {
-    cy.get('.campaigns-list').should('be.visible');
+    cy.get(campList).should('be.visible');
   }
 
   verifySoftphoneCampaignBtn(btn) {
-    cy.get('.campaigns-list button').contains(btn).should('be.visible');
+    cy.get(campList +' button').contains(btn).should('be.visible');
   }
 
   clickCampaignBtn(btn) {
-    cy.get('.campaigns-list button').contains(btn).click();
+    cy.get(campList +' button').contains(btn).click();
   }
 
   verifySoftphoneDialerModeIcon() {
@@ -934,7 +949,6 @@ export default class Dialer {
   selectCallRingtone(header, opt) {
     cy.xpath(softphoneSettingHeader(header)+ '[contains(@class,"ss-select ")]').click();
     this.selectOption(opt);
-
   }
 
   clickOnRingtoneSpeaker(header) {
@@ -951,7 +965,94 @@ export default class Dialer {
     }
   }
 
-  
+  UploadFileUsingCampaign(file) {
+    this.clickOnButton('Upload Contacts');
+    contact.uploadFileForContact(file);
+    this.selectMappingFields([
+      'Phone Number',
+      'First Name',
+      'Last Name',
+      'Email',
+      'Zip',
+      'Address',
+      'Country',
+      'State',
+      'City',
+    ]);
+    cy.wait(1000)
+    contact.clickNextButton();
+    contact.clickSubmitButton();
+    contact.verifyImportStartedToast();
+    cy.wait(1000)
+    contact.verifyImportContactCompleteToast();
+    this.clickOnButton('Save');
+    this.verifySuccessToastMessage('Campaign Saved');
+    cy.reload();
+    ignoreSpeedTestPopup();
+  }
 
+  mouseoverOnCampaignType() {
+    cy.xpath(softphoneDialerModeIcon).realHover();
+  }
+
+  mouseoverOnLongCampaignName(tab) {
+    if(tab === 'PhoneTab') {
+      cy.get('.bg-light-blue .d-inline-block').last().realHover();
+    } else {
+      cy.xpath(softphoneCampName('text-truncate')).realHover();
+    }
+  }
+
+  verifyTooltip(tooltip) {
+    cy.get('.tooltip-inner').contains(tooltip).should('be.visible');
+  }
+
+  scrollSoftphoneCampaign(name) {
+    cy.get(campList).scrollTo('bottom');
+  }
+
+  CampaignNameVisiblity(name, cond) {
+    if('Invisible' === cond) {
+      cy.get(campListName).contains(name).should('not.be.visible');
+    } else {
+      cy.get(campListName).contains(name).should('be.visible');
+    }
+  }
+
+  verifyCallMenus(name) {
+    cy.get(callMenu).contains(name).should('be.visible');
+  }
+
+  clickOnOutsideElement() {
+    cy.get(SoftphonePresenceHeader).realClick({force:true});
+  }
+
+  mouseHoverOnSoftphoneDialer() {
+    cy.get(SoftphonePresenceHeader).realHover({force:true});
+  }
+
+  verifySoftphoneCloseCursor() {
+    cy.get(closeSoftBtn).should('be.visible');
+  }
+
+  verifySoftphoneVisibility(cond) {
+    if(cond === 'Invisible') {
+      cy.get(softphone).should('not.be.visible');
+    } else {
+      cy.get(softphone).should('be.visible');
+    }
+  }
+
+  closeSoftphone() {
+    cy.get(closeSoftBtn).click({force:true});
+  }
+
+  verify_MyCaller_ID() {
+    cy.get('footer .white-space-pre').should('be.visible');
+  }
+
+  verifyCallerIdNumber(number) {
+    cy.get('footer .white-space-pre').last().should('have.text', number); 
+  }
 
 }

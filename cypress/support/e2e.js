@@ -18,6 +18,7 @@ import './commands';
 import 'cypress-xpath';
 import 'cypress-file-upload';
 import addContext from 'mochawesome/addContext';
+import "cypress-real-events";
 require('cypress-downloadfile/lib/downloadFileCommand');
 let randNum = Math.floor(Math.random() * 100);
 // Alternatively you can use CommonJS syntax:

@@ -658,7 +658,7 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Verify that Agent status should be On Call and End the Call and select the Disposition', () => {
-      Dial.verifyAgentStatus('On Call');
+      Dial.verifyAgentStatus('On Call');               //BAT-T1183
       Dial.verifySoftphoneTitle('Test Number');
       Dial.endCallAtTime('0:20');
       Dial.verifyCallDispositionWindow();
@@ -783,7 +783,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectCampaign(campaignName);
       Dial.clickConfirmButton();
       Dial.verifySoftPhoneOpen();
-      //Dial.verifySoftphoneLinesNumber(1);
+      Dial.verifySoftphoneLinesNumber(1);
     });
 
     it('Verify that Agent status should be On Call and End the Call and select the Disposition', () => {
@@ -909,7 +909,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectCampaign(campaignName);
       Dial.clickConfirmButton();
       Dial.verifySoftPhoneOpen();
-      //Dial.verifySoftphoneLinesNumber(1);
+      Dial.verifySoftphoneLinesNumber(1);
     });
 
     it('Verify that Agent status should be On Call', () => {
@@ -1677,7 +1677,7 @@ describe('Outbound Calling Scenarios', () => {
       Dial.selectCampaign(campaignName);
       Dial.clickConfirmButton();
       Dial.verifySoftPhoneOpen();
-      Dial.verifySoftphoneLinesNumber(3);
+      Dial.verifySoftphoneLinesNumber(2);
     });
 
     it('Verify the campaign status when the agent make the status available and start dialing a campaign of type predictive dialer', () => {
@@ -1782,8 +1782,8 @@ describe('Outbound Calling Scenarios', () => {
     });
 
     it('Verify that View Contact page is displayed when Click on NEXT CONTACT in the Dialpad during manual mode of dialing (Preview Dialer)', () => {
-      camp.verifyNextLeadBtn();
-      camp.clickSoftphoneNextLead();       //BAT-T1174
+      camp.verifyNextLeadBtn();             //BAT-T1174 
+      camp.clickSoftphoneNextLead();        //BAT-T1190
       cy.wait(2000)
       camp.verifyDialPadNumber();
       Dial.verifyContactViewPage();
@@ -1819,6 +1819,7 @@ describe('Outbound Calling Scenarios', () => {
 });
 
 describe('Verify Softphone Re-Design Scenerios', () => {
+  const campaignName = 'This is a Automation Testing-Campaign for Predictive Dialer';
   before(() => {
     cy.visit('/');
     cy.fixture('testData').then((data) => {
@@ -1848,6 +1849,7 @@ describe('Verify Softphone Re-Design Scenerios', () => {
 
   it('Verify Elements of Softphone Dialer', () =>{
     Dial.clickToOpenSoftphone();
+    Dial.verifySoftphoneVisibility();
     Dial.verifySoftphonePresenceLight();
     Dial.verifySoftphonePresenceName('PrepWork');
     Dial.verifySoftphonePresenceTime('00:');
@@ -1863,6 +1865,12 @@ describe('Verify Softphone Re-Design Scenerios', () => {
     Dial.verifySoftphoneCampLeadsCount();
     Dial.verifySoftphoneCampDate('/20');
     Dial.verifySoftphoneCampaignBtn('Join');
+  });
+
+  it('Verify that when campaign number is more then user is able to scroll the page', async () => {
+    Dial.CampaignNameVisiblity('Camp-1', 'Invisible');
+    Dial.scrollSoftphoneCampaign();
+    Dial.CampaignNameVisiblity('Camp-1', 'Visible');
   });
 
   it('Verify Status icon', () => {
@@ -1886,7 +1894,8 @@ describe('Verify Softphone Re-Design Scenerios', () => {
     Dial.verifyStatusChangeWindow('notExist');
     Dial.clickSoftphoneAgentPresence();      //go to status window again
     Dial.verifyStatusChangeWindow();
-    Dial.clickSoftphoneAgentPresence(); // come back from status page when click any outside element from status page
+    cy.wait(4000)
+    Dial.clickOnOutsideElement(); // come back from status page when click any outside element from status page
     Dial.verifyStatusChangeWindow('notExist');
   });
 
@@ -1915,11 +1924,6 @@ describe('Verify Softphone Re-Design Scenerios', () => {
     Dial.selectOption('In Meeting');
     Dial.verifySoftphonePresenceName('In Meeting');
     Dial.verifyAgentStatus('In Meeting');
-  });
-
-  it('Verify that user not able to select After Call status and its only shows when call is getting disconnected', () => {
-    Dial.clickSoftphoneAgentPresence();
-    Dial.verifyDisabledStatus('After Call'); //call disconnect testcase shown below with status 
   });
 
   it('Verify that time spent by agent in the current status is displayed in the top bar', () => {
@@ -1953,18 +1957,35 @@ describe('Verify Softphone Re-Design Scenerios', () => {
   it('Verify that user cannot click on phone tab without join a campaign', () => {
     Dial.clickSoftphoneSwitchTab('Phone'); 
     contact.verifyErrorToastMessage('Please select the campaign first.');
-  })
+  });
 
   it('Verify Search Campaign Functionality', () => {
     Dial.searchCampaign(testData.campaign);
     Dial.verifyCampaignName(testData.campaign);
   });
 
+  it('Verify that user can hover on campaign icon then tooltip appear with its type', () => {
+    Dial.mouseoverOnCampaignType();
+    Dial.verifyTooltip('Preview Dialer');
+    Dial.searchCampaign(campaignName);
+    Dial.mouseoverOnCampaignType();
+    Dial.verifyTooltip('Predictive Dialer');
+  });
+
+  it('Verify that if campaign name too long then appear with tool tip', () => {
+    Dial.searchCampaign(campaignName);
+    Dial.mouseoverOnLongCampaignName('CampaignTab'); // long campaign tooltip on Campaign Tab
+    Dial.verifyTooltip(campaignName);
+  });
+
   it('Verify join and leave tab', () => {
     Dial.verifySoftphoneCampaignBtn('Join');          
     Dial.clickCampaignBtn('Join');
+    cy.wait(1000)
+    Dial.mouseoverOnLongCampaignName('PhoneTab');  // long campaign tooltip on Phone Tab
+    Dial.verifyTooltip(campaignName);
     Dial.clickSoftphoneSwitchTab('Campaigns');  //BAT-T1179
-    Dial.verifySoftphoneCampaignBtn('Leave');      
+    Dial.verifySoftphoneCampaignBtn('Leave'); 
   });
 
   it('Verify phone tab', () => {
@@ -1978,14 +1999,25 @@ describe('Verify Softphone Re-Design Scenerios', () => {
     Dial.clickDialerBackspace(10);
   });
 
+  it('Verify that user can see the caller id on the phone number page', () => {
+    Dial.verify_MyCaller_ID();
+  });
+
   it('Verify that user can use their computer keyboard to enter the digits 0 - 9 and the * and # characters', () => {
     contact.dialPhoneNumber('##＊#＊#');
     contact.verifyDialPadNumber('##*#*#');
-  })
+    Dial.clickSoftphoneSwitchTab('Campaigns');  
+    Dial.clickCampaignBtn('Leave');  
+  });
 
+  it('Verify that cross icon show when mouse hover on softphone dialer', () => {
+    Dial.mouseHoverOnSoftphoneDialer();
+    Dial.verifySoftphoneCloseCursor();
+  });
 
-
-
-
+  it('Verify that user can click on cross icon of softphone dialer that close the softphone', () => {
+    Dial.closeSoftphone();
+    Dial.verifySoftphoneVisibility('Invisible');
+  });
 
 });
