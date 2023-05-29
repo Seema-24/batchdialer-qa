@@ -166,7 +166,7 @@ const callResultName = '.dispositions-sortable span';
 const itemType = '.table-order-tbody__td';
 const dncSearchBox = (dncBox) =>`//span[contains(.,'${dncBox}')]/parent::div/child::span//div[@class="search-box__wrapper"]/input`
 const dncValue = (val) => `//div[@class="card-body"][contains(.,"${val}")]//div[@class="item"]`;
-const shieldIcon = '[src*="reputation/shield"]';
+const shieldIcon = '[src*="shield"]';
 const reputationUpdate =(title) => `//span[text()="${title}"]/parent::div`;
 
 export default class PhoneNum {

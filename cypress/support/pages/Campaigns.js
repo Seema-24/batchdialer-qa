@@ -1014,7 +1014,7 @@ export default class Campaign {
       if($body.find('#pendo-guide-container').length) {
         cy.contains('Next').click();
       }
-      cy.contains('Create agents').click();
+      this.clickOnButton('Create agents');
       if($body.find('#pendo-guide-container').length) {
         cy.contains('×').click();
       }
@@ -1219,7 +1219,7 @@ export default class Campaign {
   }
 
   uploadContactViaCampaignCreation(file) {
-    cy.contains('Upload Contacts').click({force:true});
+    this.clickOnButton('Upload Contacts');
     addCont.uploadFileForContact(file);
     cy.wait(2000);
     addCont.selectFirstNameDropdown();

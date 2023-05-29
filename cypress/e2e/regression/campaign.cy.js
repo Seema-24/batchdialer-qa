@@ -723,16 +723,16 @@ describe('Add Campaign flow', () => {
     addCamp.mouseOutOnQuestionToolTip('Agent Script');
 
     addCamp.mouseOverOnQuestionToolTip('Max Calls per Day');
-    addCamp.verifyQuestionTooltipText('Daily connects limit (0 for no limit)');
+    addCamp.verifyQuestionTooltipText('User can enter up to 10 digits, maximum value is 2147483647');
     addCamp.mouseOutOnQuestionToolTip('Max Calls per Day');
 
     addCamp.mouseOverOnQuestionToolTip('Max Attempts Per Record');
     addCamp.verifyQuestionTooltipText('The number of times the system will attempt to dial a phone number before a connection is established');
     addCamp.mouseOutOnQuestionToolTip('Max Attempts Per Record');
 
-   // addCamp.mouseOverOnQuestionToolTip('Simultaneous Dials p/Agent');
-   // addCamp.verifyQuestionTooltipText('The maximum channels (phone lines) agents will be allowed to dial simultaneously on outbound campaigns. High number will lead to higher abandon rate, lower number will lead to more agent wait times between calls. Desired abandon rate < 10%.');
-   // addCamp.mouseOutOnQuestionToolTip('Simultaneous Dials p/Agent');
+   addCamp.mouseOverOnQuestionToolTip('Simultaneous Dials p/Agent');
+   addCamp.verifyQuestionTooltipText('The maximum channels (phone lines) agents will be allowed to dial simultaneously on outbound campaigns. High number will lead to higher abandon rate, lower number will lead to more agent wait times between calls. Desired abandon rate < 10%.');
+   addCamp.mouseOutOnQuestionToolTip('Simultaneous Dials p/Agent');
 
     addCamp.mouseOverOnQuestionToolTip('Retry Time');
     addCamp.verifyQuestionTooltipText('After an unsuccessful attempt to connect to a phone number, the system will retry to dial the phone number/lead after the specified time');

@@ -1084,6 +1084,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Verify that the admin have recieved the message from Agent', () => {
+    verifyRoleTitle();
     Dash.clickMessageIcon();
     Dash.verifyChatBox();
     Dash.selectChat(testData.agent);
@@ -1123,6 +1124,7 @@ describe('Dashboard Elements', () => {
   });
 
   it('Verify that Admin have received message from Supervisor', () => {
+    verifyRoleTitle();
     Dash.clickMessageIcon();
     Dash.verifyChatBox();
     Dash.selectChat(testData.supervisor);

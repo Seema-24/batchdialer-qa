@@ -22,7 +22,7 @@ const calenderMonthDropdown = '.DayPicker-Caption';
 const calenderDays = '.DayPicker-Weekdays';
 const calenderDate = '.DayPicker-Body';
 const tableBody = '.resizable-table-tbody';
-const dialerNumber = '.table-responsive tbody tr td:nth-child(4)';
+const dialerNumber = '.resizable-table-tbody .tr .td:nth-child(4)';
 const exportbtn = "//button[text()='Export']";
 const agentHeatMap = "//div[text()='Agents Heat Map']";
 const heatMapDropdown = "span[title='All Groups']";
@@ -182,7 +182,14 @@ export default class Report {
   }
 
   clickExportBtn() {
-    cy.xpath(exportbtn).click();
+    cy.window().document().then(function (doc) {
+      doc.addEventListener('click', () => {
+        setTimeout(function () { 
+          doc.location.reload();
+        }, 5000);
+      })
+      cy.xpath(exportbtn).click({force:true});
+    })
   }
 
   getDialedContactNumbers() {
