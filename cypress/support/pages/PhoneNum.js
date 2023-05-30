@@ -5,7 +5,7 @@ const stateDrpdwn =
 const searchBtn = '.modal-body button svg[data-icon="search"]';
 const firstNum = '.number';
 const firstNumberChkBx = '.resizable-table-tbody .tr-dids .td span';
-const orderNow = '.btn svg[data-icon="shopping-cart"]';
+const orderNow = '.btn svg[data-icon="cart-shopping"]';
 const dropdownOptions = '.ss-select-group-items';
 const searchToast =
   '//div[@class="Toastify__toast-body"]//div[contains(text(),"Search started")]';

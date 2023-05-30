@@ -752,7 +752,7 @@ export default class Campaign {
 
   clickUnarchiveCampaign(arc) {
     cy.xpath(
-      `//span[text()="${arc}"]/ancestor::div[@class="tr"]//*[name()="svg"][@data-icon="undo"]`
+      `//span[text()="${arc}"]/ancestor::div[@class="tr"]//*[name()="svg"][@data-icon="arrow-rotate-left"]`
     )
       .first()
       .scrollIntoView()

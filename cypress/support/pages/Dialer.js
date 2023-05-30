@@ -935,7 +935,7 @@ export default class Dialer {
   }
 
   verifySpeakerIcon(header) {
-    cy.xpath(softphoneSettingHeader(header)+ '[@data-icon="volume-up"]').should('be.visible');
+    cy.xpath(softphoneSettingHeader(header)+ '[@data-icon="volume-high"]').should('be.visible');
   }
 
   verifyPlayConnectToggleSwitch(header) {
@@ -952,7 +952,7 @@ export default class Dialer {
   }
 
   clickOnRingtoneSpeaker(header) {
-    cy.xpath(softphoneSettingHeader(header)+ '[@data-icon="volume-up"]').click();
+    cy.xpath(softphoneSettingHeader(header)+ '[@data-icon="volume-high"]').click();
   }
 
   verifyDisabledStatus(status) {
@@ -961,7 +961,7 @@ export default class Dialer {
 
   clickDialerBackspace(back) {
     for (let i = 0; i < back; i++) {
-      cy.get('[data-icon="backspace"]').click();
+      cy.get('[data-icon="delete-left"]').click();
     }
   }
 
