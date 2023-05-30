@@ -337,13 +337,13 @@ describe('Agent Profile', function () {
     ]);
     agent.verifyCalenderFromDateToDate();
     agent.verifyDaysOfCalender([
-      'Mon',
-      'Tue',
-      'Wed',
-      'Thu',
-      'Fri',
-      'Sat',
-      'Sun',
+      'Mo',
+      'Tu',
+      'We',
+      'Th',
+      'Fr',
+      'Sa',
+      'Su',
     ]);
     agent.verifyMonthChangeBnts();
     agent.verifyMonthYearStatusBar();

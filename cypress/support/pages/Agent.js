@@ -43,7 +43,7 @@ const contactName = (firstName, lastname) =>
 const month = '.month-selector .title';
 const nextButton = '.fa-chevron-right';
 const day = `div.day .title`;
-const saveBtn = 'button svg[data-icon="save"]';
+const saveBtn = 'button svg[data-icon="floppy-disk"]';
 const savedScheduledCall = '.day .item';
 const closeBtn = '//button[contains(text(),"Close")]';
 const notesBtn = '//button[text()="Notes"]';
@@ -126,14 +126,14 @@ const changeCampaignBtn =
 const changeCampaignBody = '.modal-content';
 const confirmBtnOnChangeCamp = "//button[contains(text(),'Confirm')]";
 const calenderBtn = ".nav-link[href='/tasks/']";
-const dateChangeBar = `//div[@class="DayPicker"]//span[@class=" fakelink"]`;
-const verifyCalaenderDays = (day) => `abbr[title="${day}"]`;
+const dateChangeBar = `//div[@class="date-picker__wrapper"]//span[@class=" fakelink"]`;
+const verifyCalaenderDays = (day) => `th[aria-label="${day}"]`;
 const DashboardBtn = "//*[@id='root']/div[1]/div[2]/ul/li[1]/a/span";
 const calenderOnDashBoard =
   "//div[@class='fakeinput inverted fakeinput__overflow']";
 const calenderSideBar = '.links';
 const calenderFromDateToDate = "[placeholder='MM/DD/YYYY']";
-const daysOfCalender = '.DayPicker-WeekdaysRow';
+const daysOfCalender = '.rdp-head_row';
 const monthChangeBnts = '.svg-stroke';
 const monthYearStatusBar = '.daypicker__month-select';
 const agentDetailsPlusBtn = "[data-icon='plus']";
