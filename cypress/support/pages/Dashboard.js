@@ -239,7 +239,7 @@ const billingInfoEditBtn = '.billing-user-info__wrapper .billing-user-info__edit
 const addDropdown = (add) => `//label[text() ="${add}"]/parent::div/child::div//span[@class="ss-select-value"]/span`;
 const selectState = (state) => `//span[text() ="${state}"]/ancestor::div[@class="row"]/following-sibling::div//span[contains(@class,"ss-select-value-label")]`;
 const billingBtn = (btn) => `//button[@class="billing-button"][text()="${btn}"]`;
-const successToastMsg = '.mytoast-bottom';
+const successToastMsg = '.Toastify__toast-body';
 const cardEditBtn = '.billing-user-info__payment__edit svg';
 const mainTab = '//div[@class="dashboard"]//li[text()="MAIN"]';
 const liveCalls = '//span[@class][text()="Live Calls"]';

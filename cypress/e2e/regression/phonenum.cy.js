@@ -717,6 +717,7 @@ describe('Add Phone Number flow', () => {
     addNum.clickPhoneNumberMenu();
     addNum.clickBuyDidButton();
     addNum.selectStateModeOption('Colorado');
+    cy.wait(2000);
     addNum.selectNumberDropdownAndVerifyCount();
   });
 

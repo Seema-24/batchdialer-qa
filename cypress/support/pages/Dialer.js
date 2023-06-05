@@ -70,7 +70,7 @@ const listThreeDotMenuBtn = (listName) =>
 const modalTitle = '.modal-content .modal-title';
 const modalDropdown = '.modal-content .ss-select';
 const listDeleteBtn = (listName) =>
-  `//div[text()="${listName}"]/parent::div/child::div//*[name()="svg"][@data-icon="trash-alt"]`;
+  `//div[text()="${listName}"]/parent::div/child::div//*[name()="svg"][@data-icon="trash-can"]`;
 const softphoneLines = '.softphone-body-height-for-dialer [id*="softphone-line"]';
 const retryTime = (editBtn) =>
   `//label[text()="Retry Time"]//following-sibling::div//div[contains(@class,"number-editor")]//img[contains(@src,"${editBtn}")]`;

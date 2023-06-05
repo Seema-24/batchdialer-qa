@@ -80,7 +80,7 @@ const contactCountSlider = '.slider-container';
 const listImportContactButton = '//button[text()="IMPORT CONTACTS"]';
 const listsTable = '.resizable-table-tbody';
 const listPauseButton = 'svg[data-icon="pause"]';
-const listDeleteButton = 'svg[data-icon="trash-alt"]';
+const listDeleteButton = 'svg[data-icon="trash-can"]';
 const listStatus = 'svg[data-icon="play"]';
 const testingPauseButton =
   '//tr[td[text()="testing"]]//span//*[name()="svg" and @data-icon="pause"]';
@@ -150,7 +150,7 @@ const campaignTab = '.userSedit.contact-edit-form-wrapper .contact-calls';
 const notesTab = '.userSedit.contact-edit-form-wrapper .block.card';
 const sampleUploadFile = '.down_doc';
 const listDeleteBtn = (listName) =>
-  `//div[text()="${listName}"]/parent::div/child::div//*[name()="svg"][@data-icon="trash-alt"]`;
+  `//div[text()="${listName}"]/parent::div/child::div//*[name()="svg"][@data-icon="trash-can"]`;
 const ToastMessage = `.Toastify__toast-body`;
 const leadSheetSaveBtn = '.contact-leads__row-button';
 const notesIcon = (status) => `img[src*="notes_${status}"]`;
