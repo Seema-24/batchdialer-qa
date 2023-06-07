@@ -537,6 +537,7 @@ describe('Add Phone Number flow', () => {
   });
 
   it('Verify that Events created through call result Schedule a call back is reflected in the TASKS page', () => {
+    addCont.verifyContactExisting('6029227636');
     addCont.dialPhoneNumber('6029227636');
     addCont.clickDialerCallButton();
     cy.wait(5000);

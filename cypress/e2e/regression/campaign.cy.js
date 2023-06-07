@@ -141,6 +141,7 @@ describe('Add Campaign flow', () => {
     addCamp.verifyModalTitle(
       `Change Log ${fixtureData.campaignName + randNum.toString()}`
     );
+    cy.wait(1000);
     addCamp.verifyChangeLogItemsText(
       `${fixtureData.campaignName + randNum.toString()} Created by ${
         testData.AdminName
@@ -571,6 +572,7 @@ describe('Add Campaign flow', () => {
     addCamp.verifyModalTitle(
       `Change Log ${testData.campaign + ' - 1'}`
     );
+    cy.wait(1000);
     addCamp.verifyChangeLogItemsText(
       `${testData.campaign + ' - 1'} Recycled by ${
         testData.AdminName

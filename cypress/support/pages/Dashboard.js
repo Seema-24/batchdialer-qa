@@ -42,7 +42,7 @@ const ProfileCity = "input[name='city']";
 const ProfileZip = "input[name='zip']";
 const ProfilePhone = "input[name='phone']";
 const ProfilePhone2 = "input[name='phone2']";
-const ProfileState = "//span[text()='State']";
+const ProfileState = "//div[label[text()='State']]/div";
 const ProfileTimezone = '//div[label[text()="Timezone"]]/div//span[contains(@class,"ss-select-value-label")]';
 const ProfilePasswordChangeButton = "//div[label[text()='Password']]/button";
 const ProfileAgentFeaturesEnable =
@@ -113,7 +113,7 @@ const keepPhoneCheckbox = '.radio_cstm';
 const basePrice = '.price span:nth-of-type(1)';
 const totalPrice = '.total .value';
 const pauseSubscriptionBox = '.modal-content';
-const pauseSubscriptionBoxCloseBtn = '.modal-content svg[data-icon="times"]';
+const pauseSubscriptionBoxCloseBtn = '.modal-content svg[data-icon="xmark"]';
 const alertMessage = '.alert-warning';
 const plans = (planName) => "//div[div[text()='" + planName + "']]//button";
 const continueBtn = '//button[contains(text(),"CONTINUE")]';
@@ -139,7 +139,7 @@ const deleteCardBtn = (last4Digit) =>
 const cardDefaultBtn = (last4Digit) =>
   `//div[@class='billing-payment-preview__card' and contains(.,"${last4Digit}")]//button[img[@alt='Star']]`;
 const cardDeleteToast =
-  "//div[contains(@class,'mytoast') and text()='The card has been successfully removed']";
+  "//div[contains(@class,'Toastify__toast-body')]//div[text()='The card has been successfully removed']";
 const chaticon = 'svg.chat-wrapper__icon';
 const chatWindow = '.fc-conversation-view';
 const enterChat = '#app-conversation-editor p';
@@ -149,7 +149,7 @@ const chatBoxSendMessage = '.send-message';
 const cancelAccountReason = (reason) =>
   "//div[contains(@class,'radio')][contains(.,'" + reason + "')]";
 const confirmDelete = '.security input';
-const dialogCloseBtn = '.modal-body svg[data-icon="times"]';
+const dialogCloseBtn = '.modal-body svg[data-icon="xmark"]';
 const popUpHeader = '.modal-header';
 const taskLeftArrow = '.daypicker__month-form svg:nth-of-type(1)';
 const DashboardCalender = '.fakeinput__overflow';
@@ -1184,7 +1184,7 @@ export default class Dashboard {
   }
 
   clickCardDefaultBtn(last4Digit) {
-    cy.xpath(cardDefaultBtn(last4Digit)).click();
+    cy.xpath(cardDefaultBtn(last4Digit)).click({force:true});
   }
 
   verifyCardDefault(last4Digit) {
@@ -2115,7 +2115,7 @@ export default class Dashboard {
   clickOnCalendarDate() {
     const date = new Date();
     const todayDate = date.getDay();
-    cy.get('.DayPicker-Body .DayPicker-Day div.d-flex').then(date => {
+    cy.get('.rdp-tbody .rdp-day div.d-flex').then(date => {
       if(date.textContent === todayDate) {
         cy.contains(date.textContent).click();
       }

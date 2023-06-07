@@ -1387,8 +1387,12 @@ export default class Campaign {
   selectDropdownValue() {
     cy.get('.ss-select-option').then((el) => {
       for (let i = 0; i < el.length; i++) {
-        cy.get(el[i]).click({ force: true });
-        break;
+        if(el[i].textContent.trim().startsWith('Group')){ 
+          cy.log('Not select Group');
+        } else {
+          cy.get(el[i]).click({ force: true });
+          break;
+        }
       }
     });
   }

@@ -286,7 +286,7 @@ describe('Registration', () => {
         cy.log('Not Registering user on Prod');
       } else {
         login.verifyCloseApp();
-        register.closePopUp();
+        //register.closePopUp();
         cy.Login(email, 'Fleek@2016');
         skipTourGuidePopup();
         phone.clickPhoneNumberMenu();
@@ -311,7 +311,7 @@ describe('Registration', () => {
         cy.log('Not Registering user on Prod');
       } else {
         login.verifyCloseApp();
-        register.closePopUp();
+        //register.closePopUp();
         cy.Login(email, 'Fleek@2016');
         cy.reload();
         skipTourGuidePopup();
@@ -339,7 +339,7 @@ describe('Registration', () => {
         cy.log('Not Registering user on Prod');
       } else {
         login.verifyCloseApp();
-        register.closePopUp();
+        //register.closePopUp();
         cy.Login(email, 'Fleek@2016');
         cy.reload();
         skipTourGuidePopup();
@@ -362,7 +362,7 @@ describe('Registration', () => {
         cy.log('Not Registering user on Prod');
       } else {
         login.verifyCloseApp();
-        register.closePopUp();
+        //register.closePopUp();
         cy.Login(email, 'Test@123');
         cy.reload();
         skipTourGuidePopup();
@@ -385,7 +385,7 @@ describe('Registration', () => {
         cy.log('Not Registering user on Prod');
       } else {
         login.verifyCloseApp();
-        register.closePopUp();
+        //register.closePopUp();
         cy.Login(email, 'Test@123');
         cy.reload();
         ignoreSpeedTestPopup();
@@ -401,7 +401,7 @@ describe('Registration', () => {
         cy.log('Not Registering user on Prod');
       } else {
         login.verifyCloseApp();
-        register.closePopUp();
+        //register.closePopUp();
         cy.Login(email, 'Test@123');
         cy.reload();
         skipTourGuidePopup();
@@ -429,7 +429,7 @@ describe('Registration', () => {
         cy.log('Not Registering user on Prod');
       } else {
         login.verifyCloseApp();
-        register.closePopUp();
+        //register.closePopUp();
         cy.Login(email, 'Test@123');
         cy.reload();
         ignoreSpeedTestPopup();
@@ -449,7 +449,7 @@ describe('Registration', () => {
         cy.log('Not Registering user on Prod');
       } else {
         login.verifyCloseApp();
-        register.closePopUp();
+        //register.closePopUp();
         cy.Login(email, 'Test@123');
         cy.reload();
         ignoreSpeedTestPopup();

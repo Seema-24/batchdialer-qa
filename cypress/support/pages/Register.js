@@ -63,11 +63,11 @@ const city = 'input[name="city"]';
 export default class Register {
   clickSignUpBtn() {
     cy.get(signUpBtn).click();
-    this.closePopUp();
+    //this.closePopUp();
   }
 
   verifyRegistrationUrl() {
-    cy.url().should('eq', `${Cypress.config().baseUrl}/register/`);
+    cy.url().should('eq', `${Cypress.config().baseUrl}/register`);
   }
 
   enterFirstName(name) {
